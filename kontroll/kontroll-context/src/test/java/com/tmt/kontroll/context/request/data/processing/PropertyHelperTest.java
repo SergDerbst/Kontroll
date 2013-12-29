@@ -12,12 +12,12 @@ import java.util.Set;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.context.request.data.processing.PropertyHelper;
 import com.tmt.kontroll.test.ObjectDataTest;
 
 public class PropertyHelperTest extends ObjectDataTest<PropertyHelper>{
 	
 	private static class TestClass extends PropertyHelperTest {
+		@SuppressWarnings("unused")
 		private final HashMap<String, Integer> map = new HashMap<String, Integer>();
 	}
 	

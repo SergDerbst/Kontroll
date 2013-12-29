@@ -104,7 +104,7 @@ public class GlobalContextTest {
 		when(this.requestContextMap.descendingMap()).thenReturn(descendingMap);
 		
 		//when
-		Set<RequestContextItem> fetched = this.toTest.fetchRequestContext(regex);
+		this.toTest.fetchRequestContext(regex);
 		
 		//then
 		verify(this.entry).getValue();

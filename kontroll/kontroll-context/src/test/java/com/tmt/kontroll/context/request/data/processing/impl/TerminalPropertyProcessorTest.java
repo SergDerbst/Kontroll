@@ -9,15 +9,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import com.tmt.kontroll.context.request.RequestContextTestHelper.TestRequestContextDto;
-import com.tmt.kontroll.context.request.data.processing.PropertyProcessor;
 
 public class TerminalPropertyProcessorTest {
-	
-	@Mock
-	private PropertyProcessor processor;
 	
 	private PropertyDescriptor propertyDescriptor;
 	private TerminalPropertyProcessor toTest;
