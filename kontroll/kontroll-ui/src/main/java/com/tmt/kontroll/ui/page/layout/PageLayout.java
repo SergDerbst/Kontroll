@@ -17,7 +17,7 @@ public class PageLayout {
 	private final TreeMap<Pattern, PageLayoutFooter> footerMap = new TreeMap<Pattern, PageLayoutFooter>(new RegexPatternComparator());
 
 	@Autowired
-	private RegexPatternConverter regexPatternConverter;
+	RegexPatternConverter regexPatternConverter;
 	
 	public void addHeader(String requestContextPathPattern, PageLayoutHeader header) {
 		this.headerMap.put(this.regexPatternConverter.convertToPattern(requestContextPathPattern), header);
@@ -31,15 +31,15 @@ public class PageLayout {
 		this.footerMap.put(this.regexPatternConverter.convertToPattern(requestContextPathPattern), footer);
 	}
 	
-	public PageLayoutHeader getHeader(String requestContextPathPattern) {
+	public PageLayoutHeader fetchHeader(String requestContextPathPattern) {
 		return this.headerMap.get(this.regexPatternConverter.convertToPattern(requestContextPathPattern));
 	}
 	
-	public PageLayoutBody getBody(String requestContextPathPattern) {
+	public PageLayoutBody fetchBody(String requestContextPathPattern) {
 		return this.bodyMap.get(this.regexPatternConverter.convertToPattern(requestContextPathPattern));
 	}
 	
-	public PageLayoutFooter getFooter(String requestContextPathPattern) {
+	public PageLayoutFooter fetchFooter(String requestContextPathPattern) {
 		return this.footerMap.get(this.regexPatternConverter.convertToPattern(requestContextPathPattern));
 	}
 	

@@ -31,9 +31,9 @@ public class PageContentLoader {
 	ContentService contentService;
 	
 	public void loadContent(final String patternString) throws ContentException {
-		this.loadContent(patternString, this.pageLayout.getHeader(patternString).getChildren());
-		this.loadContent(patternString, this.pageLayout.getBody(patternString).getChildren());
-		this.loadContent(patternString, this.pageLayout.getFooter(patternString).getChildren());
+		this.loadContent(patternString, this.pageLayout.fetchHeader(patternString).getChildren());
+		this.loadContent(patternString, this.pageLayout.fetchBody(patternString).getChildren());
+		this.loadContent(patternString, this.pageLayout.fetchFooter(patternString).getChildren());
 	}
 	
 	private void loadContent(final String patternString, final List<PageLayoutSegment> segments) throws ContentException {

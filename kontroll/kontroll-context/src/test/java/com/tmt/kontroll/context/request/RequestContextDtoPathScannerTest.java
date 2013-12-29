@@ -49,5 +49,4 @@ public class RequestContextDtoPathScannerTest {
 		//when
 		this.toTest.scan(new TestRequestContextService());
 	}
-
 }

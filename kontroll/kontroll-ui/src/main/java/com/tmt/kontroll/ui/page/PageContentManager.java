@@ -15,7 +15,7 @@ import com.tmt.kontroll.ui.page.layout.PageLayoutSegment;
 @Component
 public class PageContentManager {
 
-	private final TreeMap<PageContentContext, PageLayoutContent> contentMap = new TreeMap<PageContentContext, PageLayoutContent>();
+	TreeMap<PageContentContext, PageLayoutContent> contentMap = new TreeMap<PageContentContext, PageLayoutContent>();
 	
 	@Autowired
 	PageLayout pageLayout;
