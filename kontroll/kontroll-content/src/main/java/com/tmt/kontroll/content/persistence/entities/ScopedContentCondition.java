@@ -49,6 +49,13 @@ public class ScopedContentCondition extends AbstractBaseEntity {
 
 	@OneToMany(mappedBy = "scopedContentCondition")
 	private List<ScopedContentConditionAttribute> scopedContentConditionAttributes;
+	
+	@JoinTable(name = "NestedScopedContentConditions",
+	joinColumns = @JoinColumn(name = "parent_condition_id", referencedColumnName = "id"),
+					inverseJoinColumns = @JoinColumn(name = "child_condition_id", referencedColumnName = "id"),
+					uniqueConstraints = { @UniqueConstraint(name = "unique_condition_nesting",
+																									columnNames = { "parent_condition_id", "child_condition_id" }) })
+	private List<ScopedContentCondition> childConditions;
 
 	public String getName() {
 		return name;
@@ -96,5 +103,13 @@ public class ScopedContentCondition extends AbstractBaseEntity {
 
 	public void setScopedContentConditionAttributes(List<ScopedContentConditionAttribute> scopedContentConditionAttributes) {
 		this.scopedContentConditionAttributes = scopedContentConditionAttributes;
+	}
+
+	public List<ScopedContentCondition> getChildConditions() {
+		return childConditions;
+	}
+
+	public void setChildConditions(List<ScopedContentCondition> childConditions) {
+		this.childConditions = childConditions;
 	}
 }

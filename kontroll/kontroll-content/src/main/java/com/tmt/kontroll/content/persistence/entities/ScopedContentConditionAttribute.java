@@ -35,6 +35,9 @@ public class ScopedContentConditionAttribute extends AbstractBaseEntity {
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_Large)
 	private String						expectedValue;
+	
+	@Column(nullable = false, length = DatabaseDefinitions.String_Large)
+	private String 						expectedValueType;
 
 	@ManyToOne
 	@JoinColumn(name = "scopedContentCondition", nullable = false)
@@ -94,5 +97,13 @@ public class ScopedContentConditionAttribute extends AbstractBaseEntity {
 
 	public void setScopedContentCondition(ScopedContentCondition scopedContentCondition) {
 		this.scopedContentCondition = scopedContentCondition;
+	}
+
+	public String getExpectedValueType() {
+		return expectedValueType;
+	}
+
+	public void setExpectedValueType(String expectedValueType) {
+		this.expectedValueType = expectedValueType;
 	}
 }

@@ -7,10 +7,10 @@ import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 public class ContentContext {
 
 	private final ContentDto	contentDTO;
-
 	private final List<ScopedContentCondition> conditions;
 
-	public ContentContext(final ContentDto contentDTO, final List<ScopedContentCondition> conditions) {
+	public ContentContext(final ContentDto contentDTO, 
+	                      final List<ScopedContentCondition> conditions) {
 		this.contentDTO = contentDTO;
 		this.conditions = conditions;
 	}

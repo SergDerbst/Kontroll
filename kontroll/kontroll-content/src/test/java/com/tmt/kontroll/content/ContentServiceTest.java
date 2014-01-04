@@ -21,6 +21,7 @@ import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.services.ScopeDaoService;
 import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
+import com.tmt.kontroll.content.verification.ContentVerifier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentServiceTest {

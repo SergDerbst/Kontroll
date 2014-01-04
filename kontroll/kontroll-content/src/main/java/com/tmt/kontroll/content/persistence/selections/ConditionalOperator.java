@@ -10,5 +10,6 @@ public enum ConditionalOperator {
 
 	And,
 	Or,
-	Xor;
+	Xor,
+	Not;
 }

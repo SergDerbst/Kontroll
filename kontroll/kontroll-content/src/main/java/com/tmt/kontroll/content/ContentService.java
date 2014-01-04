@@ -14,6 +14,7 @@ import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 import com.tmt.kontroll.content.persistence.services.ScopeDaoService;
 import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
+import com.tmt.kontroll.content.verification.ContentVerifier;
 
 /**
  * A service to load content according to a set of conditions. The application
@@ -34,17 +35,14 @@ public class ContentService {
 
 	@Autowired
 	ContentVerifier verifier;
-
 	@Autowired
 	ScopeDaoService scopeDaoService;
-
 	@Autowired
 	ScopedContentDaoService scopedContentDaoService;
-
 	@Autowired
 	ContentParser scopedContentParser;
 
-	public List<ContentItem<? extends Enum<?>>> loadContent(ContentDto contentDTO) throws ContentException {
+	public List<ContentItem<? extends Enum<?>>> loadContent(final ContentDto contentDTO) throws ContentException {
 		final String contentName = contentDTO.getScopeName();
 		final String scopeName = contentName.split("\\.")[0];
 		final String scopedContentName = contentName.substring(scopeName.length());
@@ -54,7 +52,7 @@ public class ContentService {
 		}
 		final List<ScopedContent> scopedContents = this.scopedContentDaoService.findByScopeAndName(scope, scopedContentName);
 
-		for (ScopedContent scopedContent : scopedContents) {
+		for (final ScopedContent scopedContent : scopedContents) {
 			final ContentContext context = new ContentContext(contentDTO, scopedContent.getConditions());
 			if (this.verifier.verify(context)) {
 				return this.scopedContentParser.parse(scopedContent);

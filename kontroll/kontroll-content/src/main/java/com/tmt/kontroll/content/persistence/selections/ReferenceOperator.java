@@ -7,7 +7,6 @@ package com.tmt.kontroll.content.persistence.selections;
  *
  */
 public enum ReferenceOperator {
-
 	IsEqual,
 	IsNotEqual,
 	IsSmallerAs,

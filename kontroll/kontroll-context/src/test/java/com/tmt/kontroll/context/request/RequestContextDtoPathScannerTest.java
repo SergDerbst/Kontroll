@@ -14,13 +14,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.tmt.kontroll.commons.exceptions.ScanFailedException;
 import com.tmt.kontroll.context.request.RequestContextTestHelper.TestRequestContextService;
-import com.tmt.kontroll.context.request.data.processing.BeanProcessor;
+import com.tmt.kontroll.context.request.data.path.scanning.BeanPathScanner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RequestContextDtoPathScannerTest {
 	
 	@Mock
-	private BeanProcessor processor;
+	private BeanPathScanner processor;
 
 	private RequestContextDtoPathScanner toTest;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.commons.exceptions.ScanFailedException;
 import com.tmt.kontroll.context.global.GlobalContextDto;
-import com.tmt.kontroll.context.request.data.processing.BeanProcessor;
+import com.tmt.kontroll.context.request.data.path.scanning.BeanPathScanner;
 
 
 /**
@@ -36,7 +36,7 @@ import com.tmt.kontroll.context.request.data.processing.BeanProcessor;
 public class RequestContextDtoPathScanner {
 	
 	@Autowired
-	BeanProcessor processor;
+	BeanPathScanner processor;
 	
 	@SuppressWarnings("unchecked")
 	public SortedSet<String> scan(final RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto> service) {
