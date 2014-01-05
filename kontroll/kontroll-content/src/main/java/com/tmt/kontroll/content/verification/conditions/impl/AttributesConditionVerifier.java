@@ -21,6 +21,6 @@ public class AttributesConditionVerifier extends ConditionVerifier {
 
 	@Override
 	protected boolean doVerify(final ScopedContentCondition condition, final ContentDto contentDto) {
-		return this.verificationChain.verify(condition.getScopedContentConditionAttributes(), condition.getOperator(), contentDto);
+		return this.verificationChain.verify(condition.getConditionAttributes(), condition.getOperator(), contentDto);
 	}
 }

@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 import com.tmt.kontroll.content.ContentDto;
 import com.tmt.kontroll.content.persistence.conversion.ValueStringConversionChain;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.BooleanConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ByteConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.CharacterConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.DoubleConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.FloatConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.IntegerConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.LongConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ShortConditionAttributeVerifier;
-import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.StringConditionAttributeVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeBooleanValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeByteValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeCharacterValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeDoubleValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeFloatValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeIntegerValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeLongValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeShortValueVerifier;
+import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeStringValueVerifier;
 import com.tmt.kontroll.context.request.data.path.processing.BeanPathProcessor;
 
 @Component
@@ -28,23 +28,23 @@ public class ConditionAttributeValueVerificationChain {
 	ValueStringConversionChain valueConversionChain;
 	
 	@Autowired
-	BooleanConditionAttributeVerifier booleanConditionAttributeVerifier;
+	ConditionAttributeBooleanValueVerifier booleanConditionAttributeVerifier;
 	@Autowired
-	ByteConditionAttributeVerifier byteConditionAttributeVerifier;
+	ConditionAttributeByteValueVerifier byteConditionAttributeVerifier;
 	@Autowired
-	CharacterConditionAttributeVerifier characterConditionAttributeVerifier;
+	ConditionAttributeCharacterValueVerifier characterConditionAttributeVerifier;
 	@Autowired
-	DoubleConditionAttributeVerifier doubleConditionAttributeVerifier;
+	ConditionAttributeDoubleValueVerifier doubleConditionAttributeVerifier;
 	@Autowired
-	FloatConditionAttributeVerifier floatConditionAttributeVerifier;
+	ConditionAttributeFloatValueVerifier floatConditionAttributeVerifier;
 	@Autowired
-	IntegerConditionAttributeVerifier integerConditionAttributeVerifier;
+	ConditionAttributeIntegerValueVerifier integerConditionAttributeVerifier;
 	@Autowired
-	LongConditionAttributeVerifier longConditionAttributeVerifier;
+	ConditionAttributeLongValueVerifier longConditionAttributeVerifier;
 	@Autowired
-	ShortConditionAttributeVerifier shortConditionAttributeVerifier;
+	ConditionAttributeShortValueVerifier shortConditionAttributeVerifier;
 	@Autowired
-	StringConditionAttributeVerifier stringConditionAttributeVerifier;
+	ConditionAttributeStringValueVerifier stringConditionAttributeVerifier;
 	
 	@PostConstruct
 	public void setUpVerificationChain() {

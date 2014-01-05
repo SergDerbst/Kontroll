@@ -97,7 +97,7 @@ public class ScopedContentCondition extends AbstractBaseEntity {
 		this.scopedContentItems = scopedContentItems;
 	}
 
-	public List<ScopedContentConditionAttribute> getScopedContentConditionAttributes() {
+	public List<ScopedContentConditionAttribute> getConditionAttributes() {
 		return scopedContentConditionAttributes;
 	}
 

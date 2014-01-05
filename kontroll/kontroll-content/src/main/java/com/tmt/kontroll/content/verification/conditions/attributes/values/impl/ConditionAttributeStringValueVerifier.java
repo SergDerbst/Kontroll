@@ -4,19 +4,19 @@ import java.util.Comparator;
 
 import com.tmt.kontroll.content.verification.conditions.attributes.values.ConditionAttributeValueVerifier;
 
-public class StringConditionAttributeVerifier extends ConditionAttributeValueVerifier<String> {
+public class ConditionAttributeStringValueVerifier extends ConditionAttributeValueVerifier<String> {
 
 	private static class StringComparator implements Comparator<String> {
 		@Override
-		public int compare(String o1, String o2) {
+		public int compare(final String o1, final String o2) {
 			return o1.compareTo(o2);
 		}
 	}
-	
+
 	static final StringComparator comparator = new StringComparator();
-	
+
 	@Override
-	protected boolean isResponsible(Class<?> valueType) {
+	protected boolean isResponsible(final Class<?> valueType) {
 		return String.class.equals(valueType);
 	}
 
@@ -26,7 +26,10 @@ public class StringConditionAttributeVerifier extends ConditionAttributeValueVer
 	}
 
 	@Override
-	protected boolean isEqual(String expectedValue, String actualValue) {
-		return super.checkNullEquality(expectedValue, actualValue) || expectedValue.equals(actualValue);
+	protected boolean isEqual(final String expectedValue, final String actualValue) {
+		if (!super.checkNullEquality(expectedValue, actualValue)) {
+			return expectedValue != null && actualValue != null && expectedValue.equals(actualValue);
+		}
+		return true;
 	}
 }

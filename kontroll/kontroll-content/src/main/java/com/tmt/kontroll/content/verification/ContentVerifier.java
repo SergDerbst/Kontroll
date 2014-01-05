@@ -31,7 +31,7 @@ public class ContentVerifier {
 	}
 
 	private void assertConsistent(ScopedContentCondition condition) {
-		if (!condition.getChildConditions().isEmpty() && !condition.getScopedContentConditionAttributes().isEmpty()) {
+		if (!condition.getChildConditions().isEmpty() && !condition.getConditionAttributes().isEmpty()) {
 			throw new ConditionInconsistentException("Scoped content conditions must either have nested conditions or condition attributes, but not both.");
 		}
 	}

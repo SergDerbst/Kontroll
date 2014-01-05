@@ -10,14 +10,14 @@ import com.tmt.kontroll.content.verification.conditions.ConditionVerificationCha
 import com.tmt.kontroll.content.verification.conditions.ConditionVerifier;
 
 @Component
-public class NotConditionVerifier extends ConditionVerifier {
+public class NotAndConditionVerifier extends ConditionVerifier {
 
 	@Autowired
 	ConditionVerificationChain verificationChain;
 	
 	@Override
 	protected boolean isResponsible(ScopedContentCondition condition) {
-		return ConditionalOperator.Not == condition.getOperator() && !condition.getChildConditions().isEmpty();
+		return ConditionalOperator.NotAnd == condition.getOperator() && !condition.getChildConditions().isEmpty();
 	}
 
 	@Override

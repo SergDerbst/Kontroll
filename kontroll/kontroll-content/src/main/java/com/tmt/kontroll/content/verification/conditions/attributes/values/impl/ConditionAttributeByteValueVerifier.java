@@ -4,11 +4,11 @@ import java.util.Comparator;
 
 import com.tmt.kontroll.content.verification.conditions.attributes.values.ConditionAttributeValueVerifier;
 
-public class ByteConditionAttributeVerifier extends ConditionAttributeValueVerifier<Byte> {
-	
+public class ConditionAttributeByteValueVerifier extends ConditionAttributeValueVerifier<Byte> {
+
 	private static class ByteComparator implements Comparator<Byte> {
 		@Override
-		public int compare(Byte o1, Byte o2) {
+		public int compare(final Byte o1, final Byte o2) {
 			if (o1.byteValue() == o2.byteValue()) {
 				return 0;
 			}
@@ -19,11 +19,11 @@ public class ByteConditionAttributeVerifier extends ConditionAttributeValueVerif
 		}
 	}
 
-	
+
 	static final ByteComparator comparator = new ByteComparator();
-	
+
 	@Override
-	protected boolean isResponsible(Class<?> valueType) {
+	protected boolean isResponsible(final Class<?> valueType) {
 		return Byte.class.equals(valueType) || Byte.TYPE.equals(valueType);
 	}
 
@@ -33,7 +33,10 @@ public class ByteConditionAttributeVerifier extends ConditionAttributeValueVerif
 	}
 
 	@Override
-	protected boolean isEqual(Byte expectedValue, Byte actualValue) {
-		return super.checkNullEquality(expectedValue, actualValue) || expectedValue == actualValue;
+	protected boolean isEqual(final Byte expectedValue, final Byte actualValue) {
+		if (!super.checkNullEquality(expectedValue, actualValue)) {
+			return expectedValue != null && actualValue != null && expectedValue.byteValue() == actualValue.byteValue();
+		}
+		return true;
 	}
 }

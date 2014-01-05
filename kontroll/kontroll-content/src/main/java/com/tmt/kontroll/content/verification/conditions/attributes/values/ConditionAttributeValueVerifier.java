@@ -7,23 +7,20 @@ import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
 public abstract class ConditionAttributeValueVerifier<V> {
 
 	private ConditionAttributeValueVerifier<?> nextVerifier;
-	
+
 	protected abstract boolean isResponsible(final Class<?> valueType);
-	
+
 	protected abstract Comparator<V> getComparator();
-	
+
 	protected abstract boolean isEqual(final V expectedValue, final V actualValue);
-	
+
 	protected boolean checkNullEquality(final V expectedValue, final V actualValue) {
 		if (expectedValue == null) {
 			return actualValue == null;
 		}
-		if (actualValue == null) {
-			return expectedValue == null;
-		}
 		return false;
 	}
-	
+
 	protected boolean doVerify(final V expectedValue, final V actualValue, final ReferenceOperator operator) {
 		switch (operator) {
 			case IsEqual:
@@ -44,15 +41,15 @@ public abstract class ConditionAttributeValueVerifier<V> {
 	}
 
 	protected ConditionAttributeValueVerifier<?> getNextVerifier() {
-		return nextVerifier;
+		return this.nextVerifier;
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean verify(final Object expectedValue, 
-	                      final Object actualValue, 
+	public boolean verify(final Object expectedValue,
+	                      final Object actualValue,
 	                      final Class<?> valueType,
 	                      final ReferenceOperator operator) {
-		if (isResponsible(valueType)) {
+		if (this.isResponsible(valueType)) {
 			return this.doVerify((V) expectedValue, (V) actualValue, operator);
 		}
 		if (this.getNextVerifier() == null) {

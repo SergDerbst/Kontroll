@@ -8,10 +8,10 @@ import com.tmt.kontroll.content.verification.conditions.attributes.values.Condit
 import com.tmt.kontroll.content.verification.conditions.attributes.values.ConditionAttributeValueVerifier;
 
 @Component
-public class BooleanConditionAttributeVerifier extends ConditionAttributeValueVerifier<Boolean> {
+public class ConditionAttributeBooleanValueVerifier extends ConditionAttributeValueVerifier<Boolean> {
 
 	@Override
-	protected boolean isResponsible(Class<?> valueType) {
+	protected boolean isResponsible(final Class<?> valueType) {
 		return Boolean.class.equals(valueType) || Boolean.TYPE.equals(valueType);
 	}
 
@@ -21,7 +21,10 @@ public class BooleanConditionAttributeVerifier extends ConditionAttributeValueVe
 	}
 
 	@Override
-	protected boolean isEqual(Boolean expectedValue, Boolean actualValue) {
-		return super.checkNullEquality(expectedValue, actualValue) || expectedValue.booleanValue() == actualValue.booleanValue();
+	protected boolean isEqual(final Boolean expectedValue, final Boolean actualValue) {
+		if (!super.checkNullEquality(expectedValue, actualValue)) {
+			return expectedValue != null && actualValue != null && expectedValue.booleanValue() == actualValue.booleanValue();
+		}
+		return true;
 	}
 }
