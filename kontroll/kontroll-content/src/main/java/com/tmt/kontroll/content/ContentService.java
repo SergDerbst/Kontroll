@@ -1,5 +1,6 @@
 package com.tmt.kontroll.content;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,23 +8,34 @@ import org.springframework.stereotype.Service;
 
 import com.tmt.kontroll.content.exceptions.ContentException;
 import com.tmt.kontroll.content.exceptions.NoContentFoundException;
+import com.tmt.kontroll.content.exceptions.NoContentParserFoundException;
 import com.tmt.kontroll.content.exceptions.NoScopeFoundException;
+import com.tmt.kontroll.content.exceptions.TooMuchContentFoundException;
 import com.tmt.kontroll.content.items.ContentItem;
 import com.tmt.kontroll.content.parsers.ContentParser;
 import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
+import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
+import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 import com.tmt.kontroll.content.persistence.services.ScopeDaoService;
 import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
-import com.tmt.kontroll.content.verification.ContentVerifier;
+import com.tmt.kontroll.content.verification.ContentConditionVerifier;
 
 /**
  * A service to load content according to a set of conditions. The application
  * requests for content with a DTO containing a set of attributes reflecting its
- * current state. Part of these attributes will be the scope of the current
- * state of the application (e.g. in which part of the view content is to be shown). 
- * By this scope the service will be able to determine what conditions and reference
- * values it needs to match against the actual ones in order to return proper
- * content.
+ * current state. The scope of the current state of the application determines where
+ * content is to be shown (i.e. in which part of the current view). By this scope the
+ * service will be able to determine what conditions and reference values it has to
+ * match against the actual values of the application state in order to return the
+ * proper content.
+ * </p>
+ * Any content consists of several content items, which are matched against their own sets
+ * of conditions, so that such an item will only appear within the content shown, if
+ * its conditions are all true. If no content items match the actual conditions, the
+ * content will be empty.
+ * </p>
+ * Only one content can be present within one scope and at any given set of conditions.
  * 
  * @author Serg Derbst
  * 
@@ -34,7 +46,7 @@ import com.tmt.kontroll.content.verification.ContentVerifier;
 public class ContentService {
 
 	@Autowired
-	ContentVerifier verifier;
+	ContentConditionVerifier verifier;
 	@Autowired
 	ScopeDaoService scopeDaoService;
 	@Autowired
@@ -42,8 +54,8 @@ public class ContentService {
 	@Autowired
 	ContentParser scopedContentParser;
 
-	public List<ContentItem<? extends Enum<?>>> loadContent(final ContentDto contentDTO) throws ContentException {
-		final String contentName = contentDTO.getScopeName();
+	public List<ContentItem<? extends Enum<?>>> loadContent(final ContentDto contentDto) throws ContentException {
+		final String contentName = contentDto.getScopeName();
 		final String scopeName = contentName.split("\\.")[0];
 		final String scopedContentName = contentName.substring(scopeName.length());
 		final Scope scope = this.scopeDaoService.findByName(scopeName);
@@ -51,13 +63,46 @@ public class ContentService {
 			throw NoScopeFoundException.prepare(scopeName);
 		}
 		final List<ScopedContent> scopedContents = this.scopedContentDaoService.findByScopeAndName(scope, scopedContentName);
+		return this.verifyAndParseContent(scopedContents, contentDto);
+	}
 
+	private List<ContentItem<?extends Enum<?>>> verifyAndParseContent(final List<ScopedContent> scopedContents, final ContentDto contentDto) throws ContentException {
+		final List<ScopedContent> foundContent = this.findValidContent(scopedContents, contentDto);
+		if (foundContent.isEmpty()) {
+			throw NoContentFoundException.prepare(contentDto);
+		}
+		if (foundContent.size() > 1) {
+			throw TooMuchContentFoundException.prepare(contentDto);
+		}
+		return this.verifyAndParseContentItems(foundContent.get(0), contentDto);
+	}
+
+	private List<ScopedContent> findValidContent(final List<ScopedContent> scopedContents, final ContentDto contentDto) {
+		final List<ScopedContent> foundContent = new ArrayList<ScopedContent>();
 		for (final ScopedContent scopedContent : scopedContents) {
-			final ContentContext context = new ContentContext(contentDTO, scopedContent.getConditions());
-			if (this.verifier.verify(context)) {
-				return this.scopedContentParser.parse(scopedContent);
+			final List<ScopedContentCondition> contentConditions = scopedContent.getConditions();
+			if (contentConditions.isEmpty()) {
+				foundContent.add(scopedContent);
+			} else {
+				for (final ScopedContentCondition contentCondition : contentConditions) {
+					if (this.verifier.verify(contentCondition, contentDto)) {
+						foundContent.add(scopedContent);
+					}
+				}
 			}
 		}
-		throw NoContentFoundException.prepare(contentDTO);
+		return foundContent;
+	}
+
+	private List<ContentItem<? extends Enum<?>>> verifyAndParseContentItems(final ScopedContent scopedContent, final ContentDto contentDto) throws NoContentParserFoundException {
+		final List<ScopedContentItem> contentItems = new ArrayList<ScopedContentItem>();
+		for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
+			for (final ScopedContentCondition  contentItemcondition : contentItem.getConditions()) {
+				if (this.verifier.verify(contentItemcondition, contentDto)) {
+					contentItems.add(contentItem);
+				}
+			}
+		}
+		return this.scopedContentParser.parse(contentItems);
 	}
 }
