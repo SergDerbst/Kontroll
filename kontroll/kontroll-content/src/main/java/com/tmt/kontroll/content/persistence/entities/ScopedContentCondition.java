@@ -13,11 +13,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
-public class ScopedContentCondition extends AbstractBaseEntity {
+public class ScopedContentCondition extends BaseEntity {
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_Small)
 	private String							name;

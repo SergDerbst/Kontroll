@@ -7,7 +7,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(User.class)
-public abstract class User_ extends com.tmt.kontroll.persistence.entities.AbstractBaseEntity_ {
+public abstract class User_ extends com.tmt.kontroll.persistence.entities.BaseEntity_ {
 
 	public static volatile SingularAttribute<User, Boolean> enabled;
 	public static volatile ListAttribute<User, Authority> authorities;

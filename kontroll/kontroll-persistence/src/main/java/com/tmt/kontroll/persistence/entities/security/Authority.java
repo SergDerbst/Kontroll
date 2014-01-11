@@ -8,7 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 /**
@@ -20,7 +20,7 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "unique_authority",
 																							columnNames = {"name"})})
-public class Authority extends AbstractBaseEntity {
+public class Authority extends BaseEntity {
 
 	@Column(length = DatabaseDefinitions.String_MediumSmall, nullable = false)
 	private String			name;

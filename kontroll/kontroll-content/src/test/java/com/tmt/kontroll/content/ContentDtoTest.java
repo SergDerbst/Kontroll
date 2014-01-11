@@ -9,8 +9,9 @@ import com.tmt.kontroll.test.ObjectDataTest;
 public class ContentDtoTest extends ObjectDataTest<ContentDto> {
 
 	public ContentDtoTest() {
-		super(new ContentDto(new HashSet<RequestContextItem>(), 
-                         new GlobalContextDto(){}, 
-                         "scopeName"));
+		super(new ContentDto(new HashSet<RequestContextItem>(),
+		                     new GlobalContextDto(){},
+		                     "requestContextPath",
+		"scopeName"));
 	}
 }

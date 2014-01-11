@@ -2,10 +2,25 @@ package com.tmt.kontroll.content.persistence.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
-import com.tmt.kontroll.persistence.daos.CrudDao;
+import com.tmt.kontroll.content.persistence.repositories.ScopedContentConditionRepository;
+import com.tmt.kontroll.persistence.daos.AbstractCrudDao;
 
-public interface ScopedContentConditionDaoService extends CrudDao<ScopedContentCondition, Integer> {
+@Service
+public class ScopedContentConditionDaoService extends AbstractCrudDao<ScopedContentConditionRepository, ScopedContentCondition, Integer> {
 
-	public List<ScopedContentCondition> findConditionsByScopeName(final String scopeName);
+	@Autowired
+	private ScopedContentConditionRepository	repository;
+
+	@Override
+	public ScopedContentConditionRepository getRepository() {
+		return this.repository;
+	}
+
+	public List<ScopedContentCondition> findConditionsByScopeName(final String scopeName) {
+		return null;
+	}
 }

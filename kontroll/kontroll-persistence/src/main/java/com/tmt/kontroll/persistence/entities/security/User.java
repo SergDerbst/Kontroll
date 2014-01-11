@@ -10,7 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 
 /**
  * Entity representing a user who can login and use the application.
@@ -21,7 +21,7 @@ import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "unique_user",
 																							columnNames = {"name"})})
-public class User extends AbstractBaseEntity {
+public class User extends BaseEntity {
 
 	@Column(nullable = false)
 	private String					name;

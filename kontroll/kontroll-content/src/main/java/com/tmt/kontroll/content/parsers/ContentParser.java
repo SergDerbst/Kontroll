@@ -1,5 +1,6 @@
 package com.tmt.kontroll.content.parsers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class ContentParser {
 	ContentParserProvider provider;
 
 	public List<ContentItem<? extends Enum<?>>> parse(final List<ScopedContentItem> items) throws NoContentParserFoundException {
-		return null;
+		final List<ContentItem<? extends Enum<?>>> parsed = new ArrayList<ContentItem<? extends Enum<?>>>();
+		for (final ScopedContentItem item : items) {
+			parsed.add(this.provider.provide(item));
+		}
+		return parsed;
 	}
 }

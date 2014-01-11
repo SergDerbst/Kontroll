@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
  * @author Serg Derbst
  */
 @MappedSuperclass
-public class AbstractBaseEntity {
+public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

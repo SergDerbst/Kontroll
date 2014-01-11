@@ -9,6 +9,10 @@
 	</parent>
 
 	<artifactId>kontroll-content</artifactId>
+	
+	<properties>
+		<entitiesDir>src/main/java/com/tmt/kontroll/content/persistence/entities</entitiesDir>
+	</properties>
 
 	<dependencies>
 		<!-- module annotations -->
@@ -33,4 +37,31 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- maven build helper plugin -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.7</version>
+					<executions>
+						<execution>
+							<id>add-source</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>add-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>${basedir}/target/generated-sources</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

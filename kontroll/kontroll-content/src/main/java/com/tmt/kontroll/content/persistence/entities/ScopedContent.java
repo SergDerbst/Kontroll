@@ -9,11 +9,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
-public class ScopedContent extends AbstractBaseEntity {
+public class ScopedContent extends BaseEntity {
 
 	@Column(nullable = false)
 	private String name;

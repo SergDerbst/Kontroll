@@ -80,7 +80,8 @@ public class ContentServiceTest {
 			this.add(ContentServiceTest.this.scopedContentConditionFalse);
 		}};
 
-		when(this.contentDto.getScopeName()).thenReturn("scopeName.scopedContentName");
+		when(this.contentDto.getScopeName()).thenReturn("scopeName");
+		when(this.contentDto.getRequestContextPath()).thenReturn("requestContextPath");
 		when(this.verifier.verify(this.scopedContentConditionTrue, this.contentDto)).thenReturn(true);
 		when(this.verifier.verify(this.scopedContentConditionFalse, this.contentDto)).thenReturn(false);
 	}
@@ -88,8 +89,8 @@ public class ContentServiceTest {
 	@Test
 	public void testThatLoadContentWorksForAllConditionsTrue() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(this.scope);
-		when(this.scopedContentDaoService.findByScopeAndName(any(Scope.class), any(String.class))).thenReturn(this.contentsReturnedByService);
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(this.scope);
+		when(this.scopedContentDaoService.findByScope(any(Scope.class))).thenReturn(this.contentsReturnedByService);
 		when(this.scopedContent.getConditions()).thenReturn(this.trueConditionsOfContent);
 		when(this.scopedContent.getScopedContentItems()).thenReturn(this.contentItems);
 		when(this.scopedContentItem.getConditions()).thenReturn(this.trueConditionsOfContent);
@@ -104,8 +105,8 @@ public class ContentServiceTest {
 	@Test
 	public void testThatLoadContentReturnsEmptyContentForAllContentConditionsTrueAndItemConditionsFalse() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(this.scope);
-		when(this.scopedContentDaoService.findByScopeAndName(any(Scope.class), any(String.class))).thenReturn(this.contentsReturnedByService);
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(this.scope);
+		when(this.scopedContentDaoService.findByScope(any(Scope.class))).thenReturn(this.contentsReturnedByService);
 		when(this.scopedContent.getConditions()).thenReturn(this.trueConditionsOfContent);
 		when(this.scopedContent.getScopedContentItems()).thenReturn(this.contentItems);
 		when(this.scopedContentItem.getConditions()).thenReturn(this.falseConditionsOfContent);
@@ -120,8 +121,8 @@ public class ContentServiceTest {
 	@Test
 	public void testThatLoadContentReturnsContentForAllContentWithoutAnyConditions() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(this.scope);
-		when(this.scopedContentDaoService.findByScopeAndName(any(Scope.class), any(String.class))).thenReturn(this.contentsReturnedByService);
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(this.scope);
+		when(this.scopedContentDaoService.findByScope(any(Scope.class))).thenReturn(this.contentsReturnedByService);
 		when(this.scopedContent.getConditions()).thenReturn(new ArrayList<ScopedContentCondition>());
 
 		//when
@@ -134,8 +135,8 @@ public class ContentServiceTest {
 	@Test
 	public void testThatLoadContentReturnsEmptyContentForAllContentConditionsTrueAndNoItems() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(this.scope);
-		when(this.scopedContentDaoService.findByScopeAndName(any(Scope.class), any(String.class))).thenReturn(this.contentsReturnedByService);
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(this.scope);
+		when(this.scopedContentDaoService.findByScope(any(Scope.class))).thenReturn(this.contentsReturnedByService);
 		when(this.scopedContent.getConditions()).thenReturn(this.trueConditionsOfContent);
 		when(this.scopedContent.getScopedContentItems()).thenReturn(new ArrayList<ScopedContentItem>());
 
@@ -149,8 +150,8 @@ public class ContentServiceTest {
 	@Test(expected = NoContentFoundException.class)
 	public void testThatLoadContentThrowsNoContentFoundExceptionWhenNoContentConditionAreTrue() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(this.scope);
-		when(this.scopedContentDaoService.findByScopeAndName(any(Scope.class), any(String.class))).thenReturn(this.contentsReturnedByService);
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(this.scope);
+		when(this.scopedContentDaoService.findByScope(any(Scope.class))).thenReturn(this.contentsReturnedByService);
 		when(this.scopedContent.getConditions()).thenReturn(this.falseConditionsOfContent);
 
 		//when
@@ -160,7 +161,7 @@ public class ContentServiceTest {
 	@Test(expected = NoScopeFoundException.class)
 	public void testThatLoadContentThrowsNoScopeFoundExceptionWhenNoScopeIsFound() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(null);
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(null);
 
 		//when
 		this.toTest.loadContent(this.contentDto);
@@ -170,8 +171,8 @@ public class ContentServiceTest {
 	@Test(expected = TooMuchContentFoundException.class)
 	public void testThatLoadContentThrowsTooMuchContentFoundExceptionWhenContentConditionAreTrueForMoreThanOneContent() throws Exception {
 		//given
-		when(this.scopeDaoService.findByName(any(String.class))).thenReturn(this.scope);
-		when(this.scopedContentDaoService.findByScopeAndName(any(Scope.class), any(String.class))).thenReturn(new ArrayList<ScopedContent>(){{
+		when(this.scopeDaoService.findByNameAndRequestContextPath(any(String.class), any(String.class))).thenReturn(this.scope);
+		when(this.scopedContentDaoService.findByScope(any(Scope.class))).thenReturn(new ArrayList<ScopedContent>(){{
 			this.add(ContentServiceTest.this.scopedContent);
 			this.add(ContentServiceTest.this.scopedContent);
 		}});

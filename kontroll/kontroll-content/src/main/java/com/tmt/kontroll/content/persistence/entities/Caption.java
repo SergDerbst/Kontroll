@@ -6,11 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "unique_locale", columnNames = { "identifier", "locale" }) })
-public class Caption extends AbstractBaseEntity {
+public class Caption extends BaseEntity {
 
 	private String identifier;
 	

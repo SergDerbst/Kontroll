@@ -10,12 +10,12 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "unique_key", columnNames = { "key", "className", "valuePath" }) })
-public class ScopedContentConditionAttribute extends AbstractBaseEntity {
+public class ScopedContentConditionAttribute extends BaseEntity {
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_Small)
 	private String						key;

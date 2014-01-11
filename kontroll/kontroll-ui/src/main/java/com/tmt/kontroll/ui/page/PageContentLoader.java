@@ -19,39 +19,44 @@ import com.tmt.kontroll.ui.page.layout.PageLayoutSegment;
 public class PageContentLoader {
 
 	@Autowired
-	GlobalContext globalContext; 
+	GlobalContext globalContext;
 
 	@Autowired
 	PageLayout pageLayout;
-	
+
 	@Autowired
 	PageContentManager pageContentManager;
-	
+
 	@Autowired
 	ContentService contentService;
-	
+
 	public void loadContent(final String patternString) throws ContentException {
 		this.loadContent(patternString, this.pageLayout.fetchHeader(patternString).getChildren());
 		this.loadContent(patternString, this.pageLayout.fetchBody(patternString).getChildren());
 		this.loadContent(patternString, this.pageLayout.fetchFooter(patternString).getChildren());
 	}
-	
+
 	private void loadContent(final String patternString, final List<PageLayoutSegment> segments) throws ContentException {
 		for (final PageLayoutSegment segment : segments) {
 			if (segment instanceof PageLayoutContent) {
 				@SuppressWarnings("serial")
+				final
 				Set<String> scopeNames = new HashSet<String>() {{
-					add(segment.getScopeName());
+					this.add(segment.getScopeName());
 				}};
 				this.loadContent(patternString, scopeNames);
 			}
 		}
 	}
-	
+
 	public void loadContent(final String requestContextPath, final Set<String> scopeNames) throws ContentException {
 		for (final String scopeName : scopeNames) {
-			PageLayoutContent pageLayoutContent = this.pageContentManager.fetchPageLayoutContent(requestContextPath, scopeName);
-			pageLayoutContent.setContent(this.contentService.loadContent(new ContentDto(this.globalContext.fetchRequestContext(requestContextPath), this.globalContext.getGlobalContextDto(), scopeName)));
+			final PageLayoutContent pageLayoutContent = this.pageContentManager.fetchPageLayoutContent(requestContextPath, scopeName);
+			pageLayoutContent.setContent(this.contentService.loadContent(this.createContentDto(requestContextPath, scopeName)));
 		}
+	}
+
+	private ContentDto createContentDto(final String requestContextPath, final String scopeName) {
+		return new ContentDto(this.globalContext.fetchRequestContext(requestContextPath), this.globalContext.getGlobalContextDto(), requestContextPath, scopeName);
 	}
 }

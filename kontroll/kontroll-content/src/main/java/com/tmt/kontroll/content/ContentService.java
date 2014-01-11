@@ -55,14 +55,13 @@ public class ContentService {
 	ContentParser scopedContentParser;
 
 	public List<ContentItem<? extends Enum<?>>> loadContent(final ContentDto contentDto) throws ContentException {
-		final String contentName = contentDto.getScopeName();
-		final String scopeName = contentName.split("\\.")[0];
-		final String scopedContentName = contentName.substring(scopeName.length());
-		final Scope scope = this.scopeDaoService.findByName(scopeName);
+		final String scopeName = contentDto.getScopeName();
+		final String requestContextPath = contentDto.getRequestContextPath();
+		final Scope scope = this.scopeDaoService.findByNameAndRequestContextPath(scopeName, requestContextPath);
 		if (scope == null) {
-			throw NoScopeFoundException.prepare(scopeName);
+			throw NoScopeFoundException.prepare(scopeName, requestContextPath);
 		}
-		final List<ScopedContent> scopedContents = this.scopedContentDaoService.findByScopeAndName(scope, scopedContentName);
+		final List<ScopedContent> scopedContents = this.scopedContentDaoService.findByScope(scope);
 		return this.verifyAndParseContent(scopedContents, contentDto);
 	}
 

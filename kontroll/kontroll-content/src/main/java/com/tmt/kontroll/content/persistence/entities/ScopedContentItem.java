@@ -9,11 +9,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 
 import com.tmt.kontroll.content.persistence.selections.ContentType;
-import com.tmt.kontroll.persistence.entities.AbstractBaseEntity;
+import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
-public class ScopedContentItem extends AbstractBaseEntity {
+public class ScopedContentItem extends BaseEntity {
 
 	@Column(columnDefinition = "varChar(12) default 'div'")
 	private String tagName;

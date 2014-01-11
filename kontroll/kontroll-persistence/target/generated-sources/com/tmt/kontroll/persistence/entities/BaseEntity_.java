@@ -6,11 +6,11 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
-@StaticMetamodel(AbstractBaseEntity.class)
-public abstract class AbstractBaseEntity_ {
+@StaticMetamodel(BaseEntity.class)
+public abstract class BaseEntity_ {
 
-	public static volatile SingularAttribute<AbstractBaseEntity, Integer> id;
-	public static volatile SingularAttribute<AbstractBaseEntity, Timestamp> timeStamp;
+	public static volatile SingularAttribute<BaseEntity, Integer> id;
+	public static volatile SingularAttribute<BaseEntity, Timestamp> timeStamp;
 
 }
 

@@ -14,8 +14,8 @@ public class ConditionQuerySpecifications {
 	public static Specification<ScopedContentCondition> specificationToFindConditionByScopeName(final String scopeName) {
 		return new Specification<ScopedContentCondition>() {
 			@Override
-			public Predicate toPredicate(Root<ScopedContentCondition> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return null;
+			public Predicate toPredicate(final Root<ScopedContentCondition> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) {
+				throw new RuntimeException("not implemented yet!!!");
 			}
 		};
 	}

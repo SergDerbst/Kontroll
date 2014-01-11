@@ -10,6 +10,5 @@ import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 
 public interface ScopedContentRepository extends JpaRepository<ScopedContent, Integer>, JpaSpecificationExecutor<ScopedContent> {
 
-	List<ScopedContent> findByScopeAndName(	Scope scope,
-																					String name);
+	List<ScopedContent> findByScope(	Scope scope);
 }
