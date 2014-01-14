@@ -12,6 +12,6 @@ import com.tmt.kontroll.persistence.config.Jsr303BeanValidationConfig;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(value = {"de.sd.tryout.persistence"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @Import(value = {JpaConfigTest.class, Jsr303BeanValidationConfig.class, GeneralContextConfig.class})
-public class PersistenceConfigTest {
+public class PersistenceTestConfig {
 
 }

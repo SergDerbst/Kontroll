@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>kontroll-content</artifactId>
-	
+
 	<properties>
 		<entitiesDir>src/main/java/com/tmt/kontroll/content/persistence/entities</entitiesDir>
 	</properties>
@@ -37,10 +37,27 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>com.mysema.maven</groupId>
+					<artifactId>apt-maven-plugin</artifactId>
+					<version>1.0.9</version>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>process</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>target/generated-sources</outputDirectory>
+								<processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 				<!-- maven build helper plugin -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>

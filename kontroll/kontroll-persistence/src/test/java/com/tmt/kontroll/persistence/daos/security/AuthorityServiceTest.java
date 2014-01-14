@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.tmt.kontroll.persistence.commons.config.PersistenceConfigTest;
+import com.tmt.kontroll.persistence.commons.config.PersistenceTestConfig;
 import com.tmt.kontroll.persistence.commons.utils.impl.SecurityTestUtils;
 import com.tmt.kontroll.persistence.daos.AbstractCrudServiceIntegerIdTest;
 import com.tmt.kontroll.persistence.entities.security.Authority;
@@ -16,7 +16,7 @@ import com.tmt.kontroll.persistence.entities.security.User;
 import com.tmt.kontroll.persistence.repositories.security.AuthorityRepository;
 
 @TransactionConfiguration(transactionManager = "transactionManager")
-@ContextConfiguration(classes = {PersistenceConfigTest.class})
+@ContextConfiguration(classes = {PersistenceTestConfig.class})
 public class AuthorityServiceTest extends AbstractCrudServiceIntegerIdTest<Authority, AuthorityRepository, AuthorityDao> {
 
 	private static final int	Number_Of_Extra_Initial_Entities	= 1;

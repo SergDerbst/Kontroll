@@ -1,4 +1,4 @@
-package com.tmt.kontroll.test;
+package com.tmt.kontroll.test.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

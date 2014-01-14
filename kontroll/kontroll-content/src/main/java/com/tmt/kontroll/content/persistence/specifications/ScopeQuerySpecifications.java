@@ -12,12 +12,13 @@ import com.tmt.kontroll.content.persistence.entities.Scope;
 public class ScopeQuerySpecifications {
 
 	public static Specification<Scope> byNameAndRequestContextPath(final String scopeName,
-	                                                                                       final String requestContextPath) {
+	                                                               final String requestContextPath) {
 		return new Specification<Scope>() {
 			@Override
 			public Predicate toPredicate(final Root<Scope> root,
 			                             final CriteriaQuery<?> query,
 			                             final CriteriaBuilder cb) {
+
 				throw new RuntimeException("not implemented yet!!!");
 			}
 		};

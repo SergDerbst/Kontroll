@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.tmt.kontroll.persistence.commons.config.PersistenceConfigTest;
+import com.tmt.kontroll.persistence.commons.config.PersistenceTestConfig;
 import com.tmt.kontroll.persistence.commons.utils.impl.SecurityTestUtils;
 import com.tmt.kontroll.persistence.daos.AbstractCrudServiceIntegerIdTest;
 import com.tmt.kontroll.persistence.entities.security.Authority;
@@ -15,7 +15,7 @@ import com.tmt.kontroll.persistence.entities.security.User;
 import com.tmt.kontroll.persistence.repositories.security.UserRepository;
 
 @TransactionConfiguration(transactionManager = "transactionManager")
-@ContextConfiguration(classes = { PersistenceConfigTest.class })
+@ContextConfiguration(classes = { PersistenceTestConfig.class })
 public class UserServiceTest extends
 		AbstractCrudServiceIntegerIdTest<User, UserRepository, UserDao> {
 

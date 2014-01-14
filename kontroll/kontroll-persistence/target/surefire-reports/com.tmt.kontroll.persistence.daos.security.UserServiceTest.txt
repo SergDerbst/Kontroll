@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.tmt.kontroll.persistence.daos.security.UserServiceTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 7, Time elapsed: 0.002 sec
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 7, Time elapsed: 0.02 sec
