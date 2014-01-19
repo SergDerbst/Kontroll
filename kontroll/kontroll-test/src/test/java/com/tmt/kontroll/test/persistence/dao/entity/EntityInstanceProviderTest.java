@@ -52,8 +52,8 @@ public class EntityInstanceProviderTest {
 
 	public static class TestEntityCollectionFields {
 		public List<String> listStringField;
-		public Set<String> setStringField;
-		public SortedSet<String> sortedSetStringField;
+		public Set<Locale> setLocaleField;
+		public SortedSet<Integer> sortedSetIntegerField;
 	}
 
 	@Autowired
@@ -135,14 +135,14 @@ public class EntityInstanceProviderTest {
 		assertEquals(1, provided.listStringField.size());
 		assertEquals("0", provided.listStringField.get(0));
 
-		assertNotNull(provided.setStringField);
-		assertFalse(provided.setStringField.isEmpty());
-		assertEquals(1, provided.setStringField.size());
-		assertTrue(provided.setStringField.contains("1"));
+		assertNotNull(provided.setLocaleField);
+		assertFalse(provided.setLocaleField.isEmpty());
+		assertEquals(1, provided.setLocaleField.size());
+		assertTrue(provided.setLocaleField.contains(Locale.GERMAN));
 
-		assertNotNull(provided.sortedSetStringField);
-		assertFalse(provided.sortedSetStringField.isEmpty());
-		assertEquals(1, provided.sortedSetStringField.size());
-		assertEquals("2", provided.sortedSetStringField.first());
+		assertNotNull(provided.sortedSetIntegerField);
+		assertFalse(provided.sortedSetIntegerField.isEmpty());
+		assertEquals(1, provided.sortedSetIntegerField.size());
+		assertEquals(new Integer(0), provided.sortedSetIntegerField.first());
 	}
 }
