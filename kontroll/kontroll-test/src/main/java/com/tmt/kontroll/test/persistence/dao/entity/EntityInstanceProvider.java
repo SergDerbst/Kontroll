@@ -6,12 +6,14 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.array.ArrayValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
 
 @Component
@@ -21,6 +23,8 @@ public class EntityInstanceProvider {
 	ArrayValueProvisionHandler arrayValueProvisionHandler;
 	@Autowired
 	CollectionValueProvisionHandler collectionValueProvisionHandler;
+	@Autowired
+	MapValueProvisionHandler mapValueProvisionHandler;
 	@Autowired
 	SimpleValueProvisionHandler simpleValueProvisionHandler;
 
@@ -42,8 +46,10 @@ public class EntityInstanceProvider {
 		final Class<?> fieldType = field.getType();
 		if (Collection.class.isAssignableFrom(fieldType)) {
 			field.set(entity, this.collectionValueProvisionHandler.provide(fieldName, fieldType, this.retrieveTypeArgumentsOfField(field, 0)));
-			//		} if (fieldType.isArray()) {
-			//			field.set(entity, this.arrayValueProvisionHandler.provide(fieldName, fieldType.getComponentType()));
+		} else if (Map.class.isAssignableFrom(fieldType)) {
+			field.set(entity, this.mapValueProvisionHandler.provide(fieldName, fieldType, this.retrieveTypeArgumentsOfField(field, 0), this.retrieveTypeArgumentsOfField(field, 1)));
+		} else if (fieldType.isArray()) {
+			field.set(entity, this.arrayValueProvisionHandler.provide(fieldName, fieldType.getComponentType()));
 		}
 		else {
 			field.set(entity, this.simpleValueProvisionHandler.provide(fieldName, fieldType));

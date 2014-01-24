@@ -7,9 +7,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
 
 import org.junit.Before;
@@ -28,6 +31,10 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @ContextConfiguration(classes = {TestConfig.class})
 public class EntityInstanceProviderTest {
 
+	public static enum TestEnum {
+		Bla, Blubb;
+	}
+
 	public static class TestEntitySimpleFields {
 		public boolean booleanField;
 		public byte byteField;
@@ -40,6 +47,7 @@ public class EntityInstanceProviderTest {
 		public short shortField;
 		public String stringField;
 		public Timestamp timestampField;
+		public TestEnum enumField;
 	}
 
 	public static class TestEntityStaticFinalFields {
@@ -54,6 +62,16 @@ public class EntityInstanceProviderTest {
 		public List<String> listStringField;
 		public Set<Locale> setLocaleField;
 		public SortedSet<Integer> sortedSetIntegerField;
+	}
+
+	public static class TestEntityMapFields {
+		public Map<String, Integer> mapField;
+		public SortedMap<Integer, String> sortedMapField;
+		public EnumMap<TestEnum, Double> enumMapField;
+	}
+
+	public static class TestEntityArrayFields {
+		public String[] stringArrayField;
 	}
 
 	@Autowired
@@ -92,6 +110,7 @@ public class EntityInstanceProviderTest {
 		assertEquals((short) 0, provided.shortField);
 		assertEquals("0", provided.stringField);
 		assertEquals(this.referenceTimestampValue + 1, provided.timestampField.getTime());
+		assertEquals(TestEnum.Bla, provided.enumField);
 	}
 
 	@Test
@@ -111,6 +130,7 @@ public class EntityInstanceProviderTest {
 		assertEquals((short) 0, provided.shortField);
 		assertEquals("0", provided.stringField);
 		assertEquals(this.referenceTimestampValue + 1, provided.timestampField.getTime());
+		assertEquals(TestEnum.Bla, provided.enumField);
 	}
 
 	@Test
@@ -128,6 +148,7 @@ public class EntityInstanceProviderTest {
 	public void testThatEntityIsProvidedWithCollectionValues() {
 		//when
 		final TestEntityCollectionFields provided = (TestEntityCollectionFields) this.toTest.provide(TestEntityCollectionFields.class);
+		//then
 		assertNotNull(provided);
 
 		assertNotNull(provided.listStringField);
@@ -144,5 +165,42 @@ public class EntityInstanceProviderTest {
 		assertFalse(provided.sortedSetIntegerField.isEmpty());
 		assertEquals(1, provided.sortedSetIntegerField.size());
 		assertEquals(new Integer(0), provided.sortedSetIntegerField.first());
+	}
+
+	@Test
+	public void testThatEntityIsProvidedWithMapValues() {
+		//when
+		final TestEntityMapFields provided = (TestEntityMapFields) this.toTest.provide(TestEntityMapFields.class);
+		//then
+		assertNotNull(provided);
+
+		assertNotNull(provided.enumMapField);
+		assertFalse(provided.enumMapField.isEmpty());
+		assertEquals(1, provided.enumMapField.size());
+		assertTrue(provided.enumMapField.keySet().contains(TestEnum.Bla));
+		assertTrue(provided.enumMapField.values().contains(0.0));
+
+		assertNotNull(provided.mapField);
+		assertFalse(provided.mapField.isEmpty());
+		assertEquals(1, provided.mapField.size());
+		assertTrue(provided.mapField.keySet().contains("0"));
+		assertTrue(provided.mapField.values().contains(0));
+
+		assertNotNull(provided.sortedMapField);
+		assertFalse(provided.sortedMapField.isEmpty());
+		assertEquals(1, provided.sortedMapField.size());
+		assertTrue(provided.sortedMapField.keySet().contains(1));
+		assertTrue(provided.sortedMapField.values().contains("1"));
+	}
+
+	@Test
+	public void testThatEntityIsProvidedWithArrayValues() {
+		//when
+		final TestEntityArrayFields provided = (TestEntityArrayFields) this.toTest.provide(TestEntityArrayFields.class);
+		//then
+		assertNotNull(provided);
+		assertNotNull(provided.stringArrayField);
+		assertEquals(1, provided.stringArrayField.length);
+		assertEquals("0", provided.stringArrayField[0]);
 	}
 }

@@ -32,14 +32,13 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> {
 		return this.nextProvider.canProvideValue(fieldName, collectionType, itemType);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object provide(final String fieldName, final Class<?> collectionType, final Class<?> itemType) {
 		if (this.isResponsible(fieldName, collectionType, itemType)) {
 			if (this.initialCollection == null) {
 				this.init(fieldName, collectionType, itemType);
 			}
 			final C toProvide = this.currentCollection;
-			this.increase((Class<? extends Collection<C>>) collectionType);
+			this.increase();
 			return toProvide;
 		}
 		if (this.nextProvider == null) {
@@ -49,7 +48,7 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void increase(final Class<? extends Collection<C>> collectionType) {
+	protected void increase() {
 		final C toIncrease = this.instantiateEmptyCollection();
 		final Iterator<? extends Object> iterator = this.currentCollection.iterator();
 		while(iterator.hasNext()) {
@@ -59,10 +58,9 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> {
 		this.currentCollection = toIncrease;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void increase(final int steps) {
 		for (int i = 0; i < steps; i++) {
-			this.increase((Class<? extends Collection<C>>) this.currentCollection.getClass());
+			this.increase();
 		}
 		if (this.nextProvider != null) {
 			this.nextProvider.increase(steps);

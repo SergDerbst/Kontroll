@@ -9,6 +9,7 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.ByteValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.CharacterValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.DoubleValueProvider;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.EnumValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.FloatValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.IntegerValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.LocaleValueProvider;
@@ -21,44 +22,49 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.
 public class SimpleValueProvisionHandler {
 
 	@Autowired
-	BooleanValueProvider booleanFieldValueProvider;
+	BooleanValueProvider booleanValueProvider;
 	@Autowired
-	ByteValueProvider byteFieldValueProvider;
+	ByteValueProvider byteValueProvider;
 	@Autowired
-	CharacterValueProvider characterFieldValueProvider;
+	CharacterValueProvider characterValueProvider;
 	@Autowired
-	DoubleValueProvider doubleFieldValueProvider;
+	DoubleValueProvider doubleValueProvider;
 	@Autowired
-	FloatValueProvider floatFieldValueProvider;
+	FloatValueProvider floatValueProvider;
 	@Autowired
-	IntegerValueProvider integerFieldValueProvider;
+	IntegerValueProvider integerValueProvider;
 	@Autowired
-	LongValueProvider longFieldValueProvider;
+	LongValueProvider longValueProvider;
 	@Autowired
-	ShortValueProvider shortFieldValueProvider;
+	ShortValueProvider shortValueProvider;
 	@Autowired
-	StringValueProvider stringFieldValueProvider;
+	StringValueProvider stringValueProvider;
+
 	@Autowired
-	TimestampValueProvider timestampFieldValueProvider;
+	EnumValueProvider enumValueProvider;
+
 	@Autowired
-	LocaleValueProvider localeFieldValueProvider;
+	TimestampValueProvider timestampValueProvider;
+	@Autowired
+	LocaleValueProvider localeValueProvider;
 
 	SimpleValueProvider<?> firstProvider;
 
 	@PostConstruct
 	public void setUpValueProvisionHandler() {
-		this.firstProvider = this.booleanFieldValueProvider;
-		this.booleanFieldValueProvider.setNextProvider(this.byteFieldValueProvider);
-		this.byteFieldValueProvider.setNextProvider(this.characterFieldValueProvider);
-		this.characterFieldValueProvider.setNextProvider(this.doubleFieldValueProvider);
-		this.doubleFieldValueProvider.setNextProvider(this.floatFieldValueProvider);
-		this.floatFieldValueProvider.setNextProvider(this.integerFieldValueProvider);
-		this.integerFieldValueProvider.setNextProvider(this.longFieldValueProvider);
-		this.longFieldValueProvider.setNextProvider(this.shortFieldValueProvider);
-		this.shortFieldValueProvider.setNextProvider(this.stringFieldValueProvider);
-		this.stringFieldValueProvider.setNextProvider(this.timestampFieldValueProvider);
-		this.timestampFieldValueProvider.setNextProvider(this.localeFieldValueProvider);
-		this.localeFieldValueProvider.setNextProvider(null);
+		this.firstProvider = this.booleanValueProvider;
+		this.booleanValueProvider.setNextProvider(this.byteValueProvider);
+		this.byteValueProvider.setNextProvider(this.characterValueProvider);
+		this.characterValueProvider.setNextProvider(this.doubleValueProvider);
+		this.doubleValueProvider.setNextProvider(this.floatValueProvider);
+		this.floatValueProvider.setNextProvider(this.integerValueProvider);
+		this.integerValueProvider.setNextProvider(this.longValueProvider);
+		this.longValueProvider.setNextProvider(this.shortValueProvider);
+		this.shortValueProvider.setNextProvider(this.stringValueProvider);
+		this.stringValueProvider.setNextProvider(this.enumValueProvider);
+		this.enumValueProvider.setNextProvider(this.timestampValueProvider);
+		this.timestampValueProvider.setNextProvider(this.localeValueProvider);
+		this.localeValueProvider.setNextProvider(null);
 	}
 
 	public Object provide(final Class<?> valueType) {
