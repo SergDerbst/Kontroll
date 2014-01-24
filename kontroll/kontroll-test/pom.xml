@@ -21,6 +21,11 @@
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+		</dependency>
 		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>

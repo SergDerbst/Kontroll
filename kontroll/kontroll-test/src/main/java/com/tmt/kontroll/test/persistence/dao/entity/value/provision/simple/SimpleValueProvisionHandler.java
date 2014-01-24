@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity.EntityValueProviderFactory;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.BooleanValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.ByteValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.CharacterValueProvider;
@@ -20,6 +21,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.
 
 @Component
 public class SimpleValueProvisionHandler {
+
+	@Autowired
+	EntityValueProviderFactory entityValueProviderFactory;
 
 	@Autowired
 	BooleanValueProvider booleanValueProvider;
@@ -52,7 +56,8 @@ public class SimpleValueProvisionHandler {
 
 	@PostConstruct
 	public void setUpValueProvisionHandler() {
-		this.firstProvider = this.booleanValueProvider;
+		this.firstProvider = this.entityValueProviderFactory.create();
+		this.firstProvider.setNextProvider(this.booleanValueProvider);
 		this.booleanValueProvider.setNextProvider(this.byteValueProvider);
 		this.byteValueProvider.setNextProvider(this.characterValueProvider);
 		this.characterValueProvider.setNextProvider(this.doubleValueProvider);
