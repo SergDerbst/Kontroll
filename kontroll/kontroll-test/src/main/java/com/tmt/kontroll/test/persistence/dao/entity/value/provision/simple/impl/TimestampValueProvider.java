@@ -14,12 +14,12 @@ public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Timestamp.class.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Timestamp.class.equals(valueType);
 	}
 
 	@Override
-	public Timestamp makeNextValue(final Timestamp value) {
+	public Timestamp makeNextDefaultValue(final Timestamp value) {
 		return new Timestamp(value.getTime() + 1);
 	}
 }

@@ -12,12 +12,12 @@ public class BooleanValueProvider extends SimpleValueProvider<Boolean> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Boolean.class.equals(valueClass) || Boolean.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Boolean.class.equals(valueType) || Boolean.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Boolean makeNextValue(final Boolean value) {
+	public Boolean makeNextDefaultValue(final Boolean value) {
 		return !value;
 	}
 }

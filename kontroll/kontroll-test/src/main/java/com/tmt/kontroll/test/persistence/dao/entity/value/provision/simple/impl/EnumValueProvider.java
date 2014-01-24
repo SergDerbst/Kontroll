@@ -12,9 +12,8 @@ public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueType) {
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
 		if (Enum.class.isAssignableFrom(valueType)) {
-			//ugly shit, but a lot less ugly than creating a whole new provider type just for enums
 			if (super.getInitialValue() == null) {
 				super.init((Enum<?>) valueType.getEnumConstants()[0]);
 			}
@@ -24,7 +23,7 @@ public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 	}
 
 	@Override
-	protected Enum<?> makeNextValue(final Enum<?> value) {
+	protected Enum<?> makeNextDefaultValue(final Enum<?> value) {
 		return this.getEnumValueFromOrdinal(this.getOrdinalFromEnumValue(value) + 1, value);
 	}
 

@@ -12,12 +12,12 @@ public class StringValueProvider extends SimpleValueProvider<String> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return String.class.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return String.class.equals(valueType);
 	}
 
 	@Override
-	public String makeNextValue(final String value) {
+	public String makeNextDefaultValue(final String value) {
 		return String.valueOf(Integer.parseInt(value) + 1);
 	}
 }

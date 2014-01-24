@@ -14,8 +14,11 @@ public class EnumMapValueProvider<K extends Enum<K>, V> extends DefaultMapValueP
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
-		return EnumMap.class.isAssignableFrom(mapType) && super.isResponsible(fieldName, mapType, keyType, valueType);
+	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+		return
+		types.length == 3 &&
+		EnumMap.class.isAssignableFrom(types[0]) &&
+		super.claimDefaultResponsibility(fieldName, types);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})

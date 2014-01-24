@@ -12,12 +12,12 @@ public class ByteValueProvider extends SimpleValueProvider<Byte> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Byte.class.equals(valueClass) || Byte.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Byte.class.equals(valueType) || Byte.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Byte makeNextValue(final Byte value) {
+	public Byte makeNextDefaultValue(final Byte value) {
 		return Byte.parseByte(String.valueOf(Integer.parseInt(String.valueOf(value)) + 1));
 	}
 }

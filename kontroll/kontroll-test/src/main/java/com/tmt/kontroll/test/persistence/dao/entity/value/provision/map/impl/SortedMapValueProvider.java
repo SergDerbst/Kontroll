@@ -14,8 +14,11 @@ public class SortedMapValueProvider<K, V> extends DefaultMapValueProvider<K, V> 
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
-		return SortedMap.class.isAssignableFrom(mapType) && super.isResponsible(fieldName, mapType, keyType, valueType);
+	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+		return
+		types.length == 3 &&
+		SortedMap.class.isAssignableFrom(types[0]) &&
+		super.claimDefaultResponsibility(fieldName, types);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})

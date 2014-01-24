@@ -3,10 +3,11 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProviderNotFoundException;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
 
-public abstract class MapValueProvider<K, V, M extends Map<K, V>> {
+public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueProvider<M> {
 
 	private M initialMap;
 	private M currentMap;
@@ -18,42 +19,36 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> {
 		this.simpleValueProvisionHandler = simpleValueProvisionHandler;
 	}
 
-	protected abstract boolean isResponsible(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType);
-
 	protected abstract M instantiateEmptyMap();
 
-	public boolean canProvideValue(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
-		if (this.isResponsible(fieldName, mapType, keyType, valueType)) {
-			return true;
-		}
-		if (this.nextProvider == null) {
-			return false;
-		}
-		return this.nextProvider.canProvideValue(fieldName, mapType, keyType, valueType);
-	}
-
-	public Object provide(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
-		if (this.isResponsible(fieldName, mapType, keyType, valueType)) {
+	@Override
+	public Object provide(final String fieldName, final Class<?>... types) {
+		if (super.claimResponsibility(fieldName, types)) {
 			if (this.initialMap == null) {
-				this.init(fieldName, mapType, keyType, valueType);
+				this.init(fieldName, types[0], types[1], types[2]);
 			}
 			final M toProvide = this.currentMap;
 			this.increase();
 			return toProvide;
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, mapType, keyType, valueType);
+			throw ValueProviderNotFoundException.prepare(fieldName, types);
 		}
-		return this.nextProvider.provide(fieldName, mapType, keyType, valueType);
+		return this.nextProvider.provide(fieldName, types);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void increase() {
+		this.currentMap = super.makeNextValue(this.currentMap);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected M makeNextDefaultValue(final M value) {
 		final M toIncrease = this.instantiateEmptyMap();
 		for (final Entry<K, V> entry : this.currentMap.entrySet()) {
 			toIncrease.put((K) this.simpleValueProvisionHandler.fetchNextValue(entry.getKey()), (V) this.simpleValueProvisionHandler.fetchNextValue(entry.getValue()));
 		}
-		this.currentMap = toIncrease;
+		return toIncrease;
 	}
 
 	public void increase(final int steps) {
@@ -66,17 +61,17 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void init(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
-		if (this.isResponsible(fieldName, mapType, keyType, valueType)) {
+	public void init(final String fieldName, final Class<?>... types) {
+		if (super.claimResponsibility(fieldName, types)) {
 			this.initialMap = this.instantiateEmptyMap();
-			this.initialMap.put((K) this.simpleValueProvisionHandler.provide(keyType), (V) this.simpleValueProvisionHandler.provide(fieldName, valueType));
+			this.initialMap.put((K) this.simpleValueProvisionHandler.provide(types[1]), (V) this.simpleValueProvisionHandler.provide(fieldName, types[2]));
 			this.reset();
 			return;
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, mapType, keyType, valueType);
+			throw ValueProviderNotFoundException.prepare(fieldName, types);
 		}
-		this.nextProvider.init(fieldName, mapType, keyType, valueType);
+		this.nextProvider.init(fieldName, types);
 	}
 
 	public void reset() {

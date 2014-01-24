@@ -1,95 +1,55 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProviderNotFoundException;
 
-public abstract class SimpleValueProvider<V> {
-
-	private V initialValue;
-	private V currentValue;
-	private SimpleValueProvider<?> nextProvider;
+public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 
 	protected SimpleValueProvider(final V initialValue) {
-		this.init(initialValue);
+		this.init(super.getInstantiator() != null ? super.getInstantiator().instantiate() : initialValue);
 	}
 
-	protected abstract boolean isResponsible(final String fieldName, final Class<?> valueType);
+	protected abstract boolean claimSimpleValueResponsibility(final Class<?> valueType);
 
-	protected abstract V makeNextValue(final V value);
+	@Override
+	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+		return types.length == 1 && this.claimSimpleValueResponsibility(types[0]);
+	}
 
-	public Object provide(final String fieldName, final Class<?> valueType) {
-		if (this.isResponsible(fieldName, valueType)) {
-			final V toProvide = this.currentValue;
+	@Override
+	public Object provide(final String fieldName, final Class<?>... types) {
+		if (this.claimResponsibility(fieldName, types)) {
+			final V toProvide = super.getCurrentValue();
 			this.increase();
 			return toProvide;
 		}
-		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, valueType);
+		if (super.getNextProvider() == null) {
+			throw ValueProviderNotFoundException.prepare(fieldName, types);
 		}
-		return this.nextProvider.provide(fieldName, valueType);
+		return super.getNextProvider().provide(fieldName, types);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Object fetchNextValue(final String fieldName, final Object value) {
-		if (this.isResponsible(fieldName, value.getClass())) {
+		if (this.claimResponsibility(fieldName, value.getClass())) {
 			return this.makeNextValue((V) value);
 		}
-		if (this.nextProvider == null) {
+		if (super.getNextProvider() == null) {
 			throw ValueProviderNotFoundException.prepare(fieldName, value.getClass());
 		}
-		return this.nextProvider.fetchNextValue(fieldName, value);
-	}
-
-	public void increase(final int steps) {
-		for (int i = 0; i < steps; i++) {
-			this.increase();
-		}
-		if (this.nextProvider != null) {
-			this.nextProvider.increase(steps);
-		}
-	}
-
-	protected void increase() {
-		this.setCurrentValue(this.makeNextValue(this.getCurrentValue()));
-	}
-
-	protected void init(final V value) {
-		this.initialValue = value;
-		this.setCurrentValue(value);
+		return ((SimpleValueProvider<?>) super.getNextProvider()).fetchNextValue(fieldName, value);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void init(final String fieldName, final Object value) {
-		if (this.isResponsible(fieldName, value.getClass())) {
-			this.initialValue = (V) value;
+		if (this.claimResponsibility(fieldName, value.getClass())) {
+			super.setInitialValue((V) value);
 			this.reset();
 			return;
 		}
-		if (this.nextProvider == null) {
+		if (super.getNextProvider() == null) {
 			throw ValueProviderNotFoundException.prepare(fieldName, value.getClass());
 		}
-		this.nextProvider.init(fieldName, value);
-	}
-
-	public void reset() {
-		this.currentValue = this.initialValue;
-		if (this.nextProvider != null) {
-			this.nextProvider.reset();
-		}
-	}
-
-	protected V getInitialValue() {
-		return this.initialValue;
-	}
-
-	protected V getCurrentValue() {
-		return this.currentValue;
-	}
-
-	protected void setCurrentValue(final V currentValue) {
-		this.currentValue = currentValue;
-	}
-
-	public void setNextProvider(final SimpleValueProvider<?> nextProvider) {
-		this.nextProvider = nextProvider;
+		((SimpleValueProvider<?>) super.getNextProvider()).init(fieldName, value);
 	}
 }

@@ -12,12 +12,12 @@ public class CharacterValueProvider extends SimpleValueProvider<Character> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Character.class.equals(valueClass) || Character.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Character.class.equals(valueType) || Character.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Character makeNextValue(final Character value) {
+	public Character makeNextDefaultValue(final Character value) {
 		return this.combineValue(value, "1".charAt(0));
 	}
 

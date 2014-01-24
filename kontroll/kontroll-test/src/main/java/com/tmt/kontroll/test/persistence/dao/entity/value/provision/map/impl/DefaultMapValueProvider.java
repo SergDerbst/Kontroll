@@ -20,8 +20,12 @@ public class DefaultMapValueProvider<K, V> extends MapValueProvider<K, V, Map<K,
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
-		return Map.class.isAssignableFrom(mapType) && this.keyType.equals(keyType) && this.valueType.equals(valueType);
+	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+		return
+		types.length == 3 &&
+		Map.class.isAssignableFrom(types[0]) &&
+		this.keyType.equals(types[1]) &&
+		this.valueType.equals(types[2]);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})

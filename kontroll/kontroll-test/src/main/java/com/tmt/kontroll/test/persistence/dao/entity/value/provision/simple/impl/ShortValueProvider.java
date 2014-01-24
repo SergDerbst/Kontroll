@@ -12,12 +12,12 @@ public class ShortValueProvider extends SimpleValueProvider<Short> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Short.class.equals(valueClass) || Short.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Short.class.equals(valueType) || Short.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Short makeNextValue(final Short value) {
+	public Short makeNextDefaultValue(final Short value) {
 		return (short) (value + 1);
 	}
 }

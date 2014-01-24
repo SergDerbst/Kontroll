@@ -12,12 +12,12 @@ public class DoubleValueProvider extends SimpleValueProvider<Double> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Double.class.equals(valueClass) || Double.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Double.class.equals(valueType) || Double.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Double makeNextValue(final Double value) {
+	public Double makeNextDefaultValue(final Double value) {
 		return value + 1;
 	}
 }

@@ -17,7 +17,7 @@ public class EntityValueProvider<E> extends SimpleValueProvider<E> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueType) {
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
 		if (this.entityIdentifier.identify(valueType)) {
 			if (super.getInitialValue() == null) {
 				super.init((E) this.instanceProvider.provide(valueType));
@@ -29,7 +29,7 @@ public class EntityValueProvider<E> extends SimpleValueProvider<E> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected E makeNextValue(final E value) {
+	protected E makeNextDefaultValue(final E value) {
 		return (E) this.instanceProvider.provide(value.getClass());
 	}
 }

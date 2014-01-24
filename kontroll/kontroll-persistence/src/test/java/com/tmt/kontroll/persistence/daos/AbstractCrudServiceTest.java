@@ -22,10 +22,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author Serg Derbst
  */
-public abstract class AbstractCrudServiceTest<ENTITY extends Object,
-																							REPO extends JpaRepository<ENTITY, ID>,
-																							ID extends Serializable,
- S extends CrudDao<ENTITY, ID>> {
+public abstract class AbstractCrudServiceTest<ENTITY extends Object, REPO extends JpaRepository<ENTITY, ID>, ID extends Serializable, S extends CrudDao<ENTITY, ID>> {
 
 	/**
 	 * The number of entities of this type that are not being used for actual tests
@@ -107,6 +104,6 @@ public abstract class AbstractCrudServiceTest<ENTITY extends Object,
 		assertNotNull(e);
 		assertFalse(e.isEmpty());
 		assertEquals(entitiesToSave.get(0).getClass(), e.get(0).getClass());
-		assertEquals(new Long(this.getNumberOfInitialEntities() + this.numberOfExtraInitialEntities + getEntitiesToSave().size()), new Long(this.getDaoService().count()));
+		assertEquals(new Long(this.getNumberOfInitialEntities() + this.numberOfExtraInitialEntities + this.getEntitiesToSave().size()), new Long(this.getDaoService().count()));
 	}
 }

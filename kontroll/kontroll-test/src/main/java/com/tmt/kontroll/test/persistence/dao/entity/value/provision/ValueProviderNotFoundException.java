@@ -7,7 +7,6 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 
 	private enum ContextValueLabel {
 		SimpleValueProviderValueType(1,0,"value type"),
-		ArrayValueProviderComponentType(1,0,"component type"),
 		CollectionValueProviderCollectionType(2,0,"collection type"),
 		CollectionValueProviderItemType(2,1,"item type"),
 		MapValueProviderMapType(3,0,"map type"),
@@ -51,22 +50,6 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		for (int i = 0; i < typeArgs.length; i++) {
 			final String typeArg = typeArgs[i] == null ? null : typeArgs[i].getName();
 			exception.addContextValue(ContextValueLabel.byNumbers(typeArgs.length, i).value(), typeArg);
-		}
-		return (ValueProviderNotFoundException) exception;
-	}
-
-	public static ValueProviderNotFoundException prepare(final Object... valueArgs) {
-		return prepare(null, valueArgs);
-	}
-
-	public static ValueProviderNotFoundException prepare(final String fieldName, final Object... valueArgs) {
-		final ContextedRuntimeException exception = new ValueProviderNotFoundException();
-		if (fieldName != null && !fieldName.isEmpty()) {
-			exception.addContextValue("field name", fieldName);
-		}
-		for (int i = 0; i < valueArgs.length; i++) {
-			final String valueArg = valueArgs[i] == null ? null : valueArgs[i].getClass().getName();
-			exception.addContextValue(ContextValueLabel.byNumbers(valueArgs.length, i).value(), valueArg);
 		}
 		return (ValueProviderNotFoundException) exception;
 	}

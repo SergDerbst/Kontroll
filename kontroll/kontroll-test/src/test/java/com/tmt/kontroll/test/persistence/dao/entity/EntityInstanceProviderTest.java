@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import javax.persistence.Entity;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +37,7 @@ public class EntityInstanceProviderTest {
 		Bla, Blubb;
 	}
 
+	@Entity
 	public static class TestEntitySimpleFields {
 		public boolean booleanField;
 		public byte byteField;
@@ -72,6 +75,11 @@ public class EntityInstanceProviderTest {
 
 	public static class TestEntityArrayFields {
 		public String[] stringArrayField;
+	}
+
+	public static class TestEntityEntityFields {
+		public TestEntitySimpleFields entityField;
+		public List<TestEntitySimpleFields> entityListField;
 	}
 
 	@Autowired
@@ -202,5 +210,42 @@ public class EntityInstanceProviderTest {
 		assertNotNull(provided.stringArrayField);
 		assertEquals(1, provided.stringArrayField.length);
 		assertEquals("0", provided.stringArrayField[0]);
+	}
+
+	@Test
+	public void testThatEntityIsProvidedWithEntityValues() {
+		//when
+		final TestEntityEntityFields provided = (TestEntityEntityFields) this.toTest.provide(TestEntityEntityFields.class);
+		//then
+		assertNotNull(provided);
+
+		assertNotNull(provided.entityField);
+		assertEquals(false, provided.entityField.booleanField);
+		assertEquals(Byte.parseByte("0"), provided.entityField.byteField);
+		assertEquals("0".charAt(0), provided.entityField.characterField);
+		assertEquals(new  Double(0.0), (Double) provided.entityField.doubleField);
+		assertEquals(new Float((float) 0.0), (Float) provided.entityField.floatField);
+		assertEquals(0, provided.entityField.integerField);
+		assertEquals(0, provided.entityField.longField);
+		assertEquals(Locale.GERMAN, provided.entityField.localeField);
+		assertEquals((short) 0, provided.entityField.shortField);
+		assertEquals("0", provided.entityField.stringField);
+		assertEquals(this.referenceTimestampValue + 1, provided.entityField.timestampField.getTime());
+		assertEquals(TestEnum.Bla, provided.entityField.enumField);
+
+		assertNotNull(provided.entityListField);
+		assertEquals(1, provided.entityListField.size());
+		assertEquals(true, provided.entityListField.get(0).booleanField);
+		assertEquals(Byte.parseByte("1"), provided.entityListField.get(0).byteField);
+		assertEquals("1".charAt(0), provided.entityListField.get(0).characterField);
+		assertEquals(new  Double(1.0), (Double) provided.entityListField.get(0).doubleField);
+		assertEquals(new Float((float) 1.0), (Float) provided.entityListField.get(0).floatField);
+		assertEquals(1, provided.entityListField.get(0).integerField);
+		assertEquals(1, provided.entityListField.get(0).longField);
+		assertEquals(Locale.GERMANY, provided.entityListField.get(0).localeField);
+		assertEquals((short) 1, provided.entityListField.get(0).shortField);
+		assertEquals("1", provided.entityListField.get(0).stringField);
+		assertEquals(this.referenceTimestampValue + 2, provided.entityListField.get(0).timestampField.getTime());
+		assertEquals(TestEnum.Blubb, provided.entityListField.get(0).enumField);
 	}
 }

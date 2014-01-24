@@ -22,12 +22,12 @@ public class LocaleValueProvider extends SimpleValueProvider<Locale> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Locale.class.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Locale.class.equals(valueType);
 	}
 
 	@Override
-	public Locale makeNextValue(final Locale value) {
+	public Locale makeNextDefaultValue(final Locale value) {
 		return this.getLocaleByIndex(this.getIndexOfLocale(value) + 1);
 	}
 

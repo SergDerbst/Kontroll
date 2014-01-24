@@ -12,12 +12,12 @@ public class LongValueProvider extends SimpleValueProvider<Long> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Long.class.equals(valueClass) || Long.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Long.class.equals(valueType) || Long.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Long makeNextValue(final Long value) {
+	public Long makeNextDefaultValue(final Long value) {
 		return value + 1;
 	}
 }

@@ -12,12 +12,12 @@ public class FloatValueProvider extends SimpleValueProvider<Float> {
 	}
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> valueClass) {
-		return Float.class.equals(valueClass) || Float.TYPE.equals(valueClass);
+	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+		return Float.class.equals(valueType) || Float.TYPE.equals(valueType);
 	}
 
 	@Override
-	public Float makeNextValue(final Float value) {
+	public Float makeNextDefaultValue(final Float value) {
 		return value + 1;
 	}
 }
