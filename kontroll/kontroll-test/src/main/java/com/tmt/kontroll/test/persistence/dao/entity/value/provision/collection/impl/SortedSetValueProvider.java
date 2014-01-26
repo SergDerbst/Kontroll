@@ -3,26 +3,21 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.springframework.stereotype.Component;
+
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
 
-public class SortedSetValueProvider<V> extends CollectionValueProvider<V, SortedSet<V>> {
-
-	private final Class<V> valueType;
-
-	public SortedSetValueProvider(final Class<V> valueType, final SimpleValueProvisionHandler simpleValueProvisionHandler) {
-		super(simpleValueProvisionHandler);
-		this.valueType = valueType;
-	}
+@Component
+public class SortedSetValueProvider extends CollectionValueProvider<Object, SortedSet<Object>> {
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> collectionType, final Class<?> itemType) {
-		return SortedSet.class.isAssignableFrom(collectionType) && this.valueType.equals(itemType);
+	protected boolean claimCollectionValueResponsibility(final Class<?> collectionType, final Class<?> itemType) {
+		return SortedSet.class.isAssignableFrom(collectionType);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings({"rawtypes"})
 	@Override
-	protected SortedSet<V> instantiateEmptyCollection() {
+	protected SortedSet instantiateEmptyCollection() {
 		return new TreeSet();
 	}
 }

@@ -3,23 +3,22 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.array;
 import java.lang.reflect.Array;
 
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProviderNotFoundException;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
 public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 
 	private final Class<C> componentType;
-	private final SimpleValueProvisionHandler simpleValueProvisionHandler;
+	private final ValueProvisionHandler valueProvisionHandler;
 
 	public ArrayValueProvider(final Class<C> componentType,
-	                          final SimpleValueProvisionHandler simpleValueProvisionHandler) {
+	                          final ValueProvisionHandler valueProvisionHandler) {
 		this.componentType = componentType;
-		this.simpleValueProvisionHandler = simpleValueProvisionHandler;
+		this.valueProvisionHandler = valueProvisionHandler;
 	}
 
 	@Override
 	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
-		return this.componentType.equals(types[0]);
+		return types[0].isArray() && this.componentType.equals(types[1]);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -27,7 +26,7 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	protected C[] makeNextDefaultValue(final C[] value) {
 		final C[] toIncrease = this.instantiateEmptyArray();
 		for (int i = 0; i < super.getCurrentValue().length; i++) {
-			toIncrease[i] = (C) this.simpleValueProvisionHandler.fetchNextValue(super.getCurrentValue()[i]);
+			toIncrease[i] = (C) this.valueProvisionHandler.fetchNextValue(super.getCurrentValue()[i]);
 		}
 		return toIncrease;
 	}
@@ -37,33 +36,11 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 		return (C[]) Array.newInstance(this.componentType, 1);
 	}
 
-	@Override
-	public Object provide(final String fieldName, final Class<?>... types) {
-		if (super.claimResponsibility(fieldName, types)) {
-			if (super.getInitialValue() == null) {
-				this.init(fieldName, types[0]);
-			}
-			final C[] toProvide = super.getCurrentValue();
-			this.increase();
-			return toProvide;
-		}
-		if (super.getNextProvider() == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, Array.class, types[0]);
-		}
-		return super.getNextProvider().provide(fieldName, types);
-	}
-
 	@SuppressWarnings("unchecked")
-	public void init(final String fieldName, final Class<?>... types) {
-		if (super.claimResponsibility(fieldName, types)) {
-			super.setInitialValue(this.instantiateEmptyArray());
-			super.getInitialValue()[0] = (C) this.simpleValueProvisionHandler.provide(fieldName, types[0]);
-			this.reset();
-			return;
-		}
-		if (super.getNextProvider() == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, Array.class, types[0]);
-		}
-		((ArrayValueProvider<?>) super.getNextProvider()).init(fieldName, types);
+	@Override
+	protected C[] instantiateDefaultValue(final Class<?>... types) {
+		final C[] array = this.instantiateEmptyArray();
+		array[0] = (C) this.valueProvisionHandler.provide(types[1]);
+		return array;
 	}
 }

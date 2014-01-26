@@ -3,27 +3,21 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.impl;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
+import org.springframework.stereotype.Component;
 
-public class SortedMapValueProvider<K, V> extends DefaultMapValueProvider<K, V> {
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvider;
 
-	public SortedMapValueProvider(final Class<K> keyType,
-	                              final Class<V> valueType,
-	                              final SimpleValueProvisionHandler simpleValueProvisionHandler) {
-		super(keyType, valueType, simpleValueProvisionHandler);
-	}
+@Component
+public class SortedMapValueProvider extends MapValueProvider<Object, Object, SortedMap<Object, Object>> {
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
-		return
-		types.length == 3 &&
-		SortedMap.class.isAssignableFrom(types[0]) &&
-		super.claimDefaultResponsibility(fieldName, types);
+	protected boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
+		return SortedMap.class.isAssignableFrom(mapType);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes"})
 	@Override
-	protected SortedMap<K, V> instantiateEmptyMap() {
+	protected SortedMap instantiateEmptyMap() {
 		return new TreeMap();
 	}
 }

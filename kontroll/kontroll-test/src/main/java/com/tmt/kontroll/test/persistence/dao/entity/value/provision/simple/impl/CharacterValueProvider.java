@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class CharacterValueProvider extends SimpleValueProvider<Character> {
 
-	public CharacterValueProvider() {
-		super("0".charAt(0));
+	@Override
+	protected Character instantiateDefaultValue(final Class<?>... types) {
+		return "0".charAt(0);
 	}
 
 	@Override

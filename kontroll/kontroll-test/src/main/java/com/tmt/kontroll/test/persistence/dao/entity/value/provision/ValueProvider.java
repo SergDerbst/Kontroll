@@ -14,9 +14,9 @@ public abstract class ValueProvider<V> {
 	private V currentValue;
 	private ValueProvider<?> nextProvider;
 
-	public abstract Object provide(final String fieldName, final Class<?>... types);
-
 	protected abstract boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types);
+
+	protected abstract V instantiateDefaultValue(final Class<?>... types);
 
 	protected abstract V makeNextDefaultValue(final V value);
 
@@ -30,6 +30,33 @@ public abstract class ValueProvider<V> {
 		return this.nextProvider.canProvideValue(fieldName, types);
 	}
 
+	public Object provide(final String fieldName, final Class<?>... types) {
+		if (this.claimResponsibility(fieldName, types)) {
+			if (this.initialValue == null) {
+				this.init(fieldName, types);
+			}
+			final V toProvide = this.currentValue;
+			this.increase();
+			return toProvide;
+		}
+		if (this.nextProvider == null) {
+			throw ValueProviderNotFoundException.prepare(fieldName, types);
+		}
+		return this.nextProvider.provide(fieldName, types);
+	}
+
+	public void init(final String fieldName, final Class<?>... types) {
+		if (this.claimResponsibility(fieldName, types)) {
+			this.initialValue = this.instantiator != null ? this.instantiator.instantiate() : this.instantiateDefaultValue(types);
+			this.currentValue = this.initialValue;
+			return;
+		}
+		if (this.nextProvider == null) {
+			throw ValueProviderNotFoundException.prepare(fieldName, types);
+		}
+		this.nextProvider.init(fieldName, types);
+	}
+
 	protected void init(final V value) {
 		this.initialValue = value;
 		this.setCurrentValue(value);
@@ -39,7 +66,22 @@ public abstract class ValueProvider<V> {
 		if (this.responsibilityClaimer != null) {
 			return this.responsibilityClaimer.claimResponsibility(fieldName, types);
 		}
-		return this.claimDefaultResponsibility(fieldName, types[0]);
+		return this.claimDefaultResponsibility(fieldName, types);
+	}
+
+	protected void increase() {
+		this.setCurrentValue(this.makeNextValue(this.getCurrentValue()));
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object fetchNextValue(final String fieldName, final Object value) {
+		if (this.claimResponsibility(fieldName, value.getClass())) {
+			return this.makeNextValue((V) value);
+		}
+		if (this.nextProvider == null) {
+			throw ValueProviderNotFoundException.prepare(fieldName, value);
+		}
+		return this.nextProvider.fetchNextValue(fieldName, value);
 	}
 
 	protected V makeNextValue(final V value) {
@@ -49,21 +91,9 @@ public abstract class ValueProvider<V> {
 		return this.makeNextDefaultValue(value);
 	}
 
-	public void increase(final int steps) {
-		for (int i = 0; i < steps; i++) {
-			this.increase();
-		}
-		if (this.getNextProvider() != null) {
-			this.getNextProvider().increase(steps);
-		}
-	}
-
-	protected void increase() {
-		this.setCurrentValue(this.makeNextValue(this.getCurrentValue()));
-	}
-
 	public void reset() {
-		this.currentValue = this.initialValue;
+		this.currentValue = null;
+		this.initialValue = null;
 		if (this.nextProvider != null) {
 			this.nextProvider.reset();
 		}

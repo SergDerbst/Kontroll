@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class FloatValueProvider extends SimpleValueProvider<Float> {
 
-	public FloatValueProvider() {
-		super((float) 0);
+	@Override
+	protected Float instantiateDefaultValue(final Class<?>... types) {
+		return (float) 0;
 	}
 
 	@Override

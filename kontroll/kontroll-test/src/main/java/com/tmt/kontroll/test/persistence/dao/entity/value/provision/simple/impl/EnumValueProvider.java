@@ -7,19 +7,14 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 
-	public EnumValueProvider() {
-		super(null);
+	@Override
+	protected Enum<?> instantiateDefaultValue(final Class<?>... types) {
+		return (Enum<?>) types[0].getEnumConstants()[0];
 	}
 
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
-		if (Enum.class.isAssignableFrom(valueType)) {
-			if (super.getInitialValue() == null) {
-				super.init((Enum<?>) valueType.getEnumConstants()[0]);
-			}
-			return true;
-		}
-		return false;
+		return Enum.class.isAssignableFrom(valueType);
 	}
 
 	@Override

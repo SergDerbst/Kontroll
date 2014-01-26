@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class DoubleValueProvider extends SimpleValueProvider<Double> {
 
-	public DoubleValueProvider() {
-		super(0.0);
+	@Override
+	protected Double instantiateDefaultValue(final Class<?>... types) {
+		return 0.0;
 	}
 
 	@Override

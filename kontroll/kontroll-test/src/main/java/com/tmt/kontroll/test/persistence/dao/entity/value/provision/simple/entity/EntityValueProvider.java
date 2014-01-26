@@ -1,35 +1,38 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.tmt.kontroll.test.persistence.dao.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity.identification.EntityIdentifier;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity.identification.impl.JpaHibernateEntityIdentifier;
 
-public class EntityValueProvider<E> extends SimpleValueProvider<E> {
+@Component
+public class EntityValueProvider extends SimpleValueProvider<Object> {
 
-	private final EntityIdentifier entityIdentifier;
-	private final EntityInstanceProvider instanceProvider;
+	@Autowired
+	EntityInstanceProvider instanceProvider;
+	@Autowired
+	JpaHibernateEntityIdentifier entityIdentifier;
 
-	public EntityValueProvider(final EntityIdentifier entityIdentifier, final EntityInstanceProvider instanceProvider) {
-		super(null);
-		this.entityIdentifier = entityIdentifier;
-		this.instanceProvider = instanceProvider;
+	@Override
+	protected Object instantiateDefaultValue(final Class<?>... types) {
+		return this.instanceProvider.provide(types[0]);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
 		if (this.entityIdentifier.identify(valueType)) {
 			if (super.getInitialValue() == null) {
-				super.init((E) this.instanceProvider.provide(valueType));
+				super.init(this.instanceProvider.provide(valueType));
 			}
 			return true;
 		}
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected E makeNextDefaultValue(final E value) {
-		return (E) this.instanceProvider.provide(value.getClass());
+	protected Object makeNextDefaultValue(final Object value) {
+		return this.instanceProvider.provide(value.getClass());
 	}
 }

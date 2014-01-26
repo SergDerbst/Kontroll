@@ -11,21 +11,21 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tmt.kontroll.test.config.TestConfig;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class})
 public class ArrayValueProviderFactoryTest {
 
 	@Autowired
-	private SimpleValueProvisionHandler simpleValueProvisionHandler;
+	private ValueProvisionHandler valueProvisionHandler;
 
 	@Autowired
 	private ArrayValueProviderFactory toTest;
 
 	@Before
 	public void setUp() throws Exception {
-		this.simpleValueProvisionHandler.reset();
+		this.valueProvisionHandler.reset();
 	}
 
 	@Test

@@ -2,28 +2,27 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.impl;
 
 import java.util.EnumMap;
 
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvider;
 
+public class EnumMapValueProvider<E extends Enum<E>> extends MapValueProvider<E, Object, EnumMap<E, Object>> {
 
-public class EnumMapValueProvider<K extends Enum<K>, V> extends DefaultMapValueProvider<K, V> {
+	private final Class<E> enumKeyType;
 
-	public EnumMapValueProvider(final Class<K> keyType,
-	                            final Class<V> valueType,
-	                            final SimpleValueProvisionHandler simpleValueProvisionHandler) {
-		super(keyType, valueType, simpleValueProvisionHandler);
+	protected EnumMapValueProvider(final Class<E> enumKeyType,
+	                               final ValueProvisionHandler valueProvisionHandler) {
+		this.enumKeyType = enumKeyType;
+		super.setValueProvisionHandler(valueProvisionHandler);
 	}
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
-		return
-		types.length == 3 &&
-		EnumMap.class.isAssignableFrom(types[0]) &&
-		super.claimDefaultResponsibility(fieldName, types);
+	protected boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
+		return EnumMap.class.isAssignableFrom(mapType);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	protected EnumMap instantiateEmptyMap() {
-		return new EnumMap(super.getKeyType());
+		return new EnumMap(this.enumKeyType);
 	}
 }

@@ -6,9 +6,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 
 @Component
 public class ShortValueProvider extends SimpleValueProvider<Short> {
-
-	public ShortValueProvider() {
-		super((short) 0);
+	@Override
+	protected Short instantiateDefaultValue(final Class<?>... types) {
+		return (short) 0;
 	}
 
 	@Override

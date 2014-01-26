@@ -3,26 +3,21 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
 
-public class ListValueProvider<V> extends CollectionValueProvider<V, List<V>> {
-
-	private final Class<V> valueType;
-
-	public ListValueProvider(final Class<V> valueType, final SimpleValueProvisionHandler simpleValueProvisionHandler) {
-		super(simpleValueProvisionHandler);
-		this.valueType = valueType;
-	}
+@Component
+public class ListValueProvider extends CollectionValueProvider<Object, List<Object>> {
 
 	@Override
-	protected boolean isResponsible(final String fieldName, final Class<?> collectionType, final Class<?> itemType) {
-		return List.class.isAssignableFrom(collectionType) && this.valueType.equals(itemType);
+	protected boolean claimCollectionValueResponsibility(final Class<?> collectionType, final Class<?> itemType) {
+		return List.class.isAssignableFrom(collectionType);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes"})
 	@Override
-	protected List<V> instantiateEmptyCollection() {
+	protected List instantiateEmptyCollection() {
 		return new ArrayList();
 	}
 }

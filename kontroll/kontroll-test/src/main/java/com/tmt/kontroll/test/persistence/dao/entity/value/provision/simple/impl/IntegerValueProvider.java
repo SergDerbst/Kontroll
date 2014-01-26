@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class IntegerValueProvider extends SimpleValueProvider<Integer> {
 
-	public IntegerValueProvider() {
-		super(0);
+	@Override
+	protected Integer instantiateDefaultValue(final Class<?>... types) {
+		return 0;
 	}
 
 	@Override

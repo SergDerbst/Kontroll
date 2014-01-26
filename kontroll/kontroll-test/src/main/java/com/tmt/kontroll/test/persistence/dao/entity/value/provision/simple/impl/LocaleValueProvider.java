@@ -17,8 +17,9 @@ public class LocaleValueProvider extends SimpleValueProvider<Locale> {
 
 	private static final SortedSet<Locale> localeValueSet = setUpLocaleValueSet();
 
-	protected LocaleValueProvider() {
-		super(localeValueSet.first());
+	@Override
+	protected Locale instantiateDefaultValue(final Class<?>... types) {
+		return localeValueSet.first();
 	}
 
 	@Override

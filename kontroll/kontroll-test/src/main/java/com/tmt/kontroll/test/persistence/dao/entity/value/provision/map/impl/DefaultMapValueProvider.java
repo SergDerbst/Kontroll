@@ -1,44 +1,28 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.impl;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+
+import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
 
-public class DefaultMapValueProvider<K, V> extends MapValueProvider<K, V, Map<K, V>> {
-
-	private final Class<K> keyType;
-	private final Class<V> valueType;
-
-	public DefaultMapValueProvider(final Class<K> keyType,
-	                               final Class<V> valueType,
-	                               final SimpleValueProvisionHandler simpleValueProvisionHandler) {
-		super(simpleValueProvisionHandler);
-		this.keyType = keyType;
-		this.valueType = valueType;
-	}
+@Component
+public class DefaultMapValueProvider extends MapValueProvider<Object, Object, Map<Object, Object>> {
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+	protected boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {
 		return
-		types.length == 3 &&
-		Map.class.isAssignableFrom(types[0]) &&
-		this.keyType.equals(types[1]) &&
-		this.valueType.equals(types[2]);
+		Map.class.isAssignableFrom(mapType) &&
+		!EnumMap.class.isAssignableFrom(mapType) &&
+		!SortedMap.class.isAssignableFrom(mapType);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes"})
 	@Override
-	protected Map<K, V> instantiateEmptyMap() {
+	protected Map instantiateEmptyMap() {
 		return new HashMap();
-	}
-
-	protected Class<K> getKeyType() {
-		return this.keyType;
-	}
-
-	protected Class<V> getValueType() {
-		return this.valueType;
 	}
 }

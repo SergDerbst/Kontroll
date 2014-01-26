@@ -25,9 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tmt.kontroll.test.config.TestConfig;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.array.ArrayValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class})
@@ -83,11 +81,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Autowired
-	ArrayValueProvisionHandler arrayValueProvisionHandler;
-	@Autowired
-	CollectionValueProvisionHandler collectionValueProvisionHandler;
-	@Autowired
-	private SimpleValueProvisionHandler simpleValueProvisionHandler;
+	ValueProvisionHandler valueProvisionHandler;
 	@Autowired
 	private EntityInstanceProvider toTest;
 
@@ -95,16 +89,14 @@ public class EntityInstanceProviderTest {
 
 	@Before
 	public void setUp() {
-		this.arrayValueProvisionHandler.reset();
-		this.collectionValueProvisionHandler.reset();
-		this.simpleValueProvisionHandler.reset();
-		this.referenceTimestampValue = ((Timestamp) this.simpleValueProvisionHandler.provide(Timestamp.class)).getTime();
+		this.valueProvisionHandler.reset();
+		this.referenceTimestampValue = ((Timestamp) this.valueProvisionHandler.provide(Timestamp.class)).getTime();
 	}
 
 	@Test
 	public void testThatEntityIsProvidedWithSimpleValues() {
 		//when
-		final TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class);
+		TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class);
 		//then
 		assertNotNull(provided);
 		assertEquals(false, provided.booleanField);
@@ -119,6 +111,22 @@ public class EntityInstanceProviderTest {
 		assertEquals("0", provided.stringField);
 		assertEquals(this.referenceTimestampValue + 1, provided.timestampField.getTime());
 		assertEquals(TestEnum.Bla, provided.enumField);
+		//when
+		provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class);
+		//then
+		assertNotNull(provided);
+		assertEquals(true, provided.booleanField);
+		assertEquals(Byte.parseByte("1"), provided.byteField);
+		assertEquals("1".charAt(0), provided.characterField);
+		assertEquals(new  Double(1.0), (Double) provided.doubleField);
+		assertEquals(new Float((float) 1.0), (Float) provided.floatField);
+		assertEquals(1, provided.integerField);
+		assertEquals(1, provided.longField);
+		assertEquals(Locale.GERMANY, provided.localeField);
+		assertEquals((short) 1, provided.shortField);
+		assertEquals("1", provided.stringField);
+		assertEquals(this.referenceTimestampValue + 2, provided.timestampField.getTime());
+		assertEquals(TestEnum.Blubb, provided.enumField);
 	}
 
 	@Test

@@ -9,8 +9,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
 
-	public TimestampValueProvider() {
-		super(new Timestamp(System.currentTimeMillis()));
+	@Override
+	protected Timestamp instantiateDefaultValue(final Class<?>... types) {
+		return new Timestamp(System.currentTimeMillis());
 	}
 
 	@Override

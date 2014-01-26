@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class LongValueProvider extends SimpleValueProvider<Long> {
 
-	public LongValueProvider() {
-		super((long) 0);
+	@Override
+	protected Long instantiateDefaultValue(final Class<?>... types) {
+		return (long) 0;
 	}
 
 	@Override

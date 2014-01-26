@@ -3,89 +3,46 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProviderNotFoundException;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvisionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
+
+@Component
 public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueProvider<M> {
 
-	private M initialMap;
-	private M currentMap;
-	private MapValueProvider<?, ?, ?> nextProvider;
+	@Autowired
+	ValueProvisionHandler valueProvisionHandler;
 
-	private final SimpleValueProvisionHandler simpleValueProvisionHandler;
-
-	protected MapValueProvider(final SimpleValueProvisionHandler simpleValueProvisionHandler) {
-		this.simpleValueProvisionHandler = simpleValueProvisionHandler;
-	}
+	protected abstract boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType);
 
 	protected abstract M instantiateEmptyMap();
 
 	@Override
-	public Object provide(final String fieldName, final Class<?>... types) {
-		if (super.claimResponsibility(fieldName, types)) {
-			if (this.initialMap == null) {
-				this.init(fieldName, types[0], types[1], types[2]);
-			}
-			final M toProvide = this.currentMap;
-			this.increase();
-			return toProvide;
-		}
-		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, types);
-		}
-		return this.nextProvider.provide(fieldName, types);
-	}
-
-	protected void increase() {
-		this.currentMap = super.makeNextValue(this.currentMap);
+	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+		return types.length == 3 && this.claimMapValueResponsibility(types[0], types[1], types[2]);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected M makeNextDefaultValue(final M value) {
 		final M toIncrease = this.instantiateEmptyMap();
-		for (final Entry<K, V> entry : this.currentMap.entrySet()) {
-			toIncrease.put((K) this.simpleValueProvisionHandler.fetchNextValue(entry.getKey()), (V) this.simpleValueProvisionHandler.fetchNextValue(entry.getValue()));
+		for (final Entry<K, V> entry : super.getCurrentValue().entrySet()) {
+			toIncrease.put((K) this.valueProvisionHandler.fetchNextValue(entry.getKey()), (V) this.valueProvisionHandler.fetchNextValue(entry.getValue()));
 		}
 		return toIncrease;
 	}
 
-	public void increase(final int steps) {
-		for (int i = 0; i < steps; i++) {
-			this.increase();
-		}
-		if (this.nextProvider != null) {
-			this.nextProvider.increase(steps);
-		}
-	}
-
+	@Override
 	@SuppressWarnings("unchecked")
-	public void init(final String fieldName, final Class<?>... types) {
-		if (super.claimResponsibility(fieldName, types)) {
-			this.initialMap = this.instantiateEmptyMap();
-			this.initialMap.put((K) this.simpleValueProvisionHandler.provide(types[1]), (V) this.simpleValueProvisionHandler.provide(fieldName, types[2]));
-			this.reset();
-			return;
-		}
-		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, types);
-		}
-		this.nextProvider.init(fieldName, types);
+	protected M instantiateDefaultValue(final Class<?>... types) {
+		final M map = this.instantiateEmptyMap();
+		map.put((K) this.valueProvisionHandler.provide(types[1]), (V) this.valueProvisionHandler.provide(types[2]));
+		return map;
 	}
 
-	public void reset() {
-		this.currentMap = this.initialMap;
-		if (this.nextProvider != null) {
-			this.nextProvider.reset();
-		}
-	}
-
-	public void setNextProvider(final MapValueProvider<?, ?, ?> nextProvider) {
-		this.nextProvider = nextProvider;
-	}
-
-	protected SimpleValueProvisionHandler getSimpleValueProvisionHandler() {
-		return this.simpleValueProvisionHandler;
+	protected void setValueProvisionHandler(final ValueProvisionHandler valueProvisionHandler) {
+		this.valueProvisionHandler = valueProvisionHandler;
 	}
 }

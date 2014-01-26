@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class ByteValueProvider extends SimpleValueProvider<Byte> {
 
-	public ByteValueProvider() {
-		super(Byte.parseByte("0"));
+	@Override
+	protected Byte instantiateDefaultValue(final Class<?>... types) {
+		return Byte.parseByte("0");
 	}
 
 	@Override

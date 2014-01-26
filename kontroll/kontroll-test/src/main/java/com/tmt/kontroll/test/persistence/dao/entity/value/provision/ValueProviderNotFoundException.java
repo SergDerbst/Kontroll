@@ -53,4 +53,12 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		}
 		return (ValueProviderNotFoundException) exception;
 	}
+
+	public static ValueProviderNotFoundException prepare(final Object value) {
+		return prepare(value.getClass());
+	}
+
+	public static ValueProviderNotFoundException prepare(final String fieldName, final Object value) {
+		return prepare(fieldName, value.getClass());
+	}
 }

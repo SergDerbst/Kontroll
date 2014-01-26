@@ -7,8 +7,9 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.Simpl
 @Component
 public class BooleanValueProvider extends SimpleValueProvider<Boolean> {
 
-	protected BooleanValueProvider() {
-		super(false);
+	@Override
+	protected Boolean instantiateDefaultValue(final Class<?>... types) {
+		return false;
 	}
 
 	@Override
