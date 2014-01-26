@@ -1,17 +1,21 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.array;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
-@Component
 public class ArrayValueProviderFactory {
 
-	@Autowired
-	ValueProvisionHandler valueProvisionHandler;
+	private static class InstanceHolder {
+		public static ArrayValueProviderFactory instance = new ArrayValueProviderFactory();
+	}
+
+	public static ArrayValueProviderFactory instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new ArrayValueProviderFactory();
+		}
+		return InstanceHolder.instance;
+	}
 
 	public ArrayValueProvider<?> create(final Class<?> componentType) {
-		return new ArrayValueProvider<>(componentType, this.valueProvisionHandler);
+		return new ArrayValueProvider<>(componentType, ValueProvisionHandler.instance());
 	}
 }

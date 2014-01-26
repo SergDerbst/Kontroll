@@ -1,30 +1,32 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity.identification.impl.JpaHibernateEntityIdentifier;
 
-@Component
 public class EntityValueProvider extends SimpleValueProvider<Object> {
 
-	@Autowired
-	EntityInstanceProvider instanceProvider;
-	@Autowired
-	JpaHibernateEntityIdentifier entityIdentifier;
+	private static class InstanceHolder {
+		public static EntityValueProvider instance = new EntityValueProvider();
+	}
+
+	public static EntityValueProvider instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new EntityValueProvider();
+		}
+		return  InstanceHolder.instance;
+	}
 
 	@Override
 	protected Object instantiateDefaultValue(final Class<?>... types) {
-		return this.instanceProvider.provide(types[0]);
+		return EntityInstanceProvider.instance().provide(types[0]);
 	}
 
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
-		if (this.entityIdentifier.identify(valueType)) {
+		if (JpaHibernateEntityIdentifier.instance().identify(valueType)) {
 			if (super.getInitialValue() == null) {
-				super.init(this.instanceProvider.provide(valueType));
+				super.init(EntityInstanceProvider.instance().provide(valueType));
 			}
 			return true;
 		}
@@ -33,6 +35,6 @@ public class EntityValueProvider extends SimpleValueProvider<Object> {
 
 	@Override
 	protected Object makeNextDefaultValue(final Object value) {
-		return this.instanceProvider.provide(value.getClass());
+		return EntityInstanceProvider.instance().provide(value.getClass());
 	}
 }

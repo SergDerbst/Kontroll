@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
-    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf4806197184091807458.tmp"/>
+    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf7632292238287106607.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="F:\JDKs\Java7\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\,F:\JDKs\Java7\bin;F:\tools\mysql\MySQL Server 5.5\bin;F:\tools\mysql\bin;F:\JDKs\Java7\jre\bin;F:\tools\node\;C:\Program Files (x86)\Gow\bin;F:\tools\maven\apache-maven-3.0.3\bin;F:\JDKs\Java7\jre\bin;F:\tools\spring-roo\bin;C:\Users\Serg Derbst\AppData\Roaming\npm;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -60,6 +60,6 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0.004" classname="com.tmt.kontroll.context.request.data.path.scanning.impl.MapPropertyPathScannerTest" name="testThatProcessThrowsException"/>
-  <testcase time="0.003" classname="com.tmt.kontroll.context.request.data.path.scanning.impl.MapPropertyPathScannerTest" name="testThatProcessWorksForMapProperty"/>
+  <testcase time="0.006" classname="com.tmt.kontroll.context.request.data.path.scanning.impl.MapPropertyPathScannerTest" name="testThatProcessThrowsException"/>
+  <testcase time="0.001" classname="com.tmt.kontroll.context.request.data.path.scanning.impl.MapPropertyPathScannerTest" name="testThatProcessWorksForMapProperty"/>
 </testsuite>

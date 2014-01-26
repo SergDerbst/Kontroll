@@ -50,6 +50,7 @@ public class ScopedContentCondition extends BaseEntity {
 	@OneToMany(mappedBy = "scopedContentCondition")
 	private List<ScopedContentConditionAttribute> scopedContentConditionAttributes;
 	
+	@ManyToMany
 	@JoinTable(name = "NestedScopedContentConditions",
 	joinColumns = @JoinColumn(name = "parent_condition_id", referencedColumnName = "id"),
 					inverseJoinColumns = @JoinColumn(name = "child_condition_id", referencedColumnName = "id"),

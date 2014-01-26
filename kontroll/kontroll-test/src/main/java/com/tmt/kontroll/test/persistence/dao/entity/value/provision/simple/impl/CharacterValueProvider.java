@@ -1,11 +1,19 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
-@Component
 public class CharacterValueProvider extends SimpleValueProvider<Character> {
+
+	private static class InstanceHolder {
+		public static CharacterValueProvider instance = new CharacterValueProvider();
+	}
+
+	public static CharacterValueProvider instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new CharacterValueProvider();
+		}
+		return  InstanceHolder.instance;
+	}
 
 	@Override
 	protected Character instantiateDefaultValue(final Class<?>... types) {

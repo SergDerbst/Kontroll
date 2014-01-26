@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: com.tmt.kontroll.persistence.daos.security.UserServiceTest
+Test set: com.tmt.kontroll.test.persistence.dao.entity.EntityInstanceProviderTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 7, Time elapsed: 0.02 sec
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.162 sec

@@ -40,7 +40,7 @@ public abstract class ValueProvider<V> {
 			return toProvide;
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, types);
+			throw ValueProviderNotFoundException.prepareWithTypes(fieldName, types);
 		}
 		return this.nextProvider.provide(fieldName, types);
 	}
@@ -52,7 +52,7 @@ public abstract class ValueProvider<V> {
 			return;
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, types);
+			throw ValueProviderNotFoundException.prepareWithTypes(fieldName, types);
 		}
 		this.nextProvider.init(fieldName, types);
 	}
@@ -79,7 +79,7 @@ public abstract class ValueProvider<V> {
 			return this.makeNextValue((V) value);
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepare(fieldName, value);
+			throw ValueProviderNotFoundException.prepareWithValue(fieldName, value);
 		}
 		return this.nextProvider.fetchNextValue(fieldName, value);
 	}
@@ -127,8 +127,9 @@ public abstract class ValueProvider<V> {
 		return this.nextProvider;
 	}
 
-	public void setNextProvider(final ValueProvider<?> nextProvider) {
+	public ValueProvider<?> setNextProvider(final ValueProvider<?> nextProvider) {
 		this.nextProvider = nextProvider;
+		return this.nextProvider;
 	}
 
 	protected V getInitialValue() {

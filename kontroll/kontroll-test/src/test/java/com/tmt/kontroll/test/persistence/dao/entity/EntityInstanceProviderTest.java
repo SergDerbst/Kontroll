@@ -19,16 +19,9 @@ import javax.persistence.Entity;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tmt.kontroll.test.config.TestConfig;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
 public class EntityInstanceProviderTest {
 
 	public static enum TestEnum {
@@ -80,10 +73,8 @@ public class EntityInstanceProviderTest {
 		public List<TestEntitySimpleFields> entityListField;
 	}
 
-	@Autowired
-	ValueProvisionHandler valueProvisionHandler;
-	@Autowired
-	private EntityInstanceProvider toTest;
+	private final ValueProvisionHandler valueProvisionHandler = ValueProvisionHandler.instance();
+	private final EntityInstanceProvider toTest = EntityInstanceProvider.instance();
 
 	private long referenceTimestampValue;
 

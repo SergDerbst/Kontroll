@@ -1,11 +1,19 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
-@Component
 public class BooleanValueProvider extends SimpleValueProvider<Boolean> {
+
+	private static class InstanceHolder {
+		public static BooleanValueProvider instance = new BooleanValueProvider();
+	}
+
+	public static BooleanValueProvider instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new BooleanValueProvider();
+		}
+		return  InstanceHolder.instance;
+	}
 
 	@Override
 	protected Boolean instantiateDefaultValue(final Class<?>... types) {

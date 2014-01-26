@@ -1,4 +1,4 @@
-package com.tmt.kontroll.persistence.commons.config;
+package com.tmt.kontroll.persistence.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +10,8 @@ import com.tmt.kontroll.persistence.config.Jsr303BeanValidationConfig;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(value = {"de.sd.tryout.persistence"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
-@Import(value = {JpaConfigTest.class, Jsr303BeanValidationConfig.class, GeneralContextConfig.class})
+@ComponentScan(value = {"com.tmt.kontroll.persistence"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
+@Import(value = {JpaTestConfig.class, Jsr303BeanValidationConfig.class, GeneralContextConfig.class})
 public class PersistenceTestConfig {
 
 }

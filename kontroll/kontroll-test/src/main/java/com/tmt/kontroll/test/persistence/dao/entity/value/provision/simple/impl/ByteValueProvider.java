@@ -1,11 +1,19 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
-@Component
 public class ByteValueProvider extends SimpleValueProvider<Byte> {
+
+	private static class InstanceHolder {
+		public static ByteValueProvider instance = new ByteValueProvider();
+	}
+
+	public static ByteValueProvider instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new ByteValueProvider();
+		}
+		return  InstanceHolder.instance;
+	}
 
 	@Override
 	protected Byte instantiateDefaultValue(final Class<?>... types) {

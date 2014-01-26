@@ -3,17 +3,12 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
-@Component
 public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueProvider<M> {
 
-	@Autowired
-	ValueProvisionHandler valueProvisionHandler;
+	private ValueProvisionHandler valueProvisionHandler;
 
 	protected abstract boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType);
 
@@ -27,6 +22,7 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	@Override
 	@SuppressWarnings("unchecked")
 	protected M makeNextDefaultValue(final M value) {
+		this.assureValueProvisionHandler();
 		final M toIncrease = this.instantiateEmptyMap();
 		for (final Entry<K, V> entry : super.getCurrentValue().entrySet()) {
 			toIncrease.put((K) this.valueProvisionHandler.fetchNextValue(entry.getKey()), (V) this.valueProvisionHandler.fetchNextValue(entry.getValue()));
@@ -37,6 +33,7 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	@Override
 	@SuppressWarnings("unchecked")
 	protected M instantiateDefaultValue(final Class<?>... types) {
+		this.assureValueProvisionHandler();
 		final M map = this.instantiateEmptyMap();
 		map.put((K) this.valueProvisionHandler.provide(types[1]), (V) this.valueProvisionHandler.provide(types[2]));
 		return map;
@@ -44,5 +41,11 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 
 	protected void setValueProvisionHandler(final ValueProvisionHandler valueProvisionHandler) {
 		this.valueProvisionHandler = valueProvisionHandler;
+	}
+
+	private void assureValueProvisionHandler() {
+		if (this.valueProvisionHandler == null) {
+			this.setValueProvisionHandler(ValueProvisionHandler.instance());
+		}
 	}
 }

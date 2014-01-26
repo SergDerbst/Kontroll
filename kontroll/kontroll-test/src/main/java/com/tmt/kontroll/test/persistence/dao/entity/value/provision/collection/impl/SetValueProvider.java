@@ -4,12 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvider;
 
-@Component
 public class SetValueProvider extends CollectionValueProvider<Object, Set<Object>> {
+
+	private static class InstanceHolder {
+		public static SetValueProvider instance = new SetValueProvider();
+	}
+
+	public static SetValueProvider instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new SetValueProvider();
+		}
+		return InstanceHolder.instance;
+	}
 
 	@Override
 	protected boolean claimCollectionValueResponsibility(final Class<?> collectionType, final Class<?> itemType) {

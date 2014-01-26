@@ -2,8 +2,11 @@ package com.tmt.kontroll.content.verification.conditions.attributes.values.impl;
 
 import java.util.Comparator;
 
+import org.springframework.stereotype.Component;
+
 import com.tmt.kontroll.content.verification.conditions.attributes.values.ConditionAttributeValueVerifier;
 
+@Component
 public class ConditionAttributeFloatValueVerifier extends ConditionAttributeValueVerifier<Float> {
 
 	private static class FloatComparator implements Comparator<Float> {

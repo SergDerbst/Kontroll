@@ -5,12 +5,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvider;
 
-@Component
 public class DefaultMapValueProvider extends MapValueProvider<Object, Object, Map<Object, Object>> {
+
+	private static class InstanceHolder {
+		public static DefaultMapValueProvider instance = new DefaultMapValueProvider();
+	}
+
+	public static DefaultMapValueProvider instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new DefaultMapValueProvider();
+		}
+		return InstanceHolder.instance;
+	}
 
 	@Override
 	protected boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType) {

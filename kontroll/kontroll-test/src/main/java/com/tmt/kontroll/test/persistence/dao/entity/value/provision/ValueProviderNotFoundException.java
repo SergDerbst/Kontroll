@@ -38,11 +38,11 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		}
 	}
 
-	public static ValueProviderNotFoundException prepare(final Class<?>... typeArgs) {
-		return prepare(null, typeArgs);
+	public static ValueProviderNotFoundException prepareWithTypes(final Class<?>... typeArgs) {
+		return prepareWithTypes(null, typeArgs);
 	}
 
-	public static ValueProviderNotFoundException prepare(final String fieldName, final Class<?>... typeArgs) {
+	public static ValueProviderNotFoundException prepareWithTypes(final String fieldName, final Class<?>... typeArgs) {
 		final ContextedRuntimeException exception = new ValueProviderNotFoundException();
 		if (fieldName != null && !fieldName.isEmpty()) {
 			exception.addContextValue("field name", fieldName);
@@ -54,11 +54,11 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		return (ValueProviderNotFoundException) exception;
 	}
 
-	public static ValueProviderNotFoundException prepare(final Object value) {
-		return prepare(value.getClass());
+	public static ValueProviderNotFoundException prepareWithValue(final Object value) {
+		return prepareWithValue(null, value);
 	}
 
-	public static ValueProviderNotFoundException prepare(final String fieldName, final Object value) {
-		return prepare(fieldName, value.getClass());
+	public static ValueProviderNotFoundException prepareWithValue(final String fieldName, final Object value) {
+		return prepareWithTypes(fieldName, value.getClass());
 	}
 }

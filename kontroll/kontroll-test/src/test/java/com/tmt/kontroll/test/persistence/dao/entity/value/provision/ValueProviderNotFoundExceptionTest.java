@@ -26,7 +26,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForSimpleValueWithoutFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare(String.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes(String.class);
 		//then
 		assertFalse(prepared.getContextLabels().contains("field name"));
 		assertTrue(prepared.getContextLabels().contains("value type"));
@@ -36,7 +36,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForSimpleValueWithFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare("blabla", String.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes("blabla", String.class);
 		//then
 		assertTrue(prepared.getContextLabels().contains("field name"));
 		assertEquals("blabla", prepared.getFirstContextValue("field name"));
@@ -47,7 +47,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForArrayValueWithoutFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare(Array.class, String.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes(Array.class, String.class);
 		//then
 		assertFalse(prepared.getContextLabels().contains("field name"));
 		assertTrue(prepared.getContextLabels().contains("collection type"));
@@ -59,7 +59,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForArrayValueWithFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare("blabla", Array.class, String.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes("blabla", Array.class, String.class);
 		//then
 		assertTrue(prepared.getContextLabels().contains("field name"));
 		assertEquals("blabla", prepared.getFirstContextValue("field name"));
@@ -72,7 +72,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForCollectionValueWithoutFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare(List.class, String.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes(List.class, String.class);
 		//then
 		assertFalse(prepared.getContextLabels().contains("field name"));
 		assertTrue(prepared.getContextLabels().contains("collection type"));
@@ -84,7 +84,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForCollectionValueWithFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare("blabla", List.class, String.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes("blabla", List.class, String.class);
 		//then
 		assertTrue(prepared.getContextLabels().contains("field name"));
 		assertEquals("blabla", prepared.getFirstContextValue("field name"));
@@ -97,7 +97,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForMapValueWithoutFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare(Map.class, String.class, Integer.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes(Map.class, String.class, Integer.class);
 		//then
 		assertFalse(prepared.getContextLabels().contains("field name"));
 		assertTrue(prepared.getContextLabels().contains("map type"));
@@ -111,7 +111,7 @@ public class ValueProviderNotFoundExceptionTest extends ExceptionTest {
 	@Test
 	public void testThatExceptionIsPreparedForMapValueWithFieldName() {
 		//when
-		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepare("blabla", Map.class, String.class, Integer.class);
+		final ValueProviderNotFoundException prepared = ValueProviderNotFoundException.prepareWithTypes("blabla", Map.class, String.class, Integer.class);
 		//then
 		assertTrue(prepared.getContextLabels().contains("field name"));
 		assertEquals("blabla", prepared.getFirstContextValue("field name"));

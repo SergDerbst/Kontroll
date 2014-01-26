@@ -32,7 +32,7 @@ public class Scope extends BaseEntity {
 	@JoinTable(name = "Scope_RequestContext",
 	joinColumns = @JoinColumn(name = "scope_id", referencedColumnName = "id"),
 	inverseJoinColumns = @JoinColumn(name = "request_context_id", referencedColumnName = "id"))
-	private List<String> requestContexts;
+	private List<RequestContext> requestContexts;
 
 	public String getName() {
 		return this.name;
@@ -58,11 +58,11 @@ public class Scope extends BaseEntity {
 		this.scopedContents = scopedContents;
 	}
 
-	public List<String> getRequestContexts() {
+	public List<RequestContext> getRequestContexts() {
 		return this.requestContexts;
 	}
 
-	public void setRequestContexts(final List<String> requestContexts) {
+	public void setRequestContexts(final List<RequestContext> requestContexts) {
 		this.requestContexts = requestContexts;
 	}
 }

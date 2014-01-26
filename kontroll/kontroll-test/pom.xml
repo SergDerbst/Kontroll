@@ -11,6 +11,16 @@
 	<artifactId>kontroll-test</artifactId>
 
 	<dependencies>
+		<!-- module persistence -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-persistence</artifactId>
+		</dependency>
+		<!-- apache commons io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 		<!-- apache commons lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -20,6 +30,11 @@
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
+		</dependency>
+		<!-- dbunit dataset builder -->
+		<dependency>
+			<groupId>org.dbunit.datasetbuilder</groupId>
+			<artifactId>dbunit-datasetbuilder</artifactId>
 		</dependency>
 		<!-- hibernate -->
 		<dependency>

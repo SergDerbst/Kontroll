@@ -13,10 +13,12 @@
 
 		<!-- dependency versions -->
 		<aspectj.version>1.7.0</aspectj.version>
+		<apache.commons.io.version>2.4</apache.commons.io.version>
 		<apache.commons.lang3.version>3.1</apache.commons.lang3.version>
 		<cglib.version>2.2.2</cglib.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
-		<dbunit.version>2.4.8</dbunit.version>
+		<dbunit.version>2.4.9</dbunit.version>
+		<dbunit.datasetbuilder.version>1.0-SNAPSHOT</dbunit.datasetbuilder.version>
 		<org.hibernate.version>4.1.4.Final</org.hibernate.version>
 		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
 		<hibernate-jpamodelgen.version>1.2.0.Final</hibernate-jpamodelgen.version>
@@ -33,8 +35,8 @@
 		<powermock.version>1.5.2</powermock.version>
 		<querydsl.version>3.3.0</querydsl.version>
 		<slf4j.version>1.6.6</slf4j.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
-		<spring.data.version>1.1.0.RELEASE</spring.data.version>
+		<spring.version>3.2.6.RELEASE</spring.version>
+		<spring.data.version>1.4.3.RELEASE</spring.data.version>
 		<spring.test.dbunit.version>1.0.1</spring.test.dbunit.version>
 		<javax.validation.version>1.0.0.GA</javax.validation.version>
 
@@ -111,6 +113,12 @@
 				<artifactId>aspectjtools</artifactId>
 				<version>${aspectj.version}</version>
 			</dependency>
+			<!-- apache commons io -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${apache.commons.io.version}</version>
+			</dependency>
 			<!-- apache commons lang3 -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -129,11 +137,17 @@
 				<artifactId>commons-dbcp</artifactId>
 				<version>${commons-dbcp.version}</version>
 			</dependency>
-			<!-- DBUnit -->
+			<!-- db unit -->
 			<dependency>
 				<groupId>org.dbunit</groupId>
 				<artifactId>dbunit</artifactId>
 				<version>${dbunit.version}</version>
+			</dependency>
+			<!-- dbunit dataset builder -->
+			<dependency>
+				<groupId>org.dbunit.datasetbuilder</groupId>
+				<artifactId>dbunit-datasetbuilder</artifactId>
+				<version>${dbunit.datasetbuilder.version}</version>
 			</dependency>
 			<!-- Hibernate -->
 			<dependency>

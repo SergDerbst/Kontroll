@@ -18,7 +18,7 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 			return super.makeNextValue((V) value);
 		}
 		if (super.getNextProvider() == null) {
-			throw ValueProviderNotFoundException.prepare(value);
+			throw ValueProviderNotFoundException.prepareWithValue(value);
 		}
 		return ((SimpleValueProvider<?>) super.getNextProvider()).fetchNextValue(value);
 	}

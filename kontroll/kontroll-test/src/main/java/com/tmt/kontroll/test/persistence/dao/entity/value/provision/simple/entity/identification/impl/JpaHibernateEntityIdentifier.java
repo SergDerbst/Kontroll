@@ -2,12 +2,20 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.enti
 
 import javax.persistence.Entity;
 
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.entity.identification.EntityIdentifier;
 
-@Component
 public class JpaHibernateEntityIdentifier implements EntityIdentifier {
+
+	private static class InstanceHolder {
+		public static JpaHibernateEntityIdentifier instance = new JpaHibernateEntityIdentifier();
+	}
+
+	public static JpaHibernateEntityIdentifier instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new JpaHibernateEntityIdentifier();
+		}
+		return  InstanceHolder.instance;
+	}
 
 	@Override
 	public boolean identify(final Class<?> potentialEntityType) {

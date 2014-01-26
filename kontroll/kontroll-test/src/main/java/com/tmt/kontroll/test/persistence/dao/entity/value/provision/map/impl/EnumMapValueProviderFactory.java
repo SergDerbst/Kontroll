@@ -1,15 +1,21 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 
-@Component
 public class EnumMapValueProviderFactory {
 
-	@Autowired
-	ValueProvisionHandler valueProvisionHandler;
+	private static class InstanceHolder {
+		public static EnumMapValueProviderFactory instance = new EnumMapValueProviderFactory();
+	}
+
+	public static EnumMapValueProviderFactory instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new EnumMapValueProviderFactory();
+		}
+		return InstanceHolder.instance;
+	}
+
+	ValueProvisionHandler valueProvisionHandler = ValueProvisionHandler.instance();
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public EnumMapValueProvider create(final Class<?> enumKeyType) {

@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Import;
  *
  */
 @Configuration
-@ComponentScan(value = {"de.sd.tryout.persistence"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
-@Import(value = {GeneralContextConfig.class, Jsr303BeanValidationConfig.class, JpaConfig.class})
+@ComponentScan(value = {"com.tmt.kontroll.persistence"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
+@Import({GeneralContextConfig.class, Jsr303BeanValidationConfig.class, JpaConfig.class})
 public class PersistenceConfig {
 
 }

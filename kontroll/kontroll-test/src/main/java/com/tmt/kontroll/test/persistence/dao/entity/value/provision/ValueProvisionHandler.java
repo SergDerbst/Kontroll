@@ -1,10 +1,5 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.impl.ListValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.impl.SetValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.impl.SortedSetValueProvider;
@@ -24,77 +19,45 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.StringValueProvider;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.TimestampValueProvider;
 
-@Component
 public class ValueProvisionHandler {
 
-	//simples
-	@Autowired
-	BooleanValueProvider booleanValueProvider;
-	@Autowired
-	ByteValueProvider byteValueProvider;
-	@Autowired
-	CharacterValueProvider characterValueProvider;
-	@Autowired
-	DoubleValueProvider doubleValueProvider;
-	@Autowired
-	FloatValueProvider floatValueProvider;
-	@Autowired
-	IntegerValueProvider integerValueProvider;
-	@Autowired
-	LongValueProvider longValueProvider;
-	@Autowired
-	ShortValueProvider shortValueProvider;
-	@Autowired
-	StringValueProvider stringValueProvider;
-	@Autowired
-	EntityValueProvider entityValueProvider;
-	@Autowired
-	EnumValueProvider enumValueProvider;
-	@Autowired
-	TimestampValueProvider timestampValueProvider;
-	@Autowired
-	LocaleValueProvider localeValueProvider;
+	private static class InstanceHolder {
+		public static ValueProvisionHandler instance = new ValueProvisionHandler();
+	}
 
-	//collections
-	@Autowired
-	ListValueProvider listValueProvider;
-	@Autowired
-	SetValueProvider setValueProvider;
-	@Autowired
-	SortedSetValueProvider sortedSetValueProvider;
-
-	//maps
-	@Autowired
-	DefaultMapValueProvider mapValueProvider;
-	@Autowired
-	SortedMapValueProvider sortedMapValueProvider;
-
-	@Autowired
-	ValueProvisionHandlingPreparator provisionPreparator;
+	public static ValueProvisionHandler instance() {
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new ValueProvisionHandler();
+		}
+		return InstanceHolder.instance;
+	}
 
 	private ValueProvider<?> firstProvider;
 
-	@PostConstruct
+	public ValueProvisionHandler() {
+		this.setUpValueProvision();
+	}
+
 	public void setUpValueProvision() {
-		this.firstProvider = this.entityValueProvider;
-		this.entityValueProvider.setNextProvider(this.booleanValueProvider);
-		this.booleanValueProvider.setNextProvider(this.byteValueProvider);
-		this.byteValueProvider.setNextProvider(this.characterValueProvider);
-		this.characterValueProvider.setNextProvider(this.doubleValueProvider);
-		this.doubleValueProvider.setNextProvider(this.floatValueProvider);
-		this.floatValueProvider.setNextProvider(this.integerValueProvider);
-		this.integerValueProvider.setNextProvider(this.longValueProvider);
-		this.longValueProvider.setNextProvider(this.shortValueProvider);
-		this.shortValueProvider.setNextProvider(this.stringValueProvider);
-		this.stringValueProvider.setNextProvider(this.enumValueProvider);
-		this.enumValueProvider.setNextProvider(this.timestampValueProvider);
-		this.timestampValueProvider.setNextProvider(this.localeValueProvider);
-		this.localeValueProvider.setNextProvider(this.listValueProvider);
-		this.listValueProvider.setNextProvider(this.setValueProvider);
-		this.setValueProvider.setNextProvider(this.sortedSetValueProvider);
-		this.sortedSetValueProvider.setNextProvider(this.mapValueProvider);
-		this.mapValueProvider.setNextProvider(this.sortedMapValueProvider);
-		this.sortedMapValueProvider.setNextProvider(null);
+		this.firstProvider = EntityValueProvider.instance();
+		this.firstProvider
+		.setNextProvider(BooleanValueProvider.instance())
+		.setNextProvider(ByteValueProvider.instance())
+		.setNextProvider(CharacterValueProvider.instance())
+		.setNextProvider(DoubleValueProvider.instance())
+		.setNextProvider(FloatValueProvider.instance())
+		.setNextProvider(IntegerValueProvider.instance())
+		.setNextProvider(LongValueProvider.instance())
+		.setNextProvider(ShortValueProvider.instance())
+		.setNextProvider(StringValueProvider.instance())
+		.setNextProvider(EnumValueProvider.instance())
+		.setNextProvider(TimestampValueProvider.instance())
+		.setNextProvider(LocaleValueProvider.instance())
+		.setNextProvider(ListValueProvider.instance())
+		.setNextProvider(SetValueProvider.instance())
+		.setNextProvider(SortedSetValueProvider.instance())
+		.setNextProvider(DefaultMapValueProvider.instance())
+		.setNextProvider(SortedMapValueProvider.instance());
 	}
 
 	public boolean canProvideValue(final String fieldName, final Class<?>... types) {
@@ -106,7 +69,7 @@ public class ValueProvisionHandler {
 	}
 
 	public Object provide(final String fieldName, final Class<?>... types) {
-		this.provisionPreparator.prepare(fieldName, types);
+		ValueProvisionHandlingPreparator.instance().prepare(fieldName, types);
 		return this.firstProvider.provide(fieldName, types);
 	}
 

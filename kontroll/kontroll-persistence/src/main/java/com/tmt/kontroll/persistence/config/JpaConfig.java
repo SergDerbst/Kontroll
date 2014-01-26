@@ -8,9 +8,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -25,9 +25,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@PropertySource(name = "database",
-								value = "classpath:/jpaConfig/contentJpaConfig.properties")
-@ImportResource(value = { "classpath:/jpaConfig/contentJpaConfig.xml" })
+@PropertySource(name = "database", value = "classpath:/jpaConfig/kontrollJpaConfig.properties")
+@EnableJpaRepositories(basePackages = {"com.tmt.kontroll.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
 public class JpaConfig {
 
 	@Value("${database.hibernate.hbm2ddl.auto}")
@@ -51,20 +50,21 @@ public class JpaConfig {
 	@Bean
 	public JpaTransactionManager transactionManager() throws IllegalArgumentException, NamingException {
 		final JpaTransactionManager hibernateTransactionManager = new JpaTransactionManager();
-		hibernateTransactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+		hibernateTransactionManager.setEntityManagerFactory(this.entityManagerFactoryBean().getObject());
 		return hibernateTransactionManager;
 	}
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() throws IllegalArgumentException, NamingException {
 		final LocalContainerEntityManagerFactoryBean localSessionFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		localSessionFactoryBean.setPackagesToScan("de.sd.tryout.persistence.entities", "de.sd.tryout.content.persistence.entities");
-		localSessionFactoryBean.setDataSource(dataSource());
-		localSessionFactoryBean.setJpaVendorAdapter(hibernateVendor());
+		localSessionFactoryBean.setPackagesToScan("com.tmt.kontroll.persistence.entities", "com.tmt.kontroll.content.persistence.entities");
+		localSessionFactoryBean.setDataSource(this.dataSource());
+		localSessionFactoryBean.setJpaVendorAdapter(this.hibernateVendor());
 
 		final Properties jpaProperties = new Properties();
 		jpaProperties.setProperty("hibernate.hbm2ddl.auto", this.hbm2ddlAuto);
 		jpaProperties.setProperty("hibernate.dialect", this.hibernateDialect);
+		jpaProperties.setProperty("hibernate.show_sql", Boolean.TRUE.toString());
 		localSessionFactoryBean.setJpaProperties(jpaProperties);
 
 		return localSessionFactoryBean;
