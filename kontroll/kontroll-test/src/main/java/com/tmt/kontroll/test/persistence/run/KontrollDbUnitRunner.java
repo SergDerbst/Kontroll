@@ -2,6 +2,7 @@ package com.tmt.kontroll.test.persistence.run;
 
 import static com.tmt.kontroll.test.persistence.run.utils.PersistenceDaoEntityTestHelper.retrieveEntityClassName;
 
+import java.lang.reflect.Method;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.tmt.kontroll.test.persistence.dao.PersistenceEntityDaoServiceTest;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.annotations.value.TestMethodAnnotationBasedValueProvisionPreparer;
 import com.tmt.kontroll.test.persistence.run.data.DataSetHolder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparationHandler;
 import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
@@ -29,13 +31,16 @@ public class KontrollDbUnitRunner {
 		this.put(TestStrategy.Update, DatabaseOperation.CLEAN_INSERT);
 	}};
 
-	public void beforeTestMethod(final KontrollDbUnitTestContext testContext, final PersistenceTestConfig config) throws Exception {
-		this.setupOrTearDown(testContext, config);
+	TestMethodAnnotationBasedValueProvisionPreparer annotationBasedValueProvisionPreparer = TestMethodAnnotationBasedValueProvisionPreparer.instance();
+
+	public void beforeTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod) throws Exception {
+		this.annotationBasedValueProvisionPreparer.prepare(testMethod);
+		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class));
 	}
 
-	public void afterTestMethod(final KontrollDbUnitTestContext testContext, final PersistenceTestConfig config) throws Exception {
-		this.verfiy(testContext, config);
-		this.setupOrTearDown(testContext, config);
+	public void afterTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod) throws Exception {
+		this.verfiy(testContext);
+		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -47,7 +52,7 @@ public class KontrollDbUnitRunner {
 		operation.execute(connection, DataSetHolder.instance().getDataSetBefore());
 	}
 
-	private void verfiy(final KontrollDbUnitTestContext testContext, final PersistenceTestConfig config) throws Exception {
+	private void verfiy(final KontrollDbUnitTestContext testContext) throws Exception {
 		final IDatabaseConnection connection = testContext.getConnection();
 		final IDataSet actualDataSet = connection.createDataSet();
 		final IDataSet expectedDataSet = DataSetHolder.instance().getDataSetAfter();

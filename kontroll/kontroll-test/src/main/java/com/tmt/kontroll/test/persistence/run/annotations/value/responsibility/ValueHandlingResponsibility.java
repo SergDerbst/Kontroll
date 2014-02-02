@@ -1,5 +1,10 @@
 package com.tmt.kontroll.test.persistence.run.annotations.value.responsibility;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
 
 /**
@@ -8,9 +13,13 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvide
  * 
  * @author Serg Derbst
  */
-public @interface ValueHandlingResponsibilityClaimer {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface ValueHandlingResponsibility {
 
 	String fieldName() default "";
 
 	Class<?>[] types() default {};
+
+	int cardinality() default 0;
 }

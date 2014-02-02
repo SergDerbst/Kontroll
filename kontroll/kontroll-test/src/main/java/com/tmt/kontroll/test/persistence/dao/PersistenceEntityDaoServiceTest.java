@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,12 +31,13 @@ import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 @TransactionConfiguration(defaultRollback = false)
 public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID extends Serializable, REPO extends JpaRepository<ENTITY, ID>, S extends CrudDao<ENTITY, ID>> {
 
-	private static final ReferenceAsserter asserter = ReferenceAsserter.instance();
-	private static final ReferenceHolder referenceHolder = ReferenceHolder.instance();
+	protected static final ReferenceAsserter asserter = ReferenceAsserter.instance();
+	protected static final ReferenceHolder referenceHolder = ReferenceHolder.instance();
 
 	protected abstract S getDaoService();
 
-	@Ignore
+	public abstract void test_save();
+
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Count, numberOfEntities = 2)
 	public void test_count() {
@@ -45,7 +45,6 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 		assertEquals(new Long(2), (Long) this.getDaoService().count());
 	}
 
-	@Ignore
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Delete)
 	@SuppressWarnings("unchecked")
@@ -58,7 +57,6 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 		assertEquals(new Long(0), (Long) this.getDaoService().count());
 	}
 
-	@Ignore
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Exists)
 	@SuppressWarnings("unchecked")
@@ -71,18 +69,16 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 		assertTrue(exists);
 	}
 
-	@Ignore
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Find, numberOfEntities = 2)
 	@SuppressWarnings("unchecked")
 	public void test_findAll() {
 		//when
-		final List<ENTITY> allFound = this.getDaoService().findAll();
+		final List<?> allFound = this.getDaoService().findAll();
 		//then
 		asserter.assertReferences(referenceHolder.getReferences(), (List<Object>) allFound);
 	}
 
-	@Ignore
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Find)
 	@SuppressWarnings({"unchecked", "serial", "rawtypes"})
@@ -95,22 +91,6 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 		asserter.assertReferences(referenceHolder.getReferences(), new ArrayList() {
 			{
 				this.add(found);
-			}
-		});
-	}
-
-	@Test
-	@PersistenceTestConfig(testStrategy = TestStrategy.Save)
-	@SuppressWarnings({"unchecked", "rawtypes", "serial"})
-	public void test_save() {
-		//given
-		final ENTITY entity = (ENTITY) referenceHolder.getReferences().get(0).getReference();
-		//when
-		final ENTITY saved = this.getDaoService().save(entity);
-		//then
-		asserter.assertReferences(referenceHolder.getReferences(), new ArrayList() {
-			{
-				this.add(saved);
 			}
 		});
 	}

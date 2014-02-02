@@ -22,7 +22,7 @@ public abstract class ValueProvider<V> {
 
 	@SuppressWarnings("unchecked")
 	public Class<? extends ValueProvider<?>> fetchValueProviderType(final String fieldName, final Class<?>... types) {
-		if (this.canProvideValue(fieldName, types)) {
+		if (this.claimResponsibility(fieldName, types)) {
 			return (Class<? extends ValueProvider<?>>) this.getClass();
 		}
 		if (this.nextProvider == null) {
