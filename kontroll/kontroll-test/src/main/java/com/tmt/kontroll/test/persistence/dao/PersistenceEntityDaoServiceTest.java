@@ -1,6 +1,12 @@
 package com.tmt.kontroll.test.persistence.dao;
 
+import static com.tmt.kontroll.test.persistence.run.assertion.PersistenceEntityReferenceHolder.getReferences;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,27 +17,74 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.tmt.kontroll.persistence.daos.CrudDao;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener;
-import com.tmt.kontroll.test.persistence.run.dataset.KontrollDataSetLoader;
+import com.tmt.kontroll.test.persistence.run.annotations.DbSetup;
+import com.tmt.kontroll.test.persistence.run.assertion.PersistenceEntityReferenceAsserter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
 	KontrollDbUnitTestExecutionListener.class })
-@DbUnitConfiguration(dataSetLoader = KontrollDataSetLoader.class)
 public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID extends Serializable, REPO extends JpaRepository<ENTITY, ID>, S extends CrudDao<ENTITY, ID>> {
+
+	private static final PersistenceEntityReferenceAsserter asserter = PersistenceEntityReferenceAsserter.instance();
 
 	protected abstract S getDaoService();
 
-	protected abstract ID getEntityId();
+	@Test
+	@DbSetup(numberOfEntities = 2)
+	public void test_count() {
+		//when
+		assertEquals(new Long(2), (Long) this.getDaoService().count());
+	}
 
 	@Test
-	@DatabaseSetup("com.tmt.kontroll.content.persistence.entities.Caption")
+	@DbSetup
+	@SuppressWarnings("unchecked")
+	public void test_delete() {
+		//given
+		final ID id = (ID) getReferences().get(0).getReferenceValue("id");
+		//when
+		this.getDaoService().delete(id);
+		//then
+		assertEquals(new Long(0), (Long) this.getDaoService().count());
+	}
+
+	@Test
+	@DbSetup
+	@SuppressWarnings("unchecked")
+	public void test_exists() {
+		//given
+		final ID id = (ID) getReferences().get(0).getReferenceValue("id");
+		//when
+		final boolean exists = this.getDaoService().exists(id);
+		//then
+		assertTrue(exists);
+	}
+
+	@Test
+	@DbSetup(numberOfEntities = 2)
+	@SuppressWarnings("unchecked")
+	public void test_findAll() {
+		//when
+		final List<ENTITY> allFound = this.getDaoService().findAll();
+		//then
+		asserter.assertReferences(getReferences(), (List<Object>) allFound);
+	}
+
+	@Test
+	@DbSetup
+	@SuppressWarnings({"unchecked", "serial", "rawtypes"})
 	public void test_findById() {
-		this.getDaoService().findById(this.getEntityId());
+		//given
+		final ID id = (ID) getReferences().get(0).getReferenceValue("id");
+		//when
+		final ENTITY found = this.getDaoService().findById(id);
+		//then
+		asserter.assertReferences(getReferences(), new ArrayList() {{
+			this.add(found);
+		}});
 	}
 }

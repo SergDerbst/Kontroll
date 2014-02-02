@@ -1,7 +1,7 @@
 package com.tmt.kontroll.test.persistence.dao.entity;
 
-import static com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueTypeHelper.retrieveFields;
-import static com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueTypeHelper.retrieveTypeArgumentsOfField;
+import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.retrieveFieldsForValueProvision;
+import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.retrieveTypeArgumentsOfField;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -16,13 +16,16 @@ public class EntityInstanceProvider {
 	}
 
 	public static EntityInstanceProvider instance() {
-		return InstanceHolder.instance == null ? new EntityInstanceProvider() : InstanceHolder.instance;
+		if (InstanceHolder.instance == null) {
+			InstanceHolder.instance = new EntityInstanceProvider();
+		}
+		return InstanceHolder.instance;
 	}
 
 	public Object provide(final Class<?> entityClass) {
 		try {
 			final Object entity = entityClass.newInstance();
-			for (final Field field : retrieveFields(entityClass)) {
+			for (final Field field : retrieveFieldsForValueProvision(entityClass)) {
 				this.setFieldValue(entity, field);
 			}
 			return entity;
