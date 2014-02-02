@@ -49,9 +49,9 @@ public class JpaConfig {
 
 	@Bean
 	public JpaTransactionManager transactionManager() throws IllegalArgumentException, NamingException {
-		final JpaTransactionManager hibernateTransactionManager = new JpaTransactionManager();
-		hibernateTransactionManager.setEntityManagerFactory(this.entityManagerFactoryBean().getObject());
-		return hibernateTransactionManager;
+		final JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setEntityManagerFactory(this.entityManagerFactoryBean().getObject());
+		return jpaTransactionManager;
 	}
 
 	@Bean

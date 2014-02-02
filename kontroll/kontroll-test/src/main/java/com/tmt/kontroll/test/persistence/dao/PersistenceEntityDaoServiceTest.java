@@ -1,6 +1,5 @@
 package com.tmt.kontroll.test.persistence.dao;
 
-import static com.tmt.kontroll.test.persistence.run.assertion.PersistenceEntityReferenceHolder.getReferences;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -8,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,76 +15,103 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tmt.kontroll.persistence.daos.CrudDao;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener;
-import com.tmt.kontroll.test.persistence.run.annotations.DbSetup;
-import com.tmt.kontroll.test.persistence.run.assertion.PersistenceEntityReferenceAsserter;
+import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
+import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceHolder;
+import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-	DirtiesContextTestExecutionListener.class,
-	TransactionalTestExecutionListener.class,
-	KontrollDbUnitTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class, KontrollDbUnitTestExecutionListener.class})
+@Transactional
+@TransactionConfiguration(defaultRollback = false)
 public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID extends Serializable, REPO extends JpaRepository<ENTITY, ID>, S extends CrudDao<ENTITY, ID>> {
 
-	private static final PersistenceEntityReferenceAsserter asserter = PersistenceEntityReferenceAsserter.instance();
+	private static final ReferenceAsserter asserter = ReferenceAsserter.instance();
+	private static final ReferenceHolder referenceHolder = ReferenceHolder.instance();
 
 	protected abstract S getDaoService();
 
+	@Ignore
 	@Test
-	@DbSetup(numberOfEntities = 2)
+	@PersistenceTestConfig(testStrategy = TestStrategy.Count, numberOfEntities = 2)
 	public void test_count() {
 		//when
 		assertEquals(new Long(2), (Long) this.getDaoService().count());
 	}
 
+	@Ignore
 	@Test
-	@DbSetup
+	@PersistenceTestConfig(testStrategy = TestStrategy.Delete)
 	@SuppressWarnings("unchecked")
 	public void test_delete() {
 		//given
-		final ID id = (ID) getReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) referenceHolder.getReferences().get(0).getReferenceValue("id");
 		//when
 		this.getDaoService().delete(id);
 		//then
 		assertEquals(new Long(0), (Long) this.getDaoService().count());
 	}
 
+	@Ignore
 	@Test
-	@DbSetup
+	@PersistenceTestConfig(testStrategy = TestStrategy.Exists)
 	@SuppressWarnings("unchecked")
 	public void test_exists() {
 		//given
-		final ID id = (ID) getReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) referenceHolder.getReferences().get(0).getReferenceValue("id");
 		//when
 		final boolean exists = this.getDaoService().exists(id);
 		//then
 		assertTrue(exists);
 	}
 
+	@Ignore
 	@Test
-	@DbSetup(numberOfEntities = 2)
+	@PersistenceTestConfig(testStrategy = TestStrategy.Find, numberOfEntities = 2)
 	@SuppressWarnings("unchecked")
 	public void test_findAll() {
 		//when
 		final List<ENTITY> allFound = this.getDaoService().findAll();
 		//then
-		asserter.assertReferences(getReferences(), (List<Object>) allFound);
+		asserter.assertReferences(referenceHolder.getReferences(), (List<Object>) allFound);
 	}
 
+	@Ignore
 	@Test
-	@DbSetup
+	@PersistenceTestConfig(testStrategy = TestStrategy.Find)
 	@SuppressWarnings({"unchecked", "serial", "rawtypes"})
 	public void test_findById() {
 		//given
-		final ID id = (ID) getReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) referenceHolder.getReferences().get(0).getReferenceValue("id");
 		//when
 		final ENTITY found = this.getDaoService().findById(id);
 		//then
-		asserter.assertReferences(getReferences(), new ArrayList() {{
-			this.add(found);
-		}});
+		asserter.assertReferences(referenceHolder.getReferences(), new ArrayList() {
+			{
+				this.add(found);
+			}
+		});
+	}
+
+	@Test
+	@PersistenceTestConfig(testStrategy = TestStrategy.Save)
+	@SuppressWarnings({"unchecked", "rawtypes", "serial"})
+	public void test_save() {
+		//given
+		final ENTITY entity = (ENTITY) referenceHolder.getReferences().get(0).getReference();
+		//when
+		final ENTITY saved = this.getDaoService().save(entity);
+		//then
+		asserter.assertReferences(referenceHolder.getReferences(), new ArrayList() {
+			{
+				this.add(saved);
+			}
+		});
 	}
 }

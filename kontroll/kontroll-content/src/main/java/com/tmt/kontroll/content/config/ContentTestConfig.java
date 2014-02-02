@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.tmt.kontroll.context.config.ContextConfig;
 import com.tmt.kontroll.persistence.config.PersistenceTestConfig;
+import com.tmt.kontroll.test.config.TestConfig;
 
 @Configuration
 @ComponentScan(value = {"com.tmt.kontroll.content"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
-@Import({ContextConfig.class, PersistenceTestConfig.class})
+@Import({TestConfig.class, ContextConfig.class, PersistenceTestConfig.class})
 @EnableJpaRepositories(basePackages = {"com.tmt.kontroll.content.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
 public class ContentTestConfig {
 

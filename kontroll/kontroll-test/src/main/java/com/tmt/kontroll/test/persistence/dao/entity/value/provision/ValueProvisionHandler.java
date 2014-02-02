@@ -60,6 +60,10 @@ public class ValueProvisionHandler {
 		.setNextProvider(SortedMapValueProvider.instance());
 	}
 
+	public Class<? extends ValueProvider<?>> fetchValueProviderType(final String fieldName, final Class<?>... types) {
+		return this.firstProvider.fetchValueProviderType(fieldName, types);
+	}
+
 	public boolean canProvideValue(final String fieldName, final Class<?>... types) {
 		return this.firstProvider.canProvideValue(fieldName, types);
 	}

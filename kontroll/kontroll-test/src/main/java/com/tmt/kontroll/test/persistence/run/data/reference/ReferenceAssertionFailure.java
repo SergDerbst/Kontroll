@@ -1,17 +1,17 @@
-package com.tmt.kontroll.test.persistence.run.assertion;
+package com.tmt.kontroll.test.persistence.run.data.reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersistenceEntityReferenceAssertionFailure {
+public class ReferenceAssertionFailure {
 
-	private final PersistenceEntityReferenceAssertion assertion;
+	private final ReferenceAssertion assertion;
 	private final Object expected;
 	private final Object actual;
 
 	private final List<String> additionalMessageElements = new ArrayList<String>();
 
-	public PersistenceEntityReferenceAssertionFailure(final PersistenceEntityReferenceAssertion assertion,
+	public ReferenceAssertionFailure(final ReferenceAssertion assertion,
 	                                                  final Object expected,
 	                                                  final Object actual) {
 		this.assertion = assertion;

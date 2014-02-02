@@ -8,17 +8,27 @@ import org.springframework.test.context.TestContext;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.dataset.DataSetLoader;
 import com.github.springtestdbunit.operation.DatabaseOperationLookup;
-import com.tmt.kontroll.test.persistence.run.annotations.DbSetup;
+import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 
 public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionListener {
 
 	@Override
 	public void beforeTestMethod(final TestContext testContext) throws Exception {
-		final DbSetup dbSetup = testContext.getTestMethod().getAnnotation(DbSetup.class);
-		if (dbSetup != null) {
-			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), dbSetup);
+		final PersistenceTestConfig config = testContext.getTestMethod().getAnnotation(PersistenceTestConfig.class);
+		if (config != null) {
+			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), config);
 		} else {
 			super.beforeTestMethod(testContext);
+		}
+	}
+
+	@Override
+	public void afterTestMethod(final TestContext testContext) throws Exception {
+		final PersistenceTestConfig config = testContext.getTestMethod().getAnnotation(PersistenceTestConfig.class);
+		if (config != null) {
+			new KontrollDbUnitRunner().afterTestMethod(new KontrollDbUnitTestContext(testContext), config);
+		} else {
+			super.afterTestMethod(testContext);
 		}
 	}
 

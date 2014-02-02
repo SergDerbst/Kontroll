@@ -22,18 +22,18 @@ public class BaseEntity {
 	private Timestamp	timeStamp;
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
 	public Timestamp getTimeStamp() {
-		return timeStamp;
+		return this.timeStamp;
 	}
 
-	public void setTimeStamp(Timestamp timeStamp) {
+	public void setTimeStamp(final Timestamp timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 }

@@ -1,4 +1,4 @@
-package com.tmt.kontroll.test.persistence.run.assertion;
+package com.tmt.kontroll.test.persistence.run.data.reference;
 
 import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.retrieveFieldValue;
 import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.retrieveFieldsForValueProvision;
@@ -9,18 +9,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class PersistenceEntityReference {
+public class Reference {
 
-	private final Class<?> referenceType;
 	private final Map<String, Object> referenceValueMap = new HashMap<>();
+	private final Object reference;
 
-	public PersistenceEntityReference(final Object reference) {
-		this.referenceType = reference.getClass();
-		this.createReferenceMap(reference);
+	public Reference(final Object reference) {
+		this.reference = reference;
+		this.createReferenceMap();
+	}
+
+	public Object getReference() {
+		return this.reference;
 	}
 
 	public Class<?> getReferenceType() {
-		return this.referenceType;
+		return this.reference.getClass();
 	}
 
 	public Object getReferenceValue(final String valueName) {
@@ -31,10 +35,10 @@ public class PersistenceEntityReference {
 		return this.referenceValueMap.entrySet();
 	}
 
-	private void createReferenceMap(final Object reference) {
-		for (final Field field : retrieveFieldsForValueProvision(reference.getClass())) {
+	private void createReferenceMap() {
+		for (final Field field : retrieveFieldsForValueProvision(this.reference.getClass())) {
 			final String fieldName = field.getName();
-			this.referenceValueMap.put(fieldName, retrieveFieldValue(fieldName, reference.getClass(), reference));
+			this.referenceValueMap.put(fieldName, retrieveFieldValue(fieldName, this.reference.getClass(), this.reference));
 		}
 	}
 }

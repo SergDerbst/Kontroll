@@ -1,11 +1,11 @@
-package com.tmt.kontroll.test.persistence.run.assertion;
+package com.tmt.kontroll.test.persistence.run.data.reference;
 
-public enum PersistenceEntityReferenceAssertion {
+public enum ReferenceAssertion {
 	EntityType("Entity type."),
 	NumberOfEntities("Number of entities."),
 	FieldValueOfEntity("Field value of entity.");
 	private final String message;
-	private PersistenceEntityReferenceAssertion(final String message) {
+	private ReferenceAssertion(final String message) {
 		this.message = message;
 	}
 	public String message() {

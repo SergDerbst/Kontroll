@@ -20,6 +20,17 @@ public abstract class ValueProvider<V> {
 
 	protected abstract V makeNextDefaultValue(final V value);
 
+	@SuppressWarnings("unchecked")
+	public Class<? extends ValueProvider<?>> fetchValueProviderType(final String fieldName, final Class<?>... types) {
+		if (this.canProvideValue(fieldName, types)) {
+			return (Class<? extends ValueProvider<?>>) this.getClass();
+		}
+		if (this.nextProvider == null) {
+			throw ValueProviderNotFoundException.prepareWithTypes(fieldName, types);
+		}
+		return this.nextProvider.fetchValueProviderType(fieldName, types);
+	}
+
 	public boolean canProvideValue(final String fieldName, final Class<?>... types) {
 		if (this.claimResponsibility(fieldName, types)) {
 			return true;
