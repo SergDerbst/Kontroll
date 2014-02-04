@@ -12,6 +12,7 @@ import org.dbunit.operation.DatabaseOperation;
 
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.tmt.kontroll.test.persistence.dao.PersistenceEntityDaoServiceTest;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.annotations.value.TestMethodAnnotationBasedValueProvisionPreparer;
@@ -33,21 +34,21 @@ public class KontrollDbUnitRunner {
 
 	TestMethodAnnotationBasedValueProvisionPreparer annotationBasedValueProvisionPreparer = TestMethodAnnotationBasedValueProvisionPreparer.instance();
 
-	public void beforeTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod) throws Exception {
-		this.annotationBasedValueProvisionPreparer.prepare(testMethod);
-		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class));
+	public void beforeTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod, final ValueProvisionHandler valueProvisionHandler) throws Exception {
+		this.annotationBasedValueProvisionPreparer.prepare(testMethod, valueProvisionHandler);
+		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class), valueProvisionHandler);
 	}
 
-	public void afterTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod) throws Exception {
+	public void afterTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod, final ValueProvisionHandler valueProvisionHandler) throws Exception {
 		this.verfiy(testContext);
-		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class));
+		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class), valueProvisionHandler);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setupOrTearDown(final KontrollDbUnitTestContext testContext, final PersistenceTestConfig config) throws Exception {
+	private void setupOrTearDown(final KontrollDbUnitTestContext testContext, final PersistenceTestConfig config, final ValueProvisionHandler valueProvisionHandler) throws Exception {
 		final Class<? extends PersistenceEntityDaoServiceTest<?,?,?,?>> testClass = (Class<? extends PersistenceEntityDaoServiceTest<?, ?, ?, ?>>) testContext.getTestClass();
 		final IDatabaseConnection connection = testContext.getConnection();
-		TestDataPreparationHandler.instance().prepare(config, retrieveEntityClassName(testClass));
+		TestDataPreparationHandler.instance().prepare(config, retrieveEntityClassName(testClass), valueProvisionHandler);
 		final DatabaseOperation operation= testStrategyToDatabaseOperationMap.get(config.testStrategy());
 		operation.execute(connection, DataSetHolder.instance().getDataSetBefore());
 	}

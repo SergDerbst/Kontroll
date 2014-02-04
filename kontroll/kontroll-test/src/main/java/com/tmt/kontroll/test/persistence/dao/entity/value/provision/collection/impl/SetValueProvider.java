@@ -4,19 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvider;
 
 public class SetValueProvider extends CollectionValueProvider<Object, Set<Object>> {
 
-	private static class InstanceHolder {
-		public static SetValueProvider instance = new SetValueProvider();
-	}
-
-	public static SetValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new SetValueProvider();
-		}
-		return InstanceHolder.instance;
+	public SetValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

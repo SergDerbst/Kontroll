@@ -8,22 +8,16 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
 public class LocaleValueProvider extends SimpleValueProvider<Locale> {
 
-	private static class InstanceHolder {
-		public static LocaleValueProvider instance = new LocaleValueProvider();
-	}
-
-	public static LocaleValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new LocaleValueProvider();
-		}
-		return  InstanceHolder.instance;
-	}
-
 	private static final SortedSet<Locale> localeValueSet = setUpLocaleValueSet();
+
+	public LocaleValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
+	}
 
 	@Override
 	protected Locale instantiateDefaultValue(final Class<?>... types) {

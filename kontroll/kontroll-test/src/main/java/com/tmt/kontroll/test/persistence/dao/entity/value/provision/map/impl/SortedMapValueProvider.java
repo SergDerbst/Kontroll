@@ -3,19 +3,13 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.impl;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvider;
 
 public class SortedMapValueProvider extends MapValueProvider<Object, Object, SortedMap<Object, Object>> {
 
-	private static class InstanceHolder {
-		public static SortedMapValueProvider instance = new SortedMapValueProvider();
-	}
-
-	public static SortedMapValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new SortedMapValueProvider();
-		}
-		return InstanceHolder.instance;
+	public SortedMapValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

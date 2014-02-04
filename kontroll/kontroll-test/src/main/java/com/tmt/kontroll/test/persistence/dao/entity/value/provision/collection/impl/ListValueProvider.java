@@ -3,19 +3,13 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.collection.CollectionValueProvider;
 
 public class ListValueProvider extends CollectionValueProvider<Object, List<Object>> {
 
-	private static class InstanceHolder {
-		public static ListValueProvider instance = new ListValueProvider();
-	}
-
-	public static ListValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new ListValueProvider();
-		}
-		return InstanceHolder.instance;
+	public ListValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

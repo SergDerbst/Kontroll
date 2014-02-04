@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandlerHolder;
 
 public class EntityInstanceProviderTest {
 
@@ -73,7 +74,7 @@ public class EntityInstanceProviderTest {
 		public List<TestEntitySimpleFields> entityListField;
 	}
 
-	private final ValueProvisionHandler valueProvisionHandler = ValueProvisionHandler.instance();
+	private final ValueProvisionHandler valueProvisionHandler = ValueProvisionHandlerHolder.instance().fetchValueProvisionChain(this.getClass().getName());
 	private final EntityInstanceProvider toTest = EntityInstanceProvider.instance();
 
 	private long referenceTimestampValue;
@@ -87,7 +88,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatEntityIsProvidedWithSimpleValues() {
 		//when
-		TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class);
+		TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 		assertEquals(false, provided.booleanField);
@@ -103,7 +104,7 @@ public class EntityInstanceProviderTest {
 		assertEquals(this.referenceTimestampValue + 1, provided.timestampField.getTime());
 		assertEquals(TestEnum.Bla, provided.enumField);
 		//when
-		provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class);
+		provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 		assertEquals(true, provided.booleanField);
@@ -123,7 +124,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatFieldsOfSuperClassAreHandledProperly() {
 		//when
-		final TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntityInherited.class);
+		final TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntityInherited.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 		assertEquals(false, provided.booleanField);
@@ -143,7 +144,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatStaticAndFinalFieldsAreHandledProperly() {
 		//when
-		final TestEntityStaticFinalFields provided = (TestEntityStaticFinalFields) this.toTest.provide(TestEntityStaticFinalFields.class);
+		final TestEntityStaticFinalFields provided = (TestEntityStaticFinalFields) this.toTest.provide(TestEntityStaticFinalFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 		assertEquals("blubb", TestEntityStaticFinalFields.staticFinalField);
@@ -154,7 +155,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatEntityIsProvidedWithCollectionValues() {
 		//when
-		final TestEntityCollectionFields provided = (TestEntityCollectionFields) this.toTest.provide(TestEntityCollectionFields.class);
+		final TestEntityCollectionFields provided = (TestEntityCollectionFields) this.toTest.provide(TestEntityCollectionFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 
@@ -177,7 +178,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatEntityIsProvidedWithMapValues() {
 		//when
-		final TestEntityMapFields provided = (TestEntityMapFields) this.toTest.provide(TestEntityMapFields.class);
+		final TestEntityMapFields provided = (TestEntityMapFields) this.toTest.provide(TestEntityMapFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 
@@ -203,7 +204,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatEntityIsProvidedWithArrayValues() {
 		//when
-		final TestEntityArrayFields provided = (TestEntityArrayFields) this.toTest.provide(TestEntityArrayFields.class);
+		final TestEntityArrayFields provided = (TestEntityArrayFields) this.toTest.provide(TestEntityArrayFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 		assertNotNull(provided.stringArrayField);
@@ -214,7 +215,7 @@ public class EntityInstanceProviderTest {
 	@Test
 	public void testThatEntityIsProvidedWithEntityValues() {
 		//when
-		final TestEntityEntityFields provided = (TestEntityEntityFields) this.toTest.provide(TestEntityEntityFields.class);
+		final TestEntityEntityFields provided = (TestEntityEntityFields) this.toTest.provide(TestEntityEntityFields.class, this.valueProvisionHandler);
 		//then
 		assertNotNull(provided);
 

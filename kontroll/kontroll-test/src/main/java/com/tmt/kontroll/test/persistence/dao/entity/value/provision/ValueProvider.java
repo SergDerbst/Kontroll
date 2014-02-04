@@ -6,6 +6,7 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.responsibility.ValueHa
 
 public abstract class ValueProvider<V> {
 
+	private ValueProvisionHandler provisionHandler;
 	private ValueIncrementor<V> incrementor;
 	private ValueInstantiator<V> instantiator;
 	private ValueHandlingResponsibilityClaimer responsibilityClaimer;
@@ -13,6 +14,10 @@ public abstract class ValueProvider<V> {
 	private V initialValue;
 	private V currentValue;
 	private ValueProvider<?> nextProvider;
+
+	protected ValueProvider(final ValueProvisionHandler provisionHandler) {
+		this.provisionHandler = provisionHandler;
+	}
 
 	protected abstract boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types);
 
@@ -157,5 +162,13 @@ public abstract class ValueProvider<V> {
 
 	protected void setCurrentValue(final V currentValue) {
 		this.currentValue = currentValue;
+	}
+
+	protected ValueProvisionHandler getValueProvisionHandler() {
+		return this.provisionHandler;
+	}
+
+	public void setValueProvisionHandler(final ValueProvisionHandler provisionHandler) {
+		this.provisionHandler = provisionHandler;
 	}
 }

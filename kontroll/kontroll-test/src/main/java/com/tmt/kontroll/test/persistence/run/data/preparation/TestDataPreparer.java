@@ -12,6 +12,7 @@ import org.dbunit.dataset.builder.DataSetBuilder;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.test.persistence.dao.entity.EntityInstanceProvider;
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.data.DataSetHolder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.compliance.TableComplianceAssurer;
@@ -25,7 +26,7 @@ import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
  * <ul>
  * <li>entities that have to exist in the data base before the test</li>
  * <li>entities as references for the test itself</li>
- * <li>entities that represent the expected state of the data base after the test</li>
+ * <li>entities that represent the expected state of the data base after the test.</li>
  * </ul>
  * </p>
  * Furthermore it will assure that datasets are compliant with all managed entities, meaning
@@ -41,18 +42,18 @@ public abstract class TestDataPreparer {
 
 	protected abstract boolean isResponsible(final PersistenceTestConfig config);
 
-	protected abstract void doPreparation(final PersistenceTestConfig config, final String entityClassName) throws Exception;
+	protected abstract void doPreparation(final PersistenceTestConfig config, final String entityClassName, final ValueProvisionHandler valueProvisionHandler) throws Exception;
 
-	public void prepare(final PersistenceTestConfig config, final String entityClassName) throws Exception {
+	public void prepare(final PersistenceTestConfig config, final String entityClassName, final ValueProvisionHandler valueProvisionHandler) throws Exception {
 		if (this.isResponsible(config)) {
 			this.getReferenceHolder().clearReferences();
-			this.doPreparation(config, entityClassName);
+			this.doPreparation(config, entityClassName, valueProvisionHandler);
 			return;
 		}
 		if (this.nextPreparer == null) {
 			throw NoTestPreparerFoundException.prepare(config, entityClassName);
 		}
-		this.nextPreparer.prepare(config, entityClassName);
+		this.nextPreparer.prepare(config, entityClassName, valueProvisionHandler);
 	}
 
 	protected IDataSet buildDataSet(final List<Object> entities) throws Exception {

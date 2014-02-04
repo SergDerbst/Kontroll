@@ -1,18 +1,12 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
 public class DoubleValueProvider extends SimpleValueProvider<Double> {
 
-	private static class InstanceHolder {
-		public static DoubleValueProvider instance = new DoubleValueProvider();
-	}
-
-	public static DoubleValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new DoubleValueProvider();
-		}
-		return  InstanceHolder.instance;
+	public DoubleValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

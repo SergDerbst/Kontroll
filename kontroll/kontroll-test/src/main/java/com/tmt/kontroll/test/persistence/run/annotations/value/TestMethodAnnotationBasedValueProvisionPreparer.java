@@ -26,8 +26,7 @@ public class TestMethodAnnotationBasedValueProvisionPreparer {
 		return InstanceHolder.instance;
 	}
 
-	public <V> void prepare(final Method testMethod) {
-		final ValueProvisionHandler valueProvisionHandler = ValueProvisionHandler.instance();
+	public <V> void prepare(final Method testMethod, final ValueProvisionHandler valueProvisionHandler) {
 		this.prepareAnnotationBasedValueProvision(testMethod, valueProvisionHandler);
 		this.prepareDirectlyDeclaredValueProvision(testMethod, valueProvisionHandler);
 	}

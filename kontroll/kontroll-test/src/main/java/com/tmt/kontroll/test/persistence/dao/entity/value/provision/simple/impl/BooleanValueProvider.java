@@ -1,18 +1,12 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
 public class BooleanValueProvider extends SimpleValueProvider<Boolean> {
 
-	private static class InstanceHolder {
-		public static BooleanValueProvider instance = new BooleanValueProvider();
-	}
-
-	public static BooleanValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new BooleanValueProvider();
-		}
-		return  InstanceHolder.instance;
+	public BooleanValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

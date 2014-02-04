@@ -21,17 +21,6 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl.
 
 public class ValueProvisionHandler {
 
-	private static class InstanceHolder {
-		public static ValueProvisionHandler instance = new ValueProvisionHandler();
-	}
-
-	public static ValueProvisionHandler instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new ValueProvisionHandler();
-		}
-		return InstanceHolder.instance;
-	}
-
 	private ValueProvider<?> firstProvider;
 
 	public ValueProvisionHandler() {
@@ -39,25 +28,24 @@ public class ValueProvisionHandler {
 	}
 
 	public void setUpValueProvision() {
-		this.firstProvider = EntityValueProvider.instance();
-		this.firstProvider
-		.setNextProvider(BooleanValueProvider.instance())
-		.setNextProvider(ByteValueProvider.instance())
-		.setNextProvider(CharacterValueProvider.instance())
-		.setNextProvider(DoubleValueProvider.instance())
-		.setNextProvider(FloatValueProvider.instance())
-		.setNextProvider(IntegerValueProvider.instance())
-		.setNextProvider(LongValueProvider.instance())
-		.setNextProvider(ShortValueProvider.instance())
-		.setNextProvider(StringValueProvider.instance())
-		.setNextProvider(EnumValueProvider.instance())
-		.setNextProvider(TimestampValueProvider.instance())
-		.setNextProvider(LocaleValueProvider.instance())
-		.setNextProvider(ListValueProvider.instance())
-		.setNextProvider(SetValueProvider.instance())
-		.setNextProvider(SortedSetValueProvider.instance())
-		.setNextProvider(DefaultMapValueProvider.instance())
-		.setNextProvider(SortedMapValueProvider.instance());
+		this.addValueProvider(new EntityValueProvider(this));
+		this.addValueProvider(new BooleanValueProvider(this));
+		this.addValueProvider(new ByteValueProvider(this));
+		this.addValueProvider(new CharacterValueProvider(this));
+		this.addValueProvider(new DoubleValueProvider(this));
+		this.addValueProvider(new FloatValueProvider(this));
+		this.addValueProvider(new IntegerValueProvider(this));
+		this.addValueProvider(new LongValueProvider(this));
+		this.addValueProvider(new ShortValueProvider(this));
+		this.addValueProvider(new StringValueProvider(this));
+		this.addValueProvider(new EnumValueProvider(this));
+		this.addValueProvider(new TimestampValueProvider(this));
+		this.addValueProvider(new LocaleValueProvider(this));
+		this.addValueProvider(new ListValueProvider(this));
+		this.addValueProvider(new SetValueProvider(this));
+		this.addValueProvider(new SortedSetValueProvider(this));
+		this.addValueProvider(new DefaultMapValueProvider(this));
+		this.addValueProvider(new SortedMapValueProvider(this));
 	}
 
 	public Class<? extends ValueProvider<?>> fetchValueProviderType(final String fieldName, final Class<?>... types) {
@@ -73,7 +61,7 @@ public class ValueProvisionHandler {
 	}
 
 	public Object provide(final String fieldName, final Class<?>... types) {
-		ValueProvisionHandlingPreparator.instance().prepare(fieldName, types);
+		ValueProvisionHandlerPreparer.instance().prepare(this, fieldName, types);
 		return this.firstProvider.provide(fieldName, types);
 	}
 

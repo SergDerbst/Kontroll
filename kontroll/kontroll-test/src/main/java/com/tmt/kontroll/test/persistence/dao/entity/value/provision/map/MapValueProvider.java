@@ -8,11 +8,13 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisi
 
 public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueProvider<M> {
 
-	private ValueProvisionHandler valueProvisionHandler;
-
 	protected abstract boolean claimMapValueResponsibility(final Class<?> mapType, final Class<?> keyType, final Class<?> valueType);
 
 	protected abstract M instantiateEmptyMap();
+
+	protected MapValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
+	}
 
 	@Override
 	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
@@ -22,10 +24,9 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	@Override
 	@SuppressWarnings("unchecked")
 	protected M makeNextDefaultValue(final M value) {
-		this.assureValueProvisionHandler();
 		final M toIncrease = this.instantiateEmptyMap();
 		for (final Entry<K, V> entry : super.getCurrentValue().entrySet()) {
-			toIncrease.put((K) this.valueProvisionHandler.fetchNextValue(entry.getKey()), (V) this.valueProvisionHandler.fetchNextValue(entry.getValue()));
+			toIncrease.put((K) super.getValueProvisionHandler().fetchNextValue(entry.getKey()), (V) super.getValueProvisionHandler().fetchNextValue(entry.getValue()));
 		}
 		return toIncrease;
 	}
@@ -33,19 +34,8 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	@Override
 	@SuppressWarnings("unchecked")
 	protected M instantiateDefaultValue(final Class<?>... types) {
-		this.assureValueProvisionHandler();
 		final M map = this.instantiateEmptyMap();
-		map.put((K) this.valueProvisionHandler.provide(types[1]), (V) this.valueProvisionHandler.provide(types[2]));
+		map.put((K) super.getValueProvisionHandler().provide(types[1]), (V) super.getValueProvisionHandler().provide(types[2]));
 		return map;
-	}
-
-	protected void setValueProvisionHandler(final ValueProvisionHandler valueProvisionHandler) {
-		this.valueProvisionHandler = valueProvisionHandler;
-	}
-
-	private void assureValueProvisionHandler() {
-		if (this.valueProvisionHandler == null) {
-			this.setValueProvisionHandler(ValueProvisionHandler.instance());
-		}
 	}
 }

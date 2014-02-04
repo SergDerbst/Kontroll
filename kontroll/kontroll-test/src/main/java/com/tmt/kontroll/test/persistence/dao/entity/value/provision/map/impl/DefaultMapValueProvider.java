@@ -5,19 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.map.MapValueProvider;
 
 public class DefaultMapValueProvider extends MapValueProvider<Object, Object, Map<Object, Object>> {
 
-	private static class InstanceHolder {
-		public static DefaultMapValueProvider instance = new DefaultMapValueProvider();
-	}
-
-	public static DefaultMapValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new DefaultMapValueProvider();
-		}
-		return InstanceHolder.instance;
+	public DefaultMapValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

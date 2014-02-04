@@ -1,18 +1,12 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
 public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 
-	private static class InstanceHolder {
-		public static EnumValueProvider instance = new EnumValueProvider();
-	}
-
-	public static EnumValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new EnumValueProvider();
-		}
-		return  InstanceHolder.instance;
+	public EnumValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

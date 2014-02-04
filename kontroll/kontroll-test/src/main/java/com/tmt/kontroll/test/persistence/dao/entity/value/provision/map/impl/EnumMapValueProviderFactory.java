@@ -15,10 +15,8 @@ public class EnumMapValueProviderFactory {
 		return InstanceHolder.instance;
 	}
 
-	ValueProvisionHandler valueProvisionHandler = ValueProvisionHandler.instance();
-
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	public EnumMapValueProvider create(final Class<?> enumKeyType) {
-		return new EnumMapValueProvider(enumKeyType, this.valueProvisionHandler);
+	public EnumMapValueProvider create(final ValueProvisionHandler valueProvisionHandler, final Class<?> enumKeyType) {
+		return new EnumMapValueProvider(enumKeyType, valueProvisionHandler);
 	}
 }

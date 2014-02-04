@@ -1,18 +1,12 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
 public class CharacterValueProvider extends SimpleValueProvider<Character> {
 
-	private static class InstanceHolder {
-		public static CharacterValueProvider instance = new CharacterValueProvider();
-	}
-
-	public static CharacterValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new CharacterValueProvider();
-		}
-		return  InstanceHolder.instance;
+	public CharacterValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

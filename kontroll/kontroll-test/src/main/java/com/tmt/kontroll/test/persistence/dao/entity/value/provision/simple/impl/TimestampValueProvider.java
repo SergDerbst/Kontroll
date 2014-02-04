@@ -2,19 +2,13 @@ package com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.impl
 
 import java.sql.Timestamp;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.simple.SimpleValueProvider;
 
 public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
 
-	private static class InstanceHolder {
-		public static TimestampValueProvider instance = new TimestampValueProvider();
-	}
-
-	public static TimestampValueProvider instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new TimestampValueProvider();
-		}
-		return  InstanceHolder.instance;
+	public TimestampValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation;
 
+import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.CountTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.DeleteTestDataPreparer;
@@ -37,9 +38,9 @@ public class TestDataPreparationHandler {
 		this.addTestDataPreparer(UpdateTestDataPreparer.instance());
 	}
 
-	public void prepare(final PersistenceTestConfig config, final String entityClassName) {
+	public void prepare(final PersistenceTestConfig config, final String entityClassName, final ValueProvisionHandler valueProvisionHandler) {
 		try {
-			this.firstPreparer.prepare(config, entityClassName);
+			this.firstPreparer.prepare(config, entityClassName, valueProvisionHandler);
 		} catch (final Exception e) {
 			throw new TestPreparationFailedException(e);
 		}

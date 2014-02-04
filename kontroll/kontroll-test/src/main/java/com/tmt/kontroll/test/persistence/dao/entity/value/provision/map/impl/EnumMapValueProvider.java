@@ -9,8 +9,9 @@ public class EnumMapValueProvider<E extends Enum<E>> extends MapValueProvider<E,
 
 	private final Class<E> enumKeyType;
 
-	protected EnumMapValueProvider(final Class<E> enumKeyType,
-	                               final ValueProvisionHandler valueProvisionHandler) {
+	public EnumMapValueProvider(final Class<E> enumKeyType,
+	                            final ValueProvisionHandler valueProvisionHandler) {
+		super(valueProvisionHandler);
 		this.enumKeyType = enumKeyType;
 		super.setValueProvisionHandler(valueProvisionHandler);
 	}

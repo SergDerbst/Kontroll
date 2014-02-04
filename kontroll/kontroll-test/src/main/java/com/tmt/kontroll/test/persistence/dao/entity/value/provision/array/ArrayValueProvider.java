@@ -12,6 +12,7 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 
 	public ArrayValueProvider(final Class<C> componentType,
 	                          final ValueProvisionHandler valueProvisionHandler) {
+		super(valueProvisionHandler);
 		this.componentType = componentType;
 		this.valueProvisionHandler = valueProvisionHandler;
 	}

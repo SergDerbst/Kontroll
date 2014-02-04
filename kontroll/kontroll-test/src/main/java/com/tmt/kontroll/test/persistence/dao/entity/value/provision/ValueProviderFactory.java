@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.dao.entity.value.provision;
 
+import java.lang.reflect.Method;
+
 import com.tmt.kontroll.test.persistence.dao.entity.value.incrementation.ValueIncrementor;
 import com.tmt.kontroll.test.persistence.dao.entity.value.instantiation.ValueInstantiator;
 import com.tmt.kontroll.test.persistence.dao.entity.value.responsibility.ValueHandlingResponsibilityClaimer;
@@ -19,13 +21,16 @@ public class ValueProviderFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <V> ValueProvider<V> create(final ValueInstantiator<V> instantiator,
+	public <V> ValueProvider<V> create(final Class<?> testClass,
+	                                   final Method testMethod,
+	                                   final ValueInstantiator<V> instantiator,
 	                                   final ValueIncrementor<V> incrementor,
 	                                   final ValueHandlingResponsibilityClaimer responsibilityClaimer,
 	                                   final String fieldName,
 	                                   final Class<?>... types) {
 		try {
-			final ValueProvider<V> valueProvider = (ValueProvider<V>) ValueProvisionHandler.instance().fetchValueProviderType(fieldName, types).newInstance();
+			final ValueProvisionHandler valueProvisionHandler = ValueProvisionHandlerHolder.instance().fetchValueProvisionHandler(testClass, testMethod);
+			final ValueProvider<V> valueProvider = (ValueProvider<V>) valueProvisionHandler.fetchValueProviderType(fieldName, types).newInstance();
 			valueProvider.setInstantiator(instantiator);
 			valueProvider.setIncrementor(incrementor);
 			valueProvider.setResponsibilityClaimer(responsibilityClaimer);

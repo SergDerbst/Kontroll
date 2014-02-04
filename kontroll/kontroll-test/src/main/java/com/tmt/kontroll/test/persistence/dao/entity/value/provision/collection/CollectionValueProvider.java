@@ -8,11 +8,13 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisi
 
 public abstract class CollectionValueProvider<V, C extends Collection<V>> extends ValueProvider<C>{
 
-	private ValueProvisionHandler valueProvisionHandler;
-
 	protected abstract boolean claimCollectionValueResponsibility(final Class<?> collectionType, final Class<?> itemType);
 
 	protected abstract C instantiateEmptyCollection();
+
+	protected CollectionValueProvider(final ValueProvisionHandler provisionHandler) {
+		super(provisionHandler);
+	}
 
 	@Override
 	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
@@ -22,11 +24,10 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 	@Override
 	@SuppressWarnings("unchecked")
 	protected C makeNextDefaultValue(final C value) {
-		this.assureValueProvisionHandler();
 		final C toIncrease = this.instantiateEmptyCollection();
 		final Iterator<? extends Object> iterator = super.getCurrentValue().iterator();
 		while(iterator.hasNext()) {
-			toIncrease.add((V) this.valueProvisionHandler.fetchNextValue(iterator.next()));
+			toIncrease.add((V) super.getValueProvisionHandler().fetchNextValue(iterator.next()));
 		}
 		return toIncrease;
 	}
@@ -34,15 +35,8 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 	@Override
 	@SuppressWarnings("unchecked")
 	protected C instantiateDefaultValue(final Class<?>... types) {
-		this.assureValueProvisionHandler();
 		final C collection = this.instantiateEmptyCollection();
-		collection.add((V) this.valueProvisionHandler.provide(types[1]));
+		collection.add((V) super.getValueProvisionHandler().provide(types[1]));
 		return collection;
-	}
-
-	private void assureValueProvisionHandler() {
-		if (this.valueProvisionHandler == null) {
-			this.valueProvisionHandler = ValueProvisionHandler.instance();
-		}
 	}
 }

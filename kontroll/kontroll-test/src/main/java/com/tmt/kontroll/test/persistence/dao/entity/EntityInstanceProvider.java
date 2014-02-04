@@ -22,11 +22,11 @@ public class EntityInstanceProvider {
 		return InstanceHolder.instance;
 	}
 
-	public Object provide(final Class<?> entityClass) {
+	public Object provide(final Class<?> entityClass, final ValueProvisionHandler valueProvisionHandler) {
 		try {
 			final Object entity = entityClass.newInstance();
 			for (final Field field : retrieveFieldsForValueProvision(entityClass)) {
-				this.setFieldValue(entity, field);
+				this.setFieldValue(entity, field, valueProvisionHandler);
 			}
 			return entity;
 		} catch (final Exception e) {
@@ -34,19 +34,18 @@ public class EntityInstanceProvider {
 		}
 	}
 
-	private void setFieldValue(final Object entity, final Field field) throws Exception {
+	private void setFieldValue(final Object entity, final Field field, final ValueProvisionHandler valueProvisionHandler) throws Exception {
 		field.setAccessible(true);
 		final String fieldName = field.getName();
 		final Class<?> fieldType = field.getType();
-		final ValueProvisionHandler provisionHandler = ValueProvisionHandler.instance();
 		if (Collection.class.isAssignableFrom(fieldType)) {
-			field.set(entity, provisionHandler.provide(fieldName, fieldType, retrieveTypeArgumentsOfField(field, 0)));
+			field.set(entity, valueProvisionHandler.provide(fieldName, fieldType, retrieveTypeArgumentsOfField(field, 0)));
 		} else if (Map.class.isAssignableFrom(fieldType)) {
-			field.set(entity, provisionHandler.provide(fieldName, fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
+			field.set(entity, valueProvisionHandler.provide(fieldName, fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
 		} else if (fieldType.isArray()) {
-			field.set(entity, provisionHandler.provide(fieldName, fieldType, fieldType.getComponentType()));
+			field.set(entity, valueProvisionHandler.provide(fieldName, fieldType, fieldType.getComponentType()));
 		}	else {
-			field.set(entity, provisionHandler.provide(fieldName, fieldType));
+			field.set(entity, valueProvisionHandler.provide(fieldName, fieldType));
 		}
 	}
 }
