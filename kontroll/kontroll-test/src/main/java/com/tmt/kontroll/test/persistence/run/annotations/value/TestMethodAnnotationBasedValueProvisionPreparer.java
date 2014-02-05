@@ -6,12 +6,12 @@ import java.util.Arrays;
 
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.tmt.kontroll.test.persistence.dao.entity.value.instantiation.ValueInstantiator;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.dao.entity.value.responsibility.ValueHandlingResponsibilityClaimer;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.annotations.value.responsibility.ValueHandlingResponsibility;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.instantiation.ValueInstantiator;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.responsibility.ValueHandlingResponsibilityClaimer;
 
 public class TestMethodAnnotationBasedValueProvisionPreparer {
 

@@ -12,9 +12,9 @@ import org.dbunit.dataset.builder.DataRowBuilder;
 import org.dbunit.dataset.builder.DataSetBuilder;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.test.persistence.dao.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.data.preparation.compliance.TableComplianceAssurer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.reference.Reference;
 import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.exceptions.NoTestPreparerFoundException;

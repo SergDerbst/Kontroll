@@ -4,7 +4,7 @@ import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.
 
 import java.lang.reflect.Method;
 
-import com.tmt.kontroll.test.persistence.dao.PersistenceEntityDaoServiceTest;
+import com.tmt.kontroll.test.persistence.PersistenceEntityDaoServiceTest;
 import com.tmt.kontroll.test.persistence.run.exceptions.EntityClassNotFoundException;
 
 public class PersistenceDaoEntityTestHelper {

@@ -11,13 +11,13 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import com.tmt.kontroll.test.persistence.dao.PersistenceEntityDaoServiceTest;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.PersistenceEntityDaoServiceTest;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.annotations.value.TestMethodAnnotationBasedValueProvisionPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparationHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 
 public class KontrollDbUnitRunner {

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.dbunit.dataset.IDataSet;
 
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.data.reference.Reference;
 import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
 

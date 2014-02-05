@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 
 /**
