@@ -16,7 +16,7 @@ import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisi
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.annotations.value.TestMethodAnnotationBasedValueProvisionPreparer;
-import com.tmt.kontroll.test.persistence.run.data.DataSetHolder;
+import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparationHandler;
 import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 
@@ -34,29 +34,37 @@ public class KontrollDbUnitRunner {
 
 	TestMethodAnnotationBasedValueProvisionPreparer annotationBasedValueProvisionPreparer = TestMethodAnnotationBasedValueProvisionPreparer.instance();
 
-	public void beforeTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod, final ValueProvisionHandler valueProvisionHandler) throws Exception {
+	public void beforeTestMethod(final KontrollDbUnitTestContext testContext,
+	                             final Method testMethod,
+	                             final ValueProvisionHandler valueProvisionHandler) throws Exception {
+		TestDataHolder.newInstance();
 		this.annotationBasedValueProvisionPreparer.prepare(testMethod, valueProvisionHandler);
-		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class), valueProvisionHandler);
+		this.setupOrTearDown(testContext, testMethod, valueProvisionHandler);
 	}
 
-	public void afterTestMethod(final KontrollDbUnitTestContext testContext, final Method testMethod, final ValueProvisionHandler valueProvisionHandler) throws Exception {
+	public void afterTestMethod(final KontrollDbUnitTestContext testContext,
+	                            final Method testMethod,
+	                            final ValueProvisionHandler valueProvisionHandler) throws Exception {
 		this.verfiy(testContext);
-		this.setupOrTearDown(testContext, testMethod.getAnnotation(PersistenceTestConfig.class), valueProvisionHandler);
+		this.setupOrTearDown(testContext, testMethod, valueProvisionHandler);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setupOrTearDown(final KontrollDbUnitTestContext testContext, final PersistenceTestConfig config, final ValueProvisionHandler valueProvisionHandler) throws Exception {
+	private void setupOrTearDown(final KontrollDbUnitTestContext testContext,
+	                             final Method testMethod,
+	                             final ValueProvisionHandler valueProvisionHandler) throws Exception {
 		final Class<? extends PersistenceEntityDaoServiceTest<?,?,?,?>> testClass = (Class<? extends PersistenceEntityDaoServiceTest<?, ?, ?, ?>>) testContext.getTestClass();
 		final IDatabaseConnection connection = testContext.getConnection();
-		TestDataPreparationHandler.instance().prepare(config, retrieveEntityClassName(testClass), valueProvisionHandler);
+		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
+		TestDataPreparationHandler.instance().prepare(config, retrieveEntityClassName(testClass));
 		final DatabaseOperation operation= testStrategyToDatabaseOperationMap.get(config.testStrategy());
-		operation.execute(connection, DataSetHolder.instance().getDataSetBefore());
+		operation.execute(connection, TestDataHolder.instance().getDataSetBefore());
 	}
 
 	private void verfiy(final KontrollDbUnitTestContext testContext) throws Exception {
 		final IDatabaseConnection connection = testContext.getConnection();
 		final IDataSet actualDataSet = connection.createDataSet();
-		final IDataSet expectedDataSet = DataSetHolder.instance().getDataSetAfter();
-		DatabaseAssertionMode.DEFAULT.getDatabaseAssertion().assertEquals(expectedDataSet, actualDataSet);
+		final IDataSet expectedDataSet = TestDataHolder.instance().getDataSetAfter();
+		DatabaseAssertionMode.NON_STRICT.getDatabaseAssertion().assertEquals(expectedDataSet, actualDataSet);
 	}
 }

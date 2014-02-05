@@ -8,6 +8,11 @@ import java.lang.annotation.Target;
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 
+/**
+ * Annotation for basic test configuration of prepared persistence tests.
+ * 
+ * @author Serg Derbst
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface PersistenceTestConfig {
@@ -17,4 +22,8 @@ public @interface PersistenceTestConfig {
 	int numberOfEntities() default 1;
 
 	Class<? extends ValueProvider<?>>[] valueProviders() default {};
+
+	boolean ignoreEntityId() default false;
+
+	String[] ignoredFields() default {};
 }

@@ -1,5 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -49,6 +50,17 @@ public class ClassReflectionHelper {
 				fields.add(field);
 			}
 			currentClass = currentClass.getSuperclass();
+		}
+		return fields;
+	}
+
+	public static List<Field> retrieveAnnotatedFields(final Class<?> objectClass, final Class<? extends Annotation> annotationClass) {
+		final List<Field> fields = new ArrayList<>();
+		for (final Field field : retrieveAllFields(objectClass)) {
+			final Annotation annotation = field.getAnnotation(annotationClass);
+			if (annotation != null && annotation.annotationType().equals(annotationClass)) {
+				fields.add(field);
+			}
 		}
 		return fields;
 	}

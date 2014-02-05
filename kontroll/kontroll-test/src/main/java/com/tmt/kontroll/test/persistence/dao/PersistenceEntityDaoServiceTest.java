@@ -21,8 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tmt.kontroll.persistence.daos.CrudDao;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
+import com.tmt.kontroll.test.persistence.run.data.reference.Reference;
 import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
-import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceHolder;
 import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,12 +32,11 @@ import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
 @TransactionConfiguration(defaultRollback = false)
 public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID extends Serializable, REPO extends JpaRepository<ENTITY, ID>, S extends CrudDao<ENTITY, ID>> {
 
-	protected static final ReferenceAsserter asserter = ReferenceAsserter.instance();
-	protected static final ReferenceHolder referenceHolder = ReferenceHolder.instance();
-
 	protected abstract S getDaoService();
 
-	public abstract void test_save();
+	public abstract void test_save() throws Exception;
+
+	public abstract void test_saveAll() throws Exception;
 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Count, numberOfEntities = 2)
@@ -48,9 +48,9 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Delete)
 	@SuppressWarnings("unchecked")
-	public void test_delete() {
+	public void test_delete() throws Exception {
 		//given
-		final ID id = (ID) referenceHolder.getReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) this.fetchReferences().get(0).getReferenceValue("id");
 		//when
 		this.getDaoService().delete(id);
 		//then
@@ -60,9 +60,9 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Exists)
 	@SuppressWarnings("unchecked")
-	public void test_exists() {
+	public void test_exists() throws Exception {
 		//given
-		final ID id = (ID) referenceHolder.getReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) this.fetchReferences().get(0).getReferenceValue("id");
 		//when
 		final boolean exists = this.getDaoService().exists(id);
 		//then
@@ -72,26 +72,35 @@ public abstract class PersistenceEntityDaoServiceTest<ENTITY extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Find, numberOfEntities = 2)
 	@SuppressWarnings("unchecked")
-	public void test_findAll() {
+	public void test_findAll() throws Exception {
 		//when
 		final List<?> allFound = this.getDaoService().findAll();
 		//then
-		asserter.assertReferences(referenceHolder.getReferences(), (List<Object>) allFound);
+		this.fetchReferenceAsserter().assertReferences(this.fetchReferences(), (List<Object>) allFound);
 	}
 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Find)
 	@SuppressWarnings({"unchecked", "serial", "rawtypes"})
-	public void test_findById() {
+	public void test_findById() throws Exception {
 		//given
-		final ID id = (ID) referenceHolder.getReferences().get(0).getReferenceValue("id");
+		final List<Reference> references = this.fetchReferences();
+		final ID id = (ID) references.get(0).getReferenceValue("id");
 		//when
 		final ENTITY found = this.getDaoService().findById(id);
 		//then
-		asserter.assertReferences(referenceHolder.getReferences(), new ArrayList() {
+		this.fetchReferenceAsserter().assertReferences(references, new ArrayList() {
 			{
 				this.add(found);
 			}
 		});
+	}
+
+	protected ReferenceAsserter fetchReferenceAsserter() {
+		return TestDataHolder.instance().getReferenceAsserter();
+	}
+
+	protected List<Reference> fetchReferences() {
+		return TestDataHolder.instance().getReferences();
 	}
 }

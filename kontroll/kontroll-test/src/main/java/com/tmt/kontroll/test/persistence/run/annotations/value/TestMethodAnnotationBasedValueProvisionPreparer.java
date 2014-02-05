@@ -50,7 +50,8 @@ public class TestMethodAnnotationBasedValueProvisionPreparer {
 			if (responsibility != null) {
 				final ValueHandlingResponsibilityClaimer responsibilityClaimer = this.prepareResponsibilityClaim(testMethod);
 				final ValueInstantiator<Object> instantiator = this.prepareValueInstantiation(responsibility, testMethod.getAnnotations());
-				final ValueProvider<V> valueProvider = (ValueProvider<V>) valueProvisionHandler.fetchValueProviderType(responsibility.fieldName(), responsibility.types()).newInstance();
+				final Class<? extends ValueProvider<V>> valueProviderType = (Class<? extends ValueProvider<V>>) valueProvisionHandler.fetchValueProviderType(responsibility.fieldName(), responsibility.types());
+				final ValueProvider<V> valueProvider = valueProviderType.getConstructor(ValueProvisionHandler.class).newInstance(valueProvisionHandler);
 				valueProvider.setResponsibilityClaimer(responsibilityClaimer);
 				valueProvider.setInstantiator((ValueInstantiator<V>) instantiator);
 				valueProvisionHandler.addValueProvider(valueProvider);

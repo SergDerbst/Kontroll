@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
 
 public class EntityInstanceProvider {
 
@@ -22,11 +23,14 @@ public class EntityInstanceProvider {
 		return InstanceHolder.instance;
 	}
 
-	public Object provide(final Class<?> entityClass, final ValueProvisionHandler valueProvisionHandler) {
+	public Object provide(final Class<?> entityClass) {
 		try {
 			final Object entity = entityClass.newInstance();
 			for (final Field field : retrieveFieldsForValueProvision(entityClass)) {
-				this.setFieldValue(entity, field, valueProvisionHandler);
+				if (TestDataHolder.instance().getReferenceAsserter().getIgnoredFieldNames().contains(field.getName())) {
+					continue;
+				}
+				this.setFieldValue(entity, field);
 			}
 			return entity;
 		} catch (final Exception e) {
@@ -34,10 +38,11 @@ public class EntityInstanceProvider {
 		}
 	}
 
-	private void setFieldValue(final Object entity, final Field field, final ValueProvisionHandler valueProvisionHandler) throws Exception {
+	private void setFieldValue(final Object entity, final Field field) throws Exception {
 		field.setAccessible(true);
 		final String fieldName = field.getName();
 		final Class<?> fieldType = field.getType();
+		final ValueProvisionHandler valueProvisionHandler = TestDataHolder.instance().fetchValueProvisionHandler();
 		if (Collection.class.isAssignableFrom(fieldType)) {
 			field.set(entity, valueProvisionHandler.provide(fieldName, fieldType, retrieveTypeArgumentsOfField(field, 0)));
 		} else if (Map.class.isAssignableFrom(fieldType)) {

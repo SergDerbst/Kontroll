@@ -8,25 +8,19 @@ import org.springframework.test.context.TestContext;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.dataset.DataSetLoader;
 import com.github.springtestdbunit.operation.DatabaseOperationLookup;
-import com.tmt.kontroll.test.persistence.dao.entity.value.provision.ValueProvisionHandlerHolder;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
 
 public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionListener {
 
-	private final ValueProvisionHandlerHolder valueProvisionHandlerHolder = ValueProvisionHandlerHolder.instance();
-
-	@Override
-	public void prepareTestInstance(final TestContext testContext) throws Exception {
-		this.valueProvisionHandlerHolder.clear();
-		super.prepareTestInstance(testContext);
-	}
+	private final TestDataHolder testDataHolder = TestDataHolder.instance();
 
 	@Override
 	public void beforeTestMethod(final TestContext testContext) throws Exception {
 		final Method testMethod = testContext.getTestMethod();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (config != null) {
-			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, this.valueProvisionHandlerHolder.fetchValueProvisionHandler(testContext.getTestClass(), testMethod));
+			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, this.testDataHolder.fetchValueProvisionHandler());
 		} else {
 			super.beforeTestMethod(testContext);
 		}
@@ -37,7 +31,7 @@ public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionList
 		final Method testMethod = testContext.getTestMethod();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (config != null) {
-			new KontrollDbUnitRunner().afterTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, this.valueProvisionHandlerHolder.fetchValueProvisionHandler(testContext.getTestClass(), testMethod));
+			new KontrollDbUnitRunner().afterTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, this.testDataHolder.fetchValueProvisionHandler());
 		} else {
 			super.afterTestMethod(testContext);
 		}

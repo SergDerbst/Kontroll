@@ -1,26 +1,38 @@
 package com.tmt.kontroll.test.persistence.run.data.reference;
 
+import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.retrieveAnnotatedFields;
 import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.retrieveFieldValue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.persistence.Id;
+
+import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 
 public class ReferenceAsserter {
 
-	private static class InstanceHolder {
-		public static ReferenceAsserter instance = new ReferenceAsserter();
-	}
-
-	public static ReferenceAsserter instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new ReferenceAsserter();
-		}
-		return InstanceHolder.instance;
-	}
-
 	private final List<ReferenceAssertionFailure> failures = new ArrayList<>();
+	private final Set<String> ignoredFieldNames = new HashSet<>();
+
+	public void configureForEntityId(final PersistenceTestConfig config, final Class<?> entityClass) {
+		if (config.ignoreEntityId()) {
+			for (final Field field : retrieveAnnotatedFields(entityClass, Id.class)) {
+				this.ignoredFieldNames.add(field.getName());
+			}
+		}
+	}
+
+	public void configureForIgnoredFields(final PersistenceTestConfig config) {
+		for (final String fieldName : config.ignoredFields()) {
+			this.ignoredFieldNames.add(fieldName);
+		}
+	}
 
 	public void assertReferences(final List<Reference> references, final List<Object> actuals) {
 		this.failures.clear();
@@ -74,6 +86,9 @@ public class ReferenceAsserter {
 		boolean successful = true;
 		for (final Entry<String, Object> entry : reference.getReferenceEntrySet()) {
 			final String fieldName = entry.getKey();
+			if (this.ignoredFieldNames.contains(fieldName)) {
+				continue;
+			}
 			final Object expectedValue = entry.getValue();
 			final Object actualValue = retrieveFieldValue(fieldName, actual.getClass(), actual);
 			if (!this.isEqual(expectedValue, actualValue)) {
@@ -97,10 +112,15 @@ public class ReferenceAsserter {
 		return false;
 	}
 
-	public boolean isEqual(final Object expected, final Object actual) {
+	private boolean isEqual(final Object expected, final Object actual) {
 		if (expected == null && actual == null) {
 			return true;
 		}
 		return expected != null && expected.equals(actual);
+	}
+
+
+	public Set<String> getIgnoredFieldNames() {
+		return this.ignoredFieldNames;
 	}
 }

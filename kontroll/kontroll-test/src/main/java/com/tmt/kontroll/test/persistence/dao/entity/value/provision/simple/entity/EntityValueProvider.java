@@ -13,14 +13,14 @@ public class EntityValueProvider extends SimpleValueProvider<Object> {
 
 	@Override
 	protected Object instantiateDefaultValue(final Class<?>... types) {
-		return EntityInstanceProvider.instance().provide(types[0], super.getValueProvisionHandler());
+		return EntityInstanceProvider.instance().provide(types[0]);
 	}
 
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
 		if (JpaHibernateEntityIdentifier.instance().identify(valueType)) {
 			if (super.getInitialValue() == null) {
-				super.init(EntityInstanceProvider.instance().provide(valueType, super.getValueProvisionHandler()));
+				super.init(EntityInstanceProvider.instance().provide(valueType));
 			}
 			return true;
 		}
@@ -29,6 +29,6 @@ public class EntityValueProvider extends SimpleValueProvider<Object> {
 
 	@Override
 	protected Object makeNextDefaultValue(final Object value) {
-		return EntityInstanceProvider.instance().provide(value.getClass(), super.getValueProvisionHandler());
+		return EntityInstanceProvider.instance().provide(value.getClass());
 	}
 }
