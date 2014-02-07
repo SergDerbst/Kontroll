@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.repositories.ScopedContentConditionAttributeRepository;
-import com.tmt.kontroll.persistence.daos.AbstractCrudDao;
+import com.tmt.kontroll.persistence.daos.BaseCrudDaoService;
 
 @Service
-public class ScopedContentConditionAttributeDaoService extends AbstractCrudDao<ScopedContentConditionAttributeRepository, ScopedContentConditionAttribute, Integer> {
+public class ScopedContentConditionAttributeDaoService extends BaseCrudDaoService<ScopedContentConditionAttributeRepository, ScopedContentConditionAttribute> {
 
 	@Autowired
 	private ScopedContentConditionAttributeRepository	repository;

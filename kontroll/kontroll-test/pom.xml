@@ -11,6 +11,11 @@
 	<artifactId>kontroll-test</artifactId>
 
 	<dependencies>
+		<!-- module commons -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-commons</artifactId>
+		</dependency>
 		<!-- module persistence -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>

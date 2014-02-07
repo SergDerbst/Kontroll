@@ -16,7 +16,7 @@ public class CaptionDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<C
 	CaptionDaoService service;
 
 	@Override
-	protected CaptionDaoService getDaoService() {
+	protected CaptionDaoService daoService() {
 		return this.service;
 	}
 }

@@ -1,32 +1,35 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation;
 
-import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import org.dbunit.dataset.IDataSet;
 
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.run.data.reference.Reference;
-import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
+import com.tmt.kontroll.test.persistence.run.enums.TestPhase;
 
 /**
  * Container class to hold and manage data for persistence tests. It holds the following:
  * </p>
  * <ul>
- * <li>a {@link ValueProvisionHandler} instance used to provide values for test data</li>
- * <li>a list of {@link Reference} instances needed to run a test</li>
- * <li>a {@link ReferenceAsserter} instance to perform assertions for the test</li>
+ * <li>a {@link ValueProvisionHandler} instance used to provide values for test data during preparation phase</li>
+ * <li>lists of {@link EntityReference} instances needed to run a test</li>
+ * <li>a {@link EntityReferenceAsserter} instance to perform assertions for the test</li>
  * <li>an {@link IDataSet} representing the data base before a test run</li>
  * <li>an {@link IDataSet} representing the data base after a test run</li>
  * </ul>
  * </p>
+ * The references lists are organized in a map according to a given {@link TestPhase}.
+ * </p>
  * The test data holder shall be handled as a "semi-singleton", meaning that for each test method there
- * should be one and only one instance of it, but that each {@link TestDataPreparer} or {@link ValueProvider}
- * instance using the test data holder during the preparation phase will all use that very same instance.
- * </br>
- * A new instance can be created and/or fetched using the static {@link #newInstance} method, whereas that
- * same instance can then be accessed it by calling the also static {@link #instance} method.
+ * should be one and only one instance of it, while each {@link TestDataPreparer} or {@link ValueProvider}
+ * will use that very same instance during preparation phase. A new instance can be created and fetched
+ * using the static {@link #newInstance} method, whereas the same instance can be accessed by calling
+ * the also static {@link #instance} method.
  * </p>
  * 
  * @author Serg Derbst
@@ -35,7 +38,7 @@ import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
 public class TestDataHolder {
 
 	private static class InstanceHolder {
-		public static TestDataHolder instance = new TestDataHolder();
+		public static TestDataHolder instance;
 	}
 
 	public static TestDataHolder newInstance() {
@@ -43,53 +46,61 @@ public class TestDataHolder {
 		return InstanceHolder.instance;
 	}
 
-	public static TestDataHolder instance() {
-		return InstanceHolder.instance;
+	private final Map<TestPhase, List<EntityReference>> referencesMap = new EnumMap<>(TestPhase.class);
+
+	private IDataSet dataSetForSetup;
+	private IDataSet dataSetForVerification;
+	private IDataSet dataSetForTearDown;
+
+	private TestDataHolder() {}
+
+	public boolean testPhaseIsPrepared(final TestPhase testPhase) {
+		return this.referencesMap.containsKey(testPhase);
 	}
 
-	private final List<Reference> references = new ArrayList<>();
+	public void addReferences(final TestPhase testPhase,
+	                          final List<EntityReference> references) {
+		this.referencesMap.put(testPhase, references);
+	}
 
-	private ValueProvisionHandler valueProvisionHandler;
-	private ReferenceAsserter referenceAsserter;
-	private IDataSet dataSetBefore;
-	private IDataSet dataSetAfter;
+	public List<EntityReference> getReferences(final TestPhase testPhase) {
+		return this.referencesMap.get(testPhase);
+	}
 
-	public ValueProvisionHandler fetchValueProvisionHandler() {
-		if (this.valueProvisionHandler == null) {
-			this.valueProvisionHandler = new ValueProvisionHandler();
+	public IDataSet fetchDataSetForTestPhase(final TestPhase testPhase) {
+		switch (testPhase) {
+			case Setup:
+				return this.getDataSetForSetup();
+			case Verification:
+				return this.getDataSetForVerification();
+			case TearDown:
+				return this.getDataSetForTearDown();
+			default:
+				throw new RuntimeException("No data set available for: " + testPhase);
 		}
-		return this.valueProvisionHandler;
 	}
 
-	public void addReference(final Reference reference) {
-		this.references.add(reference);
+	public IDataSet getDataSetForSetup() {
+		return this.dataSetForSetup;
 	}
 
-	public ReferenceAsserter getReferenceAsserter() {
-		return this.referenceAsserter;
+	public void setDataSetForSetup(final IDataSet dataSetForSetup) {
+		this.dataSetForSetup = dataSetForSetup;
 	}
 
-	public void setReferenceAsserter(final ReferenceAsserter referenceAsserter) {
-		this.referenceAsserter = referenceAsserter;
+	public IDataSet getDataSetForVerification() {
+		return this.dataSetForVerification;
 	}
 
-	public List<Reference> getReferences() {
-		return this.references;
+	public void setDataSetForVerification(final IDataSet dataSetForVerification) {
+		this.dataSetForVerification = dataSetForVerification;
 	}
 
-	public IDataSet getDataSetBefore() {
-		return this.dataSetBefore;
+	public IDataSet getDataSetForTearDown() {
+		return this.dataSetForTearDown;
 	}
 
-	public void setDataSetBefore(final IDataSet dataSetBefore) {
-		this.dataSetBefore = dataSetBefore;
-	}
-
-	public IDataSet getDataSetAfter() {
-		return this.dataSetAfter;
-	}
-
-	public void setDataSetAfter(final IDataSet dataSetAfter) {
-		this.dataSetAfter = dataSetAfter;
+	public void setDataSetForTearDown(final IDataSet dataSetForTearDown) {
+		this.dataSetForTearDown = dataSetForTearDown;
 	}
 }

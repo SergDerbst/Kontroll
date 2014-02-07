@@ -1,6 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.utils;
 
-import static com.tmt.kontroll.test.persistence.run.utils.ClassReflectionHelper.hasConstantWithName;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.hasConstantWithName;
 
 import java.lang.reflect.Method;
 

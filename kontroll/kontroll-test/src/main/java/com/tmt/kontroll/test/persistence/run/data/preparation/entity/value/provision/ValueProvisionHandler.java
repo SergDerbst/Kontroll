@@ -21,9 +21,20 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provi
 
 public class ValueProvisionHandler {
 
+	private static class InstanceHolder {
+		public static ValueProvisionHandler instance;
+	}
+
+	public static ValueProvisionHandler newInstance() {
+		InstanceHolder.instance = new ValueProvisionHandler();
+		return InstanceHolder.instance;
+	}
+
+	private final ValueProvisionHandlerPreparer valueProvisionHandlerPreparer;
 	private ValueProvider<?> firstProvider;
 
-	public ValueProvisionHandler() {
+	private ValueProvisionHandler() {
+		this.valueProvisionHandlerPreparer = ValueProvisionHandlerPreparer.newInstance();
 		this.setUpValueProvision();
 	}
 
@@ -61,7 +72,7 @@ public class ValueProvisionHandler {
 	}
 
 	public Object provide(final String fieldName, final Class<?>... types) {
-		ValueProvisionHandlerPreparer.instance().prepare(this, fieldName, types);
+		this.valueProvisionHandlerPreparer.prepare(this, fieldName, types);
 		return this.firstProvider.provide(fieldName, types);
 	}
 

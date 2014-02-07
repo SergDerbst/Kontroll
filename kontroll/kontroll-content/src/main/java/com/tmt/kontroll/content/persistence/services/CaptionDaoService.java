@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.tmt.kontroll.content.persistence.entities.Caption;
 import com.tmt.kontroll.content.persistence.repositories.CaptionRepository;
-import com.tmt.kontroll.persistence.daos.AbstractCrudDao;
+import com.tmt.kontroll.persistence.daos.BaseCrudDaoService;
 
 @Service
-public class CaptionDaoService extends AbstractCrudDao<CaptionRepository, Caption, Integer> {
+public class CaptionDaoService extends BaseCrudDaoService<CaptionRepository, Caption> {
 
 	@Autowired
 	CaptionRepository repository;

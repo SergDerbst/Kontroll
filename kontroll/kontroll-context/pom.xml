@@ -20,6 +20,11 @@
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-commons</artifactId>
 		</dependency>
+		<!-- module test -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-test</artifactId>
+		</dependency>
 		<!-- apache commons lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

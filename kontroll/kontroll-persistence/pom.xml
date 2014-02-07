@@ -11,10 +11,20 @@
 	<artifactId>kontroll-persistence</artifactId>
 
 	<dependencies>
+		<!-- module commons -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-commons</artifactId>
+		</dependency>
 		<!-- aop -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjtools</artifactId>
+		</dependency>
+		<!-- apache commons lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<!-- code generation library -->
 		<dependency>
@@ -135,11 +145,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 		</dependency>
-			<!-- spring test dbunit -->
-			<dependency>
-				<groupId>com.github.springtestdbunit</groupId>
-				<artifactId>spring-test-dbunit</artifactId>
-			</dependency>
+		<!-- spring test dbunit -->
+		<dependency>
+			<groupId>com.github.springtestdbunit</groupId>
+			<artifactId>spring-test-dbunit</artifactId>
+		</dependency>
 		<!-- spring tx -->
 		<dependency>
 			<groupId>org.springframework</groupId>

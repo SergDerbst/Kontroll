@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.tmt.kontroll.content.persistence.entities.RequestContext;
 import com.tmt.kontroll.content.persistence.repositories.RequestContextRepository;
-import com.tmt.kontroll.persistence.daos.AbstractCrudDao;
+import com.tmt.kontroll.persistence.daos.BaseCrudDaoService;
 
 @Service
-public class RequestContextDaoService extends AbstractCrudDao<RequestContextRepository, RequestContext, Integer> {
+public class RequestContextDaoService extends BaseCrudDaoService<RequestContextRepository, RequestContext> {
 
 	@Autowired
 	RequestContextRepository repository;

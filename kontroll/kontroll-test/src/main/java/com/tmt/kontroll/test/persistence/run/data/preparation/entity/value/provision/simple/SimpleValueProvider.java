@@ -1,8 +1,8 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.simple;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProviderNotFoundException;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.exceptions.ValueProviderNotFoundException;
 
 public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 

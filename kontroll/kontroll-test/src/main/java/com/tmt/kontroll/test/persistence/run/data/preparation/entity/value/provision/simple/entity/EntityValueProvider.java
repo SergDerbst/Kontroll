@@ -1,5 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.simple.entity;
 
+import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.simple.SimpleValueProvider;
@@ -13,14 +14,14 @@ public class EntityValueProvider extends SimpleValueProvider<Object> {
 
 	@Override
 	protected Object instantiateDefaultValue(final Class<?>... types) {
-		return EntityInstanceProvider.instance().provide(types[0]);
+		return this.entityInstanceProvider().provide(types[0]);
 	}
 
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
 		if (JpaHibernateEntityIdentifier.instance().identify(valueType)) {
 			if (super.getInitialValue() == null) {
-				super.init(EntityInstanceProvider.instance().provide(valueType));
+				super.init(this.entityInstanceProvider().provide(valueType));
 			}
 			return true;
 		}
@@ -29,6 +30,10 @@ public class EntityValueProvider extends SimpleValueProvider<Object> {
 
 	@Override
 	protected Object makeNextDefaultValue(final Object value) {
-		return EntityInstanceProvider.instance().provide(value.getClass());
+		return this.entityInstanceProvider().provide(value.getClass());
+	}
+
+	private EntityInstanceProvider entityInstanceProvider() {
+		return TestPreparationContext.instance().entityInstanceProvider();
 	}
 }

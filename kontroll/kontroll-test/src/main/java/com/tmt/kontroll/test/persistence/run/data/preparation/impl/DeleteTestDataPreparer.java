@@ -4,18 +4,17 @@ import java.util.List;
 
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
-import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
+import com.tmt.kontroll.test.persistence.run.enums.TestPhase;
+import com.tmt.kontroll.test.persistence.run.enums.TestStrategy;
 
 public class DeleteTestDataPreparer extends TestDataPreparer {
 
 	private static class InstanceHolder {
-		public static DeleteTestDataPreparer instance = new DeleteTestDataPreparer();
+		public static DeleteTestDataPreparer instance;
 	}
 
-	public static DeleteTestDataPreparer instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new DeleteTestDataPreparer();
-		}
+	public static DeleteTestDataPreparer newInstance() {
+		InstanceHolder.instance = new DeleteTestDataPreparer();
 		return InstanceHolder.instance;
 	}
 
@@ -25,9 +24,9 @@ public class DeleteTestDataPreparer extends TestDataPreparer {
 	}
 
 	@Override
-	protected void prepareDataSets(final List<Object> entities) throws Exception {
-		super.getTestDataHolder().setDataSetBefore(super.buildDataSetBefore(entities));
+	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
+	                                                       final List<Object> entities) {
 		entities.remove(0);
-		super.getTestDataHolder().setDataSetAfter(super.buildDataSetAfter(entities));
+		super.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, entities);
 	}
 }

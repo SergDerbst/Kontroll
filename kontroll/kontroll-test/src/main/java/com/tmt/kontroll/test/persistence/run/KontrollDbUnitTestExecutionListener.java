@@ -9,18 +9,15 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.dataset.DataSetLoader;
 import com.github.springtestdbunit.operation.DatabaseOperationLookup;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
-import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
 
 public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionListener {
-
-	private final TestDataHolder testDataHolder = TestDataHolder.instance();
 
 	@Override
 	public void beforeTestMethod(final TestContext testContext) throws Exception {
 		final Method testMethod = testContext.getTestMethod();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (config != null) {
-			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, this.testDataHolder.fetchValueProvisionHandler());
+			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), testMethod);
 		} else {
 			super.beforeTestMethod(testContext);
 		}
@@ -31,7 +28,7 @@ public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionList
 		final Method testMethod = testContext.getTestMethod();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (config != null) {
-			new KontrollDbUnitRunner().afterTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, this.testDataHolder.fetchValueProvisionHandler());
+			new KontrollDbUnitRunner().afterTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, config.omitDbVerification());
 		} else {
 			super.afterTestMethod(testContext);
 		}

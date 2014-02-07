@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.run.utils.TestStrategy;
+import com.tmt.kontroll.test.persistence.run.enums.TestStrategy;
 
 /**
  * Annotation for basic test configuration of prepared persistence tests.
@@ -26,4 +26,6 @@ public @interface PersistenceTestConfig {
 	boolean ignoreEntityId() default false;
 
 	String[] ignoredFields() default {};
+
+	boolean omitDbVerification() default false;
 }

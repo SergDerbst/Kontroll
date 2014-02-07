@@ -4,19 +4,20 @@ import java.util.EnumMap;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.array.ArrayValueProviderFactory;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.map.impl.EnumMapValueProviderFactory;
+import com.tmt.kontroll.test.persistence.run.exceptions.ValueProvisionImpossibleException;
 
 public class ValueProvisionHandlerPreparer {
 
 	private static class InstanceHolder {
-		public static ValueProvisionHandlerPreparer instance = new ValueProvisionHandlerPreparer();
+		public static ValueProvisionHandlerPreparer instance;
 	}
 
-	public static ValueProvisionHandlerPreparer instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new ValueProvisionHandlerPreparer();
-		}
+	public static ValueProvisionHandlerPreparer newInstance() {
+		InstanceHolder.instance = new ValueProvisionHandlerPreparer();
 		return InstanceHolder.instance;
 	}
+
+	private ValueProvisionHandlerPreparer() {}
 
 	public void prepare(final ValueProvisionHandler valueProvisionHandler, final String fieldName, final Class<?>... types) {
 		if (!valueProvisionHandler.canProvideValue(fieldName, types)) {

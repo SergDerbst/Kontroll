@@ -20,9 +20,8 @@ import javax.persistence.Entity;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
+import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.run.data.reference.ReferenceAsserter;
 
 public class EntityInstanceProviderTest {
 
@@ -76,17 +75,17 @@ public class EntityInstanceProviderTest {
 	}
 
 	private final ValueProvisionHandler valueProvisionHandler;
-	private final EntityInstanceProvider toTest = EntityInstanceProvider.instance();
+	private final EntityInstanceProvider toTest = EntityInstanceProvider.newInstance();
 
 	private long referenceTimestampValue;
 
 	public EntityInstanceProviderTest() throws Exception {
-		this.valueProvisionHandler = TestDataHolder.instance().fetchValueProvisionHandler();
+		this.valueProvisionHandler = TestPreparationContext.instance().valueProvisionHandler();
 	}
 
 	@Before
 	public void setUp() {
-		TestDataHolder.instance().setReferenceAsserter(new ReferenceAsserter());
+		TestPreparationContext.instance().referenceAsserter();
 		this.valueProvisionHandler.reset();
 		this.referenceTimestampValue = ((Timestamp) this.valueProvisionHandler.provide(Timestamp.class)).getTime();
 	}

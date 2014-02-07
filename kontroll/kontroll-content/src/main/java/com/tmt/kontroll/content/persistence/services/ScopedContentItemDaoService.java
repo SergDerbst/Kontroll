@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 import com.tmt.kontroll.content.persistence.repositories.ScopedContentItemRepository;
-import com.tmt.kontroll.persistence.daos.AbstractCrudDao;
+import com.tmt.kontroll.persistence.daos.BaseCrudDaoService;
 
 @Service
-public class ScopedContentItemDaoService extends AbstractCrudDao<ScopedContentItemRepository, ScopedContentItem, Integer> {
+public class ScopedContentItemDaoService extends BaseCrudDaoService<ScopedContentItemRepository, ScopedContentItem> {
 
 	@Autowired
 	private ScopedContentItemRepository	repository;

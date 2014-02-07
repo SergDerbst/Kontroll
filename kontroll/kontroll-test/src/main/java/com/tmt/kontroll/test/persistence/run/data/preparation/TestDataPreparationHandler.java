@@ -5,36 +5,42 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.impl.CountTestData
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.DeleteTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.ExistsTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.FindTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.LengthConstraintTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.NullableConstraintTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.SaveTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.UniqueConstraintsOnColumnTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.UniqueConstraintsOnTableTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.UpdateTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.exceptions.TestPreparationFailedException;
 
 public class TestDataPreparationHandler {
 
 	private static class InstanceHolder {
-		public static TestDataPreparationHandler instance = new TestDataPreparationHandler();
+		public static TestDataPreparationHandler instance;
 	}
 
-	public static TestDataPreparationHandler instance() {
-		if (InstanceHolder.instance == null) {
-			InstanceHolder.instance = new TestDataPreparationHandler();
-		}
+	public static TestDataPreparationHandler newInstance() {
+		InstanceHolder.instance = new TestDataPreparationHandler();
 		return InstanceHolder.instance;
 	}
 
 	private TestDataPreparer firstPreparer;
 
-	public TestDataPreparationHandler() {
+	private TestDataPreparationHandler() {
 		this.setUpTestDataPreparation();
 	}
 
 	public void setUpTestDataPreparation() {
-		this.addTestDataPreparer(CountTestDataPreparer.instance());
-		this.addTestDataPreparer(DeleteTestDataPreparer.instance());
-		this.addTestDataPreparer(ExistsTestDataPreparer.instance());
-		this.addTestDataPreparer(FindTestDataPreparer.instance());
-		this.addTestDataPreparer(SaveTestDataPreparer.instance());
-		this.addTestDataPreparer(UpdateTestDataPreparer.instance());
+		this.addTestDataPreparer(CountTestDataPreparer.newInstance());
+		this.addTestDataPreparer(DeleteTestDataPreparer.newInstance());
+		this.addTestDataPreparer(ExistsTestDataPreparer.newInstance());
+		this.addTestDataPreparer(FindTestDataPreparer.newInstance());
+		this.addTestDataPreparer(SaveTestDataPreparer.newInstance());
+		this.addTestDataPreparer(UpdateTestDataPreparer.newInstance());
+		this.addTestDataPreparer(UniqueConstraintsOnTableTestDataPreparer.newInstance());
+		this.addTestDataPreparer(UniqueConstraintsOnColumnTestDataPreparer.newInstance());
+		this.addTestDataPreparer(NullableConstraintTestDataPreparer.newInstance());
+		this.addTestDataPreparer(LengthConstraintTestDataPreparer.newInstance());
 	}
 
 	public void prepare(final PersistenceTestConfig config,
