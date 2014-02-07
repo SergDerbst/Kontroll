@@ -37,8 +37,7 @@ public class EntityReference {
 
 	private void createReferenceMap() {
 		for (final Field field : retrievePropertyFields(this.reference.getClass())) {
-			final String fieldName = field.getName();
-			this.referenceValueMap.put(fieldName, retrieveFieldValue(fieldName, this.reference.getClass(), this.reference));
+			this.referenceValueMap.put(field.getName(), retrieveFieldValue(field.getName(), this.reference));
 		}
 	}
 }

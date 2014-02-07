@@ -1,6 +1,5 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation;
 
-import com.tmt.kontroll.test.persistence.run.annotations.value.AnnotationBasedValueProvisionPreparer;
 import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.ConstraintAsserter;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
@@ -22,7 +21,6 @@ public class TestPreparationContext {
 		return InstanceHolder.instance;
 	}
 
-	private final AnnotationBasedValueProvisionPreparer annotationBasedValueProvisionPreparer;
 	private final ConstraintAsserter constraintAsserter;
 	private final EntityInstanceProvider entityInstanceProvider;
 	private final EntityUpdateProvider entityUpdateProvider;
@@ -34,7 +32,6 @@ public class TestPreparationContext {
 	private final ValueProvisionHandler valueProvisionHandler;
 
 	private TestPreparationContext() {
-		this.annotationBasedValueProvisionPreparer = AnnotationBasedValueProvisionPreparer.newInstance();
 		this.constraintAsserter = ConstraintAsserter.newInstance();
 		this.entityInstanceProvider = EntityInstanceProvider.newInstance();
 		this.entityUpdateProvider = EntityUpdateProvider.newInstance();
@@ -44,10 +41,6 @@ public class TestPreparationContext {
 		this.testDataPreparationHandler = TestDataPreparationHandler.newInstance();
 		this.testDataSetBuilder = TestDataSetBuilder.newInstance();
 		this.valueProvisionHandler = ValueProvisionHandler.newInstance();
-	}
-
-	public AnnotationBasedValueProvisionPreparer annotationBasedValueProvisionPreparer() {
-		return this.annotationBasedValueProvisionPreparer;
 	}
 
 	public EntityInstanceProvider entityInstanceProvider() {

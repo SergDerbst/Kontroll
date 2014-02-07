@@ -1,5 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.map;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,7 +18,7 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	}
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
 		return types.length == 3 && this.claimMapValueResponsibility(types[0], types[1], types[2]);
 	}
 

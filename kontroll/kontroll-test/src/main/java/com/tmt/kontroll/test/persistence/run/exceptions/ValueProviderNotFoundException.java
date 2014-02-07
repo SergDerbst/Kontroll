@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.exceptions;
 
+import java.lang.reflect.Field;
+
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
 @SuppressWarnings("serial")
@@ -42,10 +44,10 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		return prepareWithTypes(null, typeArgs);
 	}
 
-	public static ValueProviderNotFoundException prepareWithTypes(final String fieldName, final Class<?>... typeArgs) {
+	public static ValueProviderNotFoundException prepareWithTypes(final Field field, final Class<?>... typeArgs) {
 		final ContextedRuntimeException exception = new ValueProviderNotFoundException();
-		if (fieldName != null && !fieldName.isEmpty()) {
-			exception.addContextValue("field name", fieldName);
+		if (field != null) {
+			exception.addContextValue("field name", field.getName());
 		}
 		for (int i = 0; i < typeArgs.length; i++) {
 			final String typeArg = typeArgs[i] == null ? null : typeArgs[i].getName();
@@ -58,7 +60,7 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		return prepareWithValue(null, value);
 	}
 
-	public static ValueProviderNotFoundException prepareWithValue(final String fieldName, final Object value) {
-		return prepareWithTypes(fieldName, value.getClass());
+	public static ValueProviderNotFoundException prepareWithValue(final Field field, final Object value) {
+		return prepareWithTypes(field, value.getClass());
 	}
 }

@@ -65,9 +65,9 @@ public class ClassReflectionHelper {
 		return fields;
 	}
 
-	public static Object retrieveFieldValue(final String fieldName, final Class<?> objectClass, final Object object) {
+	public static Object retrieveFieldValue(final String fieldName, final Object object) {
 		try {
-			for (final Field field : retrieveAllFields(objectClass)) {
+			for (final Field field : retrieveAllFields(object.getClass())) {
 				if (field.getName().equals(fieldName)) {
 					field.setAccessible(true);
 					return field.get(object);

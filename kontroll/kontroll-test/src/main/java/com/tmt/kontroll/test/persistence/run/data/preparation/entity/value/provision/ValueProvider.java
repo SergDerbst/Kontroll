@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision;
 
+import java.lang.reflect.Field;
+
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.incrementation.ValueIncrementor;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.instantiation.ValueInstantiator;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.responsibility.ValueHandlingResponsibilityClaimer;
@@ -20,58 +22,58 @@ public abstract class ValueProvider<V> {
 		this.provisionHandler = provisionHandler;
 	}
 
-	protected abstract boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types);
+	protected abstract boolean claimDefaultResponsibility(final Field field, final Class<?>... types);
 
 	protected abstract V instantiateDefaultValue(final Class<?>... types);
 
 	protected abstract V makeNextDefaultValue(final V value);
 
 	@SuppressWarnings("unchecked")
-	public Class<? extends ValueProvider<?>> fetchValueProviderType(final String fieldName, final Class<?>... types) {
-		if (this.claimResponsibility(fieldName, types)) {
+	public Class<? extends ValueProvider<?>> fetchValueProviderType(final Field field, final Class<?>... types) {
+		if (this.claimResponsibility(field, types)) {
 			return (Class<? extends ValueProvider<?>>) this.getClass();
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithTypes(fieldName, types);
+			throw ValueProviderNotFoundException.prepareWithTypes(field, types);
 		}
-		return this.nextProvider.fetchValueProviderType(fieldName, types);
+		return this.nextProvider.fetchValueProviderType(field, types);
 	}
 
-	public boolean canProvideValue(final String fieldName, final Class<?>... types) {
-		if (this.claimResponsibility(fieldName, types)) {
+	public boolean canProvideValue(final Field field, final Class<?>... types) {
+		if (this.claimResponsibility(field, types)) {
 			return true;
 		}
 		if (this.nextProvider == null) {
 			return false;
 		}
-		return this.nextProvider.canProvideValue(fieldName, types);
+		return this.nextProvider.canProvideValue(field, types);
 	}
 
-	public Object provide(final String fieldName, final Class<?>... types) {
-		if (this.claimResponsibility(fieldName, types)) {
+	public Object provide(final Field field, final Class<?>... types) {
+		if (this.claimResponsibility(field, types)) {
 			if (this.initialValue == null) {
-				this.init(fieldName, types);
+				this.init(field, types);
 			}
 			final V toProvide = this.currentValue;
 			this.increase();
 			return toProvide;
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithTypes(fieldName, types);
+			throw ValueProviderNotFoundException.prepareWithTypes(field, types);
 		}
-		return this.nextProvider.provide(fieldName, types);
+		return this.nextProvider.provide(field, types);
 	}
 
-	public void init(final String fieldName, final Class<?>... types) {
-		if (this.claimResponsibility(fieldName, types)) {
+	public void init(final Field field, final Class<?>... types) {
+		if (this.claimResponsibility(field, types)) {
 			this.initialValue = this.instantiator != null ? this.instantiator.instantiate() : this.instantiateDefaultValue(types);
 			this.currentValue = this.initialValue;
 			return;
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithTypes(fieldName, types);
+			throw ValueProviderNotFoundException.prepareWithTypes(field, types);
 		}
-		this.nextProvider.init(fieldName, types);
+		this.nextProvider.init(field, types);
 	}
 
 	protected void init(final V value) {
@@ -79,11 +81,11 @@ public abstract class ValueProvider<V> {
 		this.setCurrentValue(value);
 	}
 
-	protected boolean claimResponsibility(final String fieldName, final Class<?>... types) {
+	protected boolean claimResponsibility(final Field field, final Class<?>... types) {
 		if (this.responsibilityClaimer != null) {
-			return this.responsibilityClaimer.claimResponsibility(fieldName, types);
+			return this.responsibilityClaimer.claimResponsibility(field, types);
 		}
-		return this.claimDefaultResponsibility(fieldName, types);
+		return this.claimDefaultResponsibility(field, types);
 	}
 
 	protected void increase() {
@@ -91,14 +93,14 @@ public abstract class ValueProvider<V> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object fetchNextValue(final String fieldName, final Object value) {
-		if (this.claimResponsibility(fieldName, value.getClass())) {
+	public Object fetchNextValue(final Field field, final Object value) {
+		if (this.claimResponsibility(field, value.getClass())) {
 			return this.makeNextValue((V) value);
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithValue(fieldName, value);
+			throw ValueProviderNotFoundException.prepareWithValue(field, value);
 		}
-		return this.nextProvider.fetchNextValue(fieldName, value);
+		return this.nextProvider.fetchNextValue(field, value);
 	}
 
 	protected V makeNextValue(final V value) {

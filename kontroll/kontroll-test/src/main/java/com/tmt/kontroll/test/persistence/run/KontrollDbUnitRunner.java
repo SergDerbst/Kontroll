@@ -12,7 +12,6 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.tmt.kontroll.test.persistence.PersistenceEntityDaoServiceTest;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
 import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
-import com.tmt.kontroll.test.persistence.run.annotations.value.AnnotationBasedValueProvisionPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparationHandler;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
@@ -23,7 +22,6 @@ public class KontrollDbUnitRunner {
 	public void beforeTestMethod(final KontrollDbUnitTestContext testContext,
 	                             final Method testMethod) throws Exception {
 		this.startTestingContext();
-		this.annotationBasedValueProvisionPreparer().prepare(testMethod);
 		this.setupOrTearDown(testContext, testMethod, TestPhase.Setup);
 	}
 
@@ -57,10 +55,6 @@ public class KontrollDbUnitRunner {
 		final IDataSet actualDataSet = connection.createDataSet();
 		final IDataSet expectedDataSet = this.testDataHolder().getDataSetForVerification();
 		DatabaseAssertionMode.NON_STRICT.getDatabaseAssertion().assertEquals(expectedDataSet, actualDataSet);
-	}
-
-	private AnnotationBasedValueProvisionPreparer annotationBasedValueProvisionPreparer() {
-		return TestPreparationContext.instance().annotationBasedValueProvisionPreparer();
 	}
 
 	private TestDataHolder testDataHolder() {

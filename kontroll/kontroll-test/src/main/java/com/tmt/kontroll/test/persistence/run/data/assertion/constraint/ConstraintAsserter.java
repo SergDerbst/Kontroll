@@ -18,11 +18,11 @@ public class ConstraintAsserter {
 		return InstanceHolder.instance;
 	}
 
-	private final List<ConstraintAssertionFailure> failures = new ArrayList<>();
+	private final List<ConstraintAssertionFailure<?>> failures = new ArrayList<>();
 
 	private ConstraintAsserter() {}
 
-	public void addFailure(final ConstraintAssertionFailure failure) {
+	public void addFailure(final ConstraintAssertionFailure<?> failure) {
 		this.failures.add(failure);
 	}
 
@@ -34,7 +34,7 @@ public class ConstraintAsserter {
 
 	private String failureMessage() {
 		final StringBuilder sB = new StringBuilder("Constraint assertion failed. Failures:");
-		for (final ConstraintAssertionFailure failure : this.failures) {
+		for (final ConstraintAssertionFailure<?> failure : this.failures) {
 			sB.append("\n");
 			sB.append(failure.failureMessage());
 		}

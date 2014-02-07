@@ -1,6 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.array;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
@@ -18,7 +19,7 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	}
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
 		return types[0].isArray() && this.componentType.equals(types[1]);
 	}
 

@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.simple;
 
+import java.lang.reflect.Field;
+
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.exceptions.ValueProviderNotFoundException;
@@ -13,13 +15,13 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 	protected abstract boolean claimSimpleValueResponsibility(final Class<?> valueType);
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
 		return types.length == 1 && this.claimSimpleValueResponsibility(types[0]);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Object fetchNextValue(final Object value) {
-		if (super.claimResponsibility("", value.getClass())) {
+		if (super.claimResponsibility(null, value.getClass())) {
 			return super.makeNextValue((V) value);
 		}
 		if (super.getNextProvider() == null) {

@@ -1,5 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision;
 
+import java.lang.reflect.Field;
 import java.util.EnumMap;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.array.ArrayValueProviderFactory;
@@ -19,30 +20,30 @@ public class ValueProvisionHandlerPreparer {
 
 	private ValueProvisionHandlerPreparer() {}
 
-	public void prepare(final ValueProvisionHandler valueProvisionHandler, final String fieldName, final Class<?>... types) {
-		if (!valueProvisionHandler.canProvideValue(fieldName, types)) {
+	public void prepare(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>... types) {
+		if (!valueProvisionHandler.canProvideValue(field, types)) {
 			switch (types.length) {
 				case 1:
 					break;
 				case 2:
 					if (types[0].isArray()) {
-						this.prepareArrayValueProvision(valueProvisionHandler, fieldName, types);
+						this.prepareArrayValueProvision(valueProvisionHandler, field, types);
 					}
 					break;
 				case 3:
-					this.prepareMapValueProvision(valueProvisionHandler, fieldName, types);
+					this.prepareMapValueProvision(valueProvisionHandler, field, types);
 					break;
 				default:
-					throw ValueProvisionImpossibleException.prepareWithTypes(fieldName, types);
+					throw ValueProvisionImpossibleException.prepareWithTypes(field, types);
 			}
 		}
 	}
 
-	private void prepareArrayValueProvision(final ValueProvisionHandler valueProvisionHandler, final String fieldName, final Class<?>[] types) {
+	private void prepareArrayValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>[] types) {
 		valueProvisionHandler.addValueProvider(ArrayValueProviderFactory.instance().create(valueProvisionHandler, types[1]));
 	}
 
-	private void prepareMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final String fieldName, final Class<?>... types) {
+	private void prepareMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>... types) {
 		if (EnumMap.class.isAssignableFrom(types[0])) {
 			valueProvisionHandler.addValueProvider(EnumMapValueProviderFactory.instance().create(valueProvisionHandler, types[1]));
 		}

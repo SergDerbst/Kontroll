@@ -1,5 +1,6 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.collection;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -17,7 +18,7 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 	}
 
 	@Override
-	protected boolean claimDefaultResponsibility(final String fieldName, final Class<?>... types) {
+	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
 		return types.length == 2 && this.claimCollectionValueResponsibility(types[0], types[1]);
 	}
 

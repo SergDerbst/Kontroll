@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision;
 
+import java.lang.reflect.Field;
+
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.collection.impl.ListValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.collection.impl.SetValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.collection.impl.SortedSetValueProvider;
@@ -59,29 +61,29 @@ public class ValueProvisionHandler {
 		this.addValueProvider(new SortedMapValueProvider(this));
 	}
 
-	public Class<? extends ValueProvider<?>> fetchValueProviderType(final String fieldName, final Class<?>... types) {
-		return this.firstProvider.fetchValueProviderType(fieldName, types);
+	public Class<? extends ValueProvider<?>> fetchValueProviderType(final Field field, final Class<?>... types) {
+		return this.firstProvider.fetchValueProviderType(field, types);
 	}
 
-	public boolean canProvideValue(final String fieldName, final Class<?>... types) {
-		return this.firstProvider.canProvideValue(fieldName, types);
+	public boolean canProvideValue(final Field field, final Class<?>... types) {
+		return this.firstProvider.canProvideValue(field, types);
 	}
 
 	public Object provide(final Class<?>... types) {
-		return this.provide("", types);
+		return this.provide(null, types);
 	}
 
-	public Object provide(final String fieldName, final Class<?>... types) {
-		this.valueProvisionHandlerPreparer.prepare(this, fieldName, types);
-		return this.firstProvider.provide(fieldName, types);
+	public Object provide(final Field field, final Class<?>... types) {
+		this.valueProvisionHandlerPreparer.prepare(this, field, types);
+		return this.firstProvider.provide(field, types);
 	}
 
 	public Object fetchNextValue(final Object value) {
-		return this.fetchNextValue("", value);
+		return this.fetchNextValue(null, value);
 	}
 
-	public Object fetchNextValue(final String fieldName, final Object value) {
-		return this.firstProvider.fetchNextValue(fieldName, value);
+	public Object fetchNextValue(final Field field, final Object value) {
+		return this.firstProvider.fetchNextValue(field, value);
 	}
 
 	public void reset() {

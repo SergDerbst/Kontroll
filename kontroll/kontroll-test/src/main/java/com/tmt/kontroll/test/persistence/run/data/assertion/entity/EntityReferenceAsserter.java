@@ -45,7 +45,7 @@ public class EntityReferenceAsserter {
 		}
 	}
 
-	public void assertReferences(final List<EntityReference> references, final List<Object> actuals) {
+	public void assertReferences(final List<EntityReference> references, final List<Object> actuals) throws Exception {
 		this.failures.clear();
 		boolean successful = false;
 		if (this.assertNumberOfEntities(references, actuals)) {
@@ -69,7 +69,7 @@ public class EntityReferenceAsserter {
 		return sB.toString();
 	}
 
-	private boolean assertReference(final EntityReference reference, final List<Object> actuals) {
+	private boolean assertReference(final EntityReference reference, final List<Object> actuals) throws Exception {
 		for (final Object actual : actuals) {
 			if (this.assertReference(reference, actual)) {
 				return true;
@@ -78,7 +78,7 @@ public class EntityReferenceAsserter {
 		return false;
 	}
 
-	private boolean assertReference(final EntityReference reference, final Object actual) {
+	private boolean assertReference(final EntityReference reference, final Object actual) throws Exception {
 		if (this.assertReferenceType(reference, actual)) {
 			return this.assertReferenceProperties(reference, actual);
 		}
@@ -93,7 +93,7 @@ public class EntityReferenceAsserter {
 		return true;
 	}
 
-	private boolean assertReferenceProperties(final EntityReference reference, final Object actual) {
+	private boolean assertReferenceProperties(final EntityReference reference, final Object actual) throws Exception {
 		boolean successful = true;
 		for (final Entry<String, Object> entry : reference.getReferenceEntrySet()) {
 			final String fieldName = entry.getKey();
@@ -101,7 +101,7 @@ public class EntityReferenceAsserter {
 				continue;
 			}
 			final Object expectedValue = entry.getValue();
-			final Object actualValue = retrieveFieldValue(fieldName, actual.getClass(), actual);
+			final Object actualValue = retrieveFieldValue(fieldName, actual);
 			if (!this.isEqual(expectedValue, actualValue)) {
 				successful = false;
 				final EntityReferenceAssertionFailure failure = new EntityReferenceAssertionFailure(EntityReferenceAssertion.FieldValueOfEntity, expectedValue, actualValue);
