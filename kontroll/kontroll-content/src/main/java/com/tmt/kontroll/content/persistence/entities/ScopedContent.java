@@ -27,50 +27,50 @@ public class ScopedContent extends BaseEntity {
 
 	@ManyToMany
 	@JoinTable(name = "ScopedContent_ScopedContentItem",
-							joinColumns = @JoinColumn(name = "scoped_content_item_id", referencedColumnName = "id"),
-							inverseJoinColumns = @JoinColumn(name = "scoped_content_id", referencedColumnName = "id"))
+	joinColumns = @JoinColumn(name = "scoped_content_item_id", referencedColumnName = "id"),
+	inverseJoinColumns = @JoinColumn(name = "scoped_content_id", referencedColumnName = "id"))
 	private List<ScopedContentItem>	scopedContentItems;
-	
+
 	@ManyToMany(mappedBy = "scopedContents")
 	private List<ScopedContentCondition>	conditions;
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
 	public Scope getScope() {
-		return scope;
+		return this.scope;
 	}
 
-	public void setScope(Scope scope) {
+	public void setScope(final Scope scope) {
 		this.scope = scope;
 	}
 
 	public List<ScopedContentItem> getScopedContentItems() {
-		return scopedContentItems;
+		return this.scopedContentItems;
 	}
 
-	public void setScopedContentItems(List<ScopedContentItem> scopedContentItems) {
+	public void setScopedContentItems(final List<ScopedContentItem> scopedContentItems) {
 		this.scopedContentItems = scopedContentItems;
 	}
 
 	public List<ScopedContentCondition> getConditions() {
-		return conditions;
+		return this.conditions;
 	}
 
-	public void setConditions(List<ScopedContentCondition> conditions) {
+	public void setConditions(final List<ScopedContentCondition> conditions) {
 		this.conditions = conditions;
 	}
 }

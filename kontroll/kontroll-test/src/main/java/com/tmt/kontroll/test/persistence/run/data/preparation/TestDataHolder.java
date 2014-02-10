@@ -8,8 +8,8 @@ import org.dbunit.dataset.IDataSet;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.enums.TestPhase;
 
 /**

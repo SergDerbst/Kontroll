@@ -6,10 +6,9 @@ import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.re
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 
 public class EntityInstanceProvider {
 
@@ -24,11 +23,18 @@ public class EntityInstanceProvider {
 
 	private EntityInstanceProvider() {}
 
-	public Object provide(final Class<?> entityClass) {
+	public Object provide(final Class<?> entityType) throws Exception {
+		return this.provide(entityType.newInstance());
+	}
+
+	public Object provide(final Object entity) {
 		try {
-			final Object entity = entityClass.newInstance();
-			for (final Field field : retrievePropertyFields(entityClass)) {
-				if (this.ignoredFieldNames().contains(field.getName())) {
+			for (final Field field : retrievePropertyFields(entity.getClass())) {
+				field.setAccessible(true);
+				if (this.fieldIsIgnoredForTest(field)) {
+					continue;
+				}
+				if (field.get(entity) != null) {
 					continue;
 				}
 				this.setFieldValue(entity, field);
@@ -41,22 +47,21 @@ public class EntityInstanceProvider {
 
 	private void setFieldValue(final Object entity,
 	                           final Field field) throws Exception {
-		field.setAccessible(true);
 		final Class<?> fieldType = field.getType();
 		final ValueProvisionHandler valueProvisionHandler = this.valueProvisionHandler();
 		if (Collection.class.isAssignableFrom(fieldType)) {
-			field.set(entity, valueProvisionHandler.provide(field, fieldType, retrieveTypeArgumentsOfField(field, 0)));
+			field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0)));
 		} else if (Map.class.isAssignableFrom(fieldType)) {
-			field.set(entity, valueProvisionHandler.provide(field, fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
+			field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
 		} else if (fieldType.isArray()) {
-			field.set(entity, valueProvisionHandler.provide(field, fieldType, fieldType.getComponentType()));
+			field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, fieldType.getComponentType()));
 		}	else {
-			field.set(entity, valueProvisionHandler.provide(field, fieldType));
+			field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType));
 		}
 	}
 
-	private Set<String> ignoredFieldNames() {
-		return TestPreparationContext.instance().referenceAsserter().getIgnoredFieldNames();
+	private boolean fieldIsIgnoredForTest(final Field field) {
+		return TestPreparationContext.instance().referenceAsserter().getIgnoredFieldNames().contains(field.getName());
 	}
 
 	private ValueProvisionHandler valueProvisionHandler() {

@@ -117,11 +117,6 @@ public class EntityHelper {
 		return fields;
 	}
 
-	public static <E> boolean hasUniqueConstraintsOnTable(final E entity) {
-		final Table table = entity.getClass().getAnnotation(Table.class);
-		return table != null && table.uniqueConstraints().length > 0;
-	}
-
 	public static <E> UniqueConstraint[] retrieveUniqueConstraintsOnTable(final E entity) {
 		final Table table = entity.getClass().getAnnotation(Table.class);
 		if (table != null) {

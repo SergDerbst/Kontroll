@@ -14,9 +14,7 @@ public abstract class ScopedContentCondition_ extends com.tmt.kontroll.persisten
 	public static volatile SingularAttribute<ScopedContentCondition, String> description;
 	public static volatile SingularAttribute<ScopedContentCondition, String> name;
 	public static volatile ListAttribute<ScopedContentCondition, ScopedContentCondition> childConditions;
-	public static volatile ListAttribute<ScopedContentCondition, ScopedContent> scopedContents;
 	public static volatile SingularAttribute<ScopedContentCondition, ConditionalOperator> operator;
-	public static volatile ListAttribute<ScopedContentCondition, ScopedContentItem> scopedContentItems;
 
 }
 

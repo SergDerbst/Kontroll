@@ -43,7 +43,7 @@ public class BaseEntity {
 	@Override
 	public String toString() {
 		final StringBuilder sB = new StringBuilder();
-		sB.append("Entity: " + this.getClass().getName());
+		sB.append("Entity: " + this.getClass().getName() + "@" + System.identityHashCode(this));
 		for (final Field field : retrievePropertyFields(this.getClass())) {
 			field.setAccessible(true);
 			sB.append("\n");

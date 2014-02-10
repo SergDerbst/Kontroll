@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 
 public class EntityUpdateProvider {
 
@@ -95,7 +95,7 @@ public class EntityUpdateProvider {
 			}
 		}
 		if (useNextValue) {
-			field.set(entityToUpdate, this.valueProvisionHandler().fetchNextValue(field.get(entityToUpdateFrom)));
+			field.set(entityToUpdate, this.valueProvisionHandler().fetchNextValue(entityToUpdate, field.get(entityToUpdateFrom)));
 		} else {
 			field.set(entityToUpdate, field.get(entityToUpdateFrom));
 		}

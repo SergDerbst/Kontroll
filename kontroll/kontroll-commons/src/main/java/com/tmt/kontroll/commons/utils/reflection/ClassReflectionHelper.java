@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ClassReflectionHelper {
@@ -63,6 +64,28 @@ public class ClassReflectionHelper {
 			}
 		}
 		return fields;
+	}
+
+	public static Field retrieveRelatedField(final Class<?> entityType,
+	                                         final Class<?> relatedItemType,
+	                                         final Class<? extends Annotation> relationshipType) {
+		for (final Field field : retrievePropertyFields(entityType)) {
+			if (isRelatedField(relatedItemType, relationshipType, field)) {
+				return field;
+			}
+		}
+		return null;
+	}
+
+	private static boolean isRelatedField(final Class<?> relatedItemType, final Class<? extends Annotation> relationshipType, final Field field) {
+		if (field.getAnnotation(relationshipType) != null) {
+			if (Collection.class.isAssignableFrom(field.getType())) {
+				return retrieveTypeArgumentsOfField(field, 0).equals(relatedItemType);
+			} else {
+				return field.getType().equals(relatedItemType);
+			}
+		}
+		return false;
 	}
 
 	public static Object retrieveFieldValue(final String fieldName, final Object object) {

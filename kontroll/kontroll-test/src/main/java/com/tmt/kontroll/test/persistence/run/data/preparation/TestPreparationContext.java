@@ -4,7 +4,8 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.Constrain
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipPool;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 
 public class TestPreparationContext {
 
@@ -23,6 +24,7 @@ public class TestPreparationContext {
 
 	private final ConstraintAsserter constraintAsserter;
 	private final EntityInstanceProvider entityInstanceProvider;
+	private final EntityRelationshipPool entityRelationshipPool;
 	private final EntityUpdateProvider entityUpdateProvider;
 	private final EntityReferenceAsserter referenceAsserter;
 	private final TestDataComplianceAssurer tableComplianceAssurer;
@@ -34,6 +36,7 @@ public class TestPreparationContext {
 	private TestPreparationContext() {
 		this.constraintAsserter = ConstraintAsserter.newInstance();
 		this.entityInstanceProvider = EntityInstanceProvider.newInstance();
+		this.entityRelationshipPool = EntityRelationshipPool.newInstance();
 		this.entityUpdateProvider = EntityUpdateProvider.newInstance();
 		this.referenceAsserter = EntityReferenceAsserter.newInstance();
 		this.tableComplianceAssurer = TestDataComplianceAssurer.newInstance();
@@ -77,5 +80,9 @@ public class TestPreparationContext {
 
 	public ConstraintAsserter constraintAsserter() {
 		return this.constraintAsserter;
+	}
+
+	public EntityRelationshipPool entityRelationshipPool() {
+		return entityRelationshipPool;
 	}
 }

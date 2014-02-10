@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 
 public class EntityInstanceProviderTest {
 
@@ -84,14 +84,14 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		TestPreparationContext.instance().referenceAsserter();
 		this.valueProvisionHandler.reset();
 		this.referenceTimestampValue = ((Timestamp) this.valueProvisionHandler.provide(Timestamp.class)).getTime();
 	}
 
 	@Test
-	public void testThatEntityIsProvidedWithSimpleValues() {
+	public void testThatEntityIsProvidedWithSimpleValues() throws Exception {
 		//when
 		TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntitySimpleFields.class);
 		//then
@@ -127,7 +127,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Test
-	public void testThatFieldsOfSuperClassAreHandledProperly() {
+	public void testThatFieldsOfSuperClassAreHandledProperly() throws Exception {
 		//when
 		final TestEntitySimpleFields provided = (TestEntitySimpleFields) this.toTest.provide(TestEntityInherited.class);
 		//then
@@ -147,7 +147,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Test
-	public void testThatStaticAndFinalFieldsAreHandledProperly() {
+	public void testThatStaticAndFinalFieldsAreHandledProperly() throws Exception {
 		//when
 		final TestEntityStaticFinalFields provided = (TestEntityStaticFinalFields) this.toTest.provide(TestEntityStaticFinalFields.class);
 		//then
@@ -158,7 +158,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Test
-	public void testThatEntityIsProvidedWithCollectionValues() {
+	public void testThatEntityIsProvidedWithCollectionValues() throws Exception {
 		//when
 		final TestEntityCollectionFields provided = (TestEntityCollectionFields) this.toTest.provide(TestEntityCollectionFields.class);
 		//then
@@ -181,7 +181,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Test
-	public void testThatEntityIsProvidedWithMapValues() {
+	public void testThatEntityIsProvidedWithMapValues() throws Exception {
 		//when
 		final TestEntityMapFields provided = (TestEntityMapFields) this.toTest.provide(TestEntityMapFields.class);
 		//then
@@ -207,7 +207,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Test
-	public void testThatEntityIsProvidedWithArrayValues() {
+	public void testThatEntityIsProvidedWithArrayValues() throws Exception {
 		//when
 		final TestEntityArrayFields provided = (TestEntityArrayFields) this.toTest.provide(TestEntityArrayFields.class);
 		//then
@@ -218,7 +218,7 @@ public class EntityInstanceProviderTest {
 	}
 
 	@Test
-	public void testThatEntityIsProvidedWithEntityValues() {
+	public void testThatEntityIsProvidedWithEntityValues() throws Exception {
 		//when
 		final TestEntityEntityFields provided = (TestEntityEntityFields) this.toTest.provide(TestEntityEntityFields.class);
 		//then

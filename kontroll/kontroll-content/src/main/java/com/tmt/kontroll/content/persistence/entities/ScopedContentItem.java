@@ -29,55 +29,55 @@ public class ScopedContentItem extends BaseEntity {
 
 	@ManyToMany(mappedBy = "scopedContentItems")
 	private List<ScopedContentCondition>	conditions;
-	
+
 	@ManyToMany(mappedBy = "scopedContentItems")
 	private List<ScopedContent>	scopedContents;
 
 	public String getTagName() {
-		return tagName;
+		return this.tagName;
 	}
 
-	public void setTagName(String tagName) {
+	public void setTagName(final String tagName) {
 		this.tagName = tagName;
 	}
 
 	public String getCssClass() {
-		return cssClass;
+		return this.cssClass;
 	}
 
-	public void setCssClass(String cssClass) {
+	public void setCssClass(final String cssClass) {
 		this.cssClass = cssClass;
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
 
 	public ContentType getType() {
-		return type;
+		return this.type;
 	}
 
-	public void setType(ContentType type) {
+	public void setType(final ContentType type) {
 		this.type = type;
 	}
 
 	public List<ScopedContentCondition> getConditions() {
-		return conditions;
+		return this.conditions;
 	}
 
-	public void setConditions(List<ScopedContentCondition> conditions) {
+	public void setConditions(final List<ScopedContentCondition> conditions) {
 		this.conditions = conditions;
 	}
 
 	public List<ScopedContent> getScopedContents() {
-		return scopedContents;
+		return this.scopedContents;
 	}
 
-	public void setScopedContents(List<ScopedContent> scopedContents) {
+	public void setScopedContents(final List<ScopedContent> scopedContents) {
 		this.scopedContents = scopedContents;
 	}
 }

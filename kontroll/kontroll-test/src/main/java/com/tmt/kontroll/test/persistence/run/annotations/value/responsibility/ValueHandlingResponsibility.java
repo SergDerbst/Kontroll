@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 
 /**
  * Annotation for configuring a {@link ValueProvider}, so that it will claim responsibility,

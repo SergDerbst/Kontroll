@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.value.provision.ValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.enums.TestStrategy;
 
 /**
@@ -27,5 +27,5 @@ public @interface PersistenceTestConfig {
 
 	String[] ignoredFields() default {};
 
-	boolean omitDbVerification() default false;
+	boolean omitDbVerification() default true;
 }
