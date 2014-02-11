@@ -16,6 +16,8 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+
 public class EntityRelationship implements Comparable<EntityRelationship> {
 
 	@SuppressWarnings("serial")
@@ -26,59 +28,67 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 	}};
 
 	private final Class<? extends Annotation> relationshipType;
-	private final Object owningEntity;
-	private final Object relatingEntity;
+	private EntityReference owningEntityReference;
+	private EntityReference relatingEntityReference;
 	/** The sole purpose of this field is to make sure that {@link #compareTo} remains consistent with {@link equals}. */
 	private final int index;
 
 	public EntityRelationship(final Class<? extends Annotation> relationshipType,
-	                          final Object owningEntity,
-	                          final Object relatingEntity,
+	                          final EntityReference owningEntityReference,
+	                          final EntityReference relatingEntityReference,
 	                          final int index) throws Exception {
 		if (relationshipType == null) {
 			throw new IllegalArgumentException("Relationship type must not be null.");
 		}
 		this.relationshipType = relationshipType;
-		this.owningEntity = owningEntity;
-		this.relatingEntity = relatingEntity;
+		this.owningEntityReference = owningEntityReference;
+		this.relatingEntityReference = relatingEntityReference;
 		this.index = index;
-		this.relateEntities(owningEntity, relatingEntity);
+		this.relateEntities(owningEntityReference, relatingEntityReference);
 	}
 
 	public Class<? extends Annotation> relationshipType() {
 		return this.relationshipType;
 	}
 
-	public Object owningEntity() {
-		return this.owningEntity;
+	public EntityReference owningEntityReference() {
+		return this.owningEntityReference;
 	}
 
-	public Object relatingEntity() {
-		return this.relatingEntity;
+	public EntityReference relatingEntityReference() {
+		return this.relatingEntityReference;
+	}
+
+	public void setOwningEntityReference(final EntityReference owningEntityReference) {
+		this.owningEntityReference = owningEntityReference;
+	}
+
+	public void setRelatingEntityReference(final EntityReference relatingEntityReference) {
+		this.relatingEntityReference = relatingEntityReference;
 	}
 
 	public int index() {
 		return this.index;
 	}
 
-	private void relateEntities(final Object owningEntity,
-	                            final Object relatingEntity) throws Exception {
-		final Field owningField = retrieveRelatingField(owningEntity.getClass(), relatingEntity.getClass());
-		final Field relatingField = retrieveRelatingField(relatingEntity.getClass(), owningEntity.getClass());
+	private void relateEntities(final EntityReference owningEntityReference,
+	                            final EntityReference relatingEntityReference) throws Exception {
+		final Field owningField = retrieveRelatingField(owningEntityReference.getReferenceType(), relatingEntityReference.getReferenceType());
+		final Field relatingField = retrieveRelatingField(relatingEntityReference.getReferenceType(), owningEntityReference.getReferenceType());
 		owningField.setAccessible(true);
 		relatingField.setAccessible(true);
-		owningField.set(owningEntity, this.preparateRelationshipValue(relatingEntity, owningField));
-		relatingField.set(relatingEntity, this.preparateRelationshipValue(owningEntity, relatingField));
+		owningField.set(owningEntityReference.getEntity(), this.preparateRelationshipValue(relatingEntityReference, owningField));
+		relatingField.set(relatingEntityReference.getEntity(), this.preparateRelationshipValue(owningEntityReference, relatingField));
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object preparateRelationshipValue(final Object entity, final Field field) throws Exception {
+	private Object preparateRelationshipValue(final EntityReference reference, final Field field) throws Exception {
 		if (Collection.class.isAssignableFrom(field.getType())) {
 			final Collection<Object> collection = (Collection<Object>) (field.getType().isInterface() ? collectionInstancesMap.get(field.getType()).newInstance() : field.getType().newInstance());
-			collection.add(entity);
+			collection.add(reference.getEntity());
 			return collection;
 		}
-		return entity;
+		return reference.getEntity();
 	}
 
 	@Override
@@ -88,8 +98,8 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 				final EntityRelationship other = (EntityRelationship) o;
 				if (this.relationshipType.equals(other.relationshipType())) {
 					if (this.index == other.index()) {
-						if (this.owningEntity == other.owningEntity()) {
-							return this.relatingEntity == other.relatingEntity();
+						if (this.owningEntityReference == other.owningEntityReference()) {
+							return this.relatingEntityReference == other.relatingEntityReference();
 						}
 					}
 				}
@@ -100,17 +110,17 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(this.relationshipType).append(this.owningEntity).append(this.relatingEntity).append(this.index).build();
+		return new HashCodeBuilder().append(this.relationshipType).append(this.owningEntityReference).append(this.relatingEntityReference).append(this.index).build();
 	}
 
 	@Override
 	public int compareTo(final EntityRelationship other) {
 		if (this.relationshipType.equals(other.relationshipType())) {
-			final int owningCompared = this.compareObject(this.owningEntity, other.owningEntity());
+			final int owningCompared = this.compareObject(this.owningEntityReference, other.owningEntityReference());
 			final int indexCompared = this.index - other.index;
 			if (indexCompared == 0) {
 				if (owningCompared == 0) {
-					return this.compareObject(this.relatingEntity, other.relatingEntity());
+					return this.compareObject(this.relatingEntityReference, other.relatingEntityReference());
 				}
 				return owningCompared;
 			}

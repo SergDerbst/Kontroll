@@ -3,6 +3,7 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
@@ -39,25 +40,27 @@ public class UpdateTestDataPreparer extends TestDataPreparer {
 
 	@Override
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<Object> entities,
+	                                                  final List<EntityReference> references,
 	                                                  final Class<?> primaryEntityClass) {
-		this.prepareUpdatedReferenceEntities(entities, TestPhase.Running, primaryEntityClass);
+		this.prepareUpdatedReferenceEntities(references, TestPhase.Running, primaryEntityClass);
 	}
 
 	@Override
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<Object> entities,
+	                                                       final List<EntityReference> references,
 	                                                       final Class<?> primaryEntityClass) {
-		this.prepareUpdatedReferenceEntities(entities, TestPhase.Verification, primaryEntityClass);
+		this.prepareUpdatedReferenceEntities(references, TestPhase.Verification, primaryEntityClass);
 	}
 
-	private void prepareUpdatedReferenceEntities(final List<Object> entities,
+	private void prepareUpdatedReferenceEntities(final List<EntityReference> references,
 	                                             final TestPhase testPhase,
 	                                             final Class<?> primaryEntityClass) {
-		final List<Object> updatedEntities = new ArrayList<>();
-		for (final Object entity : entities) {
-			updatedEntities.add(super.entityUpdateProvider().provideNewUpdated(entity));
+		final List<EntityReference> updatedReferences = new ArrayList<>();
+		for (final EntityReference reference : references) {
+			if (reference.isPrimary()) {
+				updatedReferences.add(super.entityUpdateProvider().provideNewUpdated(reference));
+			}
 		}
-		super.prepareReferenceEntitiesForTestPhase(testPhase, updatedEntities, primaryEntityClass);
+		super.prepareReferenceEntitiesForTestPhase(testPhase, updatedReferences, primaryEntityClass);
 	}
 }

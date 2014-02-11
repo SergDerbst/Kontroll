@@ -53,9 +53,9 @@ public class LengthConstraintTestDataPreparer extends ConstraintsTestDataPrepare
 	}
 
 	@Override
-	protected void handleConstraintEntity(final Object entity, final List<EntityReference> violatingReferences) throws Exception {
-		for (final Field field : retrieveFieldsWithLengthConstraint(entity)) {
-			final Object violatingEntity = updateEntity(entity.getClass().newInstance(), entity);
+	protected void handleConstraintEntity(final EntityReference reference, final List<EntityReference> violatingReferences) throws Exception {
+		for (final Field field : retrieveFieldsWithLengthConstraint(reference.getEntity())) {
+			final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
 			final Column column = field.getAnnotation(Column.class);
 			updateField(violatingEntity, RandomStringUtils.random(column.length() + 1), field);
 			violatingReferences.add(new ConstraintReference(violatingEntity, new LengthConstraintAssertion(column)));

@@ -13,9 +13,17 @@ public class EntityReference {
 
 	private final Map<String, Object> referenceValueMap = new HashMap<>();
 	private final Object reference;
+	private final boolean isPrimary;
 
-	public EntityReference(final Object reference) {
+	public EntityReference(final Object reference,
+	                       final boolean isPrimary) {
 		this.reference = reference;
+		this.isPrimary = isPrimary;
+		this.createReferenceMap();
+	}
+
+	public void updateReferenceValueMap() {
+		this.referenceValueMap.clear();
 		this.createReferenceMap();
 	}
 
@@ -33,6 +41,10 @@ public class EntityReference {
 
 	public Set<Entry<String,Object>> getReferenceEntrySet() {
 		return this.referenceValueMap.entrySet();
+	}
+
+	public boolean isPrimary() {
+		return this.isPrimary;
 	}
 
 	private void createReferenceMap() {

@@ -34,7 +34,6 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.failure.i
 import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.failure.impl.UniqueConstraintOnTableAssertionFailure;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
@@ -56,7 +55,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@PersistenceTestConfig(testStrategy = TestStrategy.Count, numberOfEntities = 2)
 	public void testThatCountWorks() {
 		//when
-		assertEquals(new Long(2), (Long) this.daoService().count());
+		assertEquals(new Long(this.fetchPrimaryTypeReferences().size()), (Long) this.daoService().count());
 	}
 
 	@Test
@@ -68,7 +67,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		//when
 		this.daoService().delete(id);
 		//then
-		assertEquals(new Long(0), (Long) this.daoService().count());
+		assertEquals(new Long(this.fetchNonPrimaryReferences(TestPhase.Verification).size()), (Long) this.daoService().count());
 	}
 
 	@Test
@@ -194,10 +193,6 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		return PersistenceTestContext.instance().constraintAsserter();
 	}
 
-	protected EntityUpdateProvider entityUpdateProvider() {
-		return PersistenceTestContext.instance().entityUpdateProvider();
-	}
-
 	protected EntityReferenceAsserter referenceAsserter() {
 		return PersistenceTestContext.instance().referenceAsserter();
 	}
@@ -210,11 +205,27 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		return PersistenceTestContext.instance().testDataHolder().fetchReferences(testPhase);
 	}
 
+	protected List<EntityReference> fetchPrimaryTypeReferences() {
+		return PersistenceTestContext.instance().testDataHolder().fetchPrimaryTypeReferences(TestPhase.Running);
+	}
+
+	protected List<EntityReference> fetchPrimaryTypeReferences(final TestPhase testPhase) {
+		return PersistenceTestContext.instance().testDataHolder().fetchPrimaryTypeReferences(testPhase);
+	}
+
 	protected List<EntityReference> fetchPrimaryReferences() {
 		return PersistenceTestContext.instance().testDataHolder().fetchPrimaryReferences(TestPhase.Running);
 	}
 
 	protected List<EntityReference> fetchPrimaryReferences(final TestPhase testPhase) {
 		return PersistenceTestContext.instance().testDataHolder().fetchPrimaryReferences(testPhase);
+	}
+
+	protected List<EntityReference> fetchNonPrimaryReferences() {
+		return PersistenceTestContext.instance().testDataHolder().fetchNonPrimaryReferences(TestPhase.Running);
+	}
+
+	protected List<EntityReference> fetchNonPrimaryReferences(final TestPhase testPhase) {
+		return PersistenceTestContext.instance().testDataHolder().fetchNonPrimaryReferences(testPhase);
 	}
 }

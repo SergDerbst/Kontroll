@@ -53,12 +53,12 @@ public class UniqueConstraintsOnTableTestDataPreparer extends ConstraintsTestDat
 	}
 
 	@Override
-	protected void handleConstraintEntity(final Object entity, final List<EntityReference> violatingReferences) throws Exception {
-		for (final UniqueConstraint constraint : retrieveUniqueConstraintsOnTable(entity)) {
-			final Object violatingEntity = updateEntity(entity.getClass().newInstance(), entity);
+	protected void handleConstraintEntity(final EntityReference reference, final List<EntityReference> violatingReferences) throws Exception {
+		for (final UniqueConstraint constraint : retrieveUniqueConstraintsOnTable(reference.getEntity())) {
+			final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
 			for (final String columnName : constraint.columnNames()) {
-				final Field field = retrieveFieldByColumnName(entity, columnName);
-				updateField(violatingEntity, retrieveFieldValue(entity, field), field);
+				final Field field = retrieveFieldByColumnName(reference.getEntity(), columnName);
+				updateField(violatingEntity, retrieveFieldValue(reference.getEntity(), field), field);
 			}
 			violatingReferences.add(new ConstraintReference(violatingEntity, new UniqueConstraintOnTableAssertion(constraint)));
 		}

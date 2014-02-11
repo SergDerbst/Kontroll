@@ -13,6 +13,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationship;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipCollector;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipPool;
@@ -29,43 +30,48 @@ public class EntityInstanceProvider {
 		return InstanceHolder.instance;
 	}
 
-	private final SortedSet<Object> providedEntities;
+	private final SortedSet<EntityReference> providedEntities;
 
 	private EntityInstanceProvider() {
-		this.providedEntities = new TreeSet<>(new EntityInstanceProvisionComparator());
+		this.providedEntities = new TreeSet<>(new EntityReferenceComparator());
 	}
 
-	public Set<Object> provideEntities(final Class<?> entityType) throws Exception {
+	public Set<EntityReference> provideEntityReferences(final Class<?> entityType) throws Exception {
+		return this.provideEntityReferences(entityType, true);
+	}
+
+	public Set<EntityReference> provideEntityReferences(final Class<?> entityType, final boolean isPrimary) throws Exception {
 		this.providedEntities.clear();
-		final Object entity = this.entityRelationshipCollector().collect(entityType);
-		this.provideValues(entity);
+		final EntityReference reference = this.entityRelationshipCollector().collect(entityType, isPrimary);
+		this.provideValues(reference);
 		return this.providedEntities;
 	}
 
-	private Object provideValues(final Object entity) {
+	private EntityReference provideValues(final EntityReference reference) {
 		try {
-			this.providedEntities.add(entity);
-			for (final Field field : retrievePropertyFields(entity.getClass())) {
+			this.providedEntities.add(reference);
+			for (final Field field : retrievePropertyFields(reference.getReferenceType())) {
 				field.setAccessible(true);
 				if (this.fieldIsIgnoredForTest(field)) {
 					continue;
 				}
-				this.setFieldValue(entity, field);
+				this.setFieldValue(reference, field);
 			}
-			return entity;
+			return reference;
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void setFieldValue(final Object entity,
+	private void setFieldValue(final EntityReference reference,
 	                           final Field field) throws Exception {
 		final Class<?> fieldType = field.getType();
 		final ValueProvisionHandler valueProvisionHandler = this.valueProvisionHandler();
 		if (isRelationshipField(field)) {
-			this.handleRelationshipField(entity, field);
+			this.handleRelationshipField(reference, field);
 			return;
 		}
+		final Object entity = reference.getEntity();
 		if (field.get(entity) == null) {
 			if (Collection.class.isAssignableFrom(fieldType)) {
 				field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0)));
@@ -79,15 +85,15 @@ public class EntityInstanceProvider {
 		}
 	}
 
-	private void handleRelationshipField(final Object entity,
+	private void handleRelationshipField(final EntityReference reference,
 	                                     final Field field) {
-		final EntityRelationship relationship = this.entityRelationshipPool().retrieveRelationshipByEntity(entity);
-		this.handleRelationshipEntity(isOwningRelationshipField(field) ? relationship.relatingEntity() : relationship.owningEntity());
+		final EntityRelationship relationship = this.entityRelationshipPool().retrieveRelationshipByEntityReference(reference);
+		this.handleRelationshipEntity(isOwningRelationshipField(field) ? relationship.relatingEntityReference() : relationship.owningEntityReference());
 	}
 
-	private void handleRelationshipEntity(final Object entity) {
-		if (!this.providedEntities.contains(entity)) {
-			this.provideValues(entity);
+	private void handleRelationshipEntity(final EntityReference reference) {
+		if (!this.providedEntities.contains(reference)) {
+			this.provideValues(reference);
 		}
 	}
 

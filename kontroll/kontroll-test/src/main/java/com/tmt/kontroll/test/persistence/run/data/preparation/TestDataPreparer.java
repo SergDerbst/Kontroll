@@ -12,6 +12,7 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferen
 import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipPool;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
@@ -60,10 +61,11 @@ public abstract class TestDataPreparer {
 
 	/**
 	 * Creates a list of {@link EntityReference} instances representing entities needed for the test run.
-	 * The size of the list will depend on {@link PersistenceTestConfig#numberOfEntities}. The
-	 * generated list will be delegated to {@link #prepareReferenceEntitiesForTestPhases}.
+	 * The size of the list will depend on {@link PersistenceTestConfig#numberOfEntities}. The references
+	 * will be used to build {@link IDataSet}s for the test.
 	 * </p>
-	 * It also saves the primary entity type to the {@link PersistenceTestContext};
+	 * Furthermore, it saves the primary entity type and {@link PersistenceTestConfig#numberOfEntities} to the
+	 * {@link TestDataHolder} for further reference;
 	 * </p>
 	 * 
 	 * @param config
@@ -72,106 +74,97 @@ public abstract class TestDataPreparer {
 	 */
 	private void prepareReferenceEntities(final PersistenceTestConfig config,
 	                                      final String entityClassName) throws Exception {
-		final List<Object> entities = new ArrayList<>();
+		final List<EntityReference> references = new ArrayList<>();
 		final Class<?> entityClass = Class.forName(entityClassName);
 		this.testDataHolder().setPrimaryEntityType(entityClass);
+		this.testDataHolder().setNumberOfEntities(config.numberOfEntities());
 		for (int i = 0; i < config.numberOfEntities(); i++) {
 			this.configureReferenceAssertion(config, entityClass);
-			entities.addAll(this.entityInstanceProvider().provideEntities(entityClass));
+			references.addAll(this.entityInstanceProvider().provideEntityReferences(entityClass));
 		}
-		this.prepareReferenceEntitiesForSetup(config, entities, entityClass);
-		this.prepareReferenceEntitiesForRunning(config, entities, entityClass);
-		this.prepareReferenceEntitiesForVerification(config, entities, entityClass);
-		this.prepareReferenceEntitiesForTearDown(config, entities, entityClass);
+		this.prepareReferenceEntitiesForSetup(config, references, entityClass);
+		this.prepareReferenceEntitiesForRunning(config, references, entityClass);
+		this.prepareReferenceEntitiesForVerification(config, references, entityClass);
+		this.prepareReferenceEntitiesForTearDown(config, references, entityClass);
 	}
 
 	/**
-	 * Prepares the reference entities for {@link TestPhase#Setup} by adding the plain
-	 * entities as references to the {@link TestDataHolder}.
+	 * Prepares the entity references for {@link TestPhase#Setup} by adding the references to the
+	 * {@link TestDataHolder}.
 	 * </p>
-	 * If a different behavior is
-	 * wanted, for example tweaking entity values, it may be overridden in an implementing class.
+	 * If a different behavior is wanted, for example tweaking entity values, it may be overridden
+	 * in an implementing class.
 	 * 
 	 * @param config
-	 * @param entities
+	 * @param references
 	 * @param entityClass
 	 * @throws Exception
 	 */
 	protected void prepareReferenceEntitiesForSetup(final PersistenceTestConfig config,
-	                                                final List<Object> entities,
+	                                                final List<EntityReference> references,
 	                                                final Class<?> primaryEntityClass) throws Exception {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, entities, primaryEntityClass);
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, references, primaryEntityClass);
 	}
 
 	/**
-	 * Prepares the reference entities for {@link TestPhase#Running} by just adding the plain
-	 * entities as references to the {@link TestDataHolder}.
+	 * Prepares the entity references for {@link TestPhase#Running} by just adding the references to
+	 * the {@link TestDataHolder}.
 	 * </p>
-	 * If a different behavior is
-	 * wanted, for example tweaking entity values, it may be overridden in an implementing class.
+	 * If a different behavior is wanted, for example tweaking entity values, it may be overridden in
+	 * an implementing class.
+	 * </p>
 	 * 
 	 * @param config
-	 * @param entities
+	 * @param references
 	 * @param entityClass
 	 * @throws Exception
 	 */
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<Object> entities,
+	                                                  final List<EntityReference> references,
 	                                                  final Class<?> primaryEntityClass) throws Exception {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Running, entities, primaryEntityClass);
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Running, references, primaryEntityClass);
 	}
 
 	/**
-	 * Prepares the reference entities for {@link TestPhase#Verification} by just adding the plain
-	 * entities as references to the {@link TestDataHolder}.
+	 * Prepares the entity references for {@link TestPhase#Verification} by just adding the references
+	 * to the {@link TestDataHolder}.
 	 * </p>
-	 * If a different behavior is
-	 * wanted, for example tweaking entity values, it may be overridden in an implementing class.
+	 * If a different behavior is wanted, for example tweaking entity values, it may be overridden in an
+	 * implementing class.
+	 * </p>
 	 * 
 	 * @param config
-	 * @param entities
+	 * @param references
 	 * @param entityClass
 	 */
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<Object> entities,
+	                                                       final List<EntityReference> references,
 	                                                       final Class<?> primaryEntityClass) {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, entities, primaryEntityClass);
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, references, primaryEntityClass);
 	}
 
 	/**
-	 * Prepares the reference entities for {@link TestPhase#TearDown} by just adding an empty
+	 * Prepares the entity references for {@link TestPhase#TearDown} by just adding an empty
 	 * reference list to the {@link TestDataHolder}, so that the database will be teared down
 	 * with a complete but empty database schema.
 	 * </p>
 	 * If a different behavior is wanted, for example having certain data present after
 	 * the test, it may be overridden in an implementing class.
+	 * </p>
 	 * 
 	 * @param config
-	 * @param entities
+	 * @param references
 	 * @param primaryEntityClass
 	 */
 	protected void prepareReferenceEntitiesForTearDown(final PersistenceTestConfig config,
-	                                                   final List<Object> entities,
+	                                                   final List<EntityReference> references,
 	                                                   final Class<?> primaryEntityClass) {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new ArrayList<Object>(), primaryEntityClass);
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new ArrayList<EntityReference>(), primaryEntityClass);
 	}
 
-	/**
-	 * Prepares the references entities for the given {@link TestPhase}. It separates primary entities from
-	 * relating entities according to the given primary entity class. Primary means that the entity is of the type
-	 * the tested dao service is for.
-	 * 
-	 * @param testPhase
-	 * @param entities
-	 * @param primaryEntityClass
-	 */
 	protected void prepareReferenceEntitiesForTestPhase(final TestPhase testPhase,
-	                                                    final List<Object> entities,
+	                                                    final List<EntityReference> references,
 	                                                    final Class<?> primaryEntityClass) {
-		final List<EntityReference> references = new ArrayList<>();
-		for (final Object entity : entities) {
-			references.add(new EntityReference(entity));
-		}
 		this.testDataHolder().addReferences(testPhase, references);
 	}
 
@@ -198,6 +191,10 @@ public abstract class TestDataPreparer {
 
 	protected EntityInstanceProvider entityInstanceProvider() {
 		return PersistenceTestContext.instance().entityInstanceProvider();
+	}
+
+	protected EntityRelationshipPool entityRelationshipPool() {
+		return PersistenceTestContext.instance().entityRelationshipPool();
 	}
 
 	protected EntityUpdateProvider entityUpdateProvider() {

@@ -4,9 +4,11 @@ import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.nul
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.hasRelation;
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.retrieveRelatingField;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
@@ -47,17 +49,18 @@ public class SaveTestDataPreparer extends TestDataPreparer {
 
 	@Override
 	protected void prepareReferenceEntitiesForSetup(final PersistenceTestConfig config,
-	                                                final List<Object> entities,
+	                                                final List<EntityReference> references,
 	                                                final Class<?> primaryEntityClass) throws Exception {
-		final List<Object> setupEntites = new ArrayList<>();
-		for (final Object entity : entities) {
-			if (!entity.getClass().equals(primaryEntityClass)) {
-				if (hasRelation(entity.getClass(), primaryEntityClass)) {
-					nullifyField(entity, retrieveRelatingField(entity.getClass(), primaryEntityClass));
+		final List<EntityReference> setupReferences = new ArrayList<>();
+		for (final EntityReference reference : references) {
+			if (!reference.isPrimary()) {
+				if (hasRelation(reference.getReferenceType(), primaryEntityClass)) {
+					final Field relatingField = retrieveRelatingField(reference.getReferenceType(), primaryEntityClass);
+					nullifyField(reference.getEntity(), relatingField);
 				}
-				setupEntites.add(entity);
+				setupReferences.add(reference);
 			}
 		}
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, setupEntites, primaryEntityClass);
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, setupReferences, primaryEntityClass);
 	}
 }

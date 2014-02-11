@@ -50,7 +50,7 @@ public class EntityRelationshipCollectorTest {
 	@Test
 	public void testThatManyToOneRelationshipIsCollected() throws Exception {
 		//when
-		final ManyToOneTestEntity collected = PersistenceTestContext.newInstance().entityRelationshipCollector().collect(ManyToOneTestEntity.class);
+		final ManyToOneTestEntity collected = (ManyToOneTestEntity) PersistenceTestContext.newInstance().entityRelationshipCollector().collect(ManyToOneTestEntity.class).getEntity();
 		//then
 		assertNotNull(collected);
 		assertNotNull(collected.oneToManyTestEntity);
@@ -61,7 +61,7 @@ public class EntityRelationshipCollectorTest {
 	@Test
 	public void testThatOneToManyRelationshipIsCollected() throws Exception {
 		//when
-		final OneToManyTestEntity collected = PersistenceTestContext.newInstance().entityRelationshipCollector().collect(OneToManyTestEntity.class);
+		final OneToManyTestEntity collected = (OneToManyTestEntity) PersistenceTestContext.newInstance().entityRelationshipCollector().collect(OneToManyTestEntity.class).getEntity();
 		//then
 		assertNotNull(collected);
 		assertNotNull(collected.manyToOneTestEntities);
@@ -73,7 +73,7 @@ public class EntityRelationshipCollectorTest {
 	@Test
 	public void testThatManyToManyRelationshipIsCollectedFromOwning() throws Exception {
 		//when
-		final ManyToManyTestEntityOwning collected = PersistenceTestContext.newInstance().entityRelationshipCollector().collect(ManyToManyTestEntityOwning.class);
+		final ManyToManyTestEntityOwning collected = (ManyToManyTestEntityOwning) PersistenceTestContext.newInstance().entityRelationshipCollector().collect(ManyToManyTestEntityOwning.class).getEntity();
 		//then
 		assertNotNull(collected);
 		assertNotNull(collected.manyToManyTestEntityRelatings);
@@ -85,7 +85,7 @@ public class EntityRelationshipCollectorTest {
 	@Test
 	public void testThatManyToManyRelationshipIsCollectedFromRelating() throws Exception {
 		//when
-		final ManyToManyTestEntityRelating collected = PersistenceTestContext.newInstance().entityRelationshipCollector().collect(ManyToManyTestEntityRelating.class);
+		final ManyToManyTestEntityRelating collected = (ManyToManyTestEntityRelating) PersistenceTestContext.newInstance().entityRelationshipCollector().collect(ManyToManyTestEntityRelating.class).getEntity();
 		//then
 		assertNotNull(collected);
 		assertNotNull(collected.manyToManyTestEntityOwnings);
@@ -97,7 +97,7 @@ public class EntityRelationshipCollectorTest {
 	@Test
 	public void testThatOneToOneRelationshipIsCollectedFromOwning() throws Exception {
 		//when
-		final OneToOneTestEntityOwning collected = PersistenceTestContext.newInstance().entityRelationshipCollector().collect(OneToOneTestEntityOwning.class);
+		final OneToOneTestEntityOwning collected = (OneToOneTestEntityOwning) PersistenceTestContext.newInstance().entityRelationshipCollector().collect(OneToOneTestEntityOwning.class).getEntity();
 		//then
 		assertNotNull(collected);
 		assertNotNull(collected.oneToOneTestEntityRelating);
@@ -108,7 +108,7 @@ public class EntityRelationshipCollectorTest {
 	@Test
 	public void testThatOneToOneRelationshipIsCollectedFromRelating() throws Exception {
 		//when
-		final OneToOneTestEntityRelating collected = PersistenceTestContext.newInstance().entityRelationshipCollector().collect(OneToOneTestEntityRelating.class);
+		final OneToOneTestEntityRelating collected = (OneToOneTestEntityRelating) PersistenceTestContext.newInstance().entityRelationshipCollector().collect(OneToOneTestEntityRelating.class).getEntity();
 		//then
 		assertNotNull(collected);
 		assertNotNull(collected.oneToOneTestEntityOwning);

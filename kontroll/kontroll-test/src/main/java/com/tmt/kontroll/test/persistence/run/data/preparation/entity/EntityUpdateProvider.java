@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import com.tmt.kontroll.persistence.utils.JpaEntityUtils;
 import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 
@@ -36,9 +37,9 @@ public class EntityUpdateProvider {
 	 * @param entity
 	 * @return
 	 */
-	public Object provideNewUpdated(final Object entity) {
+	public EntityReference provideNewUpdated(final EntityReference reference) {
 		try {
-			final Class<? extends Object> entityClass = entity.getClass();
+			final Class<? extends Object> entityClass = reference.getReferenceType();
 			//we can't make a new instance because of the relationship pool, or can we?
 			final Object entityToUpdate = entityClass.newInstance();
 			for (final Field field : retrievePropertyFields(entityClass)) {
@@ -46,9 +47,9 @@ public class EntityUpdateProvider {
 					continue;
 				}
 				final boolean useNextValue = !JpaEntityUtils.isRelationshipField(field);
-				this.setFieldValueUpdated(entityToUpdate, entity, field, useNextValue);
+				this.setFieldValueUpdated(entityToUpdate, reference.getEntity(), field, useNextValue);
 			}
-			return entityToUpdate;
+			return new EntityReference(entityToUpdate, reference.isPrimary());
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}

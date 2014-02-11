@@ -3,6 +3,7 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
@@ -41,17 +42,17 @@ public class DeleteTestDataPreparer extends TestDataPreparer {
 
 	@Override
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<Object> entities,
+	                                                       final List<EntityReference> references,
 	                                                       final Class<?> primaryEntityClass) {
 		boolean deleted = false;
-		final List<Object> deletedEntities = new ArrayList<>();
-		for (final Object entity : entities) {
-			if (!deleted && entity.getClass().equals(primaryEntityClass)) {
+		final List<EntityReference> deletedReferences = new ArrayList<>();
+		for (final EntityReference reference : references) {
+			if (!deleted && reference.isPrimary()) {
 				deleted = true;
 				continue;
 			}
-			deletedEntities.add(entity);
+			deletedReferences.add(reference);
 		}
-		super.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, deletedEntities, primaryEntityClass);
+		super.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, deletedReferences, primaryEntityClass);
 	}
 }

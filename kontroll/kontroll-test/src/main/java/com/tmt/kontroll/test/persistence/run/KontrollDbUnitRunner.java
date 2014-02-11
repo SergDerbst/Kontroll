@@ -20,12 +20,51 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
 public class KontrollDbUnitRunner {
 
+	/**
+	 * Performs the following operations before a test method is run:
+	 * </p>
+	 * <ul>
+	 * <li>initialize the {@link PersistenceTestContext}</li>
+	 * <li>prepare all test data using the {@link TestDataPreparationHandler}</li>
+	 * <li>update all reference values using {@link TestDataHolder#updateReferencesValues}</li>
+	 * <li>set up the database according to the {@link IDataSet} stored under {@link TestPhase#Setup}
+	 * in the {@link TestDataHolder} after preparation</li>
+	 * </ul>
+	 * </p>
+	 * It uses DBUnit's {@link DatabaseSequenceFilter} to assure that data rows are inserted in the proper
+	 * sequence to avoid foreign key constraint violations.
+	 * </p>
+	 * 
+	 * @param testContext
+	 * @param testMethod
+	 * @param testPhase
+	 * @throws Exception
+	 */
 	public void beforeTestMethod(final KontrollDbUnitTestContext testContext,
 	                             final Method testMethod) throws Exception {
 		this.startTestingContext();
 		this.setupOrTearDown(testContext, testMethod, TestPhase.Setup);
 	}
 
+	/**
+	 * It performs the following operations after a test method has run:
+	 * </p>
+	 * <ul>
+	 * <li>verify the database against the {@link IDataSet} stored under {@link TestPhase#Verification}
+	 * in the {@link TestDataHolder}, unless verification is set to be omitted</li>
+	 * <li>tear down the database according to the {@link IDataSet} stored under {@link TestPhase#TearDown}
+	 * (usually an empty data set, containing all tables, but no rows)</li>
+	 * </ul>
+	 * </p>
+	 * It uses DBUnit's {@link DatabaseSequenceFilter} to assure that data rows are deleted in the proper
+	 * sequence to avoid foreign key constraint violations.
+	 * </p>
+	 * 
+	 * @param testContext
+	 * @param testMethod
+	 * @param omitVerification
+	 * @throws Exception
+	 */
 	public void afterTestMethod(final KontrollDbUnitTestContext testContext,
 	                            final Method testMethod,
 	                            final boolean omitVerification) throws Exception {
@@ -48,6 +87,7 @@ public class KontrollDbUnitRunner {
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (TestPhase.Setup == testPhase) {
 			this.testDataPreparationHandler().prepare(config, retrieveEntityClassName(testClass));
+			this.testDataHolder().updateReferencesValues();
 		}
 		final DatabaseOperation operation= DatabaseOperation.CLEAN_INSERT;
 		final DatabaseSequenceFilter tableSequenceFilter = new DatabaseSequenceFilter(connection);

@@ -7,6 +7,11 @@ import java.util.TreeSet;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
+import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
+
 public class EntityRelationshipPool {
 
 	private static class InstanceHolder {
@@ -26,20 +31,20 @@ public class EntityRelationshipPool {
 		this.pool.add(entityRelationship);
 	}
 
-	public EntityRelationship retrieveRelationshipByEntity(final Object entity) {
+	public EntityRelationship retrieveRelationshipByEntityReference(final EntityReference reference) {
 		for (final EntityRelationship relationship : this.pool) {
-			if (relationship.owningEntity() == entity || relationship.relatingEntity() == entity) {
+			if (relationship.owningEntityReference() == reference || relationship.relatingEntityReference() == reference) {
 				return relationship;
 			}
 		}
 		return null;
 	}
 
-	public EntityRelationship retrieveRelationshipByOwningEntity(final Class<? extends Annotation> relationshipType,
-	                                                             final Object owningEntity) {
+	public EntityRelationship retrieveRelationshipByOwningEntityReference(final Class<? extends Annotation> relationshipType,
+	                                                                      final EntityReference owningEntityReference) {
 		for (final EntityRelationship relationship : this.pool) {
 			if (this.isOppositeRelationshipType(relationship.relationshipType(), relationshipType)) {
-				if (relationship.owningEntity() == owningEntity) {
+				if (relationship.owningEntityReference() == owningEntityReference) {
 					return relationship;
 				}
 			}
@@ -47,11 +52,11 @@ public class EntityRelationshipPool {
 		return null;
 	}
 
-	public EntityRelationship retrieveRelationshipByRelatingEntity(final Class<? extends Annotation> relationshipType,
-	                                                               final Object relatingEntity) {
+	public EntityRelationship retrieveRelationshipByRelatingEntityReference(final Class<? extends Annotation> relationshipType,
+	                                                                        final EntityReference relatingEntityReference) {
 		for (final EntityRelationship relationship : this.pool) {
 			if (this.isOppositeRelationshipType(relationship.relationshipType(), relationshipType)) {
-				if (relationship.relatingEntity() == relatingEntity) {
+				if (relationship.relatingEntityReference() == relatingEntityReference) {
 					return relationship;
 				}
 			}
@@ -65,6 +70,14 @@ public class EntityRelationshipPool {
 
 	public void clear() {
 		this.pool.clear();
+	}
+
+	private TestDataHolder testDataHolder() {
+		return PersistenceTestContext.instance().testDataHolder();
+	}
+
+	private EntityInstanceProvider entityInstanceProvider() {
+		return PersistenceTestContext.instance().entityInstanceProvider();
 	}
 
 	private boolean isOppositeRelationshipType(final Class<? extends Annotation> r1, final Class<? extends Annotation> r2) {

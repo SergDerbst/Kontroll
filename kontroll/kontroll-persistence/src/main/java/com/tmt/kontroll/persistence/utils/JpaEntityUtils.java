@@ -146,6 +146,11 @@ public class JpaEntityUtils {
 		return field.getName();
 	}
 
+	public static boolean isNullableField(final Field field) {
+		final Column column = field.getAnnotation(Column.class);
+		return column != null && column.nullable();
+	}
+
 	public static boolean hasRelation(final Class<?> primaryEntityClass, final Class<?> relatingEntityClass) {
 		for (final Field field : retrievePropertyFields(primaryEntityClass)) {
 			if (isRelationshipField(field) && retrieveRelatingEntityType(field).equals(relatingEntityClass)) {

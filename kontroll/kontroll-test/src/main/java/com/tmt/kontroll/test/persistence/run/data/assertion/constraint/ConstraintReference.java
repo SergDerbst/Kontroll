@@ -9,7 +9,7 @@ public class ConstraintReference extends EntityReference {
 
 	public ConstraintReference(final Object entity,
 	                           final ConstraintAssertion constraintAssertion) {
-		super(entity);
+		super(entity, false);
 		this.constraintAssertion = constraintAssertion;
 	}
 

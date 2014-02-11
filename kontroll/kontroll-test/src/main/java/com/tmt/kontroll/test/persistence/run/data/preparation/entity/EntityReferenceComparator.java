@@ -9,6 +9,8 @@ import java.util.Comparator;
 
 import org.dbunit.dataset.IDataSet;
 
+import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+
 /**
  * This comparator compares entities according to their foreign key relationships,
  * in order to assure that entities that have foreign keys are added to the
@@ -18,31 +20,31 @@ import org.dbunit.dataset.IDataSet;
  * @author Serg Derbst
  *
  */
-public class EntityInstanceProvisionComparator implements Comparator<Object> {
+public class EntityReferenceComparator implements Comparator<EntityReference> {
 
 	@Override
-	public int compare(final Object entity1, final Object entity2) {
+	public int compare(final EntityReference reference1, final EntityReference reference2) {
 		try {
-			if (entity1 == entity2) {
+			if (reference1 == reference2) {
 				return 0;
 			}
-			for (final Field field : retrievePropertyFields(entity1.getClass())) {
+			for (final Field field : retrievePropertyFields(reference1.getReferenceType())) {
 				if (isForeignKeyRelationshipField(field)) {
-					final Object relatingEntity = retrieveFieldValue(entity1, field);
-					if (entity2 == relatingEntity) {
+					final Object relatingEntity = retrieveFieldValue(reference1.getEntity(), field);
+					if (reference2.getEntity() == relatingEntity) {
 						return 1;
 					}
 				}
 			}
-			for (final Field field : retrievePropertyFields(entity2.getClass())) {
+			for (final Field field : retrievePropertyFields(reference2.getReferenceType())) {
 				if (isForeignKeyRelationshipField(field)) {
-					final Object relatingEntity = retrieveFieldValue(entity2, field);
-					if (entity1 == relatingEntity) {
+					final Object relatingEntity = retrieveFieldValue(reference2.getReferenceType(), field);
+					if (reference1.getReferenceType() == relatingEntity) {
 						return -1;
 					}
 				}
 			}
-			return System.identityHashCode(entity1) - System.identityHashCode(entity2);
+			return System.identityHashCode(reference1) - System.identityHashCode(reference2);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}

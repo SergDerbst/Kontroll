@@ -32,16 +32,16 @@ public abstract class ConstraintsTestDataPreparer extends TestDataPreparer {
 	 * @param violatingReferences
 	 * @throws Exception
 	 */
-	protected abstract void handleConstraintEntity(final Object entity, final List<EntityReference> violatingReferences) throws Exception;
+	protected abstract void handleConstraintEntity(final EntityReference reference, final List<EntityReference> violatingReferences) throws Exception;
 
 	@Override
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<Object> entities,
+	                                                  final List<EntityReference> references,
 	                                                  final Class<?> primaryEntityClass) throws Exception {
 		final List<EntityReference> violatingReferences = new ArrayList<>();
-		for (final Object entity : entities) {
-			if (entity.getClass().equals(primaryEntityClass)) {
-				this.handleConstraintEntity(entity, violatingReferences);
+		for (final EntityReference reference : references) {
+			if (reference.isPrimary()) {
+				this.handleConstraintEntity(reference, violatingReferences);
 			}
 		}
 		super.testDataHolder().addReferences(TestPhase.Running, violatingReferences);
