@@ -3,10 +3,13 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 import java.lang.reflect.Field;
 import java.util.EnumMap;
 
+import javax.persistence.Id;
+
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.array.ArrayValueProviderFactory;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.map.impl.EnumMapValueProviderFactory;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.impl.EnumValueProviderFactory;
-import com.tmt.kontroll.test.persistence.run.exceptions.data.preparation.entity.value.provision.ValueProvisionImpossibleException;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.enumeration.EnumValueProviderFactory;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.id.IdValueProviderFactory;
+import com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision.ValueProvisionImpossibleException;
 
 public class ValueProvisionHandlerPreparer {
 
@@ -28,6 +31,9 @@ public class ValueProvisionHandlerPreparer {
 					if (types[1].isEnum()) {
 						this.prepareEnumValueProvision(valueProvisionHandler, types);
 					}
+					if (field.isAnnotationPresent(Id.class)) {
+						this.prepareIdValueProvision(valueProvisionHandler, types[0], field.getType());
+					}
 					break;
 				case 3:
 					if (types[1].isArray()) {
@@ -41,6 +47,12 @@ public class ValueProvisionHandlerPreparer {
 					throw ValueProvisionImpossibleException.prepareWithTypes(field, types);
 			}
 		}
+	}
+
+	private void prepareIdValueProvision(final ValueProvisionHandler valueProvisionHandler,
+	                                     final Class<?> entityType,
+	                                     final Class<?> idType) {
+		valueProvisionHandler.addValueProvider(IdValueProviderFactory.instance().create(valueProvisionHandler, entityType, idType));
 	}
 
 	@SuppressWarnings("unchecked")

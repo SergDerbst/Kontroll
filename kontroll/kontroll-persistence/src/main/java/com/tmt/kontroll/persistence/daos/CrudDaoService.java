@@ -25,22 +25,22 @@ public abstract class CrudDaoService<Repo extends JpaRepository<Entity, ID>, Ent
 	public abstract Entity update(final Entity entity) throws EntityNotFoundInDatabaseException;
 
 	@Override
-	public Entity findById(final ID id) {
+	public Entity readById(final ID id) {
 		return this.getRepository().findOne(id);
 	}
 
 	@Override
-	public List<Entity> findAll() {
+	public List<Entity> readAll() {
 		return this.getRepository().findAll();
 	}
 
 	@Override
-	public Entity save(final Entity entity) {
+	public Entity create(final Entity entity) {
 		return this.getRepository().save(entity);
 	}
 
 	@Override
-	public List<Entity> saveAll(final List<Entity> entities) {
+	public List<Entity> createAll(final List<Entity> entities) {
 		return this.getRepository().save(entities);
 	}
 

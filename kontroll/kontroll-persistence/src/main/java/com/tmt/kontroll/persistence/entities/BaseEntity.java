@@ -1,6 +1,7 @@
 package com.tmt.kontroll.persistence.entities;
 
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrievePropertyFields;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
+import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.isRelationshipField;
 
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
@@ -50,11 +51,15 @@ public class BaseEntity {
 			sB.append("field: " + field.getName());
 			sB.append(", type: " + field.getType().getName());
 			try {
-				sB.append(", value: " + field.get(this));
+				if (isRelationshipField(field)) {
+					sB.append(", value: " + field.getType().getName() + "@" + System.identityHashCode(field.get(this)));
+				} else {
+					sB.append(", value: " + field.get(this));
+				}
 			} catch (final Exception e) {
 				/*
-				 * we usually don't swallow exceptions (yuck, disgusting!), but here we make an
-				 * exception as not to kill the string representation
+				 * we usually don't swallow exceptions (we spit), but here we make an
+				 * exception (pun unintended) as not to kill the string representation
 				 */
 				sB.append("Failed to fetch value of field! " + e.getClass().getName());
 			}

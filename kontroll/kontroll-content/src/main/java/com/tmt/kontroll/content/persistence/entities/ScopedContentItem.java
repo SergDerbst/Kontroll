@@ -27,8 +27,8 @@ public class ScopedContentItem extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ContentType			type;
 
-	@ManyToMany(mappedBy = "scopedContentItems")
-	private List<ScopedContentCondition>	conditions;
+	//	@ManyToMany(mappedBy = "scopedContentItems")
+	//	private List<ScopedContentCondition>	conditions;
 
 	@ManyToMany(mappedBy = "scopedContentItems")
 	private List<ScopedContent>	scopedContents;
@@ -65,13 +65,13 @@ public class ScopedContentItem extends BaseEntity {
 		this.type = type;
 	}
 
-	public List<ScopedContentCondition> getConditions() {
-		return this.conditions;
-	}
-
-	public void setConditions(final List<ScopedContentCondition> conditions) {
-		this.conditions = conditions;
-	}
+	//	public List<ScopedContentCondition> getConditions() {
+	//		return this.conditions;
+	//	}
+	//
+	//	public void setConditions(final List<ScopedContentCondition> conditions) {
+	//		this.conditions = conditions;
+	//	}
 
 	public List<ScopedContent> getScopedContents() {
 		return this.scopedContents;

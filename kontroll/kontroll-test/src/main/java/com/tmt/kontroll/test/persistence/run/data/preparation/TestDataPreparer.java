@@ -5,14 +5,17 @@ import java.util.List;
 
 import org.dbunit.dataset.IDataSet;
 
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
+import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
+import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
-import com.tmt.kontroll.test.persistence.run.enums.TestPhase;
-import com.tmt.kontroll.test.persistence.run.enums.TestStrategy;
-import com.tmt.kontroll.test.persistence.run.exceptions.NoTestPreparerFoundException;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
+import com.tmt.kontroll.test.persistence.run.utils.exceptions.NoTestPreparerFoundException;
 
 /**
  * Responsibility chain element to prepare test data according to the proper {@link TestStrategy}.
@@ -59,6 +62,9 @@ public abstract class TestDataPreparer {
 	 * Creates a list of {@link EntityReference} instances representing entities needed for the test run.
 	 * The size of the list will depend on {@link PersistenceTestConfig#numberOfEntities}. The
 	 * generated list will be delegated to {@link #prepareReferenceEntitiesForTestPhases}.
+	 * </p>
+	 * It also saves the primary entity type to the {@link PersistenceTestContext};
+	 * </p>
 	 * 
 	 * @param config
 	 * @param entityClassName
@@ -67,16 +73,16 @@ public abstract class TestDataPreparer {
 	private void prepareReferenceEntities(final PersistenceTestConfig config,
 	                                      final String entityClassName) throws Exception {
 		final List<Object> entities = new ArrayList<>();
+		final Class<?> entityClass = Class.forName(entityClassName);
+		this.testDataHolder().setPrimaryEntityType(entityClass);
 		for (int i = 0; i < config.numberOfEntities(); i++) {
-			final Class<?> entityClass = Class.forName(entityClassName);
 			this.configureReferenceAssertion(config, entityClass);
-			final Object entity = this.entityInstanceProvider().provide(entityClass);
-			entities.add(entity);
+			entities.addAll(this.entityInstanceProvider().provideEntities(entityClass));
 		}
-		this.prepareReferenceEntitiesForSetup(config, entities);
-		this.prepareReferenceEntitiesForRunning(config, entities);
-		this.prepareReferenceEntitiesForVerification(config, entities);
-		this.prepareReferenceEntitiesForTearDown(config, entities);
+		this.prepareReferenceEntitiesForSetup(config, entities, entityClass);
+		this.prepareReferenceEntitiesForRunning(config, entities, entityClass);
+		this.prepareReferenceEntitiesForVerification(config, entities, entityClass);
+		this.prepareReferenceEntitiesForTearDown(config, entities, entityClass);
 	}
 
 	/**
@@ -88,10 +94,13 @@ public abstract class TestDataPreparer {
 	 * 
 	 * @param config
 	 * @param entities
+	 * @param entityClass
+	 * @throws Exception
 	 */
 	protected void prepareReferenceEntitiesForSetup(final PersistenceTestConfig config,
-	                                                final List<Object> entities) {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, entities);
+	                                                final List<Object> entities,
+	                                                final Class<?> primaryEntityClass) throws Exception {
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, entities, primaryEntityClass);
 	}
 
 	/**
@@ -103,11 +112,13 @@ public abstract class TestDataPreparer {
 	 * 
 	 * @param config
 	 * @param entities
+	 * @param entityClass
 	 * @throws Exception
 	 */
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<Object> entities) throws Exception {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Running, entities);
+	                                                  final List<Object> entities,
+	                                                  final Class<?> primaryEntityClass) throws Exception {
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Running, entities, primaryEntityClass);
 	}
 
 	/**
@@ -119,10 +130,12 @@ public abstract class TestDataPreparer {
 	 * 
 	 * @param config
 	 * @param entities
+	 * @param entityClass
 	 */
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<Object> entities) {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, entities);
+	                                                       final List<Object> entities,
+	                                                       final Class<?> primaryEntityClass) {
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, entities, primaryEntityClass);
 	}
 
 	/**
@@ -135,14 +148,26 @@ public abstract class TestDataPreparer {
 	 * 
 	 * @param config
 	 * @param entities
+	 * @param primaryEntityClass
 	 */
 	protected void prepareReferenceEntitiesForTearDown(final PersistenceTestConfig config,
-	                                                   final List<Object> entities) {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new ArrayList<Object>());
+	                                                   final List<Object> entities,
+	                                                   final Class<?> primaryEntityClass) {
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new ArrayList<Object>(), primaryEntityClass);
 	}
 
+	/**
+	 * Prepares the references entities for the given {@link TestPhase}. It separates primary entities from
+	 * relating entities according to the given primary entity class. Primary means that the entity is of the type
+	 * the tested dao service is for.
+	 * 
+	 * @param testPhase
+	 * @param entities
+	 * @param primaryEntityClass
+	 */
 	protected void prepareReferenceEntitiesForTestPhase(final TestPhase testPhase,
-	                                                    final List<Object> entities) {
+	                                                    final List<Object> entities,
+	                                                    final Class<?> primaryEntityClass) {
 		final List<EntityReference> references = new ArrayList<>();
 		for (final Object entity : entities) {
 			references.add(new EntityReference(entity));
@@ -164,7 +189,6 @@ public abstract class TestDataPreparer {
 	protected void configureReferenceAssertion(final PersistenceTestConfig config,
 	                                           final Class<?> entityClass) {
 		final EntityReferenceAsserter asserter = this.referenceAsserter();
-		asserter.configureForEntityId(config, entityClass);
 		asserter.configureForIgnoredFields(config);
 	}
 
@@ -173,15 +197,15 @@ public abstract class TestDataPreparer {
 	}
 
 	protected EntityInstanceProvider entityInstanceProvider() {
-		return TestPreparationContext.instance().entityInstanceProvider();
+		return PersistenceTestContext.instance().entityInstanceProvider();
 	}
 
 	protected EntityUpdateProvider entityUpdateProvider() {
-		return TestPreparationContext.instance().entityUpdateProvider();
+		return PersistenceTestContext.instance().entityUpdateProvider();
 	}
 
 	protected EntityReferenceAsserter referenceAsserter() {
-		return TestPreparationContext.instance().referenceAsserter();
+		return PersistenceTestContext.instance().referenceAsserter();
 	}
 
 	protected TestDataPreparer nextPreparer() {
@@ -189,10 +213,10 @@ public abstract class TestDataPreparer {
 	}
 
 	protected TestDataHolder testDataHolder() {
-		return TestPreparationContext.instance().testDataHolder();
+		return PersistenceTestContext.instance().testDataHolder();
 	}
 
 	protected TestDataSetBuilder testDataSetBuilder() {
-		return TestPreparationContext.instance().testDataSetBuilder();
+		return PersistenceTestContext.instance().testDataSetBuilder();
 	}
 }

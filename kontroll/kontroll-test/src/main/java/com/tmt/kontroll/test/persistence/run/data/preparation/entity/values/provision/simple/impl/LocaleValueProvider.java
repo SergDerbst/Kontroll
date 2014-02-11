@@ -25,7 +25,7 @@ public class LocaleValueProvider extends SimpleValueProvider<Locale> {
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+	protected boolean claimSimpleValueResponsibility(final Field field, final Class<?> valueType) {
 		return Locale.class.equals(valueType);
 	}
 

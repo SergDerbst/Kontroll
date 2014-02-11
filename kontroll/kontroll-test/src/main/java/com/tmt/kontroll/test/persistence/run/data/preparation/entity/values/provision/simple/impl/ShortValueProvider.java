@@ -2,6 +2,8 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 
 import java.lang.reflect.Field;
 
+import javax.persistence.Id;
+
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
@@ -13,12 +15,12 @@ public class ShortValueProvider extends SimpleValueProvider<Short> {
 
 	@Override
 	protected Short instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
-		return (short) 0;
+		return (short) 1;
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
-		return Short.class.equals(valueType) || Short.TYPE.equals(valueType);
+	protected boolean claimSimpleValueResponsibility(final Field field, final Class<?> valueType) {
+		return !field.isAnnotationPresent(Id.class) && Short.class.equals(valueType) || Short.TYPE.equals(valueType);
 	}
 
 	@Override

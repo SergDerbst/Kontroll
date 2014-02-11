@@ -1,5 +1,8 @@
 package com.tmt.kontroll.test.persistence;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,59 +11,52 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tmt.kontroll.persistence.daos.CrudDao;
 import com.tmt.kontroll.persistence.entities.BaseEntity;
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
-import com.tmt.kontroll.test.persistence.run.enums.TestStrategy;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 
 public abstract class PersistenceBaseEntityDaoServiceTest<ENTITY extends BaseEntity, REPO extends JpaRepository<ENTITY, Integer>, S extends CrudDao<ENTITY, Integer>> extends PersistenceEntityDaoServiceTest<ENTITY, Integer, REPO, S> {
 
 	@Test
-	@PersistenceTestConfig(testStrategy = TestStrategy.Save, ignoreEntityId = true)
+	@PersistenceTestConfig(testStrategy = TestStrategy.Create)
 	@Override
-	@SuppressWarnings({"unchecked", "rawtypes", "serial"})
-	public void test_save() throws Exception {
+	@SuppressWarnings({"unchecked"})
+	public void testThatCreateWorks() throws Exception {
 		//given
-		final ENTITY entity = (ENTITY) super.fetchReferences().get(0).getEntity();
+		final ENTITY entity = (ENTITY) super.fetchPrimaryReferences().get(0).getEntity();
 		//when
-		final ENTITY saved = this.daoService().save(entity);
+		final ENTITY created = this.daoService().create(entity);
 		//then
-		super.referenceAsserter().assertReferences(super.fetchReferences(), new ArrayList() {
-			{
-				this.add(saved);
-			}
-		});
+		assertNotNull(created);
 	}
 
 	@Test
-	@PersistenceTestConfig(testStrategy = TestStrategy.Save, numberOfEntities = 2, ignoreEntityId = true)
+	@PersistenceTestConfig(testStrategy = TestStrategy.Create, numberOfEntities = 2)
 	@Override
 	@SuppressWarnings({"unchecked", "rawtypes", "serial"})
-	public void test_saveAll() throws Exception {
+	public void testThatCreateAllWorks() throws Exception {
 		//given
-		final List<EntityReference> references = super.fetchReferences();
+		final List<EntityReference> references = super.fetchPrimaryReferences();
 		//when
-		final List saved = this.daoService().saveAll(new ArrayList(){{
+		final List created = this.daoService().createAll(new ArrayList(){{
 			this.add(references.get(0).getEntity());
 			this.add(references.get(1).getEntity());
 		}});
 		//then
-		super.referenceAsserter().assertReferences(references, saved);
+		assertNotNull(created);
+		assertFalse(created.isEmpty());
 	}
 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Update)
 	@Override
-	@SuppressWarnings({"unchecked", "rawtypes", "serial"})
-	public void test_update() throws Exception {
+	@SuppressWarnings({"unchecked"})
+	public void testThatUpdateWorks() throws Exception {
 		//given
-		final ENTITY entity = (ENTITY) super.fetchReferences().get(0).getEntity();
+		final ENTITY entity = (ENTITY) super.fetchPrimaryReferences().get(0).getEntity();
 		//when
 		final ENTITY updated = this.daoService().update(entity);
 		//then
-		super.referenceAsserter().assertReferences(super.fetchReferences(), new ArrayList() {
-			{
-				this.add(updated);
-			}
-		});
+		assertNotNull(updated);
 	}
 }

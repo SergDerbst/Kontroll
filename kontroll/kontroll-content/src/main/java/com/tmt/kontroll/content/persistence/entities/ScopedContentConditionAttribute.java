@@ -35,7 +35,7 @@ public class ScopedContentConditionAttribute extends BaseEntity {
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_Large)
 	private String						expectedValue;
-	
+
 	@Column(nullable = false, length = DatabaseDefinitions.String_Large)
 	private String 						expectedValueType;
 
@@ -44,66 +44,66 @@ public class ScopedContentConditionAttribute extends BaseEntity {
 	private ScopedContentCondition scopedContentCondition;
 
 	public String getKey() {
-		return key;
+		return this.key;
 	}
 
-	public void setKey(String key) {
+	public void setKey(final String key) {
 		this.key = key;
 	}
 
 	public int getCheckOrder() {
-		return checkOrder;
+		return this.checkOrder;
 	}
 
-	public void setCheckOrder(int checkOrder) {
+	public void setCheckOrder(final int checkOrder) {
 		this.checkOrder = checkOrder;
 	}
 
 	public String getClassName() {
-		return className;
+		return this.className;
 	}
 
-	public void setClassName(String className) {
+	public void setClassName(final String className) {
 		this.className = className;
 	}
 
 	public String getValuePath() {
-		return valuePath;
+		return this.valuePath;
 	}
 
-	public void setValuePath(String valuePath) {
+	public void setValuePath(final String valuePath) {
 		this.valuePath = valuePath;
 	}
 
 	public ReferenceOperator getOperator() {
-		return operator;
+		return this.operator;
 	}
 
-	public void setOperator(ReferenceOperator operator) {
+	public void setOperator(final ReferenceOperator operator) {
 		this.operator = operator;
 	}
 
 	public String getExpectedValue() {
-		return expectedValue;
+		return this.expectedValue;
 	}
 
-	public void setExpectedValue(String expectedValue) {
+	public void setExpectedValue(final String expectedValue) {
 		this.expectedValue = expectedValue;
 	}
 
 	public ScopedContentCondition getScopedContentCondition() {
-		return scopedContentCondition;
+		return this.scopedContentCondition;
 	}
 
-	public void setScopedContentCondition(ScopedContentCondition scopedContentCondition) {
+	public void setScopedContentCondition(final ScopedContentCondition scopedContentCondition) {
 		this.scopedContentCondition = scopedContentCondition;
 	}
 
 	public String getExpectedValueType() {
-		return expectedValueType;
+		return this.expectedValueType;
 	}
 
-	public void setExpectedValueType(String expectedValueType) {
+	public void setExpectedValueType(final String expectedValueType) {
 		this.expectedValueType = expectedValueType;
 	}
 }

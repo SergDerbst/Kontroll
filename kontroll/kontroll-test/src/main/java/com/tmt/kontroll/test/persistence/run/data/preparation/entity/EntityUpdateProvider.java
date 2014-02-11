@@ -1,15 +1,16 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity;
 
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrieveAnnotatedFields;
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrievePropertyFields;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrieveAnnotatedFields;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
 
 import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.persistence.Id;
 
+import com.tmt.kontroll.persistence.utils.JpaEntityUtils;
+import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
-import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 
 public class EntityUpdateProvider {
@@ -38,12 +39,14 @@ public class EntityUpdateProvider {
 	public Object provideNewUpdated(final Object entity) {
 		try {
 			final Class<? extends Object> entityClass = entity.getClass();
+			//we can't make a new instance because of the relationship pool, or can we?
 			final Object entityToUpdate = entityClass.newInstance();
 			for (final Field field : retrievePropertyFields(entityClass)) {
 				if (this.ignoredFieldNames().contains(field.getName())) {
 					continue;
 				}
-				this.setFieldValueUpdated(entityToUpdate, entity, field, true);
+				final boolean useNextValue = !JpaEntityUtils.isRelationshipField(field);
+				this.setFieldValueUpdated(entityToUpdate, entity, field, useNextValue);
 			}
 			return entityToUpdate;
 		} catch (final Exception e) {
@@ -95,17 +98,17 @@ public class EntityUpdateProvider {
 			}
 		}
 		if (useNextValue) {
-			field.set(entityToUpdate, this.valueProvisionHandler().fetchNextValue(entityToUpdate, field.get(entityToUpdateFrom)));
+			field.set(entityToUpdate, this.valueProvisionHandler().fetchNextValue(entityToUpdate, field, field.get(entityToUpdateFrom)));
 		} else {
 			field.set(entityToUpdate, field.get(entityToUpdateFrom));
 		}
 	}
 
 	private Set<String> ignoredFieldNames() {
-		return TestPreparationContext.instance().referenceAsserter().getIgnoredFieldNames();
+		return PersistenceTestContext.instance().referenceAsserter().getIgnoredFieldNames();
 	}
 
 	private ValueProvisionHandler valueProvisionHandler() {
-		return TestPreparationContext.instance().valueProvisionHandler();
+		return PersistenceTestContext.instance().valueProvisionHandler();
 	}
 }

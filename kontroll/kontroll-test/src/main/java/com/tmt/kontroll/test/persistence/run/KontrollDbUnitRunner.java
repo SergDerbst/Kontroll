@@ -4,18 +4,19 @@ import static com.tmt.kontroll.test.persistence.run.utils.PersistenceDaoEntityTe
 
 import java.lang.reflect.Method;
 
+import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.tmt.kontroll.test.persistence.PersistenceEntityDaoServiceTest;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
-import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataHolder;
+import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparationHandler;
-import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
-import com.tmt.kontroll.test.persistence.run.enums.TestPhase;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
 public class KontrollDbUnitRunner {
 
@@ -45,27 +46,30 @@ public class KontrollDbUnitRunner {
 		final Class<? extends PersistenceEntityDaoServiceTest<?,?,?,?>> testClass = (Class<? extends PersistenceEntityDaoServiceTest<?, ?, ?, ?>>) testContext.getTestClass();
 		final IDatabaseConnection connection = testContext.getConnection();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
-		this.testDataPreparationHandler().prepare(config, retrieveEntityClassName(testClass));
+		if (TestPhase.Setup == testPhase) {
+			this.testDataPreparationHandler().prepare(config, retrieveEntityClassName(testClass));
+		}
 		final DatabaseOperation operation= DatabaseOperation.CLEAN_INSERT;
-		operation.execute(connection, this.testDataHolder().fetchDataSetForTestPhase(testPhase));
+		final DatabaseSequenceFilter tableSequenceFilter = new DatabaseSequenceFilter(connection);
+		operation.execute(connection, new FilteredDataSet(tableSequenceFilter, this.testDataHolder().fetchDataSetForTestPhase(testPhase)));
 	}
 
 	private void verfiy(final KontrollDbUnitTestContext testContext) throws Exception {
 		final IDatabaseConnection connection = testContext.getConnection();
 		final IDataSet actualDataSet = connection.createDataSet();
-		final IDataSet expectedDataSet = this.testDataHolder().getDataSetForVerification();
+		final IDataSet expectedDataSet = this.testDataHolder().dataSetForVerification();
 		DatabaseAssertionMode.NON_STRICT.getDatabaseAssertion().assertEquals(expectedDataSet, actualDataSet);
 	}
 
 	private TestDataHolder testDataHolder() {
-		return TestPreparationContext.instance().testDataHolder();
+		return PersistenceTestContext.instance().testDataHolder();
 	}
 
 	private TestDataPreparationHandler testDataPreparationHandler() {
-		return TestPreparationContext.instance().testDataPreparationHandler();
+		return PersistenceTestContext.instance().testDataPreparationHandler();
 	}
 
 	private void startTestingContext() {
-		TestPreparationContext.newInstance();
+		PersistenceTestContext.newInstance();
 	}
 }

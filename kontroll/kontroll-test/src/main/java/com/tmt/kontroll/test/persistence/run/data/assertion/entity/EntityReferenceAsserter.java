@@ -1,19 +1,15 @@
 package com.tmt.kontroll.test.persistence.run.data.assertion.entity;
 
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrieveAnnotatedFields;
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrieveFieldValue;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrieveFieldValue;
 import static org.junit.Assert.fail;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.persistence.Id;
-
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 
 public class EntityReferenceAsserter {
 
@@ -31,19 +27,12 @@ public class EntityReferenceAsserter {
 
 	private EntityReferenceAsserter() {}
 
-	public void configureForEntityId(final PersistenceTestConfig config, final Class<?> entityClass) {
-		if (config.ignoreEntityId()) {
-			for (final Field field : retrieveAnnotatedFields(entityClass, Id.class)) {
-				this.ignoredFieldNames.add(field.getName());
-			}
-		}
-	}
-
 	public void configureForIgnoredFields(final PersistenceTestConfig config) {
 		for (final String fieldName : config.ignoredFields()) {
 			this.ignoredFieldNames.add(fieldName);
 		}
 	}
+
 
 	public void assertReferences(final List<EntityReference> references, final List<Object> actuals) throws Exception {
 		this.failures.clear();

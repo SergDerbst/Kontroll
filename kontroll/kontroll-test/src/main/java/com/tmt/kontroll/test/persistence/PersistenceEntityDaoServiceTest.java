@@ -1,10 +1,11 @@
 package com.tmt.kontroll.test.persistence;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -20,7 +21,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.tmt.kontroll.persistence.daos.CrudDao;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener;
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.ConstraintAsserter;
 import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.ConstraintReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.assertion.impl.LengthConstraintAssertion;
@@ -33,10 +34,10 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.failure.i
 import com.tmt.kontroll.test.persistence.run.data.assertion.constraint.failure.impl.UniqueConstraintOnTableAssertionFailure;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
-import com.tmt.kontroll.test.persistence.run.data.preparation.TestPreparationContext;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
-import com.tmt.kontroll.test.persistence.run.enums.TestPhase;
-import com.tmt.kontroll.test.persistence.run.enums.TestStrategy;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class, KontrollDbUnitTestExecutionListener.class})
@@ -45,15 +46,15 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 
 	protected abstract S daoService();
 
-	public abstract void test_save() throws Exception;
+	public abstract void testThatCreateWorks() throws Exception;
 
-	public abstract void test_saveAll() throws Exception;
+	public abstract void testThatCreateAllWorks() throws Exception;
 
-	public abstract void test_update() throws Exception;
+	public abstract void testThatUpdateWorks() throws Exception;
 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Count, numberOfEntities = 2)
-	public void test_count() {
+	public void testThatCountWorks() {
 		//when
 		assertEquals(new Long(2), (Long) this.daoService().count());
 	}
@@ -61,9 +62,9 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Delete)
 	@SuppressWarnings("unchecked")
-	public void test_delete() throws Exception {
+	public void testThatDeleteWorks() throws Exception {
 		//given
-		final ID id = (ID) this.fetchReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) this.fetchPrimaryReferences().get(0).getReferenceValue("id");
 		//when
 		this.daoService().delete(id);
 		//then
@@ -73,9 +74,9 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.Exists)
 	@SuppressWarnings("unchecked")
-	public void test_exists() throws Exception {
+	public void testThatExistsWorks() throws Exception {
 		//given
-		final ID id = (ID) this.fetchReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) this.fetchPrimaryReferences().get(0).getReferenceValue("id");
 		//when
 		final boolean exists = this.daoService().exists(id);
 		//then
@@ -83,40 +84,36 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	}
 
 	@Test
-	@PersistenceTestConfig(testStrategy = TestStrategy.Find, numberOfEntities = 2)
-	@SuppressWarnings("unchecked")
-	public void test_findAll() throws Exception {
+	@PersistenceTestConfig(testStrategy = TestStrategy.Read, numberOfEntities = 2)
+	public void testThatReadAllWorks() throws Exception {
 		//when
-		final List<?> allFound = this.daoService().findAll();
+		final List<?> allFound = this.daoService().readAll();
 		//then
-		this.referenceAsserter().assertReferences(this.fetchReferences(), (List<Object>) allFound);
+		assertNotNull(allFound);
+		assertFalse(allFound.isEmpty());
 	}
 
 	@Test
-	@PersistenceTestConfig(testStrategy = TestStrategy.Find)
-	@SuppressWarnings({"unchecked", "serial", "rawtypes"})
-	public void test_findById() throws Exception {
+	@PersistenceTestConfig(testStrategy = TestStrategy.Read)
+	@SuppressWarnings({"unchecked"})
+	public void testThatReadWorks() throws Exception {
 		//given
-		final List<EntityReference> references = this.fetchReferences();
+		final List<EntityReference> references = this.fetchPrimaryReferences();
 		final ID id = (ID) references.get(0).getReferenceValue("id");
 		//when
-		final Entity found = this.daoService().findById(id);
+		final Entity found = this.daoService().readById(id);
 		//then
-		this.referenceAsserter().assertReferences(references, new ArrayList() {
-			{
-				this.add(found);
-			}
-		});
+		assertNotNull(found);
 	}
 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.UniqueConstraintsOnTable)
 	@SuppressWarnings("unchecked")
-	public void test_UniqueConstraintsOnTable() {
-		for (final EntityReference reference : this.fetchReferences()) {
+	public void testThatUniqueConstraintsOnTableViolationsCauseError() {
+		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().save((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.getEntity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
@@ -133,11 +130,11 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.UniqueConstraintsOnColumn)
 	@SuppressWarnings("unchecked")
-	public void test_UniqueConstraintsOnColumn() {
-		for (final EntityReference reference : this.fetchReferences()) {
+	public void testThatUniqueConstraintsOnColumnViolationsCauseError() {
+		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().save((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.getEntity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
@@ -154,11 +151,11 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.NullableConstraint)
 	@SuppressWarnings("unchecked")
-	public void test_NullableConstraints() {
-		for (final EntityReference reference : this.fetchReferences()) {
+	public void testThatNullableConstraintsViolationsCauseError() {
+		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().save((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.getEntity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
@@ -175,11 +172,11 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@Test
 	@PersistenceTestConfig(testStrategy = TestStrategy.NullableConstraint)
 	@SuppressWarnings("unchecked")
-	public void test_LengthConstraints() {
-		for (final EntityReference reference : this.fetchReferences()) {
+	public void testThatLengthConstraintsViolationsCauseError() {
+		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().save((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.getEntity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
@@ -194,22 +191,30 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	}
 
 	protected ConstraintAsserter constraintAsserter() {
-		return TestPreparationContext.instance().constraintAsserter();
+		return PersistenceTestContext.instance().constraintAsserter();
 	}
 
 	protected EntityUpdateProvider entityUpdateProvider() {
-		return TestPreparationContext.instance().entityUpdateProvider();
+		return PersistenceTestContext.instance().entityUpdateProvider();
 	}
 
 	protected EntityReferenceAsserter referenceAsserter() {
-		return TestPreparationContext.instance().referenceAsserter();
+		return PersistenceTestContext.instance().referenceAsserter();
 	}
 
 	protected List<EntityReference> fetchReferences() {
-		return TestPreparationContext.instance().testDataHolder().getReferences(TestPhase.Running);
+		return PersistenceTestContext.instance().testDataHolder().fetchReferences(TestPhase.Running);
 	}
 
 	protected List<EntityReference> fetchReferences(final TestPhase testPhase) {
-		return TestPreparationContext.instance().testDataHolder().getReferences(testPhase);
+		return PersistenceTestContext.instance().testDataHolder().fetchReferences(testPhase);
+	}
+
+	protected List<EntityReference> fetchPrimaryReferences() {
+		return PersistenceTestContext.instance().testDataHolder().fetchPrimaryReferences(TestPhase.Running);
+	}
+
+	protected List<EntityReference> fetchPrimaryReferences(final TestPhase testPhase) {
+		return PersistenceTestContext.instance().testDataHolder().fetchPrimaryReferences(testPhase);
 	}
 }

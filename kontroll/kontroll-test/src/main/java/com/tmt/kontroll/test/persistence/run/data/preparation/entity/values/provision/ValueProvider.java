@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.incrementation.ValueIncrementor;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.instantiation.ValueInstantiator;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.responsibility.ValueResponsibilityClaimer;
-import com.tmt.kontroll.test.persistence.run.exceptions.data.preparation.entity.value.provision.ValueProviderNotFoundException;
+import com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision.ValueProviderNotFoundException;
 
 public abstract class ValueProvider<V> {
 
@@ -98,7 +98,7 @@ public abstract class ValueProvider<V> {
 	public Object fetchNextValue(final Object entity,
 	                             final Field field,
 	                             final Object value) throws Exception {
-		if (this.claimResponsibility(field, value.getClass())) {
+		if (this.claimResponsibility(field, entity.getClass(), value.getClass())) {
 			return this.makeNextValue(entity, field, (V) value);
 		}
 		if (this.nextProvider == null) {

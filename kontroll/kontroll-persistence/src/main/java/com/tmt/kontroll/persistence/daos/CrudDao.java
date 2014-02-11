@@ -13,13 +13,13 @@ import com.tmt.kontroll.persistence.exceptions.EntityNotFoundInDatabaseException
  */
 public interface CrudDao<Entity, ID> {
 
-	Entity findById(ID id);
+	Entity readById(ID id);
 
-	List<Entity> findAll();
+	List<Entity> readAll();
 
-	Entity save(Entity entity);
+	Entity create(Entity entity);
 
-	List<Entity> saveAll(final List<Entity> entities);
+	List<Entity> createAll(final List<Entity> entities);
 
 	Entity update(final Entity entity) throws EntityNotFoundInDatabaseException;
 

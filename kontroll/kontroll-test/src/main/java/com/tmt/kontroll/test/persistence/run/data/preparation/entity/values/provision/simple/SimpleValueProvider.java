@@ -11,10 +11,11 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 		super(provisionHandler);
 	}
 
-	protected abstract boolean claimSimpleValueResponsibility(final Class<?> valueType) throws Exception;
+	protected abstract boolean claimSimpleValueResponsibility(final Field field,
+	                                                          final Class<?> valueType) throws Exception;
 
 	@Override
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) throws Exception {
-		return types.length == 2 && this.claimSimpleValueResponsibility(types[1]);
+		return types.length == 2 && this.claimSimpleValueResponsibility(field, types[1]);
 	}
 }

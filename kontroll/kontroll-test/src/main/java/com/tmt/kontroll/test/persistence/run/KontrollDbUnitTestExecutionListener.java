@@ -8,7 +8,7 @@ import org.springframework.test.context.TestContext;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.dataset.DataSetLoader;
 import com.github.springtestdbunit.operation.DatabaseOperationLookup;
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 
 public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionListener {
 

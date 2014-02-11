@@ -1,7 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.assertion.entity;
 
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrieveFieldValue;
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.retrievePropertyFields;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrieveFieldValue;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

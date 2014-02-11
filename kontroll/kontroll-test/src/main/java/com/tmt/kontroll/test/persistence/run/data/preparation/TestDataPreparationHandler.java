@@ -1,17 +1,17 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation;
 
-import com.tmt.kontroll.test.persistence.run.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.CountTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.DeleteTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.ExistsTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.FindTestDataPreparer;
-import com.tmt.kontroll.test.persistence.run.data.preparation.impl.LengthConstraintTestDataPreparer;
-import com.tmt.kontroll.test.persistence.run.data.preparation.impl.NullableConstraintTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.SaveTestDataPreparer;
-import com.tmt.kontroll.test.persistence.run.data.preparation.impl.UniqueConstraintsOnColumnTestDataPreparer;
-import com.tmt.kontroll.test.persistence.run.data.preparation.impl.UniqueConstraintsOnTableTestDataPreparer;
 import com.tmt.kontroll.test.persistence.run.data.preparation.impl.UpdateTestDataPreparer;
-import com.tmt.kontroll.test.persistence.run.exceptions.TestPreparationFailedException;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.constraints.impl.LengthConstraintTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.constraints.impl.NullableConstraintTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.constraints.impl.UniqueConstraintsOnColumnTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.impl.constraints.impl.UniqueConstraintsOnTableTestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
+import com.tmt.kontroll.test.persistence.run.utils.exceptions.TestPreparationFailedException;
 
 public class TestDataPreparationHandler {
 

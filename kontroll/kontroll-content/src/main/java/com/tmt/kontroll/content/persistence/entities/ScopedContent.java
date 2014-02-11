@@ -31,8 +31,8 @@ public class ScopedContent extends BaseEntity {
 	inverseJoinColumns = @JoinColumn(name = "scoped_content_id", referencedColumnName = "id"))
 	private List<ScopedContentItem>	scopedContentItems;
 
-	@ManyToMany(mappedBy = "scopedContents")
-	private List<ScopedContentCondition>	conditions;
+	//	@ManyToMany(mappedBy = "scopedContents")
+	//	private List<ScopedContentCondition>	conditions;
 
 	public String getName() {
 		return this.name;
@@ -66,11 +66,11 @@ public class ScopedContent extends BaseEntity {
 		this.scopedContentItems = scopedContentItems;
 	}
 
-	public List<ScopedContentCondition> getConditions() {
-		return this.conditions;
-	}
-
-	public void setConditions(final List<ScopedContentCondition> conditions) {
-		this.conditions = conditions;
-	}
+	//	public List<ScopedContentCondition> getConditions() {
+	//		return this.conditions;
+	//	}
+	//
+	//	public void setConditions(final List<ScopedContentCondition> conditions) {
+	//		this.conditions = conditions;
+	//	}
 }

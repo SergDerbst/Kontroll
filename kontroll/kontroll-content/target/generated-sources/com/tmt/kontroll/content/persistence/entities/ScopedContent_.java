@@ -9,7 +9,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ScopedContent.class)
 public abstract class ScopedContent_ extends com.tmt.kontroll.persistence.entities.BaseEntity_ {
 
-	public static volatile ListAttribute<ScopedContent, ScopedContentCondition> conditions;
 	public static volatile SingularAttribute<ScopedContent, Scope> scope;
 	public static volatile SingularAttribute<ScopedContent, String> description;
 	public static volatile SingularAttribute<ScopedContent, String> name;

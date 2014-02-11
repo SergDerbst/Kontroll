@@ -18,7 +18,8 @@ public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Class<?> valueType) {
+	protected boolean claimSimpleValueResponsibility(final Field field,
+	                                                 final Class<?> valueType) {
 		return Timestamp.class.equals(valueType);
 	}
 

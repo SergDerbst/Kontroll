@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.run.exceptions.data.preparation.entity.value.provision.ValueHandlingResponsibilityClaimerMissingException;
+import com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision.ValueHandlingResponsibilityClaimerMissingException;
 
 public class ConstantValueProvider<V> extends ValueProvider<V> {
 

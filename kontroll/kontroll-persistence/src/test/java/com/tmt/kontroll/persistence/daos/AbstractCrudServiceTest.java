@@ -75,13 +75,13 @@ public abstract class AbstractCrudServiceTest<ENTITY extends Object, REPO extend
 	@Ignore
 	@Test
 	public void test_findAll() {
-		assertEquals(new Long(this.getNumberOfInitialEntities() + this.numberOfExtraInitialEntities), new Long(this.getDaoService().findAll().size()));
+		assertEquals(new Long(this.getNumberOfInitialEntities() + this.numberOfExtraInitialEntities), new Long(this.getDaoService().readAll().size()));
 	}
 
 	@Ignore
 	@Test
 	public void test_findById() {
-		final ENTITY findById = this.getDaoService().findById(this.getFindId());
+		final ENTITY findById = this.getDaoService().readById(this.getFindId());
 		assertNotNull(findById);
 	}
 
@@ -90,7 +90,7 @@ public abstract class AbstractCrudServiceTest<ENTITY extends Object, REPO extend
 	public void test_save() {
 		this.getDaoService().count();
 		final ENTITY entityToSave = this.getEntityToSave();
-		final ENTITY e = this.getDaoService().save(entityToSave);
+		final ENTITY e = this.getDaoService().create(entityToSave);
 		assertNotNull(e);
 		assertEquals(entityToSave.getClass(), e.getClass());
 		assertEquals(new Long(this.getNumberOfInitialEntities() + this.numberOfExtraInitialEntities + 1), new Long(this.getDaoService().count()));
@@ -100,7 +100,7 @@ public abstract class AbstractCrudServiceTest<ENTITY extends Object, REPO extend
 	@Test
 	public void test_saveAll() {
 		final List<ENTITY> entitiesToSave = this.getEntitiesToSave();
-		final List<ENTITY> e = this.getDaoService().saveAll(entitiesToSave);
+		final List<ENTITY> e = this.getDaoService().createAll(entitiesToSave);
 		assertNotNull(e);
 		assertFalse(e.isEmpty());
 		assertEquals(entitiesToSave.get(0).getClass(), e.get(0).getClass());

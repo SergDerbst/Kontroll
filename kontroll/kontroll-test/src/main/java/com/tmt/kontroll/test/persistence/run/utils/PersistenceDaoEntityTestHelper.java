@@ -1,11 +1,11 @@
 package com.tmt.kontroll.test.persistence.run.utils;
 
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionHelper.hasConstantWithName;
+import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.hasConstantWithName;
 
 import java.lang.reflect.Method;
 
 import com.tmt.kontroll.test.persistence.PersistenceEntityDaoServiceTest;
-import com.tmt.kontroll.test.persistence.run.exceptions.EntityClassNotFoundException;
+import com.tmt.kontroll.test.persistence.run.utils.exceptions.EntityClassNotFoundException;
 
 public class PersistenceDaoEntityTestHelper {
 

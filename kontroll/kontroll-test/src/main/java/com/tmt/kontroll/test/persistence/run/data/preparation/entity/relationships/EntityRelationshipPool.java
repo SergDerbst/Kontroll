@@ -26,23 +26,17 @@ public class EntityRelationshipPool {
 		this.pool.add(entityRelationship);
 	}
 
-	public EntityRelationship fetchEntityRelationship(final Class<? extends Annotation> relationshipType,
-	                                                  final Object owningEntity,
-	                                                  final Object relatingEntity) {
+	public EntityRelationship retrieveRelationshipByEntity(final Object entity) {
 		for (final EntityRelationship relationship : this.pool) {
-			if (relationship.relationshipType().equals(relationshipType)) {
-				if (relationship.owningEntity() == owningEntity) {
-					if (relationship.relatingEntity() == relatingEntity) {
-						return relationship;
-					}
-				}
+			if (relationship.owningEntity() == entity || relationship.relatingEntity() == entity) {
+				return relationship;
 			}
 		}
 		return null;
 	}
 
-	public EntityRelationship fetchEntityRelationshipByOwningEntity(final Class<? extends Annotation> relationshipType,
-	                                                                final Object owningEntity) {
+	public EntityRelationship retrieveRelationshipByOwningEntity(final Class<? extends Annotation> relationshipType,
+	                                                             final Object owningEntity) {
 		for (final EntityRelationship relationship : this.pool) {
 			if (this.isOppositeRelationshipType(relationship.relationshipType(), relationshipType)) {
 				if (relationship.owningEntity() == owningEntity) {
@@ -53,8 +47,8 @@ public class EntityRelationshipPool {
 		return null;
 	}
 
-	public EntityRelationship fetchEntityRelationshipByRelatingEntity(final Class<? extends Annotation> relationshipType,
-	                                                                  final Object relatingEntity) {
+	public EntityRelationship retrieveRelationshipByRelatingEntity(final Class<? extends Annotation> relationshipType,
+	                                                               final Object relatingEntity) {
 		for (final EntityRelationship relationship : this.pool) {
 			if (this.isOppositeRelationshipType(relationship.relationshipType(), relationshipType)) {
 				if (relationship.relatingEntity() == relatingEntity) {
@@ -63,6 +57,14 @@ public class EntityRelationshipPool {
 			}
 		}
 		return null;
+	}
+
+	public int size() {
+		return this.pool.size();
+	}
+
+	public void clear() {
+		this.pool.clear();
 	}
 
 	private boolean isOppositeRelationshipType(final Class<? extends Annotation> r1, final Class<? extends Annotation> r2) {
