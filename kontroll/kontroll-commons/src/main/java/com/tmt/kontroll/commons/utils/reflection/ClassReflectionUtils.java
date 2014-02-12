@@ -9,6 +9,13 @@ import java.util.List;
 
 public class ClassReflectionUtils {
 
+	public static void removeFinalModifier(final Field field) throws Exception {
+		field.setAccessible(true);
+		final Field modifiersField = Field.class.getDeclaredField("modifiers");
+		modifiersField.setAccessible(true);
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+	}
+
 	public static Class<?> retrieveTypeArgumentsOfField(final Field field, final int numberOfGenericParameter) {
 		return (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[numberOfGenericParameter];
 	}
@@ -21,7 +28,6 @@ public class ClassReflectionUtils {
 		}
 		return false;
 	}
-
 
 	public static <E, V> void updateField(final E entity,
 	                                      final V value,

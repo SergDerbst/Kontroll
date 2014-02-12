@@ -105,7 +105,7 @@ public class EntityUpdateProvider {
 	}
 
 	private Set<String> ignoredFieldNames() {
-		return PersistenceTestContext.instance().referenceAsserter().getIgnoredFieldNames();
+		return PersistenceTestContext.instance().entityReferenceAsserter().getIgnoredFieldNames();
 	}
 
 	private ValueProvisionHandler valueProvisionHandler() {

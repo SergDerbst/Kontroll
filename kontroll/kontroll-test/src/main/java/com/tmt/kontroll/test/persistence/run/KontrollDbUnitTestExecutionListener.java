@@ -12,12 +12,14 @@ import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestCo
 
 public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionListener {
 
+	KontrollDbUnitRunner runner = new KontrollDbUnitRunner();
+
 	@Override
 	public void beforeTestMethod(final TestContext testContext) throws Exception {
 		final Method testMethod = testContext.getTestMethod();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (config != null) {
-			new KontrollDbUnitRunner().beforeTestMethod(new KontrollDbUnitTestContext(testContext), testMethod);
+			this.runner.beforeTestMethod(new KontrollDbUnitTestContext(testContext), testMethod);
 		} else {
 			super.beforeTestMethod(testContext);
 		}
@@ -28,7 +30,7 @@ public class KontrollDbUnitTestExecutionListener extends DbUnitTestExecutionList
 		final Method testMethod = testContext.getTestMethod();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (config != null) {
-			new KontrollDbUnitRunner().afterTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, config.omitDbVerification());
+			this.runner.afterTestMethod(new KontrollDbUnitTestContext(testContext), testMethod, config.omitDbVerification());
 		} else {
 			super.afterTestMethod(testContext);
 		}

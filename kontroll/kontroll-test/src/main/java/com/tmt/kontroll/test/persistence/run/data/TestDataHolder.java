@@ -12,21 +12,34 @@ import org.dbunit.dataset.IDataSet;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
+import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
 /**
  * Container class to hold and manage data for persistence tests. It holds the following:
  * </p>
  * <ul>
- * <li>a map of lists of {@link EntityReference} instances needed to run a test</li>
+ * <li>a set of all {@link EntityReference} instances needed to run a test</li>
+ * <li>a map of lists of {@link EntityReference} instances for each {@link TestPhase}</li>
  * <li>an {@link IDataSet} for setting up the database before the test</li>
  * <li>an {@link IDataSet} for verification of the database at the end of the test</li>
  * <li>an {@link IDataSet} for tearing down the database after the test</li>
+ * <li>the type of the primary entity to be tested</li>
+ * <li>the number of primary entities required by the test according to {@link PersistenceTestConfig}</li>
  * </ul>
+ * </p>
+ * An entity is considered as primary, when it is of the type of entity that is handled
+ * by the dao service to be tested and when it is used by the test during {@link TestPhase#Running},
+ * e.g. in order to create, update or delete it. Entities that are of the primary entity type,
+ * but not used by the test can be, for example, those that are needed to setup the database
+ * before the test in order to fulfill demands on entity relationships.
  * </p>
  * The references lists are organized in a map according to a given {@link TestPhase}. The
  * test data holder offers several methods to fetch references according to a given test
  * phase.
+ * </p>
+ * Entity references are stored to the set containing all references automatically on creation,
+ * unless that is specifically omitted in the constructor, see also {@link EntityReference}.
  * </p>
  * 
  * @author Serg Derbst
@@ -50,10 +63,16 @@ public class TestDataHolder {
 	private IDataSet dataSetForVerification;
 	private IDataSet dataSetForTearDown;
 	private Class<?> primaryEntityType;
-	private int numberOfEntities;
+	private int numberOfPrimaryEntities;
 
 	private TestDataHolder() {}
 
+	/**
+	 * Adds a set of entity references to the references map according to the given test phase.
+	 * 
+	 * @param testPhase
+	 * @param references
+	 */
 	public void addReferences(final TestPhase testPhase,
 	                          final Set<EntityReference> references) {
 		if (this.referencesMap.containsKey(testPhase)) {
@@ -158,11 +177,11 @@ public class TestDataHolder {
 		this.primaryEntityType = primaryEntityType;
 	}
 
-	public int numberOfEntities() {
-		return this.numberOfEntities;
+	public int numberOfPrimaryEntities() {
+		return this.numberOfPrimaryEntities;
 	}
 
-	public void setNumberOfEntities(final int numberOfEntities) {
-		this.numberOfEntities = numberOfEntities;
+	public void setNumberOfPrimaryEntities(final int numberOfPrimaryEntities) {
+		this.numberOfPrimaryEntities = numberOfPrimaryEntities;
 	}
 }

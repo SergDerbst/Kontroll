@@ -68,7 +68,7 @@ public class PersistenceTestContext {
 		return this.entityUpdateProvider;
 	}
 
-	public EntityReferenceAsserter referenceAsserter() {
+	public EntityReferenceAsserter entityReferenceAsserter() {
 		return this.referenceAsserter;
 	}
 

@@ -195,7 +195,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	}
 
 	protected EntityReferenceAsserter referenceAsserter() {
-		return PersistenceTestContext.instance().referenceAsserter();
+		return PersistenceTestContext.instance().entityReferenceAsserter();
 	}
 
 	protected Set<EntityReference> fetchReferences() {

@@ -93,7 +93,7 @@ public class TestDataSetBuilder {
 	}
 
 	private EntityReferenceAsserter referenceAsserter() {
-		return PersistenceTestContext.instance().referenceAsserter();
+		return PersistenceTestContext.instance().entityReferenceAsserter();
 	}
 
 	private TestDataHolder testDataHolder() {

@@ -77,7 +77,7 @@ public abstract class TestDataPreparer {
 	                                      final String entityClassName) throws Exception {
 		final Class<?> entityClass = Class.forName(entityClassName);
 		this.testDataHolder().setPrimaryEntityType(entityClass);
-		this.testDataHolder().setNumberOfEntities(config.numberOfEntities());
+		this.testDataHolder().setNumberOfPrimaryEntities(config.numberOfEntities());
 		for (int i = 0; i < config.numberOfEntities(); i++) {
 			this.configureReferenceAssertion(config, entityClass);
 			this.entityInstanceProvider().provideEntityReferences(entityClass, config.testStrategy());
@@ -203,7 +203,7 @@ public abstract class TestDataPreparer {
 	}
 
 	protected EntityReferenceAsserter referenceAsserter() {
-		return PersistenceTestContext.instance().referenceAsserter();
+		return PersistenceTestContext.instance().entityReferenceAsserter();
 	}
 
 	protected TestDataPreparer nextPreparer() {

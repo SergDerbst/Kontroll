@@ -18,6 +18,20 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparatio
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
+/**
+ * Special runner for using <a href="http://dbunit.sourceforge.net/">DBUnit</a> before and after
+ * test methods in order to setup, verify and teardown the database before, at the end of, and
+ * after the test with dynamically created data sets.
+ * </p>
+ * It uses Marc Philipp's brilliant <a href="https://github.com/marcphilipp/dbunit-datasetbuilder">
+ * DBUnit Data Set Builder</a> to dynamically create data sets for tests and Phil Webb's excellent
+ * <a href="http://springtestdbunit.github.io/spring-test-dbunit/"/>Spring Test DbUnit</a> to
+ * dynamically setup, verify and tear down the database.
+ * </p>
+ * 
+ * @author Serg Derbst
+ *
+ */
 public class KontrollDbUnitRunner {
 
 	/**
@@ -109,7 +123,14 @@ public class KontrollDbUnitRunner {
 		return PersistenceTestContext.instance().testDataPreparationHandler();
 	}
 
-	private void startTestingContext() {
+	/**
+	 * Instantiates the {@link PersistenceTestContext}.
+	 * </p>
+	 * <i>Note: </i>This method's visibility is only protected, so it can be overridden
+	 * in tests.
+	 * </p>
+	 */
+	protected void startTestingContext() {
 		PersistenceTestContext.newInstance();
 	}
 }

@@ -71,7 +71,7 @@ public class EntityInstanceProvider {
 	}
 
 	private boolean fieldIsIgnoredForTest(final Field field) {
-		return PersistenceTestContext.instance().referenceAsserter().getIgnoredFieldNames().contains(field.getName());
+		return PersistenceTestContext.instance().entityReferenceAsserter().getIgnoredFieldNames().contains(field.getName());
 	}
 
 	private ValueProvisionHandler valueProvisionHandler() {
