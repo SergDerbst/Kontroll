@@ -1,6 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships;
 
 import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
+import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.copyEntity;
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.isOwningRelationshipField;
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.isRelationshipField;
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.retrieveRelatingEntityType;
@@ -11,6 +12,7 @@ import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 
 public class EntityRelationshipCollector {
 
@@ -23,17 +25,26 @@ public class EntityRelationshipCollector {
 		return InstanceHolder.instance;
 	}
 
-	public EntityReference collect(final Class<?> entityType, final boolean isPrimary) throws Exception {
-		return this.collect(new EntityReference(entityType.newInstance(), isPrimary));
+	public void collect(final Class<?> entityType, final TestStrategy testStrategy) throws Exception {
+		final EntityReference reference = new EntityReference(entityType.newInstance(), !this.isCreateOrDeleteStrategy(testStrategy), true);
+		this.collect(reference);
+		if (this.isCreateOrDeleteStrategy(testStrategy)) {
+			new EntityReference(copyEntity(reference.getEntity()), true, true);
+		}
 	}
 
-	private EntityReference collect(final EntityReference reference) throws Exception {
+	private boolean isCreateOrDeleteStrategy(final TestStrategy testStrategy) {
+		return
+		TestStrategy.Create == testStrategy ||
+		TestStrategy.Delete == testStrategy;
+	}
+
+	private void collect(final EntityReference reference) throws Exception {
 		for (final Field field : retrievePropertyFields(reference.getReferenceType())) {
 			if (isRelationshipField(field)) {
 				this.handleRelationship(reference, field);
 			}
 		}
-		return reference;
 	}
 
 	private void handleRelationship(final EntityReference reference,
@@ -46,7 +57,7 @@ public class EntityRelationshipCollector {
 				relationship = this.entityRelationshipPool().retrieveRelationshipByRelatingEntityReference(relationshipType, reference);
 			}
 			if (relationship == null) {
-				relationship = new EntityRelationship(relationshipType, reference, new EntityReference(relatingEntityType.newInstance(), false), this.entityRelationshipPool().size());
+				relationship = new EntityRelationship(relationshipType, reference, new EntityReference(relatingEntityType.newInstance(), false, true), this.entityRelationshipPool().size());
 				this.entityRelationshipPool().addEntityRelationship(relationship);
 				this.collect(relationship.relatingEntityReference());
 			}
@@ -57,7 +68,7 @@ public class EntityRelationshipCollector {
 				relationship = this.entityRelationshipPool().retrieveRelationshipByOwningEntityReference(relationshipType, reference);
 			}
 			if (relationship == null) {
-				relationship = new EntityRelationship(relationshipType, new EntityReference(owningEntityType.newInstance(), false), reference, this.entityRelationshipPool().size());
+				relationship = new EntityRelationship(relationshipType, new EntityReference(owningEntityType.newInstance(), false, true), reference, this.entityRelationshipPool().size());
 				this.entityRelationshipPool().addEntityRelationship(relationship);
 				this.collect(relationship.owningEntityReference());
 			}

@@ -1,10 +1,11 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
@@ -40,22 +41,22 @@ public class UpdateTestDataPreparer extends TestDataPreparer {
 
 	@Override
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<EntityReference> references,
+	                                                  final Set<EntityReference> references,
 	                                                  final Class<?> primaryEntityClass) {
 		this.prepareUpdatedReferenceEntities(references, TestPhase.Running, primaryEntityClass);
 	}
 
 	@Override
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<EntityReference> references,
+	                                                       final Set<EntityReference> references,
 	                                                       final Class<?> primaryEntityClass) {
 		this.prepareUpdatedReferenceEntities(references, TestPhase.Verification, primaryEntityClass);
 	}
 
-	private void prepareUpdatedReferenceEntities(final List<EntityReference> references,
+	private void prepareUpdatedReferenceEntities(final Set<EntityReference> references,
 	                                             final TestPhase testPhase,
 	                                             final Class<?> primaryEntityClass) {
-		final List<EntityReference> updatedReferences = new ArrayList<>();
+		final Set<EntityReference> updatedReferences = new TreeSet<>(new EntityReferenceComparator());
 		for (final EntityReference reference : references) {
 			if (reference.isPrimary()) {
 				updatedReferences.add(super.entityUpdateProvider().provideNewUpdated(reference));

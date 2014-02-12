@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,7 +68,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		//when
 		this.daoService().delete(id);
 		//then
-		assertEquals(new Long(this.fetchNonPrimaryReferences(TestPhase.Verification).size()), (Long) this.daoService().count());
+		assertEquals(new Long(this.fetchPrimaryTypeReferences(TestPhase.Verification).size()), (Long) this.daoService().count());
 	}
 
 	@Test
@@ -197,11 +198,11 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		return PersistenceTestContext.instance().referenceAsserter();
 	}
 
-	protected List<EntityReference> fetchReferences() {
+	protected Set<EntityReference> fetchReferences() {
 		return PersistenceTestContext.instance().testDataHolder().fetchReferences(TestPhase.Running);
 	}
 
-	protected List<EntityReference> fetchReferences(final TestPhase testPhase) {
+	protected Set<EntityReference> fetchReferences(final TestPhase testPhase) {
 		return PersistenceTestContext.instance().testDataHolder().fetchReferences(testPhase);
 	}
 

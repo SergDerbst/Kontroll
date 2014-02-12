@@ -1,7 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.dbunit.dataset.IDataSet;
 
@@ -11,6 +11,7 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferen
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipPool;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
@@ -74,18 +75,18 @@ public abstract class TestDataPreparer {
 	 */
 	private void prepareReferenceEntities(final PersistenceTestConfig config,
 	                                      final String entityClassName) throws Exception {
-		final List<EntityReference> references = new ArrayList<>();
 		final Class<?> entityClass = Class.forName(entityClassName);
 		this.testDataHolder().setPrimaryEntityType(entityClass);
 		this.testDataHolder().setNumberOfEntities(config.numberOfEntities());
 		for (int i = 0; i < config.numberOfEntities(); i++) {
 			this.configureReferenceAssertion(config, entityClass);
-			references.addAll(this.entityInstanceProvider().provideEntityReferences(entityClass));
+			this.entityInstanceProvider().provideEntityReferences(entityClass, config.testStrategy());
 		}
-		this.prepareReferenceEntitiesForSetup(config, references, entityClass);
-		this.prepareReferenceEntitiesForRunning(config, references, entityClass);
-		this.prepareReferenceEntitiesForVerification(config, references, entityClass);
-		this.prepareReferenceEntitiesForTearDown(config, references, entityClass);
+		this.entityInstanceProvider().provideValues();
+		this.prepareReferenceEntitiesForSetup(config, this.testDataHolder().allReferences(), entityClass);
+		this.prepareReferenceEntitiesForRunning(config, this.testDataHolder().allReferences(), entityClass);
+		this.prepareReferenceEntitiesForVerification(config, this.testDataHolder().allReferences(), entityClass);
+		this.prepareReferenceEntitiesForTearDown(config, this.testDataHolder().allReferences(), entityClass);
 	}
 
 	/**
@@ -101,7 +102,7 @@ public abstract class TestDataPreparer {
 	 * @throws Exception
 	 */
 	protected void prepareReferenceEntitiesForSetup(final PersistenceTestConfig config,
-	                                                final List<EntityReference> references,
+	                                                final Set<EntityReference> references,
 	                                                final Class<?> primaryEntityClass) throws Exception {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, references, primaryEntityClass);
 	}
@@ -120,7 +121,7 @@ public abstract class TestDataPreparer {
 	 * @throws Exception
 	 */
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<EntityReference> references,
+	                                                  final Set<EntityReference> references,
 	                                                  final Class<?> primaryEntityClass) throws Exception {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.Running, references, primaryEntityClass);
 	}
@@ -138,7 +139,7 @@ public abstract class TestDataPreparer {
 	 * @param entityClass
 	 */
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<EntityReference> references,
+	                                                       final Set<EntityReference> references,
 	                                                       final Class<?> primaryEntityClass) {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, references, primaryEntityClass);
 	}
@@ -157,13 +158,13 @@ public abstract class TestDataPreparer {
 	 * @param primaryEntityClass
 	 */
 	protected void prepareReferenceEntitiesForTearDown(final PersistenceTestConfig config,
-	                                                   final List<EntityReference> references,
+	                                                   final Set<EntityReference> references,
 	                                                   final Class<?> primaryEntityClass) {
-		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new ArrayList<EntityReference>(), primaryEntityClass);
+		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new TreeSet<EntityReference>(new EntityReferenceComparator()), primaryEntityClass);
 	}
 
 	protected void prepareReferenceEntitiesForTestPhase(final TestPhase testPhase,
-	                                                    final List<EntityReference> references,
+	                                                    final Set<EntityReference> references,
 	                                                    final Class<?> primaryEntityClass) {
 		this.testDataHolder().addReferences(testPhase, references);
 	}

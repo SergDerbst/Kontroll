@@ -89,6 +89,9 @@ public class JpaEntityUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <E, V> V retrieveIdValue(final E entity) throws Exception {
+		if (entity == null) {
+			return null;
+		}
 		final Field field = retrieveAnnotatedFields(entity.getClass(), Id.class).get(0);
 		field.setAccessible(true);
 		return (V) field.get(entity);

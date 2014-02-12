@@ -38,7 +38,7 @@ public class EntityReferenceComparator implements Comparator<EntityReference> {
 			}
 			for (final Field field : retrievePropertyFields(reference2.getReferenceType())) {
 				if (isForeignKeyRelationshipField(field)) {
-					final Object relatingEntity = retrieveFieldValue(reference2.getReferenceType(), field);
+					final Object relatingEntity = retrieveFieldValue(reference2.getEntity(), field);
 					if (reference1.getReferenceType() == relatingEntity) {
 						return -1;
 					}

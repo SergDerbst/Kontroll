@@ -40,7 +40,6 @@ public class EntityUpdateProvider {
 	public EntityReference provideNewUpdated(final EntityReference reference) {
 		try {
 			final Class<? extends Object> entityClass = reference.getReferenceType();
-			//we can't make a new instance because of the relationship pool, or can we?
 			final Object entityToUpdate = entityClass.newInstance();
 			for (final Field field : retrievePropertyFields(entityClass)) {
 				if (this.ignoredFieldNames().contains(field.getName())) {
@@ -49,7 +48,7 @@ public class EntityUpdateProvider {
 				final boolean useNextValue = !JpaEntityUtils.isRelationshipField(field);
 				this.setFieldValueUpdated(entityToUpdate, reference.getEntity(), field, useNextValue);
 			}
-			return new EntityReference(entityToUpdate, reference.isPrimary());
+			return new EntityReference(entityToUpdate, reference.isPrimary(), false);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}

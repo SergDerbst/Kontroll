@@ -1,10 +1,11 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
@@ -42,17 +43,21 @@ public class DeleteTestDataPreparer extends TestDataPreparer {
 
 	@Override
 	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final List<EntityReference> references,
+	                                                       final Set<EntityReference> references,
 	                                                       final Class<?> primaryEntityClass) {
 		boolean deleted = false;
-		final List<EntityReference> deletedReferences = new ArrayList<>();
+		final Set<EntityReference> deletedReferences = new TreeSet<>(new EntityReferenceComparator());
 		for (final EntityReference reference : references) {
-			if (!deleted && reference.isPrimary()) {
+			if (this.isReferenceToBeDeleted(primaryEntityClass, deleted, reference)) {
 				deleted = true;
 				continue;
 			}
 			deletedReferences.add(reference);
 		}
 		super.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, deletedReferences, primaryEntityClass);
+	}
+
+	private boolean isReferenceToBeDeleted(final Class<?> primaryEntityClass, final boolean deleted, final EntityReference reference) {
+		return !deleted && reference.isPrimary() && reference.getReferenceType().equals(primaryEntityClass);
 	}
 }

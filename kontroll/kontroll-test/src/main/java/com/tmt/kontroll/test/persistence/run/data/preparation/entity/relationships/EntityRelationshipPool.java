@@ -7,10 +7,7 @@ import java.util.TreeSet;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
-import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 
 public class EntityRelationshipPool {
 
@@ -70,14 +67,6 @@ public class EntityRelationshipPool {
 
 	public void clear() {
 		this.pool.clear();
-	}
-
-	private TestDataHolder testDataHolder() {
-		return PersistenceTestContext.instance().testDataHolder();
-	}
-
-	private EntityInstanceProvider entityInstanceProvider() {
-		return PersistenceTestContext.instance().entityInstanceProvider();
 	}
 
 	private boolean isOppositeRelationshipType(final Class<? extends Annotation> r1, final Class<? extends Annotation> r2) {

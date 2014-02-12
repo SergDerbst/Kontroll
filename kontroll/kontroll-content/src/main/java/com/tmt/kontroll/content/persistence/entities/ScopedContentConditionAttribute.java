@@ -43,6 +43,10 @@ public class ScopedContentConditionAttribute extends BaseEntity {
 	@JoinColumn(name = "scopedContentCondition", nullable = false)
 	private ScopedContentCondition scopedContentCondition;
 
+	public ScopedContentConditionAttribute() {
+		System.out.println();
+	}
+
 	public String getKey() {
 		return this.key;
 	}

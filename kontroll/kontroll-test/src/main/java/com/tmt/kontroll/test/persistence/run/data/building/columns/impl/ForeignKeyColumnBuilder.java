@@ -34,6 +34,10 @@ public class ForeignKeyColumnBuilder extends TestDataSetColumnBuilder {
 
 	@Override
 	protected <E> DataRowBuilder doBuild(final E entity, final Field field, final DataRowBuilder row) throws Exception {
-		return row.with(ColumnSpec.newColumn(retrieveColumnName(field)), retrieveIdValue(field.get(entity)));
+		try {
+			return row.with(ColumnSpec.newColumn(retrieveColumnName(field)), retrieveIdValue(field.get(entity)));
+		} catch (final NullPointerException e) {
+			throw e;
+		}
 	}
 }

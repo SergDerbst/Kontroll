@@ -5,7 +5,7 @@ import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.retrieveFieldsWi
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.updateEntity;
 
 import java.lang.reflect.Field;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 
@@ -53,7 +53,7 @@ public class LengthConstraintTestDataPreparer extends ConstraintsTestDataPrepare
 	}
 
 	@Override
-	protected void handleConstraintEntity(final EntityReference reference, final List<EntityReference> violatingReferences) throws Exception {
+	protected void handleConstraintEntity(final EntityReference reference, final Set<EntityReference> violatingReferences) throws Exception {
 		for (final Field field : retrieveFieldsWithLengthConstraint(reference.getEntity())) {
 			final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
 			final Column column = field.getAnnotation(Column.class);

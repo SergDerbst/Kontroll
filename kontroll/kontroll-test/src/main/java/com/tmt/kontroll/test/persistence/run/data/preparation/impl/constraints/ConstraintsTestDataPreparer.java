@@ -1,10 +1,11 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.impl.constraints;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.TestDataPreparer;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
@@ -32,13 +33,13 @@ public abstract class ConstraintsTestDataPreparer extends TestDataPreparer {
 	 * @param violatingReferences
 	 * @throws Exception
 	 */
-	protected abstract void handleConstraintEntity(final EntityReference reference, final List<EntityReference> violatingReferences) throws Exception;
+	protected abstract void handleConstraintEntity(final EntityReference reference, final Set<EntityReference> violatingReferences) throws Exception;
 
 	@Override
 	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final List<EntityReference> references,
+	                                                  final Set<EntityReference> references,
 	                                                  final Class<?> primaryEntityClass) throws Exception {
-		final List<EntityReference> violatingReferences = new ArrayList<>();
+		final Set<EntityReference> violatingReferences = new TreeSet<>(new EntityReferenceComparator());
 		for (final EntityReference reference : references) {
 			if (reference.isPrimary()) {
 				this.handleConstraintEntity(reference, violatingReferences);

@@ -5,10 +5,13 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.dbunit.dataset.IDataSet;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
 /**
@@ -40,7 +43,8 @@ public class TestDataHolder {
 		return InstanceHolder.instance;
 	}
 
-	private final Map<TestPhase, List<EntityReference>> referencesMap = new EnumMap<>(TestPhase.class);
+	private final Set<EntityReference> allReferences = new TreeSet<>(new EntityReferenceComparator());
+	private final Map<TestPhase, Set<EntityReference>> referencesMap = new EnumMap<>(TestPhase.class);
 
 	private IDataSet dataSetForSetup;
 	private IDataSet dataSetForVerification;
@@ -51,7 +55,7 @@ public class TestDataHolder {
 	private TestDataHolder() {}
 
 	public void addReferences(final TestPhase testPhase,
-	                          final List<EntityReference> references) {
+	                          final Set<EntityReference> references) {
 		if (this.referencesMap.containsKey(testPhase)) {
 			this.referencesMap.get(testPhase).addAll(references);
 		} else {
@@ -64,14 +68,14 @@ public class TestDataHolder {
 	 * entity values have been changed after their first instantiation.
 	 */
 	public void updateReferencesValues() {
-		for (final Entry<TestPhase, List<EntityReference>> entry : this.referencesMap.entrySet()) {
+		for (final Entry<TestPhase, Set<EntityReference>> entry : this.referencesMap.entrySet()) {
 			for (final EntityReference reference : entry.getValue()) {
 				reference.updateReferenceValueMap();
 			}
 		}
 	}
 
-	public List<EntityReference> fetchReferences(final TestPhase testPhase) {
+	public Set<EntityReference> fetchReferences(final TestPhase testPhase) {
 		return this.referencesMap.get(testPhase);
 	}
 
@@ -116,6 +120,10 @@ public class TestDataHolder {
 			default:
 				throw new RuntimeException("No data set available for: " + testPhase);
 		}
+	}
+
+	public Set<EntityReference> allReferences() {
+		return this.allReferences;
 	}
 
 	public IDataSet dataSetForSetup() {

@@ -4,7 +4,7 @@ import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.ret
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.builder.DataRowBuilder;
@@ -64,7 +64,7 @@ public class TestDataSetBuilder {
 		this.testDataHolder().setDataSetForTearDown(this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.TearDown), false));
 	}
 
-	private IDataSet buildDataSet(final List<EntityReference> references,
+	private IDataSet buildDataSet(final Set<EntityReference> references,
 	                              final boolean ignoreFields) throws Exception {
 		final DataSetBuilder builder = new DataSetBuilder();
 		for (final EntityReference reference : references) {
