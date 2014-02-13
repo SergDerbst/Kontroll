@@ -112,5 +112,9 @@ public enum TestStrategy {
 	 * <li><b>Db verification: </b>That the database did not change.</li>
 	 * </ul>
 	 */
-	LengthConstraint;
+	LengthConstraint,
+	/**
+	 * A dummy test strategy that does and causes exactly nothing by default.
+	 */
+	None;
 }

@@ -15,16 +15,18 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * @author Serg Derbst
  *
  */
-public class FindTestDataPreparer extends TestDataPreparer {
+public class ReadTestDataPreparer extends TestDataPreparer {
 
 	private static class InstanceHolder {
-		public static FindTestDataPreparer instance;
+		public static ReadTestDataPreparer instance;
 	}
 
-	public static FindTestDataPreparer newInstance() {
-		InstanceHolder.instance = new FindTestDataPreparer();
+	public static ReadTestDataPreparer newInstance() {
+		InstanceHolder.instance = new ReadTestDataPreparer();
 		return InstanceHolder.instance;
 	}
+
+	private ReadTestDataPreparer() {}
 
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {

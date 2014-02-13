@@ -26,6 +26,8 @@ public class ExistsTestDataPreparer extends TestDataPreparer {
 		return InstanceHolder.instance;
 	}
 
+	private ExistsTestDataPreparer() {}
+
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {
 		return TestStrategy.Exists == config.testStrategy();

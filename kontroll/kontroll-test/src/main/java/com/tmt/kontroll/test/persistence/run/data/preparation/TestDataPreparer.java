@@ -22,12 +22,7 @@ import com.tmt.kontroll.test.persistence.run.utils.exceptions.NoTestPreparerFoun
 /**
  * Responsibility chain element to prepare test data according to the proper {@link TestStrategy}.
  * </p>
- * It prepares three things:
- * <ul>
- * <li>an {@link IDataSet} consisting of entities that have to exist in the data base before the test</li>
- * <li>a list of entities as references for the test itself</li>
- * <li>an {@link IDataSet} consisting of entities that represent the expected state of the data base after the test.</li>
- * </ul>
+ * It prepares lists of entity references for each {@link TestPhase}.
  * </p>
  * Furthermore, it ensures that the {@link EntityReferenceAsserter} used for the given test is configured
  * properly according to the {@link PersistenceTestConfig} of the current test method, e.g. that fields are

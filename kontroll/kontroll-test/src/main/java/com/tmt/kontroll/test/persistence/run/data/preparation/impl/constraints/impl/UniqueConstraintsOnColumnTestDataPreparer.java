@@ -46,6 +46,7 @@ public class UniqueConstraintsOnColumnTestDataPreparer extends ConstraintsTestDa
 
 	private UniqueConstraintsOnColumnTestDataPreparer() {}
 
+
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {
 		return TestStrategy.UniqueConstraintsOnColumn == config.testStrategy();

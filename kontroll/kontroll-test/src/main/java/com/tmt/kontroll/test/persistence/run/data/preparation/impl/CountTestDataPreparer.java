@@ -26,6 +26,8 @@ public class CountTestDataPreparer extends TestDataPreparer {
 		return InstanceHolder.instance;
 	}
 
+	private CountTestDataPreparer() {}
+
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {
 		return TestStrategy.Count == config.testStrategy();

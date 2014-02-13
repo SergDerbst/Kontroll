@@ -34,6 +34,8 @@ public class UpdateTestDataPreparer extends TestDataPreparer {
 		return InstanceHolder.instance;
 	}
 
+	private UpdateTestDataPreparer() {}
+
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {
 		return TestStrategy.Update == config.testStrategy();

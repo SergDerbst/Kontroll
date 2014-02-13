@@ -36,6 +36,8 @@ public class DeleteTestDataPreparer extends TestDataPreparer {
 		return InstanceHolder.instance;
 	}
 
+	private DeleteTestDataPreparer() {}
+
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {
 		return TestStrategy.Delete == config.testStrategy();

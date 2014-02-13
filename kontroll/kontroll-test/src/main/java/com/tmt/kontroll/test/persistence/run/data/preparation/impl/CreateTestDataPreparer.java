@@ -27,16 +27,18 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * @author Serg Derbst
  *
  */
-public class SaveTestDataPreparer extends TestDataPreparer {
+public class CreateTestDataPreparer extends TestDataPreparer {
 
 	private static class InstanceHolder {
-		public static SaveTestDataPreparer instance;
+		public static CreateTestDataPreparer instance;
 	}
 
-	public static SaveTestDataPreparer newInstance() {
-		InstanceHolder.instance = new SaveTestDataPreparer();
+	public static CreateTestDataPreparer newInstance() {
+		InstanceHolder.instance = new CreateTestDataPreparer();
 		return InstanceHolder.instance;
 	}
+
+	private CreateTestDataPreparer() {}
 
 	@Override
 	protected boolean isResponsible(final PersistenceTestConfig config) {

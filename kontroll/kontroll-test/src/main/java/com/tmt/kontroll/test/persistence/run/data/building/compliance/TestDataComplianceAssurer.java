@@ -33,7 +33,7 @@ public class TestDataComplianceAssurer {
 	private static LocalContainerEntityManagerFactoryBean entityManager;
 
 	@Autowired
-	LocalContainerEntityManagerFactoryBean entityManagerFactoryBean;
+	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean;
 
 	@PostConstruct
 	public void setUpTableComplianceAssurance() {
