@@ -13,7 +13,6 @@ import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipPool;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
@@ -189,20 +188,12 @@ public abstract class TestDataPreparer {
 		return PersistenceTestContext.instance().entityInstanceProvider();
 	}
 
-	protected EntityRelationshipPool entityRelationshipPool() {
-		return PersistenceTestContext.instance().entityRelationshipPool();
-	}
-
 	protected EntityUpdateProvider entityUpdateProvider() {
 		return PersistenceTestContext.instance().entityUpdateProvider();
 	}
 
 	protected EntityReferenceAsserter referenceAsserter() {
 		return PersistenceTestContext.instance().entityReferenceAsserter();
-	}
-
-	protected TestDataPreparer nextPreparer() {
-		return this.nextPreparer;
 	}
 
 	protected TestDataHolder testDataHolder() {

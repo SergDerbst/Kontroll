@@ -32,9 +32,7 @@ import com.tmt.kontroll.test.persistence.run.utils.exceptions.TestPreparationFai
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({
-	PersistenceTestContext.class
-})
+@PrepareForTest({PersistenceTestContext.class})
 public class TestDataPreparationHandlerTest {
 
 	@Mock

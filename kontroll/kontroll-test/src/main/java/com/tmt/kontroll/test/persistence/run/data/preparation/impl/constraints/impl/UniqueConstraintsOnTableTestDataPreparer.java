@@ -60,7 +60,7 @@ public class UniqueConstraintsOnTableTestDataPreparer extends ConstraintsTestDat
 				final Field field = retrieveFieldByColumnName(reference.getEntity(), columnName);
 				updateField(violatingEntity, retrieveFieldValue(reference.getEntity(), field), field);
 			}
-			violatingReferences.add(new ConstraintReference(violatingEntity, new UniqueConstraintOnTableAssertion(constraint)));
+			violatingReferences.add(new ConstraintReference(violatingEntity, new UniqueConstraintOnTableAssertion(constraint), reference.isPrimary(), false));
 		}
 	}
 }

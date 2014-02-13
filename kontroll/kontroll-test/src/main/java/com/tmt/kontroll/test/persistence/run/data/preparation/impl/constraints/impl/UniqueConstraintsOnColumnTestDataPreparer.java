@@ -54,10 +54,14 @@ public class UniqueConstraintsOnColumnTestDataPreparer extends ConstraintsTestDa
 
 	@Override
 	protected void handleConstraintEntity(final EntityReference reference, final Set<EntityReference> violatingReferences) throws Exception {
+		final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
+		Field uniqueField = null;
 		for (final Field field : retrieveFieldsWithUniqueConstraint(reference.getEntity())) {
-			final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
+			uniqueField = field;
 			updateField(violatingEntity, retrieveFieldValue(reference.getEntity(), field), field);
-			violatingReferences.add(new ConstraintReference(violatingEntity, new UniqueConstraintOnColumnAssertion(field.getAnnotation(Column.class))));
+		}
+		if (uniqueField != null) {
+			violatingReferences.add(new ConstraintReference(violatingEntity, new UniqueConstraintOnColumnAssertion(uniqueField.getAnnotation(Column.class)), reference.isPrimary(), false));
 		}
 	}
 }

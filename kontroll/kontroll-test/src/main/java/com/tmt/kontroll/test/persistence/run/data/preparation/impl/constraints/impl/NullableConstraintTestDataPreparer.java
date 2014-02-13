@@ -52,10 +52,14 @@ public class NullableConstraintTestDataPreparer extends ConstraintsTestDataPrepa
 
 	@Override
 	protected void handleConstraintEntity(final EntityReference reference, final Set<EntityReference> violatingReferences) throws Exception {
+		final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
+		Field nullField = null;
 		for (final Field field : retrieveFieldsWithNullableConstraint(reference.getEntity())) {
-			final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
+			nullField = field;
 			nullifyField(violatingEntity, field);
-			violatingReferences.add(new ConstraintReference(violatingEntity, new NullableConstraintAssertion(field.getAnnotation(Column.class))));
+		}
+		if (nullField != null) {
+			violatingReferences.add(new ConstraintReference(violatingEntity, new NullableConstraintAssertion(nullField.getAnnotation(Column.class)), reference.isPrimary(), false));
 		}
 	}
 }

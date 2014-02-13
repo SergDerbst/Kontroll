@@ -8,8 +8,10 @@ public class ConstraintReference extends EntityReference {
 	private final ConstraintAssertion constraintAssertion;
 
 	public ConstraintReference(final Object entity,
-	                           final ConstraintAssertion constraintAssertion) {
-		super(entity, false, false);
+	                           final ConstraintAssertion constraintAssertion,
+	                           final boolean isPrimary,
+	                           final boolean addToPersistenceTestContext) {
+		super(entity, isPrimary, addToPersistenceTestContext);
 		this.constraintAssertion = constraintAssertion;
 	}
 
