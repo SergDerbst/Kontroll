@@ -31,7 +31,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * For more information on test data preparation, see {@link TestDataPreparer}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class UniqueConstraintsOnTableTestDataPreparer extends ConstraintsTestDataPreparer {
@@ -54,11 +54,11 @@ public class UniqueConstraintsOnTableTestDataPreparer extends ConstraintsTestDat
 
 	@Override
 	protected void handleConstraintEntity(final EntityReference reference, final Set<EntityReference> violatingReferences) throws Exception {
-		for (final UniqueConstraint constraint : retrieveUniqueConstraintsOnTable(reference.getEntity())) {
-			final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
+		for (final UniqueConstraint constraint : retrieveUniqueConstraintsOnTable(reference.entity())) {
+			final Object violatingEntity = updateEntity(reference.referenceType().newInstance(), reference.entity());
 			for (final String columnName : constraint.columnNames()) {
-				final Field field = retrieveFieldByColumnName(reference.getEntity(), columnName);
-				updateField(violatingEntity, retrieveFieldValue(reference.getEntity(), field), field);
+				final Field field = retrieveFieldByColumnName(reference.entity(), columnName);
+				updateField(violatingEntity, retrieveFieldValue(reference.entity(), field), field);
 			}
 			violatingReferences.add(new ConstraintReference(violatingEntity, new UniqueConstraintOnTableAssertion(constraint), reference.isPrimary(), false));
 		}

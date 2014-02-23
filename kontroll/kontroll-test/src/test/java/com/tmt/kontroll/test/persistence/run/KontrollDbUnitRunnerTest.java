@@ -135,8 +135,9 @@ public class KontrollDbUnitRunnerTest {
 	 * us to both use PowerMock.mockStatic and access the "testMethod" Method object at the same time.
 	 * 
 	 * See issue posted <a href="https://code.google.com/p/powermock/issues/detail?id=355">here</a>.
+	 * @throws Exception
 	 */
-	private void prepareClassToTest() {
+	private void prepareClassToTest() throws Exception {
 		this.toTest = new KontrollDbUnitRunner() {
 			@Override
 			protected void startTestingContext() {

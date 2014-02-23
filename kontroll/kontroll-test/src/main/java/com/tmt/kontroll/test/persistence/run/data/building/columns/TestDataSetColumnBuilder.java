@@ -4,9 +4,16 @@ import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.retrieveColumnNa
 
 import java.lang.reflect.Field;
 
+import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.builder.ColumnSpec;
 import org.dbunit.dataset.builder.DataRowBuilder;
 
+/**
+ * Responsibility chain element for building columns in {@link IDataSet}s.
+ * 
+ * @author Sergio Weigel
+ * 
+ */
 public abstract class TestDataSetColumnBuilder {
 
 	private TestDataSetColumnBuilder nextRowBuilder;

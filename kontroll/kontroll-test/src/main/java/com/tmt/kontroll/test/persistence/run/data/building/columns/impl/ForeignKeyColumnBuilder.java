@@ -22,7 +22,7 @@ import com.tmt.kontroll.test.persistence.run.data.building.columns.TestDataSetCo
  * {@link ManyToOne} relationship.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class ForeignKeyColumnBuilder extends TestDataSetColumnBuilder {

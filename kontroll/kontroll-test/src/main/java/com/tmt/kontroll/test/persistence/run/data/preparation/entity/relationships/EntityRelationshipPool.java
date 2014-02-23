@@ -9,6 +9,16 @@ import javax.persistence.OneToMany;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 
+/**
+ * The entity relationship pool holds all {@link EntityRelationship} instances that have to
+ * exist during one persistence test. Internally it uses a {@link TreeSet} to make sure that
+ * no relationship is held twice. It offers several methods to retrieve a relationship based
+ * on a given {@link EntityReference} instance.
+ * </p>
+ * 
+ * @author Sergio Weigel
+ *
+ */
 public class EntityRelationshipPool {
 
 	private static class InstanceHolder {
@@ -40,7 +50,7 @@ public class EntityRelationshipPool {
 	public EntityRelationship retrieveRelationshipByOwningEntityReference(final Class<? extends Annotation> relationshipType,
 	                                                                      final EntityReference owningEntityReference) {
 		for (final EntityRelationship relationship : this.pool) {
-			if (this.isOppositeRelationshipType(relationship.relationshipType(), relationshipType)) {
+			if (this.isOppositeOrSameRelationshipType(relationship.relationshipType(), relationshipType)) {
 				if (relationship.owningEntityReference() == owningEntityReference) {
 					return relationship;
 				}
@@ -52,7 +62,7 @@ public class EntityRelationshipPool {
 	public EntityRelationship retrieveRelationshipByRelatingEntityReference(final Class<? extends Annotation> relationshipType,
 	                                                                        final EntityReference relatingEntityReference) {
 		for (final EntityRelationship relationship : this.pool) {
-			if (this.isOppositeRelationshipType(relationship.relationshipType(), relationshipType)) {
+			if (this.isOppositeOrSameRelationshipType(relationship.relationshipType(), relationshipType)) {
 				if (relationship.relatingEntityReference() == relatingEntityReference) {
 					return relationship;
 				}
@@ -69,12 +79,12 @@ public class EntityRelationshipPool {
 		this.pool.clear();
 	}
 
-	private boolean isOppositeRelationshipType(final Class<? extends Annotation> r1, final Class<? extends Annotation> r2) {
-		if (OneToMany.class.equals(r1)) {
-			return ManyToOne.class.equals(r2);
+	private boolean isOppositeOrSameRelationshipType(final Class<? extends Annotation> r1, final Class<? extends Annotation> r2) {
+		if (OneToMany.class.equals(r1) && ManyToOne.class.equals(r2)) {
+			return true;
 		}
-		if (ManyToOne.class.equals(r1)) {
-			return OneToMany.class.equals(r2);
+		if (ManyToOne.class.equals(r1) && OneToMany.class.equals(r2)) {
+			return true;
 		}
 		return r1.equals(r2);
 	}

@@ -19,7 +19,7 @@ import com.tmt.kontroll.context.global.GlobalContextDto;
  * is created, when it does not exist yet, consisting of services and all according DTO paths available
  * for each service.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Component

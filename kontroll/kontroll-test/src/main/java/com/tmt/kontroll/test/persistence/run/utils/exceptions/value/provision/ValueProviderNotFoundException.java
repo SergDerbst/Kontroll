@@ -8,12 +8,15 @@ import org.apache.commons.lang3.exception.ContextedRuntimeException;
 public class ValueProviderNotFoundException extends ContextedRuntimeException {
 
 	private enum ContextValueLabel {
-		SimpleValueProviderValueType(1,0,"value type"),
-		CollectionValueProviderCollectionType(2,0,"collection type"),
-		CollectionValueProviderItemType(2,1,"item type"),
-		MapValueProviderMapType(3,0,"map type"),
-		MapValueProviderKeyType(3,1,"key type"),
-		MapValueProviderValueType(3,2,"value type");
+		SimpleValueProviderEntityType(2,0,"entity type"),
+		SimpleValueProviderValueType(2,1,"value type"),
+		CollectionValueProviderEntityType(3,0,"entity type"),
+		CollectionValueProviderCollectionType(3,1,"collection type"),
+		CollectionValueProviderItemType(3,2,"item type"),
+		MapValueProviderEntityType(4,0,"entity type"),
+		MapValueProviderMapType(4,1,"map type"),
+		MapValueProviderKeyType(4,2,"key type"),
+		MapValueProviderValueType(4,3,"value type");
 
 		private final int numberOfArgs;
 		private final int numberOfArg;
@@ -40,10 +43,6 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		}
 	}
 
-	public static ValueProviderNotFoundException prepareWithTypes(final Class<?>... typeArgs) {
-		return prepareWithTypes(null, typeArgs);
-	}
-
 	public static ValueProviderNotFoundException prepareWithTypes(final Field field, final Class<?>... typeArgs) {
 		final ContextedRuntimeException exception = new ValueProviderNotFoundException();
 		if (field != null) {
@@ -56,11 +55,7 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		return (ValueProviderNotFoundException) exception;
 	}
 
-	public static ValueProviderNotFoundException prepareWithValue(final Object value) {
-		return prepareWithValue(null, value);
-	}
-
-	public static ValueProviderNotFoundException prepareWithValue(final Field field, final Object value) {
-		return prepareWithTypes(field, value.getClass());
+	public static ValueProviderNotFoundException prepareWithValue(final Object entity, final Field field, final Object value) {
+		return prepareWithTypes(field, entity.getClass(), value.getClass());
 	}
 }

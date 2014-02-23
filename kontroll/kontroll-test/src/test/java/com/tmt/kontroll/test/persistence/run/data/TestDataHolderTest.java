@@ -107,9 +107,9 @@ public class TestDataHolderTest {
 		when(this.firstReference.isPrimary()).thenReturn(true);
 		when(this.secondReference.isPrimary()).thenReturn(false);
 		when(this.thirdReference.isPrimary()).thenReturn(false);
-		when(this.firstReference.getReferenceType()).thenReturn((Class) this.getClass());
-		when(this.secondReference.getReferenceType()).thenReturn((Class) this.getClass());
-		when(this.thirdReference.getReferenceType()).thenReturn((Class) String.class);
+		when(this.firstReference.referenceType()).thenReturn((Class) this.getClass());
+		when(this.secondReference.referenceType()).thenReturn((Class) this.getClass());
+		when(this.thirdReference.referenceType()).thenReturn((Class) String.class);
 		this.toTest.addReferences(setup, this.firstReferences);
 		this.toTest.addReferences(setup, this.secondReferences);
 		this.toTest.addReferences(setup, this.thirdReferences);
@@ -130,9 +130,9 @@ public class TestDataHolderTest {
 		when(this.firstReference.isPrimary()).thenReturn(true);
 		when(this.secondReference.isPrimary()).thenReturn(false);
 		when(this.thirdReference.isPrimary()).thenReturn(false);
-		when(this.firstReference.getReferenceType()).thenReturn((Class) this.getClass());
-		when(this.secondReference.getReferenceType()).thenReturn((Class) this.getClass());
-		when(this.thirdReference.getReferenceType()).thenReturn((Class) String.class);
+		when(this.firstReference.referenceType()).thenReturn((Class) this.getClass());
+		when(this.secondReference.referenceType()).thenReturn((Class) this.getClass());
+		when(this.thirdReference.referenceType()).thenReturn((Class) String.class);
 		this.toTest.addReferences(setup, this.firstReferences);
 		this.toTest.addReferences(setup, this.secondReferences);
 		this.toTest.addReferences(setup, this.thirdReferences);
@@ -153,9 +153,9 @@ public class TestDataHolderTest {
 		when(this.firstReference.isPrimary()).thenReturn(true);
 		when(this.secondReference.isPrimary()).thenReturn(false);
 		when(this.thirdReference.isPrimary()).thenReturn(false);
-		when(this.firstReference.getReferenceType()).thenReturn((Class) this.getClass());
-		when(this.secondReference.getReferenceType()).thenReturn((Class) this.getClass());
-		when(this.thirdReference.getReferenceType()).thenReturn((Class) String.class);
+		when(this.firstReference.referenceType()).thenReturn((Class) this.getClass());
+		when(this.secondReference.referenceType()).thenReturn((Class) this.getClass());
+		when(this.thirdReference.referenceType()).thenReturn((Class) String.class);
 		this.toTest.addReferences(setup, this.firstReferences);
 		this.toTest.addReferences(setup, this.secondReferences);
 		this.toTest.addReferences(setup, this.thirdReferences);

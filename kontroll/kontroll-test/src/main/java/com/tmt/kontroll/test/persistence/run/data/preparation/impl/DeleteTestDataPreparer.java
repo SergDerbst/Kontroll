@@ -22,7 +22,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * For more information on test data preparation, see {@link TestDataPreparer}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class DeleteTestDataPreparer extends TestDataPreparer {
@@ -60,6 +60,6 @@ public class DeleteTestDataPreparer extends TestDataPreparer {
 	}
 
 	private boolean isReferenceToBeDeleted(final Class<?> primaryEntityClass, final boolean deleted, final EntityReference reference) {
-		return !deleted && reference.isPrimary() && reference.getReferenceType().equals(primaryEntityClass);
+		return !deleted && reference.isPrimary() && reference.referenceType().equals(primaryEntityClass);
 	}
 }

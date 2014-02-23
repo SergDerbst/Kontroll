@@ -10,7 +10,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  * class, if it is annotated with the given <code>annotationType</code> 
  * and has the given <code>assignableType</code>.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class AnnotationAndAssignableTypeFilter extends AnnotationTypeFilter {

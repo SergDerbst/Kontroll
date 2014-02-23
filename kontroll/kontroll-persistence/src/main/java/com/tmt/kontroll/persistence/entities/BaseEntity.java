@@ -14,7 +14,7 @@ import javax.persistence.MappedSuperclass;
 /**
  * Superclass of all standard entities.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 @MappedSuperclass
 public class BaseEntity {

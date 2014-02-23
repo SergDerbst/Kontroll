@@ -21,7 +21,7 @@ public class StringValueProvider extends SimpleValueProvider<String> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && String.class.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && String.class.equals(valueType);
 	}
 
 	@Override

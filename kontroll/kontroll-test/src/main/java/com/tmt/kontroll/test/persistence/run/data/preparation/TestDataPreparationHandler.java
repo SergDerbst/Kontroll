@@ -22,7 +22,7 @@ import com.tmt.kontroll.test.persistence.run.utils.exceptions.TestPreparationFai
  * <a href="http://java.dzone.com/articles/design-patterns-uncovered-chain-of-responsibility">here</a>.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class TestDataPreparationHandler {

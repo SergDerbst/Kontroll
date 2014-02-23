@@ -13,7 +13,7 @@ import com.tmt.kontroll.content.verification.conditions.ConditionVerificationCha
  * The actual component matching given application values against conditions in
  * order to deliver content.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  * 
  */
 @Component

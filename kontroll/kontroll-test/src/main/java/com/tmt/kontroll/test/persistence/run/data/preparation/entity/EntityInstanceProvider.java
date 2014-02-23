@@ -36,7 +36,7 @@ public class EntityInstanceProvider {
 	public void provideValues() {
 		try {
 			for (final EntityReference reference : this.testDataHolder().allReferences()) {
-				for (final Field field : retrievePropertyFields(reference.getReferenceType())) {
+				for (final Field field : retrievePropertyFields(reference.referenceType())) {
 					field.setAccessible(true);
 					if (this.fieldIsIgnoredForTest(field)) {
 						continue;
@@ -56,7 +56,7 @@ public class EntityInstanceProvider {
 		if (isRelationshipField(field)) {
 			return;
 		}
-		final Object entity = reference.getEntity();
+		final Object entity = reference.entity();
 		if (field.get(entity) == null) {
 			if (Collection.class.isAssignableFrom(fieldType)) {
 				field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0)));
@@ -71,7 +71,7 @@ public class EntityInstanceProvider {
 	}
 
 	private boolean fieldIsIgnoredForTest(final Field field) {
-		return PersistenceTestContext.instance().entityReferenceAsserter().getIgnoredFieldNames().contains(field.getName());
+		return PersistenceTestContext.instance().entityReferenceAsserter().ignoredFieldNames().contains(field.getName());
 	}
 
 	private ValueProvisionHandler valueProvisionHandler() {

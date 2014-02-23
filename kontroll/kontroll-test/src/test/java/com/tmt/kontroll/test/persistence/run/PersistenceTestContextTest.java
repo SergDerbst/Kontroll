@@ -22,7 +22,7 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.prov
 public class PersistenceTestContextTest {
 
 	@Test
-	public void testThatPersistenceTestContextIsSetup() {
+	public void testThatPersistenceTestContextIsSetup() throws Exception {
 		//when
 		PersistenceTestContext.newInstance();
 		//then

@@ -9,7 +9,7 @@ import com.tmt.kontroll.persistence.exceptions.EntityNotFoundInDatabaseException
  *
  * @param <Entity> the entity to work on.
  * @param <ID> the primary key.
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 public interface CrudDao<Entity, ID> {
 

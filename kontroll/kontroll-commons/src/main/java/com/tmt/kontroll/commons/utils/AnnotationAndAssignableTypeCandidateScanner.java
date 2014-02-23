@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Utility class that scans the given base packages of the classpath and searches
  * for classes according to their assignable type and annotation. 
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Component

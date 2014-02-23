@@ -64,7 +64,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@SuppressWarnings("unchecked")
 	public void testThatDeleteWorks() throws Exception {
 		//given
-		final ID id = (ID) this.fetchPrimaryReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) this.fetchPrimaryReferences().get(0).referenceValue("id");
 		//when
 		this.daoService().delete(id);
 		//then
@@ -76,7 +76,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	@SuppressWarnings("unchecked")
 	public void testThatExistsWorks() throws Exception {
 		//given
-		final ID id = (ID) this.fetchPrimaryReferences().get(0).getReferenceValue("id");
+		final ID id = (ID) this.fetchPrimaryReferences().get(0).referenceValue("id");
 		//when
 		final boolean exists = this.daoService().exists(id);
 		//then
@@ -99,7 +99,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 	public void testThatReadWorks() throws Exception {
 		//given
 		final List<EntityReference> references = this.fetchPrimaryReferences();
-		final ID id = (ID) references.get(0).getReferenceValue("id");
+		final ID id = (ID) references.get(0).referenceValue("id");
 		//when
 		final Entity found = this.daoService().readById(id);
 		//then
@@ -113,14 +113,14 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().create((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.entity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
 			finally {
 				if (!exceptionThrown) {
-					final UniqueConstraintOnTableAssertion constraintAssertion = (UniqueConstraintOnTableAssertion) ((ConstraintReference) reference).getConstraintAssertion();
-					this.constraintAsserter().addFailure(new UniqueConstraintOnTableAssertionFailure(reference.getEntity().getClass(), constraintAssertion));
+					final UniqueConstraintOnTableAssertion constraintAssertion = (UniqueConstraintOnTableAssertion) ((ConstraintReference) reference).constraintAssertion();
+					this.constraintAsserter().addFailure(new UniqueConstraintOnTableAssertionFailure(reference.entity().getClass(), constraintAssertion));
 				}
 			}
 		}
@@ -134,14 +134,14 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().create((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.entity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
 			finally {
 				if (!exceptionThrown) {
-					final UniqueConstraintOnColumnAssertion constraintAssertion = (UniqueConstraintOnColumnAssertion) ((ConstraintReference) reference).getConstraintAssertion();
-					this.constraintAsserter().addFailure(new UniqueConstraintOnColumnAssertionFailure(constraintAssertion, reference.getEntity().getClass()));
+					final UniqueConstraintOnColumnAssertion constraintAssertion = (UniqueConstraintOnColumnAssertion) ((ConstraintReference) reference).constraintAssertion();
+					this.constraintAsserter().addFailure(new UniqueConstraintOnColumnAssertionFailure(constraintAssertion, reference.entity().getClass()));
 				}
 			}
 		}
@@ -155,14 +155,14 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().create((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.entity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
 			finally {
 				if (!exceptionThrown) {
-					final NullableConstraintAssertion constraintAssertion = (NullableConstraintAssertion) ((ConstraintReference) reference).getConstraintAssertion();
-					this.constraintAsserter().addFailure(new NullableConstraintAssertionFailure(constraintAssertion, reference.getEntity().getClass()));
+					final NullableConstraintAssertion constraintAssertion = (NullableConstraintAssertion) ((ConstraintReference) reference).constraintAssertion();
+					this.constraintAsserter().addFailure(new NullableConstraintAssertionFailure(constraintAssertion, reference.entity().getClass()));
 				}
 			}
 		}
@@ -176,14 +176,14 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
-				this.daoService().create((Entity) reference.getEntity());
+				this.daoService().create((Entity) reference.entity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;
 			}
 			finally {
 				if (!exceptionThrown) {
-					final LengthConstraintAssertion constraintAssertion = (LengthConstraintAssertion) ((ConstraintReference) reference).getConstraintAssertion();
-					this.constraintAsserter().addFailure(new LengthConstraintAssertionFailure(constraintAssertion, reference.getEntity().getClass()));
+					final LengthConstraintAssertion constraintAssertion = (LengthConstraintAssertion) ((ConstraintReference) reference).constraintAssertion();
+					this.constraintAsserter().addFailure(new LengthConstraintAssertionFailure(constraintAssertion, reference.entity().getClass()));
 				}
 			}
 		}

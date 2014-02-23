@@ -15,13 +15,13 @@ public class LongValueProvider extends SimpleValueProvider<Long> {
 
 	@Override
 	protected Long instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
-		return (long) 1;
+		return (long) 0;
 	}
 
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Long.class.equals(valueType) || Long.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Long.class.equals(valueType) || Long.TYPE.equals(valueType);
 	}
 
 	@Override

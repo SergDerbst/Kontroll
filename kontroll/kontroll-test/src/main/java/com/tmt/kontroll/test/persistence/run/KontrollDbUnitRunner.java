@@ -29,7 +29,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
  * dynamically setup, verify and tear down the database.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class KontrollDbUnitRunner {
@@ -129,8 +129,9 @@ public class KontrollDbUnitRunner {
 	 * <i>Note: </i>This method's visibility is only protected, so it can be overridden
 	 * in tests.
 	 * </p>
+	 * @throws Excetion
 	 */
-	protected void startTestingContext() {
+	protected void startTestingContext() throws Exception {
 		PersistenceTestContext.newInstance();
 	}
 }

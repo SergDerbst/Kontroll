@@ -26,18 +26,18 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
  * <ul>
  * <li>for {@link TestPhase#Setup} the data set for setting up the database before the test is built</li>
  * <li>for {@link TestPhase#Verification} the data set for verifying the database at the end of the test is built</li>
- * <li>for {@link TestPhase#TearDown} the data set tearing down the database after the test is built</li>
+ * <li>for {@link TestPhase#TearDown} the data set for tearing down the database after the test is built</li>
  * </ul>
  * </p>
- * The builder depends on proper references lists available from the {@link TestDataHolder} for the test
+ * The builder depends on proper references lists available at the {@link TestDataHolder} for the test
  * phases mentioned above. These have to be prepared by a {@link TestDataPreparer}.
  * </p>
- * It will also assure that the data sets are compliant with all managed entities within the persistence
- * context, meaning that all necessary data tables, including those for many-to-many relationships and
- * such, are present. Thus, the references only require to contain the specific data needed for the test.
+ * The builder will assure that all data sets are always compliant with all managed entities within the persistence
+ * context, meaning that all necessary data tables are present, including those for many-to-many relationships and
+ * such. Therefore the references lists only require to contain the specific data needed for the test.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 public class TestDataSetBuilder {
 
@@ -45,12 +45,16 @@ public class TestDataSetBuilder {
 		public static TestDataSetBuilder instance;
 	}
 
-	public static TestDataSetBuilder newInstance() {
+	public static TestDataSetBuilder newInstance() throws Exception {
 		InstanceHolder.instance = new TestDataSetBuilder();
 		return InstanceHolder.instance;
 	}
 
-	private TestDataSetBuilder() {}
+	DataSetBuilder builder;
+
+	private TestDataSetBuilder() throws Exception {
+		this.builder = new DataSetBuilder();
+	}
 
 	public void buildDataSetForSetup() throws Exception {
 		this.testDataHolder().setDataSetForSetup(this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.Setup), false));
@@ -66,26 +70,25 @@ public class TestDataSetBuilder {
 
 	private IDataSet buildDataSet(final Set<EntityReference> references,
 	                              final boolean ignoreFields) throws Exception {
-		final DataSetBuilder builder = new DataSetBuilder();
 		for (final EntityReference reference : references) {
-			final DataRowBuilder row = builder.newRow(reference.getEntity().getClass().getSimpleName());
-			for (final Field field : retrievePropertyFields(reference.getEntity().getClass())) {
+			final DataRowBuilder row = this.builder.newRow(reference.referenceType().getSimpleName());
+			for (final Field field : retrievePropertyFields(reference.entity().getClass())) {
 				if (this.fieldHasToBeIgnoredInDataSet(field, ignoreFields)) {
 					continue;
 				}
-				this.testDataSetRowBuildingHandler().build(reference.getEntity(), field, row);
+				this.testDataSetRowBuildingHandler().build(reference.entity(), field, row);
 			}
 			row.add();
 		}
-		this.tableComplianceAssurer().assureTableCompliance(builder);
-		return builder.build();
+		this.tableComplianceAssurer().assureTableCompliance(this.builder);
+		return this.builder.build();
 	}
 
 	private boolean fieldHasToBeIgnoredInDataSet(final Field field,
 	                                             final boolean ignoreFields) {
 		return
 		this.isCollectionRelationshipField(field) ||
-		(ignoreFields && this.referenceAsserter().getIgnoredFieldNames().contains(field.getName()));
+		(ignoreFields && this.referenceAsserter().ignoredFieldNames().contains(field.getName()));
 	}
 
 	private boolean isCollectionRelationshipField(final Field field) {

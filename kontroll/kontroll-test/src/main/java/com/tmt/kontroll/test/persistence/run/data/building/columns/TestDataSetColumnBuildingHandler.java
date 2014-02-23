@@ -15,7 +15,7 @@ import com.tmt.kontroll.test.persistence.run.data.building.columns.impl.NoForeig
  * faulty entity implementation or a missing {@link TestDataSetColumnBuilder}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class TestDataSetColumnBuildingHandler {
@@ -37,7 +37,7 @@ public class TestDataSetColumnBuildingHandler {
 		this.setUpRowBuilding();
 	}
 
-	public void setUpRowBuilding() {
+	private void setUpRowBuilding() {
 		this.addRowBuilder(new ForeignKeyColumnBuilder());
 		this.addRowBuilder(new NoForeignKeyColumnBuilder());
 	}

@@ -30,7 +30,7 @@ import com.tmt.kontroll.test.persistence.run.utils.exceptions.NoTestPreparerFoun
  * For more information on prepared test data, see {@link TestDataHolder}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public abstract class TestDataPreparer {

@@ -29,7 +29,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * For more information on test data preparation, see {@link TestDataPreparer}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class NullableConstraintTestDataPreparer extends ConstraintsTestDataPreparer {
@@ -52,9 +52,9 @@ public class NullableConstraintTestDataPreparer extends ConstraintsTestDataPrepa
 
 	@Override
 	protected void handleConstraintEntity(final EntityReference reference, final Set<EntityReference> violatingReferences) throws Exception {
-		final Object violatingEntity = updateEntity(reference.getReferenceType().newInstance(), reference.getEntity());
+		final Object violatingEntity = updateEntity(reference.referenceType().newInstance(), reference.entity());
 		Field nullField = null;
-		for (final Field field : retrieveFieldsWithNullableConstraint(reference.getEntity())) {
+		for (final Field field : retrieveFieldsWithNullableConstraint(reference.entity())) {
 			nullField = field;
 			nullifyField(violatingEntity, field);
 		}

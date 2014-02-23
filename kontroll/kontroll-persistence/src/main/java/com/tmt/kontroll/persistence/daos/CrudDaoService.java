@@ -14,7 +14,7 @@ import com.tmt.kontroll.persistence.exceptions.EntityNotFoundInDatabaseException
  * @param <Entity> the entity to work on.
  * @param <ID> the primary key.
  * @param <Repo> the repository for the entity.
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 @Transactional(rollbackFor = EntityNotFoundInDatabaseException.class)
 public abstract class CrudDaoService<Repo extends JpaRepository<Entity, ID>, Entity, ID extends Serializable> implements CrudDao<Entity, ID> {

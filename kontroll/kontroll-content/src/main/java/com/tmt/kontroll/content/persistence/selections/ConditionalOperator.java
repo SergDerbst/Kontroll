@@ -3,7 +3,7 @@ package com.tmt.kontroll.content.persistence.selections;
 /**
  * Enum representing boolean operators.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public enum ConditionalOperator {

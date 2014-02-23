@@ -23,7 +23,7 @@ import com.tmt.kontroll.test.persistence.run.utils.exceptions.EntityClassNotFoun
  * yelling at you by naming it <i>entityClassName</i>.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class PersistenceDaoEntityTestHelper {

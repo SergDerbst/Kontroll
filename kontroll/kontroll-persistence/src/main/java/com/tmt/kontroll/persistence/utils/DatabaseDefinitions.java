@@ -3,7 +3,7 @@ package com.tmt.kontroll.persistence.utils;
 /**
  * Definitions of column and table relevant data.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class DatabaseDefinitions {

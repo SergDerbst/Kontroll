@@ -23,9 +23,9 @@ public class ListValueProvider extends CollectionValueProvider<Object, List<Obje
 	                                                     final Class<?> itemType) {
 		return field == null ? List.class.isAssignableFrom(collectionType) :
 			List.class.isAssignableFrom(collectionType) &&
-			field.getAnnotation(ManyToMany.class) == null &&
-			field.getAnnotation(OneToMany.class) == null &&
-			field.getAnnotation(ManyToOne.class) == null;
+			!field.isAnnotationPresent(ManyToMany.class) &&
+			!field.isAnnotationPresent(OneToMany.class) &&
+			!field.isAnnotationPresent(ManyToOne.class);
 	}
 
 	@SuppressWarnings({"rawtypes"})

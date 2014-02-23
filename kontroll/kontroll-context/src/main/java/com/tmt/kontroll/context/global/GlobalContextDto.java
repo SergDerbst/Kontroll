@@ -3,7 +3,7 @@ package com.tmt.kontroll.context.global;
 /**
  * The type of global context dto.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public interface GlobalContextDto {

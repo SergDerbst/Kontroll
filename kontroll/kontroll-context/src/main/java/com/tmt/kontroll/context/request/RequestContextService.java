@@ -8,7 +8,7 @@ import com.tmt.kontroll.context.global.GlobalContextDto;
  * are business level services that are responsible for retrieving and manipulating
  * data of given request contexts. 
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  * @param <DTO>
  * @param <GLOBAL>

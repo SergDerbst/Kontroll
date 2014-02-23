@@ -15,7 +15,7 @@ public class ArrayValueProviderFactory {
 		return InstanceHolder.instance;
 	}
 
-	public ArrayValueProvider<?> create(final ValueProvisionHandler valueProvisionHandler, final Class<?> componentType) {
+	public <C> ArrayValueProvider<C> create(final ValueProvisionHandler valueProvisionHandler, final Class<C> componentType) {
 		return new ArrayValueProvider<>(componentType, valueProvisionHandler);
 	}
 }

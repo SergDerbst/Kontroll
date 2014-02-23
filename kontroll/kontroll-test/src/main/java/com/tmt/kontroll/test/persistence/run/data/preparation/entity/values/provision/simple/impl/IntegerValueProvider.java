@@ -21,7 +21,7 @@ public class IntegerValueProvider extends SimpleValueProvider<Integer> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Integer.class.equals(valueType) || Integer.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Integer.class.equals(valueType) || Integer.TYPE.equals(valueType);
 	}
 
 	@Override

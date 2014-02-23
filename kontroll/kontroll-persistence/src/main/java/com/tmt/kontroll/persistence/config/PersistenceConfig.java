@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 /**
  * Configuration class to set up the Spring persistence context.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Configuration

@@ -37,7 +37,7 @@ import com.tmt.kontroll.content.verification.ContentConditionVerifier;
  * </p>
  * Only one content can be present within one scope and at any given set of conditions.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  * 
  * @param <DTO>
  *          - The DTO coming from the application.

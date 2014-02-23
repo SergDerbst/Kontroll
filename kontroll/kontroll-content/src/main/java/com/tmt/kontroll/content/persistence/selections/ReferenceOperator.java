@@ -3,7 +3,7 @@ package com.tmt.kontroll.content.persistence.selections;
 /**
  * Enum representing boolean operators to match given values to their references. 
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public enum ReferenceOperator {

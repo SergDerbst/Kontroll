@@ -21,7 +21,7 @@ public class CharacterValueProvider extends SimpleValueProvider<Character> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Character.class.equals(valueType) || Character.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Character.class.equals(valueType) || Character.TYPE.equals(valueType);
 	}
 
 	@Override

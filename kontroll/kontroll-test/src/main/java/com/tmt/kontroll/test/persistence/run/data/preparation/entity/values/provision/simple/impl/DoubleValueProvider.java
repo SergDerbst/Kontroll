@@ -21,7 +21,7 @@ public class DoubleValueProvider extends SimpleValueProvider<Double> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Double.class.equals(valueType) || Double.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Double.class.equals(valueType) || Double.TYPE.equals(valueType);
 	}
 
 	@Override

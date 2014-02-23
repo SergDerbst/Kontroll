@@ -11,6 +11,33 @@ import java.util.Set;
 
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 
+/**
+ * <p>
+ * The entity reference asserter performs reference assertions according to a
+ * list of expected entities and a list of actual entities passed to it. It will
+ * keep track of any assertion failures that occur and in the end fail the
+ * test with a failure message containing detailed information about all failures.
+ * </p>
+ * <p>
+ * It will perform the following assertions:
+ * <ul>
+ * 	<li>the number of entity references</li>
+ * 	<li>then for each entity reference:
+ * 		<ul>
+ * 			<li>the type of the referenced entity</li>
+ * 			<li>the referenced entity property field values</li>
+ * 		</ul>
+ * 	</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Fields that should not be asserted during a test can be skipped of being asserted
+ * by adding their names to the {@link PersistenceTestConfig#ignoredFields} property.
+ * </p>
+ * 
+ * @author Sergio Weigel
+ *
+ */
 public class EntityReferenceAsserter {
 
 	private static class InstanceHolder {
@@ -34,11 +61,11 @@ public class EntityReferenceAsserter {
 	}
 
 
-	public void assertReferences(final List<EntityReference> references, final List<Object> actuals) throws Exception {
+	public void assertReferences(final List<EntityReference> expected, final List<Object> actuals) throws Exception {
 		this.failures.clear();
 		boolean successful = false;
-		if (this.assertNumberOfEntities(references, actuals)) {
-			for (final EntityReference reference : references) {
+		if (this.assertNumberOfEntities(expected, actuals)) {
+			for (final EntityReference reference : expected) {
 				if (this.assertReference(reference, actuals)) {
 					successful = true;
 				}
@@ -84,7 +111,7 @@ public class EntityReferenceAsserter {
 
 	private boolean assertReferenceProperties(final EntityReference reference, final Object actual) throws Exception {
 		boolean successful = true;
-		for (final Entry<String, Object> entry : reference.getReferenceEntrySet()) {
+		for (final Entry<String, Object> entry : reference.referenceEntrySet()) {
 			final String fieldName = entry.getKey();
 			if (this.ignoredFieldNames.contains(fieldName)) {
 				continue;
@@ -103,7 +130,7 @@ public class EntityReferenceAsserter {
 
 	private boolean assertReferenceType(final EntityReference reference,
 	                                    final Object actual) {
-		final Class<?> expectedClass = reference.getReferenceType();
+		final Class<?> expectedClass = reference.referenceType();
 		final Class<?> actualClass = actual.getClass();
 		if (expectedClass.isAssignableFrom(actualClass)) {
 			return true;
@@ -120,7 +147,7 @@ public class EntityReferenceAsserter {
 	}
 
 
-	public Set<String> getIgnoredFieldNames() {
+	public Set<String> ignoredFieldNames() {
 		return this.ignoredFieldNames;
 	}
 }

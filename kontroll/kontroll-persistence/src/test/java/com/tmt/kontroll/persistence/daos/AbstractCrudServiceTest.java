@@ -20,7 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @param <ID> - the type of the entity's id.
  * @param <S> - the dao service type to test.
  *
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 public abstract class AbstractCrudServiceTest<ENTITY extends Object, REPO extends JpaRepository<ENTITY, ID>, ID extends Serializable, S extends CrudDao<ENTITY, ID>> {
 

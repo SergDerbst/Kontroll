@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation annotating classes that represent content items.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)

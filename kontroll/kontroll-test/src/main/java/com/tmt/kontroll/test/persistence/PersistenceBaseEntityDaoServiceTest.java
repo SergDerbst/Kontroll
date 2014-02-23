@@ -23,7 +23,7 @@ public abstract class PersistenceBaseEntityDaoServiceTest<ENTITY extends BaseEnt
 	@SuppressWarnings({"unchecked"})
 	public void testThatCreateWorks() throws Exception {
 		//given
-		final ENTITY entity = (ENTITY) super.fetchPrimaryReferences().get(0).getEntity();
+		final ENTITY entity = (ENTITY) super.fetchPrimaryReferences().get(0).entity();
 		//when
 		final ENTITY created = this.daoService().create(entity);
 		//then
@@ -39,8 +39,8 @@ public abstract class PersistenceBaseEntityDaoServiceTest<ENTITY extends BaseEnt
 		final List<EntityReference> references = super.fetchPrimaryReferences();
 		//when
 		final List created = this.daoService().createAll(new ArrayList(){{
-			this.add(references.get(0).getEntity());
-			this.add(references.get(1).getEntity());
+			this.add(references.get(0).entity());
+			this.add(references.get(1).entity());
 		}});
 		//then
 		assertNotNull(created);
@@ -53,7 +53,7 @@ public abstract class PersistenceBaseEntityDaoServiceTest<ENTITY extends BaseEnt
 	@SuppressWarnings({"unchecked"})
 	public void testThatUpdateWorks() throws Exception {
 		//given
-		final ENTITY entity = (ENTITY) super.fetchPrimaryReferences().get(0).getEntity();
+		final ENTITY entity = (ENTITY) super.fetchPrimaryReferences().get(0).entity();
 		//when
 		final ENTITY updated = this.daoService().update(entity);
 		//then

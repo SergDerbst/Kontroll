@@ -11,7 +11,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 /**
  * Annotation for basic test configuration of prepared persistence tests.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

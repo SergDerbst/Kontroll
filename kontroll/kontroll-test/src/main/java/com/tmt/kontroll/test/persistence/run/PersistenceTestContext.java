@@ -19,7 +19,7 @@ public class PersistenceTestContext {
 		public static PersistenceTestContext instance;
 	}
 
-	public static PersistenceTestContext newInstance() {
+	public static PersistenceTestContext newInstance() throws Exception {
 		InstanceHolder.instance = new PersistenceTestContext();
 		return InstanceHolder.instance;
 	}
@@ -41,7 +41,7 @@ public class PersistenceTestContext {
 	private final TestDataSetColumnBuildingHandler testDataSetColumnBuildingHandler;
 	private final ValueProvisionHandler valueProvisionHandler;
 
-	private PersistenceTestContext() {
+	private PersistenceTestContext() throws Exception {
 		this.constraintAsserter = ConstraintAsserter.newInstance();
 		this.entityInstanceProvider = EntityInstanceProvider.newInstance();
 		this.entityRelationshipCollector = EntityRelationshipCollector.newInstance();

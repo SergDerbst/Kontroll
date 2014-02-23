@@ -12,8 +12,8 @@ public class EntityReferenceAssertionFailure {
 	private final List<String> additionalMessageElements = new ArrayList<String>();
 
 	public EntityReferenceAssertionFailure(final EntityReferenceAssertion assertion,
-	                                                  final Object expected,
-	                                                  final Object actual) {
+	                                       final Object expected,
+	                                       final Object actual) {
 		this.assertion = assertion;
 		this.actual = actual;
 		this.expected = expected;

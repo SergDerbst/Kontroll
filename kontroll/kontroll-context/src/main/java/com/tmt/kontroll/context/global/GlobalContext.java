@@ -22,7 +22,7 @@ import com.tmt.kontroll.context.request.RequestContextService;
  * of incoming requests. If a pattern matches, a set of {@link RequestContentItem} objects will 
  * be returned, representing the context of the current request.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Component

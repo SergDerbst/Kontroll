@@ -11,7 +11,7 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.prov
  * Annotation for configuring a {@link ValueProvider}, so that it will claim responsibility,
  * if the given field name and class types match the annotation's values.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

@@ -21,7 +21,7 @@ public class FloatValueProvider extends SimpleValueProvider<Float> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Float.class.equals(valueType) || Float.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Float.class.equals(valueType) || Float.TYPE.equals(valueType);
 	}
 
 	@Override

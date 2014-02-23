@@ -11,7 +11,7 @@ import com.tmt.kontroll.content.items.ContentItem;
  * A DTO holding property values for configuring the application content. Its values 
  * shall be filled by the application's {@link Configuration} classes. 
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class ContentProperties {

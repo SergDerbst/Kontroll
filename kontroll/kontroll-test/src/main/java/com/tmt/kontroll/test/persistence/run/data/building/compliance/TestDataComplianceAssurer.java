@@ -40,19 +40,19 @@ public class TestDataComplianceAssurer {
 		entityManager = this.entityManagerFactoryBean;
 	}
 
-	public String retrieveEntityTypeTableName(final Class<?> entityType) {
-		final Table tableAnnotation = entityType.getAnnotation(Table.class);
-		if (tableAnnotation == null || tableAnnotation.name().isEmpty()) {
-			return entityType.getSimpleName();
-		}
-		return tableAnnotation.name();
-	}
-
 	public void assureTableCompliance(final DataSetBuilder builder) throws Exception {
 		for (final Class<?> entityType : this.getEntityTypes()) {
 			builder.ensureTableIsPresent(this.retrieveEntityTypeTableName(entityType));
 			this.assureTableComplianceForJoinTables(builder, entityType);
 		}
+	}
+
+	private String retrieveEntityTypeTableName(final Class<?> entityType) {
+		final Table tableAnnotation = entityType.getAnnotation(Table.class);
+		if (tableAnnotation == null || tableAnnotation.name().isEmpty()) {
+			return entityType.getSimpleName();
+		}
+		return tableAnnotation.name();
 	}
 
 	private void assureTableComplianceForJoinTables(final DataSetBuilder builder, final Class<?> entityType) throws Exception {

@@ -19,6 +19,19 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	}
 
 	@Override
+	protected Class<?>[] prepareTypesFromField(final Object entity,
+	                                           final Field field) {
+		if (field.getType().isArray()) {
+			final Class<?>[] types = new Class<?>[3];
+			types[0] = entity.getClass();
+			types[1] = field.getType();
+			types[2] = field.getType().getComponentType();
+			return types;
+		}
+		return null;
+	}
+
+	@Override
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
 		return types.length == 3 && types[1].isArray() && this.componentType.equals(types[2]);
 	}
@@ -27,8 +40,8 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	@Override
 	protected C[] makeNextDefaultValue(final Object entity, final Field field, final C[] value) throws Exception {
 		final C[] toIncrease = this.instantiateEmptyArray();
-		for (int i = 0; i < super.getCurrentValue().length; i++) {
-			toIncrease[i] = (C) this.valueProvisionHandler.fetchNextValue(entity, super.getCurrentValue()[i]);
+		for (int i = 0; i < value.length; i++) {
+			toIncrease[i] = (C) this.valueProvisionHandler.provideNextValue(entity, field, value[i]);
 		}
 		return toIncrease;
 	}
@@ -42,7 +55,7 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	@Override
 	protected C[] instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) throws Exception {
 		final C[] array = this.instantiateEmptyArray();
-		array[0] = (C) this.valueProvisionHandler.provide(types[1]);
+		array[0] = (C) this.valueProvisionHandler.provide(field, types[0], types[2]);
 		return array;
 	}
 }

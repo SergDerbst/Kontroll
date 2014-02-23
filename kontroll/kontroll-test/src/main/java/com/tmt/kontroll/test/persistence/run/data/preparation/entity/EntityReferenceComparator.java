@@ -17,7 +17,7 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferen
  * {@link IDataSet} after their relating entities;
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class EntityReferenceComparator implements Comparator<EntityReference> {
@@ -28,18 +28,18 @@ public class EntityReferenceComparator implements Comparator<EntityReference> {
 			if (reference1 == reference2) {
 				return 0;
 			}
-			for (final Field field : retrievePropertyFields(reference1.getReferenceType())) {
+			for (final Field field : retrievePropertyFields(reference1.referenceType())) {
 				if (isForeignKeyRelationshipField(field)) {
-					final Object relatingEntity = retrieveFieldValue(reference1.getEntity(), field);
-					if (reference2.getEntity() == relatingEntity) {
+					final Object relatingEntity = retrieveFieldValue(reference1.entity(), field);
+					if (reference2.entity() == relatingEntity) {
 						return 1;
 					}
 				}
 			}
-			for (final Field field : retrievePropertyFields(reference2.getReferenceType())) {
+			for (final Field field : retrievePropertyFields(reference2.referenceType())) {
 				if (isForeignKeyRelationshipField(field)) {
-					final Object relatingEntity = retrieveFieldValue(reference2.getEntity(), field);
-					if (reference1.getReferenceType() == relatingEntity) {
+					final Object relatingEntity = retrieveFieldValue(reference2.entity(), field);
+					if (reference1.entity() == relatingEntity) {
 						return -1;
 					}
 				}

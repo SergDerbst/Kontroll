@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.647" errors="0" skipped="0" tests="1" name="com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScannerTest">
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScannerTest" time="0.562" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="F:\JDKs\Java7\jre\bin"/>
@@ -22,12 +22,11 @@
     <property name="java.endorsed.dirs" value="F:\JDKs\Java7\jre\lib\endorsed"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="C:\Users\SERGDE~1\AppData\Local\Temp\"/>
-    <property name="line.separator" value="
-"/>
+    <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
-    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf1377105312577025763.tmp"/>
+    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf9095909025880097067.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="F:\JDKs\Java7\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\,F:\JDKs\Java7\bin;F:\tools\mysql\MySQL Server 5.5\bin;F:\tools\mysql\bin;F:\JDKs\Java7\jre\bin;F:\tools\node\;F:\tools\maven\apache-maven-3.0.3\bin;F:\JDKs\Java7\jre\bin;F:\tools\spring-roo\bin;C:\Users\Serg Derbst\AppData\Roaming\npm;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -62,5 +61,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0.647" classname="com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScannerTest" name="testScan"/>
+  <testcase name="testScan" classname="com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScannerTest" time="0.562"/>
 </testsuite>

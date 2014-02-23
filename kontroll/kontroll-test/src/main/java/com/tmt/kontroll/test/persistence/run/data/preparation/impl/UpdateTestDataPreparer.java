@@ -20,7 +20,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * For more information on test data preparation, see {@link TestDataPreparer}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  * 
  */
 public class UpdateTestDataPreparer extends TestDataPreparer {

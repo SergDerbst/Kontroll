@@ -19,7 +19,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * please make sure to follow these <a href="http://blog.triona.de/development/jee/how-to-use-powermock-with-java-7.html">instructions</a>.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class UniqueConstraintsOnTableTestDataPreparerTest extends ConstraintsTestDataPreparerTest {
@@ -43,10 +43,10 @@ public class UniqueConstraintsOnTableTestDataPreparerTest extends ConstraintsTes
 
 	@Override
 	protected boolean matchConstraintReference(final ConstraintReference reference) {
-		if (reference.isPrimary() && reference.getReferenceType().equals(Dummy.class)) {
+		if (reference.isPrimary() && reference.referenceType().equals(Dummy.class)) {
 			return
-			"rhabarber".equals(((Dummy )reference.getEntity()).blaField) &&
-			"barbara".equals(((Dummy )reference.getEntity()).blubField);
+			"rhabarber".equals(((Dummy )reference.entity()).blaField) &&
+			"barbara".equals(((Dummy )reference.entity()).blubField);
 		}
 		return false;
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.id.impl.IntegerIdValueProvider;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.id.impl.LongIdValueProvider;
 
 public class IdValueProviderFactory {
 
@@ -22,6 +23,7 @@ public class IdValueProviderFactory {
 	@SuppressWarnings("serial")
 	private static final Map<Class<?>, Class<? extends IdValueProvider<?>>> providerMap = new HashMap<Class<?>, Class<? extends IdValueProvider<?>>>() {{
 		this.put(Integer.class, IntegerIdValueProvider.class);
+		this.put(Long.class, LongIdValueProvider.class);
 	}};
 
 	public IdValueProvider<?> create(final ValueProvisionHandler provisionHandler,

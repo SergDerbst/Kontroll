@@ -15,7 +15,7 @@ import com.tmt.kontroll.persistence.entities.BaseEntity;
 /**
  * Entity representing a user who can login and use the application.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Entity

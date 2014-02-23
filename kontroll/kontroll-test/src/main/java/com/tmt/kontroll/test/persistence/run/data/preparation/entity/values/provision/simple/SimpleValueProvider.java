@@ -11,6 +11,15 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 		super(provisionHandler);
 	}
 
+	@Override
+	protected Class<?>[] prepareTypesFromField(final Object entity,
+	                                           final Field field) {
+		final Class<?>[] types = new Class<?>[2];
+		types[0] = entity.getClass();
+		types[1] = field.getType();
+		return types;
+	}
+
 	protected abstract boolean claimSimpleValueResponsibility(final Field field,
 	                                                          final Class<?> valueType) throws Exception;
 

@@ -15,7 +15,7 @@ import com.tmt.kontroll.context.global.GlobalContextDto;
  * <li>data represented by a set of services to fetch and manipulate the data</li> 
  * <li>a {@link PageLayout} object for holding and organizing components and content.</li> 
  * </ul>
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class RequestContextItem {

@@ -6,7 +6,7 @@ import java.util.List;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
 
 /**
- * @author Serg Derbst
+ * @author Sergio Weigel
  * 
  * @param <T>
  *          Type of Enum that represents the tag of this content item.

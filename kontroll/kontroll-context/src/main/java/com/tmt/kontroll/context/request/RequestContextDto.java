@@ -3,7 +3,7 @@ package com.tmt.kontroll.context.request;
 /**
  * Type of all request context DTOs.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public interface RequestContextDto {

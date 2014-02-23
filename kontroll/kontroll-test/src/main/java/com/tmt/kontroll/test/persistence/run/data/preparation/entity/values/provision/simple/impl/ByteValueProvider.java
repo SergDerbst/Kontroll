@@ -21,7 +21,7 @@ public class ByteValueProvider extends SimpleValueProvider<Byte> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Byte.class.equals(valueType) || Byte.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Byte.class.equals(valueType) || Byte.TYPE.equals(valueType);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
  * please make sure to follow these <a href="http://blog.triona.de/development/jee/how-to-use-powermock-with-java-7.html">instructions</a>.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class ExistsTestDataPreparerTest extends TestDataPreparerTest {

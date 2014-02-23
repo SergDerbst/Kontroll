@@ -15,12 +15,12 @@ public class ShortValueProvider extends SimpleValueProvider<Short> {
 
 	@Override
 	protected Short instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
-		return (short) 1;
+		return (short) 0;
 	}
 
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field, final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Short.class.equals(valueType) || Short.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Short.class.equals(valueType) || Short.TYPE.equals(valueType);
 	}
 
 	@Override

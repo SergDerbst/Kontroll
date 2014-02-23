@@ -18,6 +18,22 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 
+/**
+ * An entity relationship represents a relationship between two entities.
+ * </p>
+ * On creation it will relate the two entities passed to its constructor according to the
+ * relationship type passed to it as well. It also implements {@link #equals}, {@link #hashCode},
+ * and {@link Comparable} in order to manage existing relationships within the
+ * {@link EntityRelationshipPool}.
+ * </p>
+ * <i>Note:</i> Equality of entities is based on their instances and not their values.
+ * Therefore, two entities of an {@link EntityReference} instance may have the exact same values,
+ * yet still are considered different, if their system identity hash codes differ.
+ * </p>
+ * 
+ * @author Sergio Weigel
+ *
+ */
 public class EntityRelationship implements Comparable<EntityRelationship> {
 
 	@SuppressWarnings("serial")
@@ -28,8 +44,8 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 	}};
 
 	private final Class<? extends Annotation> relationshipType;
-	private EntityReference owningEntityReference;
-	private EntityReference relatingEntityReference;
+	private final EntityReference owningEntityReference;
+	private final EntityReference relatingEntityReference;
 	/** The sole purpose of this field is to make sure that {@link #compareTo} remains consistent with {@link equals}. */
 	private final int index;
 
@@ -59,36 +75,28 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 		return this.relatingEntityReference;
 	}
 
-	public void setOwningEntityReference(final EntityReference owningEntityReference) {
-		this.owningEntityReference = owningEntityReference;
-	}
-
-	public void setRelatingEntityReference(final EntityReference relatingEntityReference) {
-		this.relatingEntityReference = relatingEntityReference;
-	}
-
 	public int index() {
 		return this.index;
 	}
 
 	private void relateEntities(final EntityReference owningEntityReference,
 	                            final EntityReference relatingEntityReference) throws Exception {
-		final Field owningField = retrieveRelatingField(owningEntityReference.getReferenceType(), relatingEntityReference.getReferenceType());
-		final Field relatingField = retrieveRelatingField(relatingEntityReference.getReferenceType(), owningEntityReference.getReferenceType());
+		final Field owningField = retrieveRelatingField(owningEntityReference.referenceType(), relatingEntityReference.referenceType());
+		final Field relatingField = retrieveRelatingField(relatingEntityReference.referenceType(), owningEntityReference.referenceType());
 		owningField.setAccessible(true);
 		relatingField.setAccessible(true);
-		owningField.set(owningEntityReference.getEntity(), this.preparateRelationshipValue(relatingEntityReference, owningField));
-		relatingField.set(relatingEntityReference.getEntity(), this.preparateRelationshipValue(owningEntityReference, relatingField));
+		owningField.set(owningEntityReference.entity(), this.preparateRelationshipValue(relatingEntityReference, owningField));
+		relatingField.set(relatingEntityReference.entity(), this.preparateRelationshipValue(owningEntityReference, relatingField));
 	}
 
 	@SuppressWarnings("unchecked")
 	private Object preparateRelationshipValue(final EntityReference reference, final Field field) throws Exception {
 		if (Collection.class.isAssignableFrom(field.getType())) {
 			final Collection<Object> collection = (Collection<Object>) (field.getType().isInterface() ? collectionInstancesMap.get(field.getType()).newInstance() : field.getType().newInstance());
-			collection.add(reference.getEntity());
+			collection.add(reference.entity());
 			return collection;
 		}
-		return reference.getEntity();
+		return reference.entity();
 	}
 
 	@Override
@@ -116,11 +124,11 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 	@Override
 	public int compareTo(final EntityRelationship other) {
 		if (this.relationshipType.equals(other.relationshipType())) {
-			final int owningCompared = this.compareObject(this.owningEntityReference, other.owningEntityReference());
 			final int indexCompared = this.index - other.index;
 			if (indexCompared == 0) {
+				final int owningCompared = this.compareObject(this.owningEntityReference.entity(), other.owningEntityReference().entity());
 				if (owningCompared == 0) {
-					return this.compareObject(this.relatingEntityReference, other.relatingEntityReference());
+					return this.compareObject(this.relatingEntityReference.entity(), other.relatingEntityReference().entity());
 				}
 				return owningCompared;
 			}
@@ -138,6 +146,9 @@ public class EntityRelationship implements Comparable<EntityRelationship> {
 		}
 		if (o1 != null && o2 == null) {
 			return 1;
+		}
+		if (o1.getClass().equals(o2.getClass())) {
+			return System.identityHashCode(o1) - System.identityHashCode(o2);
 		}
 		return o1.getClass().getName().compareTo(o2.getClass().getName());
 	}

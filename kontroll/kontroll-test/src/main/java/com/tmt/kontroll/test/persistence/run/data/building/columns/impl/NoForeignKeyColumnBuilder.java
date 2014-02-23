@@ -17,7 +17,7 @@ import com.tmt.kontroll.test.persistence.run.data.building.columns.TestDataSetCo
  * will be handled by the {@link ForeignKeyColumnBuilder}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class NoForeignKeyColumnBuilder extends TestDataSetColumnBuilder {

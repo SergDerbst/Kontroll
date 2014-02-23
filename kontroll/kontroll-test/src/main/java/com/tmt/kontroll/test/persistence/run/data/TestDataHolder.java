@@ -42,7 +42,7 @@ import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
  * unless that is specifically omitted in the constructor, see also {@link EntityReference}.
  * </p>
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public class TestDataHolder {
@@ -101,7 +101,7 @@ public class TestDataHolder {
 	public List<EntityReference> fetchPrimaryTypeReferences(final TestPhase testPhase) {
 		final List<EntityReference> list = new ArrayList<>();
 		for (final EntityReference reference : this.referencesMap.get(testPhase)) {
-			if (reference.getReferenceType().equals(this.primaryEntityType)) {
+			if (reference.referenceType().equals(this.primaryEntityType)) {
 				list.add(reference);
 			}
 		}

@@ -5,7 +5,7 @@ package com.tmt.kontroll.test.persistence.run.utils.enums;
  * Represents the strategy of persistence tests. See the documentation
  * of the single enum values for more information on test strategies.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public enum TestStrategy {

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * Spring configuration class to set up the database.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Configuration

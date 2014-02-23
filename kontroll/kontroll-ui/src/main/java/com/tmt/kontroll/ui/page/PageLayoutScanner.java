@@ -21,7 +21,7 @@ import com.tmt.kontroll.ui.page.layout.PageLayoutHeader;
  * iterates over all URL patterns declared in the annotation, so that for each pattern a page layout 
  * is created.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Component

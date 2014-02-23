@@ -21,7 +21,7 @@ public class BooleanValueProvider extends SimpleValueProvider<Boolean> {
 	@Override
 	protected boolean claimSimpleValueResponsibility(final Field field,
 	                                                 final Class<?> valueType) {
-		return !field.isAnnotationPresent(Id.class) && Boolean.class.equals(valueType) || Boolean.TYPE.equals(valueType);
+		return (field != null && !field.isAnnotationPresent(Id.class)) && Boolean.class.equals(valueType) || Boolean.TYPE.equals(valueType);
 	}
 
 	@Override

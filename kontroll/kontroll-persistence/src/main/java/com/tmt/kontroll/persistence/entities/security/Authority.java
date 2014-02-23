@@ -14,7 +14,7 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 /**
  * Entity class representing an authority a user can have using this application.
  *  
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 @Entity

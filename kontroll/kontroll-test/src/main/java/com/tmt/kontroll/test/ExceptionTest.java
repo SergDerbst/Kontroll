@@ -22,7 +22,7 @@ import org.springframework.util.ClassUtils;
  * their standard constructors. Unless there is some other code within the exceptions,
  * one test case per module should suffice.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public abstract class ExceptionTest {

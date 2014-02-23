@@ -8,7 +8,7 @@ import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestCo
  * </p>
  * For more information on the single test phases, read the documentation of the enum values.
  * 
- * @author Serg Derbst
+ * @author Sergio Weigel
  *
  */
 public enum TestPhase {

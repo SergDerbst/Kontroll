@@ -28,16 +28,7 @@ public abstract class ValueProvider<V> {
 
 	protected abstract V makeNextDefaultValue(final Object entity, final Field field, final V value) throws Exception;
 
-	@SuppressWarnings("unchecked")
-	public Class<? extends ValueProvider<?>> fetchValueProviderType(final Field field, final Class<?>... types) throws Exception {
-		if (this.claimResponsibility(field, types)) {
-			return (Class<? extends ValueProvider<?>>) this.getClass();
-		}
-		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithTypes(field, types);
-		}
-		return this.nextProvider.fetchValueProviderType(field, types);
-	}
+	protected abstract Class<?>[] prepareTypesFromField(final Object entity, final Field field);
 
 	public boolean canProvideValue(final Field field, final Class<?>... types) throws Exception {
 		if (this.claimResponsibility(field, types)) {
@@ -57,7 +48,7 @@ public abstract class ValueProvider<V> {
 				this.init(entity, field, types);
 			}
 			final V toProvide = this.currentValue;
-			this.increase(entity);
+			this.increase(field, entity);
 			return toProvide;
 		}
 		if (this.nextProvider == null) {
@@ -66,7 +57,32 @@ public abstract class ValueProvider<V> {
 		return this.nextProvider.provide(entity, field, types);
 	}
 
-	public void init(final Object entity, final Field field, final Class<?>... types) throws Exception {
+	@SuppressWarnings("unchecked")
+	public Object fetchNextValue(final Object entity,
+	                             final Field field,
+	                             final Object value) throws Exception {
+		final Class<?> [] types = field.getType().isAssignableFrom(value.getClass()) ? this.prepareTypesFromField(entity, field) : new Class<?>[]{entity.getClass(), value.getClass()};
+		if (this.claimResponsibility(field, types)) {
+			return this.makeNextValue(entity, field, (V) value);
+		}
+		if (this.nextProvider == null) {
+			throw ValueProviderNotFoundException.prepareWithValue(entity, field, value);
+		}
+		return this.nextProvider.fetchNextValue(entity, field, value);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class<? extends ValueProvider<?>> fetchValueProviderType(final Field field, final Class<?>... types) throws Exception {
+		if (this.claimResponsibility(field, types)) {
+			return (Class<? extends ValueProvider<?>>) this.getClass();
+		}
+		if (this.nextProvider == null) {
+			throw ValueProviderNotFoundException.prepareWithTypes(field, types);
+		}
+		return this.nextProvider.fetchValueProviderType(field, types);
+	}
+
+	protected void init(final Object entity, final Field field, final Class<?>... types) throws Exception {
 		if (this.claimResponsibility(field, types)) {
 			this.initialValue = this.instantiator != null ? this.instantiator.instantiate(entity) : this.instantiateDefaultValue(entity, field, types);
 			this.currentValue = this.initialValue;
@@ -78,33 +94,16 @@ public abstract class ValueProvider<V> {
 		this.nextProvider.init(entity, field, types);
 	}
 
-	protected void init(final V value) {
-		this.initialValue = value;
-		this.setCurrentValue(value);
-	}
-
 	protected boolean claimResponsibility(final Field field, final Class<?>... types) throws Exception {
 		if (this.responsibilityClaimer != null) {
 			return this.responsibilityClaimer.claimResponsibility(field, types);
 		}
-		return this.claimDefaultResponsibility(field, types);
+		return types != null && this.claimDefaultResponsibility(field, types);
 	}
 
-	protected void increase(final Object entity) throws Exception {
-		this.setCurrentValue(this.makeNextValue(entity, null, this.getCurrentValue()));
-	}
-
-	@SuppressWarnings("unchecked")
-	public Object fetchNextValue(final Object entity,
-	                             final Field field,
-	                             final Object value) throws Exception {
-		if (this.claimResponsibility(field, entity.getClass(), value.getClass())) {
-			return this.makeNextValue(entity, field, (V) value);
-		}
-		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithValue(field, value);
-		}
-		return this.nextProvider.fetchNextValue(entity, field, value);
+	protected void increase(final Field field,
+	                        final Object entity) throws Exception {
+		this.setCurrentValue(this.makeNextValue(entity, field, this.currentValue()));
 	}
 
 	protected V makeNextValue(final Object entity,
@@ -116,12 +115,12 @@ public abstract class ValueProvider<V> {
 		return this.makeNextDefaultValue(entity, field, value);
 	}
 
-	public void reset() {
-		this.currentValue = null;
-		this.initialValue = null;
-		if (this.nextProvider != null) {
-			this.nextProvider.reset();
-		}
+	protected V currentValue() {
+		return this.currentValue;
+	}
+
+	protected void setCurrentValue(final V currentValue) {
+		this.currentValue = currentValue;
 	}
 
 	public void setIncrementor(final ValueIncrementor<V> incrementor) {
@@ -136,11 +135,11 @@ public abstract class ValueProvider<V> {
 		this.responsibilityClaimer = responsibilityClaimer;
 	}
 
-	protected ValueIncrementor<V> getIncrementor() {
+	protected ValueIncrementor<V> incrementor() {
 		return this.incrementor;
 	}
 
-	protected ValueInstantiator<V> getInstantiator() {
+	protected ValueInstantiator<V> instantiator() {
 		return this.instantiator;
 	}
 
@@ -148,29 +147,9 @@ public abstract class ValueProvider<V> {
 		return this.responsibilityClaimer;
 	}
 
-	protected ValueProvider<?> getNextProvider() {
-		return this.nextProvider;
-	}
-
 	public ValueProvider<?> setNextProvider(final ValueProvider<?> nextProvider) {
 		this.nextProvider = nextProvider;
 		return this.nextProvider;
-	}
-
-	protected V getInitialValue() {
-		return this.initialValue;
-	}
-
-	protected void setInitialValue(final V initialValue) {
-		this.initialValue = initialValue;
-	}
-
-	protected V getCurrentValue() {
-		return this.currentValue;
-	}
-
-	protected void setCurrentValue(final V currentValue) {
-		this.currentValue = currentValue;
 	}
 
 	protected ValueProvisionHandler valueProvisionHandler() {
