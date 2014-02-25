@@ -1,5 +1,8 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple;
 
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.entityType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.fieldType;
+
 import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
@@ -15,8 +18,8 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 	protected Class<?>[] prepareTypesFromField(final Object entity,
 	                                           final Field field) {
 		final Class<?>[] types = new Class<?>[2];
-		types[0] = entity.getClass();
-		types[1] = field.getType();
+		types[entityType] = entity.getClass();
+		types[fieldType] = field.getType();
 		return types;
 	}
 
@@ -25,6 +28,6 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 
 	@Override
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) throws Exception {
-		return types.length == 2 && this.claimSimpleValueResponsibility(field, types[1]);
+		return types.length == 2 && this.claimSimpleValueResponsibility(field, types[fieldType]);
 	}
 }

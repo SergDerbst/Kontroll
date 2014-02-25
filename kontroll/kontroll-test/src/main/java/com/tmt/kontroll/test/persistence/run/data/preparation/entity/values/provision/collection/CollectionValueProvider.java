@@ -1,5 +1,9 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection;
 
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.componentOrKeyType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.entityType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.fieldType;
+
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,9 +29,9 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 	                                           final Field field) {
 		if (Collection.class.isAssignableFrom(field.getType())) {
 			final Class<?>[] types = new Class<?>[3];
-			types[0] = entity.getClass();
-			types[1] = field.getType();
-			types[2] = ClassReflectionUtils.retrieveTypeArgumentsOfField(field, 0);
+			types[entityType] = entity.getClass();
+			types[fieldType] = field.getType();
+			types[componentOrKeyType] = ClassReflectionUtils.retrieveTypeArgumentsOfField(field, 0);
 			return types;
 		}
 		return null;
@@ -35,7 +39,7 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 
 	@Override
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
-		return types.length == 3 && this.claimCollectionValueResponsibility(field, types[1], types[2]);
+		return types.length == 3 && this.claimCollectionValueResponsibility(field, types[fieldType], types[componentOrKeyType]);
 	}
 
 	@Override
@@ -53,7 +57,7 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 	@SuppressWarnings("unchecked")
 	protected C instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) throws Exception {
 		final C collection = this.instantiateEmptyCollection();
-		collection.add((V) super.valueProvisionHandler().provide(field, types[0], types[2]));
+		collection.add((V) super.valueProvisionHandler().provide(field, types[entityType], types[componentOrKeyType]));
 		return collection;
 	}
 }

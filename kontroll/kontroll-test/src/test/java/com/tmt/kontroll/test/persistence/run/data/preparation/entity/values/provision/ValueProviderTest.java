@@ -81,7 +81,7 @@ public abstract class ValueProviderTest<V> {
 	@Before
 	public void setUp() throws Exception {
 		initMocks(this);
-		ValueProvisionHandlerPreparer.newInstance().prepare(this.toTest.valueProvisionHandler(), this.field, new Dummy(), this.types);
+		ValueProvisionPreparer.newInstance().prepare(this.toTest.valueProvisionHandler(), this.field, new Dummy(), this.types);
 		this.toTest.setNextProvider(this.nextProvider);
 	}
 

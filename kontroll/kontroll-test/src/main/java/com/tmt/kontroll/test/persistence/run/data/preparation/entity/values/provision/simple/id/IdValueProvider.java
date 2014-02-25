@@ -21,9 +21,9 @@ public abstract class IdValueProvider<V> extends SimpleValueProvider<V> {
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) throws Exception {
 		return
 		field.isAnnotationPresent(Id.class) &&
-		this.entityType.equals(types[0]) &&
+		this.entityType.equals(types[entityType]) &&
 		types.length == 2 &&
-		this.claimSimpleValueResponsibility(field, types[1]);
+		this.claimSimpleValueResponsibility(field, types[fieldType]);
 	}
 
 	@Override

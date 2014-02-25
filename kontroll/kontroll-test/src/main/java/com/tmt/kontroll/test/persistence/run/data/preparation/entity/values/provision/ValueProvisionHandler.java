@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision;
 
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.entityType;
+
 import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProvider;
@@ -39,11 +41,11 @@ public class ValueProvisionHandler {
 		return InstanceHolder.instance;
 	}
 
-	private final ValueProvisionHandlerPreparer valueProvisionHandlerPreparer;
+	private final ValueProvisionPreparer valueProvisionHandlerPreparer;
 	private ValueProvider<?> firstProvider;
 
 	private ValueProvisionHandler() {
-		this.valueProvisionHandlerPreparer = ValueProvisionHandlerPreparer.newInstance();
+		this.valueProvisionHandlerPreparer = ValueProvisionPreparer.newInstance();
 		this.setUpValueProvision();
 	}
 
@@ -102,7 +104,7 @@ public class ValueProvisionHandler {
 	 * @throws Exception
 	 */
 	public Object provide(final Field field, final Class<?>... types) throws Exception {
-		return this.provide(types[0].newInstance(), field, types);
+		return this.provide(types[entityType].newInstance(), field, types);
 	}
 
 	/**
@@ -144,7 +146,7 @@ public class ValueProvisionHandler {
 		this.firstProvider = valueProvider;
 	}
 
-	public ValueProvisionHandlerPreparer valueProvisionHandlerPreparer() {
+	public ValueProvisionPreparer valueProvisionHandlerPreparer() {
 		return this.valueProvisionHandlerPreparer;
 	}
 }

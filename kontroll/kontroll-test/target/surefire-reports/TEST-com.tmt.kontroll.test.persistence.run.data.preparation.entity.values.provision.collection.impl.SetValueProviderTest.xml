@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.021" tests="12" errors="0" skipped="0" failures="0">
+<testsuite name="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="F:\JDKs\Java7\jre\bin"/>
@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
-    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.core\launches\m2conf9095909025880097067.tmp"/>
+    <property name="classworlds.conf" value="F:\tools\maven\apache-maven-3.0.3\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="F:\JDKs\Java7\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\,F:\JDKs\Java7\bin;F:\tools\mysql\MySQL Server 5.5\bin;F:\tools\mysql\bin;F:\JDKs\Java7\jre\bin;F:\tools\node\;F:\tools\maven\apache-maven-3.0.3\bin;F:\JDKs\Java7\jre\bin;F:\tools\spring-roo\bin;C:\Users\Serg Derbst\AppData\Roaming\npm;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -39,11 +39,11 @@
     <property name="java.specification.version" value="1.7"/>
     <property name="file.encoding" value="Cp1252"/>
     <property name="user.name" value="Serg Derbst"/>
-    <property name="java.class.path" value="/F:/tools/eclipse/configuration/org.eclipse.osgi/bundles/511/1/.cp/jars/plexus-classworlds-2.4.jar"/>
+    <property name="java.class.path" value="F:\tools\maven\apache-maven-3.0.3\boot\plexus-classworlds-2.4.jar"/>
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="F:\JDKs\Java7\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B -s C:\Users\Serg Derbst\.m2\settings.xml clean install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="user.language.format" value="de"/>
@@ -53,7 +53,7 @@
     <property name="java.ext.dirs" value="F:\JDKs\Java7\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
     <property name="sun.boot.class.path" value="F:\JDKs\Java7\jre\lib\resources.jar;F:\JDKs\Java7\jre\lib\rt.jar;F:\JDKs\Java7\jre\lib\sunrsasign.jar;F:\JDKs\Java7\jre\lib\jsse.jar;F:\JDKs\Java7\jre\lib\jce.jar;F:\JDKs\Java7\jre\lib\charsets.jar;F:\JDKs\Java7\jre\classes"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="F:\projects\Kontroll\kontroll\EMBEDDED"/>
+    <property name="maven.home" value="F:\tools\maven\apache-maven-3.0.3"/>
     <property name="file.separator" value="\"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -61,16 +61,16 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="testThatProvideThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.001"/>
-  <testcase name="testThatFetchNextValueThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.008"/>
+  <testcase name="testThatProvideThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatFetchNextValueThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatFetchValueProviderTypeWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatFetchValueProviderTypeCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatCanProvideValueCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatProvideCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatFetchNextValueCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
   <testcase name="testThatFetchValueProviderTypeThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
   <testcase name="testThatCanProvideValueDoesNotThrowExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
-  <testcase name="testThatFetchValueProviderTypeWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.001"/>
-  <testcase name="testThatFetchValueProviderTypeCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.002"/>
-  <testcase name="testThatCanProvideValueCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.002"/>
-  <testcase name="testThatProvideCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.001"/>
-  <testcase name="testThatFetchNextValueCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.002"/>
-  <testcase name="testThatProvideWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.001"/>
-  <testcase name="testThatFetchNextValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.002"/>
-  <testcase name="testThatCanProvideValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0.001"/>
+  <testcase name="testThatProvideWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatFetchNextValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
+  <testcase name="testThatCanProvideValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProviderTest" time="0"/>
 </testsuite>

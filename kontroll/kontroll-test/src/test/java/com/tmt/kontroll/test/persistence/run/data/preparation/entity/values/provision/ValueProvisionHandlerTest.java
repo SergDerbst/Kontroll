@@ -33,7 +33,7 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.prov
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ValueProvisionHandlerPreparer.class})
+@PrepareForTest({ValueProvisionPreparer.class})
 public class ValueProvisionHandlerTest {
 
 	public static class Dummy {
@@ -43,15 +43,15 @@ public class ValueProvisionHandlerTest {
 	}
 
 	@Mock
-	private ValueProvisionHandlerPreparer valueProvisionHandlerPreparer;
+	private ValueProvisionPreparer valueProvisionHandlerPreparer;
 
 	private ValueProvisionHandler toTest;
 
 	@Before
 	public void setUp() throws Exception {
 		initMocks(this);
-		mockStatic(ValueProvisionHandlerPreparer.class);
-		when(ValueProvisionHandlerPreparer.newInstance()).thenReturn(this.valueProvisionHandlerPreparer);
+		mockStatic(ValueProvisionPreparer.class);
+		when(ValueProvisionPreparer.newInstance()).thenReturn(this.valueProvisionHandlerPreparer);
 		this.toTest = ValueProvisionHandler.newInstance();
 		this.toTest.addValueProvider(new ArrayValueProvider<>(String.class, this.toTest));
 	}

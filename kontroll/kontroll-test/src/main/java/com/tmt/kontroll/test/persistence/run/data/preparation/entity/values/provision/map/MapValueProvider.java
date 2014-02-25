@@ -1,5 +1,10 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.map;
 
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.componentOrKeyType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.entityType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.fieldType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.valueType;
+
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,10 +28,10 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	                                           final Field field) {
 		if (Map.class.isAssignableFrom(field.getType())) {
 			final Class<?>[] types = new Class<?>[4];
-			types[0] = entity.getClass();
-			types[1] = field.getType();
-			types[2] = ClassReflectionUtils.retrieveTypeArgumentsOfField(field, 0);
-			types[3] = ClassReflectionUtils.retrieveTypeArgumentsOfField(field, 1);
+			types[entityType] = entity.getClass();
+			types[fieldType] = field.getType();
+			types[componentOrKeyType] = ClassReflectionUtils.retrieveTypeArgumentsOfField(field, 0);
+			types[valueType] = ClassReflectionUtils.retrieveTypeArgumentsOfField(field, 1);
 			return types;
 		}
 		return null;
@@ -34,7 +39,7 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 
 	@Override
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
-		return types.length == 4 && this.claimMapValueResponsibility(types[1], types[2], types[3]);
+		return types.length == 4 && this.claimMapValueResponsibility(types[fieldType], types[componentOrKeyType], types[valueType]);
 	}
 
 	@Override
@@ -51,7 +56,7 @@ public abstract class MapValueProvider<K, V, M extends Map<K, V>> extends ValueP
 	@SuppressWarnings("unchecked")
 	protected M instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) throws Exception {
 		final M map = this.instantiateEmptyMap();
-		map.put((K) super.valueProvisionHandler().provide(field, types[0], types[2]), (V) super.valueProvisionHandler().provide(field, types[0], types[3]));
+		map.put((K) super.valueProvisionHandler().provide(field, types[entityType], types[componentOrKeyType]), (V) super.valueProvisionHandler().provide(field, types[entityType], types[valueType]));
 		return map;
 	}
 }

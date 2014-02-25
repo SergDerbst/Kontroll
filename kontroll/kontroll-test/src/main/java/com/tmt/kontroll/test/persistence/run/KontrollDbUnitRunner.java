@@ -97,14 +97,14 @@ public class KontrollDbUnitRunner {
 	                             final Method testMethod,
 	                             final TestPhase testPhase) throws Exception {
 		final Class<? extends PersistenceEntityDaoServiceTest<?,?,?,?>> testClass = (Class<? extends PersistenceEntityDaoServiceTest<?, ?, ?, ?>>) testContext.getTestClass();
-		final IDatabaseConnection connection = testContext.getConnection();
 		final PersistenceTestConfig config = testMethod.getAnnotation(PersistenceTestConfig.class);
 		if (TestPhase.Setup == testPhase) {
 			this.testDataPreparationHandler().prepare(config, retrieveEntityClassName(testClass));
 			this.testDataHolder().updateReferencesValues();
 		}
-		final DatabaseOperation operation= DatabaseOperation.CLEAN_INSERT;
+		final IDatabaseConnection connection = testContext.getConnection();
 		final DatabaseSequenceFilter tableSequenceFilter = new DatabaseSequenceFilter(connection);
+		final DatabaseOperation operation= DatabaseOperation.CLEAN_INSERT;
 		operation.execute(connection, new FilteredDataSet(tableSequenceFilter, this.testDataHolder().fetchDataSetForTestPhase(testPhase)));
 	}
 

@@ -1,5 +1,9 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.array;
 
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.componentOrKeyType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.entityType;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.fieldType;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
@@ -23,9 +27,9 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	                                           final Field field) {
 		if (field.getType().isArray()) {
 			final Class<?>[] types = new Class<?>[3];
-			types[0] = entity.getClass();
-			types[1] = field.getType();
-			types[2] = field.getType().getComponentType();
+			types[entityType] = entity.getClass();
+			types[fieldType] = field.getType();
+			types[componentOrKeyType] = field.getType().getComponentType();
 			return types;
 		}
 		return null;
@@ -33,7 +37,7 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 
 	@Override
 	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
-		return types.length == 3 && types[1].isArray() && this.componentType.equals(types[2]);
+		return types.length == 3 && types[fieldType].isArray() && this.componentType.equals(types[componentOrKeyType]);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -55,7 +59,7 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	@Override
 	protected C[] instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) throws Exception {
 		final C[] array = this.instantiateEmptyArray();
-		array[0] = (C) this.valueProvisionHandler.provide(field, types[0], types[2]);
+		array[0] = (C) this.valueProvisionHandler.provide(field, types[entityType], types[componentOrKeyType]);
 		return array;
 	}
 }

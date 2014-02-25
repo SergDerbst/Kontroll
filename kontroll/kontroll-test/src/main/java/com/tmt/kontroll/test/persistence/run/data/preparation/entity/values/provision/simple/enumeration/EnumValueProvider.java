@@ -17,7 +17,7 @@ public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 
 	@Override
 	protected Enum<?> instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
-		return (Enum<?>) types[1].getEnumConstants()[0];
+		return (Enum<?>) types[fieldType].getEnumConstants()[0];
 	}
 
 	@Override

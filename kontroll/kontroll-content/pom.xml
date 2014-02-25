@@ -41,7 +41,7 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
+				<!-- plugin>
 					<groupId>com.mysema.maven</groupId>
 					<artifactId>apt-maven-plugin</artifactId>
 					<version>1.0.9</version>
@@ -57,7 +57,7 @@
 							</configuration>
 						</execution>
 					</executions>
-				</plugin>
+				</plugin -->
 				<!-- maven build helper plugin -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
