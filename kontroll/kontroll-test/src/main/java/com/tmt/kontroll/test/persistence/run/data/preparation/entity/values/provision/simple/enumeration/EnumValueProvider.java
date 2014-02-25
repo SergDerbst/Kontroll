@@ -1,5 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.enumeration;
 
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.fieldType;
+
 import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
@@ -10,7 +12,7 @@ public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 	private final Class<? extends Enum<?>> enumType;
 
 	public EnumValueProvider(final ValueProvisionHandler provisionHandler,
-	                         final Class<? extends Enum<?>> enumType) {
+			final Class<? extends Enum<?>> enumType) {
 		super(provisionHandler);
 		this.enumType = enumType;
 	}
