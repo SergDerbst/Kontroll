@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public class ArrayValueProviderFactoryTest {
 
@@ -31,6 +32,6 @@ public class ArrayValueProviderFactoryTest {
 		final ArrayValueProvider<String> created = ArrayValueProviderFactory.instance().create(this.valueProvisionHandler, String.class);
 		//then
 		assertNotNull(created);
-		assertTrue(created.canProvideValue(Dummy.class.getDeclaredField("dummyArrayField"), Dummy.class, String[].class, String.class));
+		assertTrue(created.canProvideValue(ValueProvisionKind.OneDimensional, Dummy.class, String[].class, String.class));
 	}
 }

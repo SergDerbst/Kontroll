@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 
@@ -23,11 +24,10 @@ public abstract class SimpleValueProvider<V> extends ValueProvider<V> {
 		return types;
 	}
 
-	protected abstract boolean claimSimpleValueResponsibility(final Field field,
-	                                                          final Class<?> valueType) throws Exception;
+	protected abstract boolean claimSimpleValueResponsibility(final ValueProvisionKind kind, final Class<?> valueType) throws Exception;
 
 	@Override
-	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) throws Exception {
-		return types.length == 2 && this.claimSimpleValueResponsibility(field, types[fieldType]);
+	protected boolean claimDefaultResponsibility(final ValueProvisionKind kind, final Class<?>... types) throws Exception {
+		return ValueProvisionKind.ZeroDimensional == kind && this.claimSimpleValueResponsibility(kind, types[fieldType]);
 	}
 }

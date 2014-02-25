@@ -11,10 +11,11 @@ import java.util.Iterator;
 import com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public abstract class CollectionValueProvider<V, C extends Collection<V>> extends ValueProvider<C>{
 
-	protected abstract boolean claimCollectionValueResponsibility(final Field field,
+	protected abstract boolean claimCollectionValueResponsibility(final ValueProvisionKind kind,
 	                                                              final Class<?> collectionType,
 	                                                              final Class<?> itemType);
 
@@ -38,26 +39,26 @@ public abstract class CollectionValueProvider<V, C extends Collection<V>> extend
 	}
 
 	@Override
-	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
-		return types.length == 3 && this.claimCollectionValueResponsibility(field, types[fieldType], types[componentOrKeyType]);
+	protected boolean claimDefaultResponsibility(final ValueProvisionKind kind, final Class<?>... types) {
+		return types.length == 3 && this.claimCollectionValueResponsibility(kind, types[fieldType], types[componentOrKeyType]);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected C makeNextDefaultValue(final Object entity, final Field field, final C value) throws Exception {
+	protected C makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final C value) throws Exception {
 		final C toIncrease = this.instantiateEmptyCollection();
 		final Iterator<? extends Object> iterator = value.iterator();
 		while(iterator.hasNext()) {
-			toIncrease.add((V) super.valueProvisionHandler().provideNextValue(entity, field, iterator.next()));
+			toIncrease.add((V) super.valueProvisionHandler().provideNextZeroDimensionalValue(entity, iterator.next()));
 		}
 		return toIncrease;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected C instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) throws Exception {
+	protected C instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) throws Exception {
 		final C collection = this.instantiateEmptyCollection();
-		collection.add((V) super.valueProvisionHandler().provide(field, types[entityType], types[componentOrKeyType]));
+		collection.add((V) super.valueProvisionHandler().provide(kind, types[entityType], types[componentOrKeyType]));
 		return collection;
 	}
 }

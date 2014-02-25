@@ -1,8 +1,8 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.responsibility;
 
-import java.lang.reflect.Field;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public interface ValueResponsibilityClaimer {
 
-	public boolean claimResponsibility(final Field field, final Class<?>... types);
+	public boolean claimResponsibility(final ValueProvisionKind kind, final Class<?>... types);
 }

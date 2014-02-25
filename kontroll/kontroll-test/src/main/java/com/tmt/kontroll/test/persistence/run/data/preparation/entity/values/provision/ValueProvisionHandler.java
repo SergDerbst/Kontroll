@@ -2,8 +2,6 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 
 import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.entityType;
 
-import java.lang.reflect.Field;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SetValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.SortedSetValueProvider;
@@ -72,13 +70,13 @@ public class ValueProvisionHandler {
 	 * Traverses through the responsibility chain and if a {@link ValueProvider} in the chain claims
 	 * responsibility for the given field and types, it will return its class.
 	 * 
-	 * @param field
+	 * @param kind
 	 * @param types
 	 * @return
 	 * @throws Exception
 	 */
-	public Class<? extends ValueProvider<?>> fetchValueProviderType(final Field field, final Class<?>... types) throws Exception {
-		return this.firstProvider.fetchValueProviderType(field, types);
+	public Class<? extends ValueProvider<?>> fetchValueProviderType(final ValueProvisionKind kind, final Class<?>... types) throws Exception {
+		return this.firstProvider.fetchValueProviderType(kind, types);
 	}
 
 	/**
@@ -86,25 +84,25 @@ public class ValueProvisionHandler {
 	 * responsibility for the given field and types, it will return <code>true</code> and <code>false</code>
 	 * otherwise.
 	 * 
-	 * @param field
+	 * @param kind
 	 * @param types
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean canProvideValue(final Field field, final Class<?>... types) throws Exception {
-		return this.firstProvider.canProvideValue(field, types);
+	public boolean canProvideValue(final ValueProvisionKind kind, final Class<?>... types) throws Exception {
+		return this.firstProvider.canProvideValue(kind, types);
 	}
 
 	/**
 	 * Provides a value for the given field and types.
 	 * 
-	 * @param field
+	 * @param kind
 	 * @param types
 	 * @return
 	 * @throws Exception
 	 */
-	public Object provide(final Field field, final Class<?>... types) throws Exception {
-		return this.provide(types[entityType].newInstance(), field, types);
+	public Object provide(final ValueProvisionKind kind, final Class<?>... types) throws Exception {
+		return this.provide(types[entityType].newInstance(), kind, types);
 	}
 
 	/**
@@ -116,9 +114,9 @@ public class ValueProvisionHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object provide(final Object entity, final Field field, final Class<?>... types) throws Exception {
-		this.valueProvisionHandlerPreparer.prepare(this, field, entity, types);
-		final Object provided = this.firstProvider.provide(entity, field, types);
+	public Object provide(final Object entity, final ValueProvisionKind kind, final Class<?>... types) throws Exception {
+		this.valueProvisionHandlerPreparer.prepare(this, kind, entity, types);
+		final Object provided = this.firstProvider.provide(entity, kind, types);
 		return provided;
 	}
 
@@ -126,13 +124,13 @@ public class ValueProvisionHandler {
 	 * Provides the next value to the given entity, field and types.
 	 * 
 	 * @param entity
-	 * @param field
+	 * @param kind
 	 * @param value
 	 * @return
 	 * @throws Exception
 	 */
-	public Object provideNextValue(final Object entity, final Field field, final Object value) throws Exception {
-		return this.firstProvider.fetchNextValue(entity, field, value);
+	public Object provideNextZeroDimensionalValue(final Object entity, final Object value) throws Exception {
+		return this.firstProvider.fetchNextZeroDimensionalValue(entity, value);
 	}
 
 	/**

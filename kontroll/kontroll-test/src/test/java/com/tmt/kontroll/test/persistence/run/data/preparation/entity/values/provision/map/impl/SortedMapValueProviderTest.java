@@ -3,11 +3,11 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.map.MapValueProviderTest;
 
 @SuppressWarnings("serial")
-public class SortedMapValueProviderTest extends ValueProviderTest<SortedMap<Object, Object>> {
+public class SortedMapValueProviderTest extends MapValueProviderTest<SortedMap<Object, Object>> {
 
 	private static final SortedMap<Object, Object> referenceMap = new TreeMap<Object, Object>() {{
 		this.put("0", "1");
@@ -20,7 +20,6 @@ public class SortedMapValueProviderTest extends ValueProviderTest<SortedMap<Obje
 		super(new SortedMapValueProvider(ValueProvisionHandler.newInstance()),
 		      referenceMap,
 		      nextReferenceMap,
-		      SortedMap.class.getSimpleName(),
 		      Dummy.class,
 		      SortedMap.class,
 		      String.class,

@@ -1,10 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.impl;
 
-import java.lang.reflect.Field;
-
-import javax.persistence.Id;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
 public class ByteValueProvider extends SimpleValueProvider<Byte> {
@@ -14,18 +11,20 @@ public class ByteValueProvider extends SimpleValueProvider<Byte> {
 	}
 
 	@Override
-	protected Byte instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
+	protected Byte instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) {
 		return Byte.parseByte("0");
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Field field,
+	protected boolean claimSimpleValueResponsibility(final ValueProvisionKind kind,
 	                                                 final Class<?> valueType) {
-		return (field != null && !field.isAnnotationPresent(Id.class)) && Byte.class.equals(valueType) || Byte.TYPE.equals(valueType);
+		return
+		ValueProvisionKind.Id != kind &&
+		(Byte.class.equals(valueType) || Byte.TYPE.equals(valueType));
 	}
 
 	@Override
-	public Byte makeNextDefaultValue(final Object entity, final Field field, final Byte value) {
+	public Byte makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Byte value) {
 		return Byte.parseByte(String.valueOf(Integer.parseInt(String.valueOf(value)) + 1));
 	}
 }

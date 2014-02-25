@@ -3,11 +3,12 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProviderTest;
 
 @SuppressWarnings("serial")
-public class SortedSetValueProviderTest extends ValueProviderTest<SortedSet<Object>> {
+public class SortedSetValueProviderTest extends CollectionValueProviderTest<SortedSet<Object>> {
 
 	private static final SortedSet<Object> referenceSet = new TreeSet<Object>() {{
 		this.add("0");
@@ -16,11 +17,13 @@ public class SortedSetValueProviderTest extends ValueProviderTest<SortedSet<Obje
 		this.add("1");
 	}};
 
-	public SortedSetValueProviderTest() throws Exception {
+	protected SortedSetValueProviderTest(	final ValueProvider<SortedSet<Object>> toTest,
+	                                     	final SortedSet<Object> referenceValue,
+	                                     	final SortedSet<Object> referenceNextValue,
+	                                     	final Class<?>[] types) throws Exception {
 		super(new SortedSetValueProvider(ValueProvisionHandler.newInstance()),
 		      referenceSet,
 		      referenceNextSet,
-		      SortedSet.class.getSimpleName(),
 		      Dummy.class,
 		      SortedSet.class,
 		      String.class);

@@ -96,7 +96,6 @@ public class TestDataSetColumnBuildingHandlerTest {
 		verify(this.rowBuilder, never()).with(any(ColumnSpec.class), any());
 	}
 
-	@SuppressWarnings("serial")
 	private void prepareDummies() {
 		this.foreignKeyOneDummy = new ForeignKeyOneDummy();
 		this.foreignKeyManyDummy = new ForeignKeyManyDummy();

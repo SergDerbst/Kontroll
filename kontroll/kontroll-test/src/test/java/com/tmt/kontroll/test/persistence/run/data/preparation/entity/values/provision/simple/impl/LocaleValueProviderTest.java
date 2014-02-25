@@ -2,16 +2,15 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 
 import java.util.Locale;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProviderTest;
 
-public class LocaleValueProviderTest extends ValueProviderTest<Locale> {
+public class LocaleValueProviderTest extends SimpleValueProviderTest<Locale> {
 
 	public LocaleValueProviderTest() throws Exception {
 		super(new LocaleValueProvider(ValueProvisionHandler.newInstance()),
 		      Locale.GERMAN,
 		      Locale.GERMANY,
-		      Locale.class.getSimpleName(),
 		      Dummy.class,
 		      Locale.class);
 	}

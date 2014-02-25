@@ -3,11 +3,11 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProviderTest;
 
 @SuppressWarnings("serial")
-public class ListValueProviderTest extends ValueProviderTest<List<Object>> {
+public class ListValueProviderTest extends CollectionValueProviderTest<List<Object>> {
 
 	private static final List<Object> referenceList = new ArrayList<Object>() {{
 		this.add("0");
@@ -20,7 +20,6 @@ public class ListValueProviderTest extends ValueProviderTest<List<Object>> {
 		super(new ListValueProvider(ValueProvisionHandler.newInstance()),
 		      referenceList,
 		      referenceNextList,
-		      List.class.getSimpleName(),
 		      Dummy.class,
 		      List.class,
 		      String.class);

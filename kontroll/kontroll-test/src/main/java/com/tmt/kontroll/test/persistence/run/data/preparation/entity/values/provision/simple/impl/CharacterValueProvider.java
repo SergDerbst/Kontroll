@@ -1,10 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.impl;
 
-import java.lang.reflect.Field;
-
-import javax.persistence.Id;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
 public class CharacterValueProvider extends SimpleValueProvider<Character> {
@@ -14,18 +11,20 @@ public class CharacterValueProvider extends SimpleValueProvider<Character> {
 	}
 
 	@Override
-	protected Character instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
+	protected Character instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) {
 		return "0".charAt(0);
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Field field,
+	protected boolean claimSimpleValueResponsibility(final ValueProvisionKind kind,
 	                                                 final Class<?> valueType) {
-		return (field != null && !field.isAnnotationPresent(Id.class)) && Character.class.equals(valueType) || Character.TYPE.equals(valueType);
+		return
+		ValueProvisionKind.Id != kind &&
+		(Character.class.equals(valueType) || Character.TYPE.equals(valueType));
 	}
 
 	@Override
-	public Character makeNextDefaultValue(final Object entity, final Field field, final Character value) {
+	public Character makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Character value) {
 		return this.combineValue(value, "1".charAt(0));
 	}
 

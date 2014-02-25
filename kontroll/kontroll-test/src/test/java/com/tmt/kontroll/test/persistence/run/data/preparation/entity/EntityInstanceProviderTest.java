@@ -27,6 +27,7 @@ import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferen
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipCollector;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 
 /**
@@ -111,13 +112,13 @@ public class EntityInstanceProviderTest {
 		//when
 		this.toTest.provideValues();
 		//then
-		verify(this.valueProvisionHandler).provide(dummy, Dummy.class.getDeclaredField("dummyString"), Dummy.class, String.class);
-		verify(this.valueProvisionHandler).provide(dummy, Dummy.class.getDeclaredField("dummyStringArray"), Dummy.class, String[].class, String.class);
-		verify(this.valueProvisionHandler).provide(dummy, Dummy.class.getDeclaredField("dummyStringList"), Dummy.class, List.class, String.class);
-		verify(this.valueProvisionHandler).provide(dummy, Dummy.class.getDeclaredField("dummyStringMap"), Dummy.class, Map.class, String.class, String.class);
-		verify(this.valueProvisionHandler, never()).provide(dummy, Dummy.class.getDeclaredField("id"), Dummy.class, Integer.class);
-		verify(this.valueProvisionHandler, never()).provide(dummy, Dummy.class.getDeclaredField("dummyInt"), Dummy.class, Integer.class);
-		verify(this.valueProvisionHandler, never()).provide(dummy, Dummy.class.getDeclaredField("relatedDummy"), Dummy.class, RelatedDummy.class);
+		verify(this.valueProvisionHandler).provide(dummy, ValueProvisionKind.ZeroDimensional, Dummy.class, String.class);
+		verify(this.valueProvisionHandler).provide(dummy, ValueProvisionKind.OneDimensional, Dummy.class, String[].class, String.class);
+		verify(this.valueProvisionHandler).provide(dummy, ValueProvisionKind.OneDimensional, Dummy.class, List.class, String.class);
+		verify(this.valueProvisionHandler).provide(dummy, ValueProvisionKind.TwoDimensional, Dummy.class, Map.class, String.class, String.class);
+		verify(this.valueProvisionHandler, never()).provide(dummy, ValueProvisionKind.Id, Dummy.class, Integer.class);
+		verify(this.valueProvisionHandler, never()).provide(dummy, ValueProvisionKind.ZeroDimensional, Dummy.class, Integer.class);
+		verify(this.valueProvisionHandler, never()).provide(dummy, ValueProvisionKind.ZeroDimensional, Dummy.class, RelatedDummy.class);
 	}
 
 	@Test(expected = RuntimeException.class)

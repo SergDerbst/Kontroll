@@ -1,10 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.impl;
 
-import java.lang.reflect.Field;
-
-import javax.persistence.Id;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
 public class IntegerValueProvider extends SimpleValueProvider<Integer> {
@@ -14,18 +11,20 @@ public class IntegerValueProvider extends SimpleValueProvider<Integer> {
 	}
 
 	@Override
-	protected Integer instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
+	protected Integer instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) {
 		return 0;
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Field field,
+	protected boolean claimSimpleValueResponsibility(final ValueProvisionKind kind,
 	                                                 final Class<?> valueType) {
-		return (field != null && !field.isAnnotationPresent(Id.class)) && Integer.class.equals(valueType) || Integer.TYPE.equals(valueType);
+		return
+		ValueProvisionKind.Id != kind &&
+		(Integer.class.equals(valueType) || Integer.TYPE.equals(valueType));
 	}
 
 	@Override
-	public Integer makeNextDefaultValue(final Object entity, final Field field, final Integer value) {
+	public Integer makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Integer value) {
 		return value + 1;
 	}
 }

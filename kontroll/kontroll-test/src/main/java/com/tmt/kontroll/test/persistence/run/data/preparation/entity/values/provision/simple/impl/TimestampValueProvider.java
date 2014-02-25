@@ -1,9 +1,9 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.impl;
 
-import java.lang.reflect.Field;
 import java.sql.Timestamp;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
 public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
@@ -13,18 +13,17 @@ public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
 	}
 
 	@Override
-	protected Timestamp instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
+	protected Timestamp instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) {
 		return new Timestamp(System.currentTimeMillis());
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Field field,
-	                                                 final Class<?> valueType) {
+	protected boolean claimSimpleValueResponsibility(final ValueProvisionKind kind, final Class<?> valueType) {
 		return Timestamp.class.equals(valueType);
 	}
 
 	@Override
-	public Timestamp makeNextDefaultValue(final Object entity, final Field field, final Timestamp value) {
+	public Timestamp makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Timestamp value) {
 		return new Timestamp(value.getTime() + 1);
 	}
 }

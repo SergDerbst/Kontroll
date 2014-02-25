@@ -8,12 +8,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-import java.lang.reflect.Field;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.Id;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,16 +49,7 @@ public class ValueProvisionPreparerTest {
 
 	public enum DummyEnum {}
 
-	public static class Dummy {
-		@Id
-		public String id;
-		public String[] array;
-		public List<String> collection;
-		public DummyEnum enumb;
-		public String standard;
-		public EnumMap<DummyEnum, String> enumMap;
-		public Map<String, Integer> map;
-	}
+	public static class Dummy {}
 
 	@Mock
 	private ArrayValueProviderFactory arrayValueProviderFactory;
@@ -83,14 +71,6 @@ public class ValueProvisionPreparerTest {
 	@Mock
 	private ValueProvisionHandler valueProvisionHandler;
 
-	private Field idField;
-	private Field arrayField;
-	private Field collectionField;
-	private Field enumField;
-	private Field enumMapField;
-	private Field mapField;
-	private Field standardField;
-
 	private ValueProvisionPreparer toTest;
 
 	@Before
@@ -109,21 +89,14 @@ public class ValueProvisionPreparerTest {
 		when(this.enumValueProviderFactory.create(eq(this.valueProvisionHandler), any(Class.class))).thenReturn(this.enumValueProvider);
 		when(this.idValueProviderFactory.create(eq(this.valueProvisionHandler), any(Class.class), any(Class.class))).thenReturn(this.idValueProvider);
 		when(this.enumMapValueProviderFactory.create(eq(this.valueProvisionHandler), any(Class.class))).thenReturn(this.enumMapValueProvider);
-		when(this.valueProvisionHandler.canProvideValue(any(Field.class), any(Class[].class))).thenReturn(false);
-		this.idField = Dummy.class.getDeclaredField("id");
-		this.arrayField = Dummy.class.getDeclaredField("array");
-		this.collectionField = Dummy.class.getDeclaredField("collection");
-		this.enumField = Dummy.class.getDeclaredField("enumb");
-		this.enumMapField = Dummy.class.getDeclaredField("enumMap");
-		this.mapField = Dummy.class.getDeclaredField("map");
-		this.standardField = Dummy.class.getDeclaredField("standard");
+		when(this.valueProvisionHandler.canProvideValue(any(ValueProvisionKind.class), any(Class[].class))).thenReturn(false);
 		this.toTest = ValueProvisionPreparer.newInstance();
 	}
 
 	@Test
 	public void testThatValuePreparationWorksForArray() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.arrayField, new Dummy(), Dummy.class, String[].class, String.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.OneDimensional, new Dummy(), Dummy.class, String[].class, String.class);
 		//then
 		verify(this.arrayValueProviderFactory).create(this.valueProvisionHandler, String.class);
 		verify(this.valueProvisionHandler).addValueProvider(this.arrayValueProvider);
@@ -132,16 +105,16 @@ public class ValueProvisionPreparerTest {
 	@Test
 	public void testThatValuePreparationWorksForCollection() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.collectionField, new Dummy(), Dummy.class, List.class, String.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.OneDimensional, new Dummy(), Dummy.class, List.class, String.class);
 		//then
-		verify(this.valueProvisionHandler).canProvideValue(this.collectionField, Dummy.class, List.class, String.class);
+		verify(this.valueProvisionHandler).canProvideValue(ValueProvisionKind.OneDimensional, Dummy.class, List.class, String.class);
 		verify(this.valueProvisionHandler).canProvideValue(null, Dummy.class, String.class);
 	}
 
 	@Test
 	public void testThatValuePreparationWorksForId() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.idField, new Dummy(), Dummy.class, String.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.Id, new Dummy(), Dummy.class, String.class);
 		//then
 		verify(this.idValueProviderFactory).create(this.valueProvisionHandler, Dummy.class, String.class);
 		verify(this.valueProvisionHandler).addValueProvider(this.idValueProvider);
@@ -158,7 +131,7 @@ public class ValueProvisionPreparerTest {
 	@Test
 	public void testThatValuePreparationWorksForEnum() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.enumField, new Dummy(), Dummy.class, DummyEnum.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.OneDimensional, new Dummy(), Dummy.class, DummyEnum.class);
 		//then
 		verify(this.enumValueProviderFactory).create(this.valueProvisionHandler, DummyEnum.class);
 		verify(this.valueProvisionHandler).addValueProvider(this.enumValueProvider);
@@ -176,7 +149,7 @@ public class ValueProvisionPreparerTest {
 	@Test
 	public void testThatValuePreparationWorksForEnumMap() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.enumMapField, new Dummy(), Dummy.class, EnumMap.class, DummyEnum.class, String.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.TwoDimensional, new Dummy(), Dummy.class, EnumMap.class, DummyEnum.class, String.class);
 		//then
 		verify(this.enumMapValueProviderFactory).create(this.valueProvisionHandler, DummyEnum.class);
 		verify(this.valueProvisionHandler).addValueProvider(this.enumMapValueProvider);
@@ -185,9 +158,9 @@ public class ValueProvisionPreparerTest {
 	@Test
 	public void testThatValuePreparationWorksForMap() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.mapField, new Dummy(), Dummy.class, Map.class, String.class, Integer.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.TwoDimensional, new Dummy(), Dummy.class, Map.class, String.class, Integer.class);
 		//then
-		verify(this.valueProvisionHandler).canProvideValue(this.mapField, Dummy.class, Map.class, String.class, Integer.class);
+		verify(this.valueProvisionHandler).canProvideValue(ValueProvisionKind.TwoDimensional, Dummy.class, Map.class, String.class, Integer.class);
 		verify(this.valueProvisionHandler).canProvideValue(null, Dummy.class, String.class);
 		verify(this.valueProvisionHandler).canProvideValue(null, Dummy.class, Integer.class);
 	}
@@ -196,11 +169,11 @@ public class ValueProvisionPreparerTest {
 	@SuppressWarnings("unchecked")
 	public void testThatValuePreparationWorksForStandardField() throws Exception {
 		//given
-		when(this.valueProvisionHandler.canProvideValue(any(Field.class), any(Class.class))).thenReturn(true);
+		when(this.valueProvisionHandler.canProvideValue(any(ValueProvisionKind.class), any(Class.class))).thenReturn(true);
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, this.standardField, new Dummy(), Dummy.class, String.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.ZeroDimensional, new Dummy(), Dummy.class, String.class);
 		//then
-		verify(this.valueProvisionHandler).canProvideValue(this.standardField, Dummy.class, String.class);
+		verify(this.valueProvisionHandler).canProvideValue(ValueProvisionKind.ZeroDimensional, Dummy.class, String.class);
 		verify(this.arrayValueProviderFactory, never()).create(eq(this.valueProvisionHandler), any(Class.class));
 		verify(this.idValueProviderFactory, never()).create(eq(this.valueProvisionHandler), any(Class.class), any(Class.class));
 		verify(this.enumValueProviderFactory, never()).create(eq(this.valueProvisionHandler), any(Class.class));
@@ -211,7 +184,7 @@ public class ValueProvisionPreparerTest {
 	@SuppressWarnings("unchecked")
 	public void testThatValuePreparationWorksForStandardFieldWhenFieldIsNull() throws Exception {
 		//given
-		when(this.valueProvisionHandler.canProvideValue(any(Field.class), any(Class.class))).thenReturn(true);
+		when(this.valueProvisionHandler.canProvideValue(any(ValueProvisionKind.class), any(Class.class))).thenReturn(true);
 		//when
 		this.toTest.prepare(this.valueProvisionHandler, null, new Dummy(), Dummy.class, String.class);
 		//then

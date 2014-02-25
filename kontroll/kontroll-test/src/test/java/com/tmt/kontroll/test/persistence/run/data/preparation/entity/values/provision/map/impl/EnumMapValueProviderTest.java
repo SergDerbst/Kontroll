@@ -4,9 +4,10 @@ import java.util.EnumMap;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.map.MapValueProviderTest;
 
 @SuppressWarnings("serial")
-public class EnumMapValueProviderTest<E extends Enum<E>> extends ValueProviderTest<EnumMap<ValueProviderTest.DummyEnum, Object>> {
+public class EnumMapValueProviderTest<E extends Enum<E>> extends MapValueProviderTest<EnumMap<ValueProviderTest.DummyEnum, Object>> {
 
 	private static final EnumMap<DummyEnum, Object> referenceMap = new EnumMap<DummyEnum, Object>(DummyEnum.class) {{
 		this.put(DummyEnum.Dumb, "0");
@@ -19,7 +20,6 @@ public class EnumMapValueProviderTest<E extends Enum<E>> extends ValueProviderTe
 		super(new EnumMapValueProvider<DummyEnum>(DummyEnum.class, ValueProvisionHandler.newInstance()),
 		      referenceMap,
 		      nextReferenceMap,
-		      EnumMap.class.getSimpleName(),
 		      Dummy.class,
 		      EnumMap.class,
 		      DummyEnum.class,

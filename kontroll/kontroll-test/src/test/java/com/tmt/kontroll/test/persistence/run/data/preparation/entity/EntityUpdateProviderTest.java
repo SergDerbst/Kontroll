@@ -92,9 +92,9 @@ public class EntityUpdateProviderTest {
 		assertFalse(updated == reference);
 		assertFalse(updated.entity() == reference.entity());
 		assertEquals(new Integer(((Dummy) reference.entity()).id), new Integer(((Dummy) updated.entity()).id));
-		verify(this.valueProvisionHandler).provideNextValue(any(Dummy.class), eq(reference.entity().getClass().getDeclaredField("dummyString")), eq("wurst"));
-		verify(this.valueProvisionHandler, never()).provideNextValue(any(Dummy.class), eq(reference.entity().getClass().getDeclaredField("dummyInt")), eq(0));
-		verify(this.valueProvisionHandler, never()).provideNextValue(eq(reference.entity()), eq(reference.entity().getClass().getDeclaredField("relatedDummy")), any(RelatedDummy.class));
+		verify(this.valueProvisionHandler).provideNextZeroDimensionalValue(any(Dummy.class), eq("wurst"));
+		verify(this.valueProvisionHandler, never()).provideNextZeroDimensionalValue(any(Dummy.class), eq(0));
+		verify(this.valueProvisionHandler, never()).provideNextZeroDimensionalValue(eq(reference.entity()), any(RelatedDummy.class));
 	}
 
 	@Test(expected = RuntimeException.class)

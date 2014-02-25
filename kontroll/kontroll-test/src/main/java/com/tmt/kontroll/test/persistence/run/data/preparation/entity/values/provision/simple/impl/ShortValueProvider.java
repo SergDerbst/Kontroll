@@ -1,10 +1,7 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.impl;
 
-import java.lang.reflect.Field;
-
-import javax.persistence.Id;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
 public class ShortValueProvider extends SimpleValueProvider<Short> {
@@ -14,17 +11,19 @@ public class ShortValueProvider extends SimpleValueProvider<Short> {
 	}
 
 	@Override
-	protected Short instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
+	protected Short instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) {
 		return (short) 0;
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Field field, final Class<?> valueType) {
-		return (field != null && !field.isAnnotationPresent(Id.class)) && Short.class.equals(valueType) || Short.TYPE.equals(valueType);
+	protected boolean claimSimpleValueResponsibility(final ValueProvisionKind kind, final Class<?> valueType) {
+		return
+		ValueProvisionKind.Id != kind &&
+		(Short.class.equals(valueType) || Short.TYPE.equals(valueType));
 	}
 
 	@Override
-	public Short makeNextDefaultValue(final Object entity, final Field field, final Short value) {
+	public Short makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Short value) {
 		return (short) (value + 1);
 	}
 }

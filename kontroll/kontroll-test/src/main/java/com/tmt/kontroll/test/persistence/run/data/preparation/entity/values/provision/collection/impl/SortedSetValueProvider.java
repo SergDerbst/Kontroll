@@ -1,14 +1,10 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl;
 
-import java.lang.reflect.Field;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProvider;
 
 public class SortedSetValueProvider extends CollectionValueProvider<Object, SortedSet<Object>> {
@@ -18,14 +14,12 @@ public class SortedSetValueProvider extends CollectionValueProvider<Object, Sort
 	}
 
 	@Override
-	protected boolean claimCollectionValueResponsibility(final Field field,
+	protected boolean claimCollectionValueResponsibility(final ValueProvisionKind kind,
 	                                                     final Class<?> collectionType,
 	                                                     final Class<?> itemType) {
 		return
-		SortedSet.class.isAssignableFrom(collectionType) &&
-		field.getAnnotation(ManyToMany.class) == null &&
-		field.getAnnotation(OneToMany.class) == null &&
-		field.getAnnotation(ManyToOne.class) == null;
+		ValueProvisionKind.OneDimensional == kind &&
+		SortedSet.class.isAssignableFrom(collectionType);
 	}
 
 	@SuppressWarnings({"rawtypes"})

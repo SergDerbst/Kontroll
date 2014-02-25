@@ -1,14 +1,10 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProvider;
 
 public class ListValueProvider extends CollectionValueProvider<Object, List<Object>> {
@@ -18,14 +14,12 @@ public class ListValueProvider extends CollectionValueProvider<Object, List<Obje
 	}
 
 	@Override
-	protected boolean claimCollectionValueResponsibility(final Field field,
+	protected boolean claimCollectionValueResponsibility(final ValueProvisionKind kind,
 	                                                     final Class<?> collectionType,
 	                                                     final Class<?> itemType) {
-		return field == null ? List.class.isAssignableFrom(collectionType) :
-			List.class.isAssignableFrom(collectionType) &&
-			!field.isAnnotationPresent(ManyToMany.class) &&
-			!field.isAnnotationPresent(OneToMany.class) &&
-			!field.isAnnotationPresent(ManyToOne.class);
+		return
+		ValueProvisionKind.OneDimensional == kind &&
+		List.class.isAssignableFrom(collectionType);
 	}
 
 	@SuppressWarnings({"rawtypes"})

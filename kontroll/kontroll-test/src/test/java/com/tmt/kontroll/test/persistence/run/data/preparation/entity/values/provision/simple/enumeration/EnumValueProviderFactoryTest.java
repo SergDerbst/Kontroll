@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public class EnumValueProviderFactoryTest {
 
@@ -32,6 +33,6 @@ public class EnumValueProviderFactoryTest {
 		final EnumValueProvider created = EnumValueProviderFactory.instance().create(this.valueProvisionHandler, DummyEnum.class);
 		//then
 		assertNotNull(created);
-		assertTrue(created.canProvideValue(Dummy.class.getDeclaredField("dummyEnumField"), Dummy.class, DummyEnum.class));
+		assertTrue(created.canProvideValue(ValueProvisionKind.ZeroDimensional, Dummy.class, DummyEnum.class));
 	}
 }

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.tmt.kontroll.test.persistence.run.data.preparation.impl.constraints.impl.UniqueConstraintsOnTableTestDataPreparerTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.242 sec
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.182 sec

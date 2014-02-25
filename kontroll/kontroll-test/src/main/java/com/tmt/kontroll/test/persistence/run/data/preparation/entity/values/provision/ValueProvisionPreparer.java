@@ -5,12 +5,9 @@ import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.valu
 import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.fieldType;
 import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionTypeConstants.valueType;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
-
-import javax.persistence.Id;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.array.ArrayValueProviderFactory;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.map.impl.EnumMapValueProviderFactory;
@@ -48,84 +45,54 @@ public class ValueProvisionPreparer {
 	private ValueProvisionPreparer() {}
 
 	public <E> void prepare(final ValueProvisionHandler valueProvisionHandler,
-	                        final Field field,
-	                        final E entity,
+	                        final ValueProvisionKind kind,
+	                        final Object entity,
 	                        final Class<?>... types) throws Exception {
-		if (!valueProvisionHandler.canProvideValue(field, types)) {
-			this.prepareArrayValueProvision(valueProvisionHandler, field, types);
-			this.prepareCollectionValueProvision(valueProvisionHandler, field, entity, types);
-			this.prepareIdValueProvision(valueProvisionHandler, field, types);
-			this.prepareEnumValueProvision(valueProvisionHandler, field, types);
-			this.prepareEnumMapValueProvision(valueProvisionHandler, field, types);
-			this.prepareMapValueProvision(valueProvisionHandler, field, entity, types);
+		if (!valueProvisionHandler.canProvideValue(kind, types)) {
+			this.prepareArrayValueProvision(valueProvisionHandler, kind, types);
+			this.prepareCollectionValueProvision(valueProvisionHandler, kind, entity, types);
+			this.prepareIdValueProvision(valueProvisionHandler, kind, types);
+			this.prepareEnumValueProvision(valueProvisionHandler, kind, types);
+			this.prepareEnumMapValueProvision(valueProvisionHandler, kind, types);
+			this.prepareMapValueProvision(valueProvisionHandler, kind, entity, types);
 		}
 	}
 
-	private void prepareArrayValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>[] types) {
-		if (this.arrayValueNeedsToBeProvided(field, types)) {
+	private void prepareArrayValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final Class<?>[] types) {
+		if (ValueProvisionKind.OneDimensional == kind && types[fieldType].isArray()) {
 			valueProvisionHandler.addValueProvider(ArrayValueProviderFactory.instance().create(valueProvisionHandler, types[componentOrKeyType]));
 		}
 	}
 
-	private boolean arrayValueNeedsToBeProvided(final Field field, final Class<?>[] types) {
-		return
-		(field == null && types.length == 3 && types[fieldType].isArray()) ||
-		(field != null && field.getType().isArray());
-	}
-
-	private <E> void prepareCollectionValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final E entity, final Class<?>[] types) throws Exception {
-		if (this.collectionValueNeedsToBeProvided(field, types)) {
+	private <E> void prepareCollectionValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final Object entity, final Class<?>[] types) throws Exception {
+		if (ValueProvisionKind.OneDimensional == kind && Collection.class.isAssignableFrom(types[fieldType])) {
 			this.prepare(valueProvisionHandler, null, entity, types[entityType], types[componentOrKeyType]);
 		}
 	}
 
-	private boolean collectionValueNeedsToBeProvided(final Field field, final Class<?>[] types) {
-		return
-		(field == null && types.length == 3 && Collection.class.isAssignableFrom(types[fieldType])) ||
-		(field != null && Collection.class.isAssignableFrom(field.getType()));
-	}
-
-	private void prepareIdValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>... types) {
-		if (field != null && field.isAnnotationPresent(Id.class)) {
-			valueProvisionHandler.addValueProvider(IdValueProviderFactory.instance().create(valueProvisionHandler, types[entityType], field.getType()));
+	private void prepareIdValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final Class<?>... types) {
+		if (ValueProvisionKind.Id == kind) {
+			valueProvisionHandler.addValueProvider(IdValueProviderFactory.instance().create(valueProvisionHandler, types[entityType], types[fieldType]));
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void prepareEnumValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>[] types) {
-		if (this.enumValueNeedsToBeProvided(field, types)) {
+	private void prepareEnumValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final Class<?>[] types) {
+		if (ValueProvisionKind.ZeroDimensional == kind && types[fieldType].isEnum()) {
 			valueProvisionHandler.addValueProvider(EnumValueProviderFactory.instance().create(valueProvisionHandler, (Class<? extends Enum<?>>) types[fieldType]));
 		}
 	}
 
-	private boolean enumValueNeedsToBeProvided(final Field field, final Class<?>[] types) {
-		return
-		(field == null && types.length == 2 && types[fieldType].isEnum()) ||
-		(field != null && field.getType().isEnum());
-	}
-
-	private void prepareEnumMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final Class<?>[] types) {
-		if (this.enumMapValueNeedsToBeProvided(field, types)) {
+	private void prepareEnumMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final Class<?>[] types) {
+		if (ValueProvisionKind.TwoDimensional == kind && EnumMap.class.isAssignableFrom(types[componentOrKeyType])) {
 			valueProvisionHandler.addValueProvider(EnumMapValueProviderFactory.instance().create(valueProvisionHandler, types[componentOrKeyType]));
 		}
 	}
 
-	private boolean enumMapValueNeedsToBeProvided(final Field field, final Class<?>[] types) {
-		return
-		(field == null && types.length == 4 && EnumMap.class.isAssignableFrom(types[componentOrKeyType])) ||
-		(field != null && EnumMap.class.isAssignableFrom(field.getType()));
-	}
-
-	private <E> void prepareMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final Field field, final E entity, final Class<?>[] types) throws Exception {
-		if (this.mapValueNeedsToBeProvided(field, types)) {
+	private <E> void prepareMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final E entity, final Class<?>[] types) throws Exception {
+		if (ValueProvisionKind.TwoDimensional == kind && Map.class.isAssignableFrom(types[fieldType]) && !EnumMap.class.isAssignableFrom(types[fieldType])) {
 			this.prepare(valueProvisionHandler, null, entity, types[entityType], types[componentOrKeyType]);
 			this.prepare(valueProvisionHandler, null, entity, types[entityType], types[valueType]);
 		}
-	}
-
-	private boolean mapValueNeedsToBeProvided(final Field field, final Class<?>[] types) {
-		return
-		(field == null && types.length == 4 && Map.class.isAssignableFrom(types[fieldType]) && !EnumMap.class.isAssignableFrom(types[fieldType])) ||
-		(field != null && Map.class.isAssignableFrom(field.getType()) && !EnumMap.class.isAssignableFrom(field.getType()));
 	}
 }

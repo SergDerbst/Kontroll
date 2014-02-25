@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 
@@ -36,16 +37,19 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 	}
 
 	@Override
-	protected boolean claimDefaultResponsibility(final Field field, final Class<?>... types) {
-		return types.length == 3 && types[fieldType].isArray() && this.componentType.equals(types[componentOrKeyType]);
+	protected boolean claimDefaultResponsibility(final ValueProvisionKind kind, final Class<?>... types) {
+		return
+		ValueProvisionKind.OneDimensional == kind &&
+		types[fieldType].isArray() &&
+		this.componentType.equals(types[componentOrKeyType]);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected C[] makeNextDefaultValue(final Object entity, final Field field, final C[] value) throws Exception {
+	protected C[] makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final C[] value) throws Exception {
 		final C[] toIncrease = this.instantiateEmptyArray();
 		for (int i = 0; i < value.length; i++) {
-			toIncrease[i] = (C) this.valueProvisionHandler.provideNextValue(entity, field, value[i]);
+			toIncrease[i] = (C) this.valueProvisionHandler.provideNextZeroDimensionalValue(entity, value[i]);
 		}
 		return toIncrease;
 	}
@@ -57,9 +61,9 @@ public class ArrayValueProvider<C> extends ValueProvider<C[]> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected C[] instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) throws Exception {
+	protected C[] instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) throws Exception {
 		final C[] array = this.instantiateEmptyArray();
-		array[0] = (C) this.valueProvisionHandler.provide(field, types[entityType], types[componentOrKeyType]);
+		array[0] = (C) this.valueProvisionHandler.provide(kind, types[entityType], types[componentOrKeyType]);
 		return array;
 	}
 }

@@ -1,15 +1,11 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProvider;
 
 public class SetValueProvider extends CollectionValueProvider<Object, Set<Object>> {
@@ -19,15 +15,13 @@ public class SetValueProvider extends CollectionValueProvider<Object, Set<Object
 	}
 
 	@Override
-	protected boolean claimCollectionValueResponsibility(final Field field,
+	protected boolean claimCollectionValueResponsibility(final ValueProvisionKind kind,
 	                                                     final Class<?> collectionType,
 	                                                     final Class<?> itemType) {
 		return
+		ValueProvisionKind.OneDimensional == kind &&
 		Set.class.isAssignableFrom(collectionType) &&
-		!SortedSet.class.isAssignableFrom(collectionType) &&
-		field.getAnnotation(ManyToMany.class) == null &&
-		field.getAnnotation(OneToMany.class) == null &&
-		field.getAnnotation(ManyToOne.class) == null;
+		!SortedSet.class.isAssignableFrom(collectionType);
 	}
 
 	@SuppressWarnings({"rawtypes"})

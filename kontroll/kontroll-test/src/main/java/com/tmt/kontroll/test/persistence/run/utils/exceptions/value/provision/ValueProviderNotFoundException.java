@@ -1,8 +1,8 @@
 package com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision;
 
-import java.lang.reflect.Field;
-
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
+
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 @SuppressWarnings("serial")
 public class ValueProviderNotFoundException extends ContextedRuntimeException {
@@ -43,10 +43,10 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		}
 	}
 
-	public static ValueProviderNotFoundException prepareWithTypes(final Field field, final Class<?>... typeArgs) {
+	public static ValueProviderNotFoundException prepareWithTypes(final ValueProvisionKind kind, final Class<?>... typeArgs) {
 		final ContextedRuntimeException exception = new ValueProviderNotFoundException();
-		if (field != null) {
-			exception.addContextValue("field name", field.getName());
+		if (kind != null) {
+			exception.addContextValue("kind of value", kind);
 		}
 		for (int i = 0; i < typeArgs.length; i++) {
 			final String typeArg = typeArgs[i] == null ? null : typeArgs[i].getName();
@@ -55,7 +55,7 @@ public class ValueProviderNotFoundException extends ContextedRuntimeException {
 		return (ValueProviderNotFoundException) exception;
 	}
 
-	public static ValueProviderNotFoundException prepareWithValue(final Object entity, final Field field, final Object value) {
-		return prepareWithTypes(field, entity.getClass(), value.getClass());
+	public static ValueProviderNotFoundException prepareWithValue(final Object entity, final ValueProvisionKind kind, final Object value) {
+		return prepareWithTypes(kind, entity.getClass(), value.getClass());
 	}
 }

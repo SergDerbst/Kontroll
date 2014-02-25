@@ -3,11 +3,11 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 import java.util.HashSet;
 import java.util.Set;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProviderTest;
 
 @SuppressWarnings("serial")
-public class SetValueProviderTest extends ValueProviderTest<Set<Object>> {
+public class SetValueProviderTest extends CollectionValueProviderTest<Set<Object>> {
 
 	private static final Set<Object> referenceSet = new HashSet<Object>() {{
 		this.add("0");
@@ -20,7 +20,6 @@ public class SetValueProviderTest extends ValueProviderTest<Set<Object>> {
 		super(new SetValueProvider(ValueProvisionHandler.newInstance()),
 		      referenceSet,
 		      referenceNextSet,
-		      Set.class.getSimpleName(),
 		      Dummy.class,
 		      Set.class,
 		      String.class);

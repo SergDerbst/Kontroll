@@ -4,11 +4,11 @@ package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.pro
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.map.MapValueProviderTest;
 
 @SuppressWarnings("serial")
-public class DefaultMapValueProviderTest extends ValueProviderTest<Map<Object, Object>>{
+public class DefaultMapValueProviderTest extends MapValueProviderTest<Map<Object, Object>>{
 
 	private static final Map<Object, Object> referenceMap = new HashMap<Object, Object>() {{
 		this.put("0", "1");
@@ -21,7 +21,6 @@ public class DefaultMapValueProviderTest extends ValueProviderTest<Map<Object, O
 		super(new DefaultMapValueProvider(ValueProvisionHandler.newInstance()),
 		      referenceMap,
 		      nextReferenceMap,
-		      Map.class.getSimpleName(),
 		      Dummy.class,
 		      Map.class,
 		      String.class,

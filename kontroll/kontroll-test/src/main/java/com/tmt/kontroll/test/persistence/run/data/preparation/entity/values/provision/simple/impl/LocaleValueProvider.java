@@ -9,6 +9,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.simple.SimpleValueProvider;
 
 public class LocaleValueProvider extends SimpleValueProvider<Locale> {
@@ -20,17 +21,17 @@ public class LocaleValueProvider extends SimpleValueProvider<Locale> {
 	}
 
 	@Override
-	protected Locale instantiateDefaultValue(final Object entity, final Field field, final Class<?>... types) {
+	protected Locale instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) {
 		return localeValueSet.first();
 	}
 
 	@Override
-	protected boolean claimSimpleValueResponsibility(final Field field, final Class<?> valueType) {
+	protected boolean claimSimpleValueResponsibility(final ValueProvisionKind kind, final Class<?> valueType) {
 		return Locale.class.equals(valueType);
 	}
 
 	@Override
-	public Locale makeNextDefaultValue(final Object entity, final Field field, final Locale value) {
+	public Locale makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Locale value) {
 		return this.getLocaleByIndex(this.getIndexOfLocale(value) + 1);
 	}
 

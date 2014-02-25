@@ -13,6 +13,7 @@ import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipCollector;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 
 public class EntityInstanceProvider {
@@ -59,13 +60,13 @@ public class EntityInstanceProvider {
 		final Object entity = reference.entity();
 		if (field.get(entity) == null) {
 			if (Collection.class.isAssignableFrom(fieldType)) {
-				field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0)));
+				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.OneDimensional, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0)));
 			} else if (Map.class.isAssignableFrom(fieldType)) {
-				field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
+				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.TwoDimensional, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
 			} else if (fieldType.isArray()) {
-				field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType, fieldType.getComponentType()));
+				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.OneDimensional, entity.getClass(), fieldType, fieldType.getComponentType()));
 			}	else {
-				field.set(entity, valueProvisionHandler.provide(entity, field, entity.getClass(), fieldType));
+				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.ZeroDimensional, entity.getClass(), fieldType));
 			}
 		}
 	}

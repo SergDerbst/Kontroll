@@ -10,8 +10,6 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Id;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,11 +34,7 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.prov
 @PrepareForTest({ValueProvisionPreparer.class})
 public class ValueProvisionHandlerTest {
 
-	public static class Dummy {
-		@Id
-		public int id;
-		public String dummyString;
-	}
+	public static class Dummy {}
 
 	@Mock
 	private ValueProvisionPreparer valueProvisionHandlerPreparer;
@@ -59,7 +53,7 @@ public class ValueProvisionHandlerTest {
 	@Test
 	public void testThatFetchValueProviderTypeWorks() throws Exception {
 		//when
-		final Class<? extends ValueProvider<?>> fetched = this.toTest.fetchValueProviderType(Dummy.class.getDeclaredField("dummyString"), Dummy.class, String.class);
+		final Class<? extends ValueProvider<?>> fetched = this.toTest.fetchValueProviderType(ValueProvisionKind.ZeroDimensional, Dummy.class, String.class);
 		//then
 		assertEquals(StringValueProvider.class, fetched);
 	}
@@ -67,7 +61,7 @@ public class ValueProvisionHandlerTest {
 	@Test
 	public void testThatCanProvideValueReturnsTrue() throws Exception {
 		//when
-		final boolean can = this.toTest.canProvideValue(Dummy.class.getDeclaredField("dummyString"), Dummy.class, String.class);
+		final boolean can = this.toTest.canProvideValue(ValueProvisionKind.ZeroDimensional, Dummy.class, String.class);
 		//then
 		assertTrue(can);
 	}
@@ -75,7 +69,7 @@ public class ValueProvisionHandlerTest {
 	@Test
 	public void testThatCanProvideValueReturnsFalse() throws Exception {
 		//when
-		final boolean can = this.toTest.canProvideValue(Dummy.class.getDeclaredField("dummyString"), this.getClass(), this.getClass());
+		final boolean can = this.toTest.canProvideValue(ValueProvisionKind.ZeroDimensional, this.getClass(), this.getClass());
 		//then
 		assertFalse(can);
 	}
@@ -83,7 +77,7 @@ public class ValueProvisionHandlerTest {
 	@Test
 	public void testThatProvideWorksForSimple() throws Exception {
 		//when
-		final Object provided = this.toTest.provide(Dummy.class.getDeclaredField("dummyString"), Dummy.class, String.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, String.class);
 		//then
 		assertEquals("0", provided);
 	}
@@ -92,7 +86,7 @@ public class ValueProvisionHandlerTest {
 	@SuppressWarnings("rawtypes")
 	public void testThatProvideWorksForCollection() throws Exception {
 		//when
-		final Object provided = this.toTest.provide(Dummy.class.getDeclaredField("dummyString"), Dummy.class, List.class, String.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, List.class, String.class);
 		//then
 		assertTrue(List.class.isAssignableFrom(provided.getClass()));
 		assertTrue(((List) provided).size() == 1);
@@ -103,7 +97,7 @@ public class ValueProvisionHandlerTest {
 	public void testThatProvideWorksForArray() throws Exception {
 		//given
 		//when
-		final Object provided = this.toTest.provide(Dummy.class.getDeclaredField("dummyString"), Dummy.class, String[].class, String.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, String[].class, String.class);
 		//then
 		assertTrue(String[].class.equals(provided.getClass()));
 		assertTrue(((String[]) provided).length == 1);
@@ -115,7 +109,7 @@ public class ValueProvisionHandlerTest {
 	public void testThatProvideWorksForMap() throws Exception {
 		//given
 		//when
-		final Object provided = this.toTest.provide(Dummy.class.getDeclaredField("dummyString"), Dummy.class, Map.class, String.class, Integer.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, Map.class, String.class, Integer.class);
 		//then
 		assertTrue(Map.class.isAssignableFrom(provided.getClass()));
 		assertTrue(((Map) provided).size() == 1);

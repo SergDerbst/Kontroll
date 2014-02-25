@@ -66,7 +66,7 @@ public class EntityUpdateProvider {
 			}
 		}
 		if (useNextValue) {
-			field.set(entityToUpdate, this.valueProvisionHandler().provideNextValue(entityToUpdate, field, field.get(entityToUpdateFrom)));
+			field.set(entityToUpdate, this.valueProvisionHandler().provideNextZeroDimensionalValue(entityToUpdate, field.get(entityToUpdateFrom)));
 		} else {
 			field.set(entityToUpdate, field.get(entityToUpdateFrom));
 		}
