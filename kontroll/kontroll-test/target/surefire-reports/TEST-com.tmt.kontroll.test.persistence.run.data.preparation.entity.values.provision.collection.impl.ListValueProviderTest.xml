@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0" tests="12" errors="1" skipped="0" failures="1">
+<testsuite name="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0.056" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="F:\JDKs\Java7\jre\bin"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="Service Pack 1"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="F:\projects\Kontroll\kontroll"/>
+    <property name="user.dir" value="F:\projects\Kontroll\kontroll\kontroll-test"/>
     <property name="java.runtime.version" value="1.7.0_03-b05"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="F:\JDKs\Java7\jre\lib\endorsed"/>
@@ -26,9 +26,9 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 7"/>
-    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf6419667399105818850.tmp"/>
+    <property name="classworlds.conf" value="F:\projects\Kontroll\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf6348579469661257877.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="F:\JDKs\Java7\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;F:/JDKs/Java7/jre/bin/server;F:/JDKs/Java7/jre/bin;F:/JDKs/Java7/jre/lib/amd64;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\,F:\JDKs\Java7\bin;F:\tools\mysql\MySQL Server 5.5\bin;F:\tools\mysql\bin;F:\JDKs\Java7\jre\bin;F:\tools\node\;F:\tools\maven\apache-maven-3.0.3\bin;F:\JDKs\Java7\jre\bin;F:\tools\spring-roo\bin;C:\Users\Serg Derbst\AppData\Roaming\npm;F:\tools\eclipse;;."/>
+    <property name="java.library.path" value="F:\JDKs\Java7\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\,F:\JDKs\Java7\bin;F:\tools\mysql\MySQL Server 5.5\bin;F:\tools\mysql\bin;F:\JDKs\Java7\jre\bin;F:\tools\node\;F:\tools\maven\apache-maven-3.0.3\bin;F:\JDKs\Java7\jre\bin;F:\tools\spring-roo\bin;C:\Users\Serg Derbst\AppData\Roaming\npm;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="51.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -39,7 +39,7 @@
     <property name="java.specification.version" value="1.7"/>
     <property name="file.encoding" value="Cp1252"/>
     <property name="user.name" value="Serg Derbst"/>
-    <property name="java.class.path" value="/F:/tools/eclipse/configuration/org.eclipse.osgi/bundles/819/1/.cp/jars/plexus-classworlds-2.4.jar"/>
+    <property name="java.class.path" value="/F:/tools/eclipse/configuration/org.eclipse.osgi/bundles/501/1/.cp/jars/plexus-classworlds-2.4.jar"/>
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="F:\JDKs\Java7\jre"/>
@@ -53,124 +53,25 @@
     <property name="java.ext.dirs" value="F:\JDKs\Java7\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
     <property name="sun.boot.class.path" value="F:\JDKs\Java7\jre\lib\resources.jar;F:\JDKs\Java7\jre\lib\rt.jar;F:\JDKs\Java7\jre\lib\sunrsasign.jar;F:\JDKs\Java7\jre\lib\jsse.jar;F:\JDKs\Java7\jre\lib\jce.jar;F:\JDKs\Java7\jre\lib\charsets.jar;F:\JDKs\Java7\jre\classes"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="F:\projects\Kontroll\kontroll\EMBEDDED"/>
+    <property name="maven.home" value="F:\projects\Kontroll\kontroll\kontroll-test\EMBEDDED"/>
     <property name="file.separator" value="\"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
-    <property name="maven.bootclasspath" value="/F:/tools/eclipse/configuration/org.eclipse.osgi/bundles/819/1/.cp/jars/plexus-classworlds-2.4.jar"/>
+    <property name="maven.bootclasspath" value="/F:/tools/eclipse/configuration/org.eclipse.osgi/bundles/501/1/.cp/jars/plexus-classworlds-2.4.jar"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="testThatProvideThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
-  <testcase name="testThatFetchNextValueThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
+  <testcase name="testThatProvideWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
+  <testcase name="testThatFetchNextValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
+  <testcase name="testThatCanProvideValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
   <testcase name="testThatFetchValueProviderTypeWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
   <testcase name="testThatFetchValueProviderTypeCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
   <testcase name="testThatCanProvideValueCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
-  <testcase name="testThatProvideCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
+  <testcase name="testThatProvideCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0.056"/>
   <testcase name="testThatFetchNextValueCallsNextValue" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
   <testcase name="testThatFetchValueProviderTypeThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
   <testcase name="testThatCanProvideValueDoesNotThrowExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
-  <testcase name="testThatProvideWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0">
-    <error message="Exception Context:&#10;	[1:kind of value=OneDimensional]&#10;	[2:entity type=com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest$Dummy]&#10;	[3:value type=java.lang.String]&#10;---------------------------------" type="com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision.ValueProviderNotFoundException">com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision.ValueProviderNotFoundException: Exception Context:
-	[1:kind of value=OneDimensional]
-	[2:entity type=com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest$Dummy]
-	[3:value type=java.lang.String]
----------------------------------
-	at com.tmt.kontroll.test.persistence.run.utils.exceptions.value.provision.ValueProviderNotFoundException.prepareWithTypes(ValueProviderNotFoundException.java:47)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:55)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:57)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler.provide(ValueProvisionHandler.java:119)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler.provide(ValueProvisionHandler.java:105)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProvider.instantiateDefaultValue(CollectionValueProvider.java:61)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.CollectionValueProvider.instantiateDefaultValue(CollectionValueProvider.java:16)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.init(ValueProvider.java:84)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvider.provide(ValueProvider.java:48)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest.testThatProvideWorks(ValueProviderTest.java:108)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
-	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray2(ReflectionUtils.java:208)
-	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:159)
-	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-</error>
-  </testcase>
-  <testcase name="testThatFetchNextValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0">
-    <failure message="expected:&lt;[1]&gt; but was:&lt;null&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: expected:<[1]> but was:<null>
-	at org.junit.Assert.fail(Assert.java:93)
-	at org.junit.Assert.failNotEquals(Assert.java:647)
-	at org.junit.Assert.assertEquals(Assert.java:128)
-	at org.junit.Assert.assertEquals(Assert.java:147)
-	at com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest.testThatFetchNextValueWorks(ValueProviderTest.java:136)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
-	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray2(ReflectionUtils.java:208)
-	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:159)
-	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-]]></failure>
-  </testcase>
-  <testcase name="testThatCanProvideValueWorks" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
+  <testcase name="testThatProvideThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
+  <testcase name="testThatFetchNextValueThrowsExceptionWhenNextProviderIsNull" classname="com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.collection.impl.ListValueProviderTest" time="0"/>
 </testsuite>

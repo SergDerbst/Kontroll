@@ -1,7 +1,5 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision;
 
-import java.lang.reflect.Field;
-
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.incrementation.ValueIncrementor;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.instantiation.ValueInstantiator;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.responsibility.ValueResponsibilityClaimer;
@@ -26,9 +24,7 @@ public abstract class ValueProvider<V> {
 
 	protected abstract V instantiateDefaultValue(final Object entity, final ValueProvisionKind kind, final Class<?>... types) throws Exception;
 
-	protected abstract V makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final V value) throws Exception;
-
-	protected abstract Class<?>[] prepareTypesFromField(final Object entity, final Field field);
+	protected abstract V makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final V value, Class<?>... types) throws Exception;
 
 	public boolean canProvideValue(final ValueProvisionKind kind, final Class<?>... types) throws Exception {
 		if (this.claimResponsibility(kind, types)) {
@@ -48,7 +44,7 @@ public abstract class ValueProvider<V> {
 				this.init(entity, kind, types);
 			}
 			final V toProvide = this.currentValue;
-			this.increase(kind, entity);
+			this.increase(kind, entity, types);
 			return toProvide;
 		}
 		if (this.nextProvider == null) {
@@ -58,15 +54,17 @@ public abstract class ValueProvider<V> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object fetchNextZeroDimensionalValue(final Object entity,
-	                                            final Object value) throws Exception {
-		if (this.claimResponsibility(ValueProvisionKind.ZeroDimensional, entity.getClass(), value.getClass())) {
-			return this.makeNextValue(entity, ValueProvisionKind.ZeroDimensional, (V) value);
+	public Object fetchNextValue(final Object entity,
+	                             final ValueProvisionKind kind,
+	                             final Object value,
+	                             final Class<?>... types) throws Exception {
+		if (this.claimResponsibility(kind, types)) {
+			return this.makeNextValue(entity, kind, (V) value, types);
 		}
 		if (this.nextProvider == null) {
-			throw ValueProviderNotFoundException.prepareWithValue(entity, ValueProvisionKind.ZeroDimensional, value);
+			throw ValueProviderNotFoundException.prepareWithValue(entity, kind, value);
 		}
-		return this.nextProvider.fetchNextZeroDimensionalValue(entity, value);
+		return this.nextProvider.fetchNextValue(entity, kind, value, types);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -93,17 +91,17 @@ public abstract class ValueProvider<V> {
 	}
 
 	protected void increase(final ValueProvisionKind kind,
-	                        final Object entity) throws Exception {
-		this.setCurrentValue(this.makeNextValue(entity, kind, this.currentValue()));
+	                        final Object entity, final Class<?>... types) throws Exception {
+		this.setCurrentValue(this.makeNextValue(entity, kind, this.currentValue(), types));
 	}
 
 	protected V makeNextValue(final Object entity,
 	                          final ValueProvisionKind kind,
-	                          final V value) throws Exception {
+	                          final V value, final Class<?>... types) throws Exception {
 		if (this.incrementor != null) {
 			return this.incrementor.increment(value);
 		}
-		return this.makeNextDefaultValue(entity, kind, value);
+		return this.makeNextDefaultValue(entity, kind, value, types);
 	}
 
 	protected V currentValue() {

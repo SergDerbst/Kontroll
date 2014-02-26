@@ -26,19 +26,19 @@ public class TimestampValueProviderTest extends SimpleValueProviderTest<Timestam
 	@Test
 	public void testThatProvideWorks() throws Exception {
 		//when
-		final Object provided = this.toTest.provide(new Dummy(), ValueProvisionKind.ZeroDimensional, this.types);
+		final Object provided = this.toTest.provide(new Dummy(), ValueProvisionKind.ZeroDimensional, this.responsibleTypes);
 		//then
 		assertTrue(super.referenceValue.getTime() <= ((Timestamp) provided).getTime());
-		verify(super.nextProvider, never()).provide(new Dummy(), ValueProvisionKind.ZeroDimensional, this.types);
+		verify(super.nextProvider, never()).provide(new Dummy(), ValueProvisionKind.ZeroDimensional, this.responsibleTypes);
 	}
 
 	@Override
 	@Test
 	public void testThatFetchNextValueWorks() throws Exception {
 		//when
-		final Object fetched = this.toTest.fetchNextZeroDimensionalValue(new Dummy(), super.referenceValue);
+		final Object fetched = this.toTest.fetchNextValue(new Dummy(), super.provisionKind, super.referenceValue, this.responsibleTypes);
 		//then
 		assertTrue(super.referenceValue.getTime() <= ((Timestamp) fetched).getTime());
-		verify(this.nextProvider, never()).fetchNextZeroDimensionalValue(new Dummy(), super.referenceValue);
+		verify(this.nextProvider, never()).fetchNextValue(new Dummy(), super.provisionKind, super.referenceValue);
 	}
 }

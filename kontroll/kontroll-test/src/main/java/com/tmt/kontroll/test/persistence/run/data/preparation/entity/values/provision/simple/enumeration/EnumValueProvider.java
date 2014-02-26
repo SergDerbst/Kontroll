@@ -27,7 +27,7 @@ public class EnumValueProvider extends SimpleValueProvider<Enum<?>> {
 	}
 
 	@Override
-	protected Enum<?> makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Enum<?> value) {
+	protected Enum<?> makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Enum<?> value, final Class<?>... types) {
 		return this.getEnumValueFromOrdinal(this.getOrdinalFromEnumValue(value) + 1, value);
 	}
 

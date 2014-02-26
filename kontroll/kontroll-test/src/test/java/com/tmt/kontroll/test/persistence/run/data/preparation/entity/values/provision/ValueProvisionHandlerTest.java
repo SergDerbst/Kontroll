@@ -86,7 +86,7 @@ public class ValueProvisionHandlerTest {
 	@SuppressWarnings("rawtypes")
 	public void testThatProvideWorksForCollection() throws Exception {
 		//when
-		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, List.class, String.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.OneDimensional, Dummy.class, List.class, String.class);
 		//then
 		assertTrue(List.class.isAssignableFrom(provided.getClass()));
 		assertTrue(((List) provided).size() == 1);
@@ -97,7 +97,7 @@ public class ValueProvisionHandlerTest {
 	public void testThatProvideWorksForArray() throws Exception {
 		//given
 		//when
-		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, String[].class, String.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.OneDimensional, Dummy.class, String[].class, String.class);
 		//then
 		assertTrue(String[].class.equals(provided.getClass()));
 		assertTrue(((String[]) provided).length == 1);
@@ -109,7 +109,7 @@ public class ValueProvisionHandlerTest {
 	public void testThatProvideWorksForMap() throws Exception {
 		//given
 		//when
-		final Object provided = this.toTest.provide(ValueProvisionKind.ZeroDimensional, Dummy.class, Map.class, String.class, Integer.class);
+		final Object provided = this.toTest.provide(ValueProvisionKind.TwoDimensional, Dummy.class, Map.class, String.class, Integer.class);
 		//then
 		assertTrue(Map.class.isAssignableFrom(provided.getClass()));
 		assertTrue(((Map) provided).size() == 1);

@@ -23,7 +23,7 @@ public class ShortValueProvider extends SimpleValueProvider<Short> {
 	}
 
 	@Override
-	public Short makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Short value) {
+	public Short makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Short value, final Class<?>... types) {
 		return (short) (value + 1);
 	}
 }

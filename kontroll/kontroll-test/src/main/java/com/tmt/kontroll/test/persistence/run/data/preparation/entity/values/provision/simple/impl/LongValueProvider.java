@@ -24,7 +24,7 @@ public class LongValueProvider extends SimpleValueProvider<Long> {
 	}
 
 	@Override
-	public Long makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Long value) {
+	public Long makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Long value, final Class<?>... types) {
 		return value + 1;
 	}
 }

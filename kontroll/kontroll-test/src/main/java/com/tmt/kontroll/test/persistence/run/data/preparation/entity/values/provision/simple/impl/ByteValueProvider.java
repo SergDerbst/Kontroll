@@ -24,7 +24,7 @@ public class ByteValueProvider extends SimpleValueProvider<Byte> {
 	}
 
 	@Override
-	public Byte makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Byte value) {
+	public Byte makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Byte value, final Class<?>... types) {
 		return Byte.parseByte(String.valueOf(Integer.parseInt(String.valueOf(value)) + 1));
 	}
 }

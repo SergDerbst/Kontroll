@@ -24,7 +24,7 @@ public class FloatValueProvider extends SimpleValueProvider<Float> {
 	}
 
 	@Override
-	public Float makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Float value) {
+	public Float makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Float value, final Class<?>... types) {
 		return value + 1;
 	}
 }

@@ -17,7 +17,7 @@ public class LongIdValueProvider extends IdValueProvider<Long> {
 	}
 
 	@Override
-	protected Long makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Long value) throws Exception {
+	protected Long makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Long value, final Class<?>... types) throws Exception {
 		return value + 1;
 	}
 }

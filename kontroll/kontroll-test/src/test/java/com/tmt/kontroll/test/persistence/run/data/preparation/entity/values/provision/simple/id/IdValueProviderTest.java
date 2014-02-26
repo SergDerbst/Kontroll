@@ -4,7 +4,7 @@ import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.prov
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProviderTest;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
-public class IdValueProviderTest<V> extends ValueProviderTest<V> {
+public abstract class IdValueProviderTest<V> extends ValueProviderTest<V> {
 
 	protected IdValueProviderTest(final ValueProvider<V> toTest,
 	                              final V referenceValue,

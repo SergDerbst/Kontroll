@@ -24,7 +24,7 @@ public class IntegerValueProvider extends SimpleValueProvider<Integer> {
 	}
 
 	@Override
-	public Integer makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Integer value) {
+	public Integer makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Integer value, final Class<?>... types) {
 		return value + 1;
 	}
 }

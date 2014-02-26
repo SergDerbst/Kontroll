@@ -131,7 +131,7 @@ public class ValueProvisionPreparerTest {
 	@Test
 	public void testThatValuePreparationWorksForEnum() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.OneDimensional, new Dummy(), Dummy.class, DummyEnum.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.ZeroDimensional, new Dummy(), Dummy.class, DummyEnum.class);
 		//then
 		verify(this.enumValueProviderFactory).create(this.valueProvisionHandler, DummyEnum.class);
 		verify(this.valueProvisionHandler).addValueProvider(this.enumValueProvider);
@@ -140,7 +140,7 @@ public class ValueProvisionPreparerTest {
 	@Test
 	public void testThatValuePreparationWorksForEnumWhenFieldIsNull() throws Exception {
 		//when
-		this.toTest.prepare(this.valueProvisionHandler, null, new Dummy(), Dummy.class, DummyEnum.class);
+		this.toTest.prepare(this.valueProvisionHandler, ValueProvisionKind.ZeroDimensional, new Dummy(), Dummy.class, DummyEnum.class);
 		//then
 		verify(this.enumValueProviderFactory).create(this.valueProvisionHandler, DummyEnum.class);
 		verify(this.valueProvisionHandler).addValueProvider(this.enumValueProvider);

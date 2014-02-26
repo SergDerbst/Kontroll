@@ -24,7 +24,7 @@ public class CharacterValueProvider extends SimpleValueProvider<Character> {
 	}
 
 	@Override
-	public Character makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Character value) {
+	public Character makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Character value, final Class<?>... types) {
 		return this.combineValue(value, "1".charAt(0));
 	}
 

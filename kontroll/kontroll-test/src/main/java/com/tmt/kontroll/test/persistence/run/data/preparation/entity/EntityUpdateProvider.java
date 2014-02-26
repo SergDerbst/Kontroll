@@ -4,15 +4,19 @@ import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.ret
 import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Id;
+
+import org.hibernate.mapping.Map;
 
 import com.tmt.kontroll.persistence.utils.JpaEntityUtils;
 import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 public class EntityUpdateProvider {
 
@@ -66,9 +70,22 @@ public class EntityUpdateProvider {
 			}
 		}
 		if (useNextValue) {
-			field.set(entityToUpdate, this.valueProvisionHandler().provideNextZeroDimensionalValue(entityToUpdate, field.get(entityToUpdateFrom)));
+			field.set(entityToUpdate, this.valueProvisionHandler().provideNextValue(entityToUpdate, this.getValueProvisionKind(field), field.get(entityToUpdateFrom)));
 		} else {
 			field.set(entityToUpdate, field.get(entityToUpdateFrom));
+		}
+	}
+
+	private ValueProvisionKind getValueProvisionKind(final Field field) {
+		if (field.isAnnotationPresent(Id.class)) {
+			return ValueProvisionKind.Id;
+		}
+		else if (Map.class.isAssignableFrom(field.getType())) {
+			return ValueProvisionKind.TwoDimensional;
+		} else if (Collection.class.isAssignableFrom(field.getType())) {
+			return ValueProvisionKind.OneDimensional;
+		} else {
+			return ValueProvisionKind.ZeroDimensional;
 		}
 	}
 

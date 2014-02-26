@@ -84,7 +84,7 @@ public class ValueProvisionPreparer {
 	}
 
 	private void prepareEnumMapValueProvision(final ValueProvisionHandler valueProvisionHandler, final ValueProvisionKind kind, final Class<?>[] types) {
-		if (ValueProvisionKind.TwoDimensional == kind && EnumMap.class.isAssignableFrom(types[componentOrKeyType])) {
+		if (ValueProvisionKind.TwoDimensional == kind && EnumMap.class.isAssignableFrom(types[fieldType])) {
 			valueProvisionHandler.addValueProvider(EnumMapValueProviderFactory.instance().create(valueProvisionHandler, types[componentOrKeyType]));
 		}
 	}

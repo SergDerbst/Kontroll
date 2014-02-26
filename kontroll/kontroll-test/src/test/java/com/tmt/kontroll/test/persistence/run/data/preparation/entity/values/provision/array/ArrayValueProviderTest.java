@@ -26,19 +26,19 @@ public class ArrayValueProviderTest extends ValueProviderTest<String[]> {
 	@Test
 	public void testThatProvideWorks() throws Exception {
 		//when
-		final Object provided = this.toTest.provide(new Dummy(), ValueProvisionKind.OneDimensional, this.types);
+		final Object provided = this.toTest.provide(new Dummy(), ValueProvisionKind.OneDimensional, this.responsibleTypes);
 		//then
 		assertEquals(this.referenceValue[0], ((String[]) provided)[0]);
-		verify(this.nextProvider, never()).provide(new Dummy(), ValueProvisionKind.OneDimensional, this.types);
+		verify(this.nextProvider, never()).provide(new Dummy(), ValueProvisionKind.OneDimensional, this.responsibleTypes);
 	}
 
 	@Override
 	@Test
 	public void testThatFetchNextValueWorks() throws Exception {
 		//when
-		final Object fetched = this.toTest.fetchNextZeroDimensionalValue(new Dummy(), this.referenceValue);
+		final Object fetched = this.toTest.fetchNextValue(new Dummy(), ValueProvisionKind.OneDimensional, this.referenceValue, this.responsibleTypes);
 		//then
 		assertEquals(this.referenceNextValue[0], ((String[]) fetched)[0]);
-		verify(this.nextProvider, never()).fetchNextZeroDimensionalValue(new Dummy(), this.referenceValue);
+		verify(this.nextProvider, never()).fetchNextValue(new Dummy(), ValueProvisionKind.OneDimensional, this.referenceValue, this.responsibleTypes);
 	}
 }

@@ -31,7 +31,7 @@ public class LocaleValueProvider extends SimpleValueProvider<Locale> {
 	}
 
 	@Override
-	public Locale makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Locale value) {
+	public Locale makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Locale value, final Class<?>... types) {
 		return this.getLocaleByIndex(this.getIndexOfLocale(value) + 1);
 	}
 

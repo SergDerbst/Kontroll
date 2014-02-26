@@ -22,7 +22,7 @@ public class StringValueProvider extends SimpleValueProvider<String> {
 	}
 
 	@Override
-	public String makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final String value) {
+	public String makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final String value, final Class<?>... types) {
 		return String.valueOf(Integer.parseInt(value) + 1);
 	}
 }

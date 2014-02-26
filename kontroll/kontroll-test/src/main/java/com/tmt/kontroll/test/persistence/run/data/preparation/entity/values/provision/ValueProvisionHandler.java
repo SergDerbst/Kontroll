@@ -129,8 +129,9 @@ public class ValueProvisionHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object provideNextZeroDimensionalValue(final Object entity, final Object value) throws Exception {
-		return this.firstProvider.fetchNextZeroDimensionalValue(entity, value);
+	public Object provideNextValue(final Object entity, final ValueProvisionKind kind, final Object value, final Class<?>... types) throws Exception {
+		this.valueProvisionHandlerPreparer().prepare(this, kind, entity, types);
+		return this.firstProvider.fetchNextValue(entity, kind, value, types);
 	}
 
 	/**

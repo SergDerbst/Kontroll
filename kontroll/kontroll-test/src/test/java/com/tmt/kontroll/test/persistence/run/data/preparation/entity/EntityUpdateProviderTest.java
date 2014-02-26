@@ -28,6 +28,7 @@ import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
+import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 
 /**
  * <b><i>Note:</i></b>
@@ -92,9 +93,9 @@ public class EntityUpdateProviderTest {
 		assertFalse(updated == reference);
 		assertFalse(updated.entity() == reference.entity());
 		assertEquals(new Integer(((Dummy) reference.entity()).id), new Integer(((Dummy) updated.entity()).id));
-		verify(this.valueProvisionHandler).provideNextZeroDimensionalValue(any(Dummy.class), eq("wurst"));
-		verify(this.valueProvisionHandler, never()).provideNextZeroDimensionalValue(any(Dummy.class), eq(0));
-		verify(this.valueProvisionHandler, never()).provideNextZeroDimensionalValue(eq(reference.entity()), any(RelatedDummy.class));
+		verify(this.valueProvisionHandler).provideNextValue(any(Dummy.class), eq(ValueProvisionKind.ZeroDimensional), eq("wurst"));
+		verify(this.valueProvisionHandler, never()).provideNextValue(any(Dummy.class), eq(ValueProvisionKind.ZeroDimensional), eq(0));
+		verify(this.valueProvisionHandler, never()).provideNextValue(eq(reference.entity()), eq(ValueProvisionKind.ZeroDimensional), any(RelatedDummy.class));
 	}
 
 	@Test(expected = RuntimeException.class)

@@ -24,7 +24,7 @@ public class DoubleValueProvider extends SimpleValueProvider<Double> {
 	}
 
 	@Override
-	public Double makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Double value) {
+	public Double makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Double value, final Class<?>... types) {
 		return value + 1;
 	}
 }

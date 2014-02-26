@@ -23,7 +23,7 @@ public class TimestampValueProvider extends SimpleValueProvider<Timestamp> {
 	}
 
 	@Override
-	public Timestamp makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Timestamp value) {
+	public Timestamp makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Timestamp value, final Class<?>... types) {
 		return new Timestamp(value.getTime() + 1);
 	}
 }

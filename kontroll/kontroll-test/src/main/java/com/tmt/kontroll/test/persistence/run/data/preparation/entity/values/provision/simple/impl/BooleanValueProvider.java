@@ -24,7 +24,7 @@ public class BooleanValueProvider extends SimpleValueProvider<Boolean> {
 	}
 
 	@Override
-	public Boolean makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Boolean value) {
+	public Boolean makeNextDefaultValue(final Object entity, final ValueProvisionKind kind, final Boolean value, final Class<?>... types) {
 		return !value;
 	}
 }

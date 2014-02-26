@@ -21,7 +21,8 @@ public class IntegerIdValueProvider extends IdValueProvider<Integer> {
 	@Override
 	protected Integer makeNextDefaultValue(final Object entity,
 	                                       final ValueProvisionKind kind,
-	                                       final Integer value) throws Exception {
+	                                       final Integer value,
+	                                       final Class<?>... types) throws Exception {
 		return value + 1;
 	}
 }
