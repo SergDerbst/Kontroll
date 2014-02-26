@@ -10,7 +10,9 @@ import java.util.TreeSet;
 
 import org.dbunit.dataset.IDataSet;
 
+import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.utils.annotations.PersistenceTestConfig;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
@@ -59,9 +61,6 @@ public class TestDataHolder {
 	private final Set<EntityReference> allReferences = new TreeSet<>(new EntityReferenceComparator());
 	private final Map<TestPhase, Set<EntityReference>> referencesMap = new EnumMap<>(TestPhase.class);
 
-	private IDataSet dataSetForSetup;
-	private IDataSet dataSetForVerification;
-	private IDataSet dataSetForTearDown;
 	private Class<?> primaryEntityType;
 	private int numberOfPrimaryEntities;
 
@@ -128,14 +127,14 @@ public class TestDataHolder {
 		return primaryReferences;
 	}
 
-	public IDataSet fetchDataSetForTestPhase(final TestPhase testPhase) {
+	public IDataSet fetchDataSet(final TestPhase testPhase) throws Exception {
 		switch (testPhase) {
 			case Setup:
-				return this.dataSetForSetup();
+				return this.testDataSetBuilder().buildDataSetForSetup();
 			case Verification:
-				return this.dataSetForVerification();
+				return this.testDataSetBuilder().buildDataSetForVerification();
 			case TearDown:
-				return this.dataSetForTearDown();
+				return this.testDataSetBuilder().buildDataSetForTearDown();
 			default:
 				throw new RuntimeException("No data set available for: " + testPhase);
 		}
@@ -143,30 +142,6 @@ public class TestDataHolder {
 
 	public Set<EntityReference> allReferences() {
 		return this.allReferences;
-	}
-
-	public IDataSet dataSetForSetup() {
-		return this.dataSetForSetup;
-	}
-
-	public void setDataSetForSetup(final IDataSet dataSetForSetup) {
-		this.dataSetForSetup = dataSetForSetup;
-	}
-
-	public IDataSet dataSetForVerification() {
-		return this.dataSetForVerification;
-	}
-
-	public void setDataSetForVerification(final IDataSet dataSetForVerification) {
-		this.dataSetForVerification = dataSetForVerification;
-	}
-
-	public IDataSet dataSetForTearDown() {
-		return this.dataSetForTearDown;
-	}
-
-	public void setDataSetForTearDown(final IDataSet dataSetForTearDown) {
-		this.dataSetForTearDown = dataSetForTearDown;
 	}
 
 	public Class<?> primaryEntityType() {
@@ -183,5 +158,9 @@ public class TestDataHolder {
 
 	public void setNumberOfPrimaryEntities(final int numberOfPrimaryEntities) {
 		this.numberOfPrimaryEntities = numberOfPrimaryEntities;
+	}
+
+	protected TestDataSetBuilder testDataSetBuilder() {
+		return PersistenceTestContext.instance().testDataSetBuilder();
 	}
 }

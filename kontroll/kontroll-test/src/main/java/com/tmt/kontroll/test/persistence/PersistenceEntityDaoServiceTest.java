@@ -134,6 +134,7 @@ public abstract class PersistenceEntityDaoServiceTest<Entity extends Object, ID 
 		for (final EntityReference reference : this.fetchPrimaryReferences()) {
 			boolean exceptionThrown = false;
 			try {
+				this.daoService().readAll();
 				this.daoService().create((Entity) reference.entity());
 			} catch (final DataIntegrityViolationException e) {
 				exceptionThrown = true;

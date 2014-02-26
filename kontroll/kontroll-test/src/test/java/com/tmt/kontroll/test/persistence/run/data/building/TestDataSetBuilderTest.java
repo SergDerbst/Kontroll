@@ -116,9 +116,6 @@ public class TestDataSetBuilderTest {
 		verify(this.testDataSetColumnBuildingHandler).build(any(Dummy.class), eq(Dummy.class.getDeclaredField("sometimesIgnoredList")), any(DataRowBuilder.class));
 		verify(this.testDataSetColumnBuildingHandler, never()).build(any(Dummy.class), eq(Dummy.class.getDeclaredField("alwaysIgnored")), any(DataRowBuilder.class));
 		verify(this.testDataComplianceAssurer).assureTableCompliance(this.dataSetBuilder);
-		verify(this.testDataHolder).setDataSetForSetup(this.dataSet);
-		verify(this.testDataHolder, never()).setDataSetForTearDown(this.dataSet);
-		verify(this.testDataHolder, never()).setDataSetForVerification(this.dataSet);
 	}
 
 	@Test
@@ -131,9 +128,6 @@ public class TestDataSetBuilderTest {
 		verify(this.testDataSetColumnBuildingHandler).build(any(Dummy.class), eq(Dummy.class.getDeclaredField("sometimesIgnoredList")), any(DataRowBuilder.class));
 		verify(this.testDataSetColumnBuildingHandler, never()).build(any(Dummy.class), eq(Dummy.class.getDeclaredField("alwaysIgnored")), any(DataRowBuilder.class));
 		verify(this.testDataComplianceAssurer).assureTableCompliance(this.dataSetBuilder);
-		verify(this.testDataHolder, never()).setDataSetForSetup(this.dataSet);
-		verify(this.testDataHolder).setDataSetForTearDown(this.dataSet);
-		verify(this.testDataHolder, never()).setDataSetForVerification(this.dataSet);
 	}
 
 	@Test
@@ -146,8 +140,5 @@ public class TestDataSetBuilderTest {
 		verify(this.testDataSetColumnBuildingHandler, never()).build(any(Dummy.class), eq(Dummy.class.getDeclaredField("sometimesIgnoredList")), any(DataRowBuilder.class));
 		verify(this.testDataSetColumnBuildingHandler, never()).build(any(Dummy.class), eq(Dummy.class.getDeclaredField("alwaysIgnored")), any(DataRowBuilder.class));
 		verify(this.testDataComplianceAssurer).assureTableCompliance(this.dataSetBuilder);
-		verify(this.testDataHolder, never()).setDataSetForSetup(this.dataSet);
-		verify(this.testDataHolder, never()).setDataSetForTearDown(this.dataSet);
-		verify(this.testDataHolder).setDataSetForVerification(this.dataSet);
 	}
 }

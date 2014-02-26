@@ -109,6 +109,10 @@ public class ScopedContentCondition extends BaseEntity {
 		this.scopedContentConditionAttributes = scopedContentConditionAttributes;
 	}
 
+	public List<ScopedContentConditionAttribute> getScopedContentConditionAttributes() {
+		return this.scopedContentConditionAttributes;
+	}
+
 	public List<ScopedContentCondition> getChildConditions() {
 		return this.childConditions;
 	}

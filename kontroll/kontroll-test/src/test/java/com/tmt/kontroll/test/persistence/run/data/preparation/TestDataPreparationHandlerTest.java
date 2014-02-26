@@ -74,9 +74,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.Count);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -89,9 +86,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.Create);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -104,9 +98,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.Delete);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -119,9 +110,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.Exists);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -134,9 +122,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.Read);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -149,9 +134,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.Update);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -164,9 +146,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.UniqueConstraintsOnColumn);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -179,9 +158,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.UniqueConstraintsOnTable);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -194,9 +170,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.LengthConstraint);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test
@@ -209,9 +182,6 @@ public class TestDataPreparationHandlerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(this.getClass());
 		verify(this.entityInstanceProvider).provideEntityReferences(this.getClass(), TestStrategy.NullableConstraint);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 	}
 
 	@Test(expected = TestPreparationFailedException.class)

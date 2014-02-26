@@ -78,9 +78,9 @@ public class KontrollDbUnitRunnerTest {
 		initMocks(this);
 		when(this.kontrollDbUnitTestContext.getTestClass()).thenReturn((Class) TestEntityDaoServiceTest.class);
 		when(this.kontrollDbUnitTestContext.getConnection()).thenReturn(this.connection);
-		when(this.testDataHolder.fetchDataSetForTestPhase(TestPhase.Setup)).thenReturn(this.setupDataSet);
-		when(this.testDataHolder.fetchDataSetForTestPhase(TestPhase.TearDown)).thenReturn(this.tearDownDataSet);
-		when(this.testDataHolder.dataSetForVerification()).thenReturn(this.verificationDataSetExpected);
+		when(this.testDataHolder.fetchDataSet(TestPhase.Setup)).thenReturn(this.setupDataSet);
+		when(this.testDataHolder.fetchDataSet(TestPhase.TearDown)).thenReturn(this.tearDownDataSet);
+		when(this.testDataHolder.fetchDataSet(TestPhase.Verification)).thenReturn(this.verificationDataSetExpected);
 		when(this.setupDataSet.getTableNames()).thenReturn(new String[0]);
 		when(this.tearDownDataSet.getTableNames()).thenReturn(new String[0]);
 		when(this.verificationDataSetExpected.getTableNames()).thenReturn(new String[0]);

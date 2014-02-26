@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.tmt.kontroll.content.persistence.conversion.impl.LongStringConverterTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 sec

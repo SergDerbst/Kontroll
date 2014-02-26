@@ -3,11 +3,11 @@ package com.tmt.kontroll.test.persistence.run.data;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import java.util.List;
 import java.util.Set;
@@ -17,14 +17,33 @@ import org.dbunit.dataset.IDataSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
+import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestPhase;
 
+/**
+ * <b><i>Note:</i></b>
+ * </br>
+ * If you encounter a <code>java.lang.VerifyError</code> babbling about some inconsistent stackmap frames,
+ * please make sure to follow these <a href="http://blog.triona.de/development/jee/how-to-use-powermock-with-java-7.html">instructions</a>.
+ * </p>
+ * 
+ * @author Sergio Weigel
+ *
+ */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({PersistenceTestContext.class})
 public class TestDataHolderTest {
 
+	@Mock
+	private PersistenceTestContext persistenceTestContext;
 	@Mock
 	private EntityReference firstReference;
 	@Mock
@@ -39,6 +58,8 @@ public class TestDataHolderTest {
 	private IDataSet verificationDataSet;
 	@Mock
 	private IDataSet tearDownDataSet;
+	@Mock
+	private TestDataSetBuilder testDataSetBuilder;
 
 	private Set<EntityReference> firstReferences;
 	private Set<EntityReference> secondReferences;
@@ -47,14 +68,20 @@ public class TestDataHolderTest {
 	private TestDataHolder toTest;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		initMocks(this);
+		mockStatic(PersistenceTestContext.class);
 		when(this.comparator.compare(this.firstReference, this.secondReference)).thenReturn(-1);
 		when(this.comparator.compare(this.secondReference, this.firstReference)).thenReturn(1);
 		when(this.comparator.compare(this.firstReference, this.thirdReference)).thenReturn(-1);
 		when(this.comparator.compare(this.thirdReference, this.firstReference)).thenReturn(1);
 		when(this.comparator.compare(this.secondReference, this.thirdReference)).thenReturn(-1);
 		when(this.comparator.compare(this.thirdReference, this.secondReference)).thenReturn(1);
+		when(PersistenceTestContext.instance()).thenReturn(this.persistenceTestContext);
+		when(this.persistenceTestContext.testDataSetBuilder()).thenReturn(this.testDataSetBuilder);
+		when(this.testDataSetBuilder.buildDataSetForSetup()).thenReturn(this.setupDataSet);
+		when(this.testDataSetBuilder.buildDataSetForVerification()).thenReturn(this.verificationDataSet);
+		when(this.testDataSetBuilder.buildDataSetForTearDown()).thenReturn(this.tearDownDataSet);
 		this.firstReferences = this.prepareEntityReferences(this.firstReference);
 		this.secondReferences = this.prepareEntityReferences(this.secondReference);
 		this.thirdReferences = this.prepareEntityReferences(this.thirdReference);
@@ -169,54 +196,36 @@ public class TestDataHolderTest {
 	}
 
 	@Test
-	public void testThatFetchDataSetForTestPhaseWorksForSetup() {
-		//given
-		this.toTest.setDataSetForSetup(this.setupDataSet);
+	public void testThatFetchDataSetForTestPhaseWorksForSetup() throws Exception {
 		//when
-		final IDataSet setupDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.Setup);
-		final IDataSet verificationDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.Verification);
-		final IDataSet tearDownDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.TearDown);
+		final IDataSet setupDataSet = this.toTest.fetchDataSet(TestPhase.Setup);
 		//then
 		assertNotNull(setupDataSet);
-		assertNull(verificationDataSet);
-		assertNull(tearDownDataSet);
 		assertEquals(this.setupDataSet, setupDataSet);
 	}
 
 	@Test
-	public void testThatFetchDataSetForTestPhaseWorksForVerification() {
-		//given
-		this.toTest.setDataSetForVerification(this.verificationDataSet);
+	public void testThatFetchDataSetForTestPhaseWorksForVerification() throws Exception {
 		//when
-		final IDataSet setupDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.Setup);
-		final IDataSet verificationDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.Verification);
-		final IDataSet tearDownDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.TearDown);
+		final IDataSet verificationDataSet = this.toTest.fetchDataSet(TestPhase.Verification);
 		//then
-		assertNull(setupDataSet);
 		assertNotNull(verificationDataSet);
-		assertNull(tearDownDataSet);
 		assertEquals(this.verificationDataSet, verificationDataSet);
 	}
 
 	@Test
-	public void testThatFetchDataSetForTestPhaseWorksForTearDown() {
-		//given
-		this.toTest.setDataSetForTearDown(this.tearDownDataSet);
+	public void testThatFetchDataSetForTestPhaseWorksForTearDown() throws Exception {
 		//when
-		final IDataSet setupDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.Setup);
-		final IDataSet verificationDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.Verification);
-		final IDataSet tearDownDataSet = this.toTest.fetchDataSetForTestPhase(TestPhase.TearDown);
+		final IDataSet tearDownDataSet = this.toTest.fetchDataSet(TestPhase.TearDown);
 		//then
-		assertNull(setupDataSet);
-		assertNull(verificationDataSet);
 		assertNotNull(tearDownDataSet);
 		assertEquals(this.tearDownDataSet, tearDownDataSet);
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void testThatFetchDataSetForTestPhaseWorksThrowsException() {
+	public void testThatFetchDataSetForTestPhaseWorksThrowsException() throws Exception {
 		//when
-		this.toTest.fetchDataSetForTestPhase(TestPhase.Running);
+		this.toTest.fetchDataSet(TestPhase.Running);
 	}
 
 	@Test

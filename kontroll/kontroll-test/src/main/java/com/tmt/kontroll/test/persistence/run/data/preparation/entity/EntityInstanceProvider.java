@@ -1,21 +1,35 @@
 package com.tmt.kontroll.test.persistence.run.data.preparation.entity;
 
 import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
-import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrieveTypeArgumentsOfField;
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.isRelationshipField;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityProvisionHelper.valueProvisionKind;
+import static com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityProvisionHelper.valueProvisionTypes;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Map;
 
 import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.relationships.EntityRelationshipCollector;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionHandler;
-import com.tmt.kontroll.test.persistence.run.data.preparation.entity.values.provision.ValueProvisionKind;
 import com.tmt.kontroll.test.persistence.run.utils.enums.TestStrategy;
 
+/**
+ * The entity instance provider is responsible for instantiating instances of entities
+ * with all field values set.
+ * <p>
+ * It first delegates the instantiation of entities to the {@link EntityRelationshipCollector},
+ * which will instantiate all entity instances required to meet the relationship requirements
+ * for the root entity to be provided here.
+ * <p>
+ * It then iterates over all fields and delegates them to the {@link ValueProvisionHandler} in
+ * order to aquire values for them. It is assumed that all relationship fields have already been
+ * set during entity relationship collection, so that their value provision is omitted.
+ * </p>
+ * 
+ * @author Sergio Weigel
+ *
+ */
 public class EntityInstanceProvider {
 
 	private static class InstanceHolder {
@@ -52,22 +66,13 @@ public class EntityInstanceProvider {
 
 	private void setFieldValue(final EntityReference reference,
 	                           final Field field) throws Exception {
-		final Class<?> fieldType = field.getType();
 		final ValueProvisionHandler valueProvisionHandler = this.valueProvisionHandler();
 		if (isRelationshipField(field)) {
 			return;
 		}
 		final Object entity = reference.entity();
 		if (field.get(entity) == null) {
-			if (Collection.class.isAssignableFrom(fieldType)) {
-				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.OneDimensional, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0)));
-			} else if (Map.class.isAssignableFrom(fieldType)) {
-				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.TwoDimensional, entity.getClass(), fieldType, retrieveTypeArgumentsOfField(field, 0), retrieveTypeArgumentsOfField(field, 1)));
-			} else if (fieldType.isArray()) {
-				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.OneDimensional, entity.getClass(), fieldType, fieldType.getComponentType()));
-			}	else {
-				field.set(entity, valueProvisionHandler.provide(entity, ValueProvisionKind.ZeroDimensional, entity.getClass(), fieldType));
-			}
+			field.set(entity, valueProvisionHandler.provide(entity, valueProvisionKind(field), valueProvisionTypes(entity, field)));
 		}
 	}
 

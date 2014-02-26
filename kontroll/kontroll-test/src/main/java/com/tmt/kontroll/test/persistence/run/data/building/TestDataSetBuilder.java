@@ -56,16 +56,16 @@ public class TestDataSetBuilder {
 		this.builder = new DataSetBuilder();
 	}
 
-	public void buildDataSetForSetup() throws Exception {
-		this.testDataHolder().setDataSetForSetup(this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.Setup), false));
+	public IDataSet buildDataSetForSetup() throws Exception {
+		return this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.Setup), false);
 	}
 
-	public void buildDataSetForVerification() throws Exception {
-		this.testDataHolder().setDataSetForVerification(this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.Verification), true));
+	public IDataSet buildDataSetForVerification() throws Exception {
+		return this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.Verification), true);
 	}
 
-	public void buildDataSetForTearDown() throws Exception {
-		this.testDataHolder().setDataSetForTearDown(this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.TearDown), false));
+	public IDataSet buildDataSetForTearDown() throws Exception {
+		return this.buildDataSet(this.testDataHolder().fetchReferences(TestPhase.TearDown), false);
 	}
 
 	private IDataSet buildDataSet(final Set<EntityReference> references,

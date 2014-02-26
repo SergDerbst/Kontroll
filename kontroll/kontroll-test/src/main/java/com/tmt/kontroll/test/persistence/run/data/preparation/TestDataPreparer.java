@@ -9,7 +9,6 @@ import com.tmt.kontroll.test.persistence.run.PersistenceTestContext;
 import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReference;
 import com.tmt.kontroll.test.persistence.run.data.assertion.entity.EntityReferenceAsserter;
-import com.tmt.kontroll.test.persistence.run.data.building.TestDataSetBuilder;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityInstanceProvider;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityReferenceComparator;
 import com.tmt.kontroll.test.persistence.run.data.preparation.entity.EntityUpdateProvider;
@@ -43,9 +42,6 @@ public abstract class TestDataPreparer {
 	                    final String entityClassName) throws Exception {
 		if (this.isResponsible(config)) {
 			this.prepareReferenceEntities(config, entityClassName);
-			this.testDataSetBuilder().buildDataSetForSetup();
-			this.testDataSetBuilder().buildDataSetForVerification();
-			this.testDataSetBuilder().buildDataSetForTearDown();
 			return;
 		}
 		if (this.nextPreparer == null) {
@@ -198,9 +194,5 @@ public abstract class TestDataPreparer {
 
 	protected TestDataHolder testDataHolder() {
 		return PersistenceTestContext.instance().testDataHolder();
-	}
-
-	protected TestDataSetBuilder testDataSetBuilder() {
-		return PersistenceTestContext.instance().testDataSetBuilder();
 	}
 }

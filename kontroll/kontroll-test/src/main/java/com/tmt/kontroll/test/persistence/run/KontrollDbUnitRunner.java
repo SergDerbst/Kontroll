@@ -105,13 +105,13 @@ public class KontrollDbUnitRunner {
 		final IDatabaseConnection connection = testContext.getConnection();
 		final DatabaseSequenceFilter tableSequenceFilter = new DatabaseSequenceFilter(connection);
 		final DatabaseOperation operation= DatabaseOperation.CLEAN_INSERT;
-		operation.execute(connection, new FilteredDataSet(tableSequenceFilter, this.testDataHolder().fetchDataSetForTestPhase(testPhase)));
+		operation.execute(connection, new FilteredDataSet(tableSequenceFilter, this.testDataHolder().fetchDataSet(testPhase)));
 	}
 
 	private void verfiy(final KontrollDbUnitTestContext testContext) throws Exception {
 		final IDatabaseConnection connection = testContext.getConnection();
 		final IDataSet actualDataSet = connection.createDataSet();
-		final IDataSet expectedDataSet = this.testDataHolder().dataSetForVerification();
+		final IDataSet expectedDataSet = this.testDataHolder().fetchDataSet(TestPhase.Verification);
 		DatabaseAssertionMode.NON_STRICT.getDatabaseAssertion().assertEquals(expectedDataSet, actualDataSet);
 	}
 

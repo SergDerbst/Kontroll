@@ -16,6 +16,8 @@ public class ScopedContentConditionTest extends ObjectDataTest<ScopedContentCond
 	@Before
 	public void setUp() throws Exception {
 		this.getFieldByTypeReferenceMap().put(ConditionalOperator.class, ConditionalOperator.And);
+		this.getFieldByNameReferenceMap().put("childConditions", new ArrayList<ScopedContentCondition>());
+		this.getFieldByNameReferenceMap().put("parentConditions", new ArrayList<ScopedContentCondition>());
 		this.getFieldByNameReferenceMap().put("scopedContents", new ArrayList<ScopedContent>());
 		this.getFieldByNameReferenceMap().put("scopedContentItems", new ArrayList<ScopedContentItem>());
 		this.getFieldByNameReferenceMap().put("scopedContentConditionAttributes", new ArrayList<ScopedContentConditionAttribute>());

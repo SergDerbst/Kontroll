@@ -417,8 +417,8 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.14.1</version>
 					<configuration>
-                <argLine>-XX:-UseSplitVerifier</argLine>
-            </configuration>
+						<argLine>-XX:-UseSplitVerifier</argLine>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

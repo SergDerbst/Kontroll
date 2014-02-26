@@ -123,9 +123,6 @@ public abstract class TestDataPreparerTest {
 		verify(this.testDataHolder).setPrimaryEntityType(Dummy.class);
 		verify(this.entityInstanceProvider).provideEntityReferences(Dummy.class, this.testStrategy);
 		verify(this.entityInstanceProvider).provideValues();
-		verify(this.testDataSetBuilder).buildDataSetForSetup();
-		verify(this.testDataSetBuilder).buildDataSetForTearDown();
-		verify(this.testDataSetBuilder).buildDataSetForVerification();
 		this.verifyReferencesAfterTest();
 	}
 

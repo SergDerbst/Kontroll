@@ -125,7 +125,7 @@ public class JpaEntityUtils {
 		final List<Field> fields = new ArrayList<>();
 		for (final Field field : retrievePropertyFields(entity.getClass())) {
 			final Column column = field.getAnnotation(Column.class);
-			if (column != null && !column.unique()) {
+			if (column != null && column.unique()) {
 				fields.add(field);
 				continue;
 			}
