@@ -9,8 +9,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(BaseEntity.class)
 public abstract class BaseEntity_ {
 
-	public static volatile SingularAttribute<BaseEntity, Integer> id;
 	public static volatile SingularAttribute<BaseEntity, Timestamp> timeStamp;
+	public static volatile SingularAttribute<BaseEntity, Integer> id;
 
 }
 

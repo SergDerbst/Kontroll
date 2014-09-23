@@ -72,10 +72,10 @@
 			<artifactId>hsqldb</artifactId>
 		</dependency>
 		<!-- maven resource plugin -->
-		<dependency>
+		<!-- dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-resources-plugin</artifactId>
-		</dependency>
+		</dependency -->
 		<!-- query dsl apt -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>

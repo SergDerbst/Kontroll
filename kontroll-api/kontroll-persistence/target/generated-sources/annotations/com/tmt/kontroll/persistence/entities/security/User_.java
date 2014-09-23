@@ -9,10 +9,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(User.class)
 public abstract class User_ extends com.tmt.kontroll.persistence.entities.BaseEntity_ {
 
-	public static volatile SingularAttribute<User, Boolean> enabled;
-	public static volatile ListAttribute<User, Authority> authorities;
-	public static volatile SingularAttribute<User, String> name;
 	public static volatile SingularAttribute<User, String> password;
+	public static volatile SingularAttribute<User, String> name;
+	public static volatile ListAttribute<User, Authority> authorities;
+	public static volatile SingularAttribute<User, Boolean> enabled;
 
 }
 

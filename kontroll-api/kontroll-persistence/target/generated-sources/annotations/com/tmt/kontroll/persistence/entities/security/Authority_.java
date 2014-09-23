@@ -9,9 +9,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Authority.class)
 public abstract class Authority_ extends com.tmt.kontroll.persistence.entities.BaseEntity_ {
 
-	public static volatile ListAttribute<Authority, User> users;
 	public static volatile SingularAttribute<Authority, String> name;
 	public static volatile SingularAttribute<Authority, String> comment;
+	public static volatile ListAttribute<Authority, User> users;
 
 }
 

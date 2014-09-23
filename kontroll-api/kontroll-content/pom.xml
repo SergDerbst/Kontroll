@@ -34,7 +34,6 @@
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
