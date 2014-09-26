@@ -72,10 +72,13 @@
 			<artifactId>hsqldb</artifactId>
 		</dependency>
 		<!-- maven resource plugin -->
-		<!-- dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-resources-plugin</artifactId>
-		</dependency -->
+		<!-- dependency> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-resources-plugin</artifactId> 
+			</dependency -->
+		<!-- postgres jdbc driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
 		<!-- query dsl apt -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
@@ -170,23 +173,11 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<!-- plugin>
-					<groupId>com.mysema.maven</groupId>
-					<artifactId>maven-apt-plugin</artifactId>
-					<version>1.0.9</version>
-					<executions>
-						<execution>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>target/generated-sources</outputDirectory>
-								<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin -->
+				<!-- plugin> <groupId>com.mysema.maven</groupId> <artifactId>maven-apt-plugin</artifactId> 
+					<version>1.0.9</version> <executions> <execution> <phase>generate-sources</phase> 
+					<goals> <goal>process</goal> </goals> <configuration> <outputDirectory>target/generated-sources</outputDirectory> 
+					<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor> </configuration> 
+					</execution> </executions> </plugin -->
 				<!-- maven build helper plugin -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>

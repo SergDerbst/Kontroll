@@ -11,7 +11,7 @@ public class UiConfig {
 	@Bean
 	public UiProperties uiProperties() {
 		final UiProperties uiProperties = new UiProperties();
-		uiProperties.getLayoutBasePackages().add("com.tmt.kontroll.ui");
+		uiProperties.layoutBasePackages().add("com.tmt.kontroll.ui");
 		return uiProperties;
 	}
 }

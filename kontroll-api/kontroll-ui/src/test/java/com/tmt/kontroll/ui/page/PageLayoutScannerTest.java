@@ -73,7 +73,7 @@ public class PageLayoutScannerTest {
 		this.toTest.contentProperties = this.contentProperties;
 		this.toTest.pageContentManager = this.pageContentManager;
 		this.toTest.pageLayout = this.pageLayout;
-		when(this.contentProperties.getLayoutBasePackages()).thenReturn(new ArrayList<String>() {{
+		when(this.contentProperties.layoutBasePackages()).thenReturn(new ArrayList<String>() {{
 			add("basePackages");
 		}});
 	}

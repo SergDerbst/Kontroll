@@ -17,7 +17,7 @@ public class ContextPropertiesTest {
 
 	@Test
 	public void thatContextPropertiesAreInitializedCorrectly() {
-		assertNotNull(this.toTest.getRequestContextServiceBasePackages());
-		assertTrue(this.toTest.getRequestContextServiceBasePackages().isEmpty());
+		assertNotNull(this.toTest.requestContextServiceBasePackages());
+		assertTrue(this.toTest.requestContextServiceBasePackages().isEmpty());
 	}
 }

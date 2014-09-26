@@ -14,7 +14,7 @@ public class ContextProperties {
 	 * 
 	 * @return
 	 */
-	public List<String> getRequestContextServiceBasePackages() {
+	public List<String> requestContextServiceBasePackages() {
 		return requestContextSerivceBasePackages;
 	}
 }

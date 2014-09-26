@@ -39,7 +39,7 @@ public class RequestContextScanner {
 
 	public void scan() {
 		try {
-			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(RequestContext.class, RequestContextService.class, this.contextProperties.getRequestContextServiceBasePackages())) {
+			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(RequestContext.class, RequestContextService.class, this.contextProperties.requestContextServiceBasePackages())) {
 				@SuppressWarnings("unchecked")
 				final Class<? extends RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto>> serviceClass = (Class<? extends RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto>>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 				final RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto> service = serviceClass.newInstance();

@@ -51,7 +51,7 @@ public class PageLayoutScanner {
 	}
 
 	private void scanHeaders() throws Exception {
-		for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Layout.class, PageLayoutHeader.class, this.contentProperties.getLayoutBasePackages())) {
+		for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Layout.class, PageLayoutHeader.class, this.contentProperties.layoutBasePackages())) {
 			@SuppressWarnings("unchecked")
 			final Class<? extends PageLayoutHeader> headerClass = (Class<? extends PageLayoutHeader>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 			for (final String pattern : headerClass.getAnnotation(Layout.class).patterns()) {
@@ -61,7 +61,7 @@ public class PageLayoutScanner {
 	}
 
 	private void scanBodies() throws Exception {
-		for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Layout.class, PageLayoutBody.class, this.contentProperties.getLayoutBasePackages())) {
+		for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Layout.class, PageLayoutBody.class, this.contentProperties.layoutBasePackages())) {
 			@SuppressWarnings("unchecked")
 			final Class<? extends PageLayoutBody> bodyClass = (Class<? extends PageLayoutBody>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 			for (final String pattern : bodyClass.getAnnotation(Layout.class).patterns()) {
@@ -71,7 +71,7 @@ public class PageLayoutScanner {
 	}
 
 	private void scanFooters() throws Exception {
-		for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Layout.class, PageLayoutFooter.class, this.contentProperties.getLayoutBasePackages())) {
+		for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Layout.class, PageLayoutFooter.class, this.contentProperties.layoutBasePackages())) {
 			@SuppressWarnings("unchecked")
 			final Class<? extends PageLayoutFooter> footerClass = (Class<? extends PageLayoutFooter>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 			for (final String pattern : footerClass.getAnnotation(Layout.class).patterns()) {

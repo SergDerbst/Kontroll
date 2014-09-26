@@ -15,7 +15,7 @@ public class ContextConfig {
 	@Bean
 	public ContextProperties contextProperties() {
 		final ContextProperties contextProperties = new ContextProperties();
-		contextProperties.getRequestContextServiceBasePackages().add("com.tmt.kontroll.context");
+		contextProperties.requestContextServiceBasePackages().add("com.tmt.kontroll.context");
 		return contextProperties;
 	}
 }

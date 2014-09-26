@@ -17,6 +17,6 @@ public class UiPropertiesTest {
 
 	@Test
 	public void testThatUiPropertiesAreInitializedCorrectly() {
-		assertNotNull(this.toTest.getLayoutBasePackages());
+		assertNotNull(this.toTest.layoutBasePackages());
 	}
 }
