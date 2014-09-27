@@ -11,8 +11,8 @@ import com.tmt.kontroll.persistence.config.PersistenceTestConfig;
 import com.tmt.kontroll.test.config.TestConfig;
 
 @Configuration
-@ComponentScan(value = {"com.tmt.kontroll.content"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @Import({TestConfig.class, ContextConfig.class, PersistenceTestConfig.class})
+@ComponentScan(value = {"com.tmt.kontroll.content"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @EnableJpaRepositories(basePackages = {"com.tmt.kontroll.content.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
 public class ContentTestConfig {
 

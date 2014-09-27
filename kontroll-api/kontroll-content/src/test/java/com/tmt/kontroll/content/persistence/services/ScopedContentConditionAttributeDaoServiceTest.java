@@ -6,16 +6,17 @@ import org.springframework.test.context.ContextConfiguration;
 import com.tmt.kontroll.content.config.ContentTestConfig;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.repositories.ScopedContentConditionAttributeRepository;
+import com.tmt.kontroll.content.persistence.services.impl.ScopedContentConditionAttributeDaoServiceImpl;
 import com.tmt.kontroll.test.persistence.PersistenceBaseEntityDaoServiceTest;
 
 @ContextConfiguration(classes = {ContentTestConfig.class})
-public class ScopedContentConditionAttributeDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<ScopedContentConditionAttribute, ScopedContentConditionAttributeRepository, ScopedContentConditionAttributeDaoService> {
+public class ScopedContentConditionAttributeDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<ScopedContentConditionAttribute, ScopedContentConditionAttributeRepository, ScopedContentConditionAttributeDaoServiceImpl> {
 
 	@Autowired
-	private ScopedContentConditionAttributeDaoService service;
+	private ScopedContentConditionAttributeDaoServiceImpl service;
 
 	@Override
-	protected ScopedContentConditionAttributeDaoService daoService() {
+	protected ScopedContentConditionAttributeDaoServiceImpl daoService() {
 		return this.service;
 	}
 }

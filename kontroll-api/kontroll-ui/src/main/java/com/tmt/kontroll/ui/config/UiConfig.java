@@ -5,12 +5,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.tmt.kontroll.commons.config.CommonsConfig;
 import com.tmt.kontroll.content.config.ContentConfig;
 import com.tmt.kontroll.context.config.ContextConfig;
 
 @Configuration
+@Import({CommonsConfig.class, ContextConfig.class, ContentConfig.class})
 @ComponentScan(value = {"com.tmt.kontroll.ui"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
-@Import({ContextConfig.class, ContentConfig.class})
 public class UiConfig {
 
 	@Bean

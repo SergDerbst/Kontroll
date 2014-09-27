@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Import;
 import com.tmt.kontroll.ui.config.UiConfig;
 
 @Configuration
-@ComponentScan(value = {"com.tmt.kontroll.web"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @Import({UiConfig.class})
+@ComponentScan(value = {"com.tmt.kontroll.web"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 public class WebConfig {
 
 }

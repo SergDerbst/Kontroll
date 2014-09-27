@@ -36,9 +36,9 @@ import com.tmt.kontroll.content.verification.ContentConditionVerifier;
  * content will be empty.
  * </p>
  * Only one content can be present within one scope and at any given set of conditions.
- * 
+ *
  * @author Sergio Weigel
- * 
+ *
  * @param <DTO>
  *          - The DTO coming from the application.
  */
@@ -48,11 +48,28 @@ public class ContentService {
 	@Autowired
 	ContentConditionVerifier verifier;
 	@Autowired
-	ScopeDaoService scopeDaoService;
+	ScopeDaoService						scopeDaoService;
 	@Autowired
-	ScopedContentDaoService scopedContentDaoService;
+	ScopedContentDaoService		scopedContentDaoService;
 	@Autowired
 	ContentParser scopedContentParser;
+
+	private List<ScopedContent> findValidContent(final List<ScopedContent> scopedContents, final ContentDto contentDto) {
+		final List<ScopedContent> foundContent = new ArrayList<ScopedContent>();
+		for (final ScopedContent scopedContent : scopedContents) {
+			final List<ScopedContentCondition> contentConditions = scopedContent.getConditions();
+			if (contentConditions.isEmpty()) {
+				foundContent.add(scopedContent);
+			} else {
+				for (final ScopedContentCondition contentCondition : contentConditions) {
+					if (this.verifier.verify(contentCondition, contentDto)) {
+						foundContent.add(scopedContent);
+					}
+				}
+			}
+		}
+		return foundContent;
+	}
 
 	public List<ContentItem<? extends Enum<?>>> loadContent(final ContentDto contentDto) throws ContentException {
 		final String scopeName = contentDto.getScopeName();
@@ -74,23 +91,6 @@ public class ContentService {
 			throw TooMuchContentFoundException.prepare(contentDto);
 		}
 		return this.verifyAndParseContentItems(foundContent.get(0), contentDto);
-	}
-
-	private List<ScopedContent> findValidContent(final List<ScopedContent> scopedContents, final ContentDto contentDto) {
-		final List<ScopedContent> foundContent = new ArrayList<ScopedContent>();
-		for (final ScopedContent scopedContent : scopedContents) {
-			final List<ScopedContentCondition> contentConditions = scopedContent.getConditions();
-			if (contentConditions.isEmpty()) {
-				foundContent.add(scopedContent);
-			} else {
-				for (final ScopedContentCondition contentCondition : contentConditions) {
-					if (this.verifier.verify(contentCondition, contentDto)) {
-						foundContent.add(scopedContent);
-					}
-				}
-			}
-		}
-		return foundContent;
 	}
 
 	private List<ContentItem<? extends Enum<?>>> verifyAndParseContentItems(final ScopedContent scopedContent, final ContentDto contentDto) throws NoContentParserFoundException {

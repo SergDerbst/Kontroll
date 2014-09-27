@@ -5,29 +5,35 @@ import java.util.Properties;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * Spring configuration class to set up the database.
- * 
- * @author Sergio Weigel
- *
- */
 @Configuration
 @EnableTransactionManagement
 @PropertySource(name = "database", value = "classpath:/jpaConfig/kontrollJpaConfig.properties")
-@EnableJpaRepositories(basePackages = {"com.tmt.kontroll.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
-public class JpaConfig {
+@EnableJpaRepositories(basePackages = {"com.tmt.kontroll.persistence.repositories", "com.tmt.toomanythoughts.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
+public class KontrollTestJpaConfig {
+
+	@Value("${database.driverClassName}")
+	private String	driverClassName;
+
+	@Value("${database.url}")
+	private String	url;
+
+	@Value("${database.user}")
+	private String	username;
+
+	@Value("${database.password}")
+	private String	password;
 
 	@Value("${database.hibernate.hbm2ddl.auto}")
 	protected String	hbm2ddlAuto;
@@ -35,23 +41,15 @@ public class JpaConfig {
 	@Value("${database.hibernate.dialect}")
 	protected String	hibernateDialect;
 
-	@Value("${database.dataSource.jndiName}")
-	protected String	dataSourceJndiName;
-
 	@Bean
-	public DataSource dataSource() throws IllegalArgumentException, NamingException {
-		final JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-		jndiObjectFactoryBean.setJndiName(this.dataSourceJndiName);
-		jndiObjectFactoryBean.afterPropertiesSet();
+	public DataSource dataSource() {
+		final BasicDataSource basicDataSouce = new BasicDataSource();
+		basicDataSouce.setDriverClassName(this.driverClassName);
+		basicDataSouce.setUrl(this.url);
+		basicDataSouce.setUsername(this.username);
+		basicDataSouce.setPassword(this.password);
 
-		return (DataSource) jndiObjectFactoryBean.getObject();
-	}
-
-	@Bean
-	public JpaTransactionManager transactionManager() throws IllegalArgumentException, NamingException {
-		final JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-		jpaTransactionManager.setEntityManagerFactory(this.entityManagerFactoryBean().getObject());
-		return jpaTransactionManager;
+		return basicDataSouce;
 	}
 
 	@Bean
@@ -81,5 +79,12 @@ public class JpaConfig {
 		final HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
 		hibernateJpaVendorAdapter.setShowSql(false);
 		return hibernateJpaVendorAdapter;
+	}
+
+	@Bean
+	public JpaTransactionManager transactionManager() throws IllegalArgumentException, NamingException {
+		final JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setEntityManagerFactory(this.entityManagerFactoryBean().getObject());
+		return jpaTransactionManager;
 	}
 }

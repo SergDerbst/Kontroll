@@ -6,16 +6,17 @@ import org.springframework.test.context.ContextConfiguration;
 import com.tmt.kontroll.content.config.ContentTestConfig;
 import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.repositories.ScopeRepository;
+import com.tmt.kontroll.content.persistence.services.impl.ScopeDaoServiceImpl;
 import com.tmt.kontroll.test.persistence.PersistenceBaseEntityDaoServiceTest;
 
 @ContextConfiguration(classes = {ContentTestConfig.class})
-public class ScopeDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<Scope, ScopeRepository, ScopeDaoService> {
+public class ScopeDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<Scope, ScopeRepository, ScopeDaoServiceImpl> {
 
 	@Autowired
-	ScopeDaoService service;
+	ScopeDaoServiceImpl service;
 
 	@Override
-	protected ScopeDaoService daoService() {
+	protected ScopeDaoServiceImpl daoService() {
 		return this.service;
 	}
 }

@@ -22,8 +22,8 @@ import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
-import com.tmt.kontroll.content.persistence.services.ScopeDaoService;
-import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
+import com.tmt.kontroll.content.persistence.services.impl.ScopeDaoServiceImpl;
+import com.tmt.kontroll.content.persistence.services.impl.ScopedContentDaoServiceImpl;
 import com.tmt.kontroll.content.verification.ContentConditionVerifier;
 import com.tmt.kontroll.test.matchers.EmptyListMatcher;
 
@@ -31,9 +31,9 @@ import com.tmt.kontroll.test.matchers.EmptyListMatcher;
 public class ContentServiceTest {
 
 	@Mock
-	private ScopeDaoService scopeDaoService;
+	private ScopeDaoServiceImpl scopeDaoService;
 	@Mock
-	private ScopedContentDaoService scopedContentDaoService;
+	private ScopedContentDaoServiceImpl scopedContentDaoService;
 	@Mock
 	private ContentParser scopedContentParser;
 	@Mock
