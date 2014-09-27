@@ -7,14 +7,14 @@ import com.tmt.kontroll.context.request.RequestContextService;
 
 public class ContextProperties {
 
-	private final List<String> requestContextSerivceBasePackages = new ArrayList<String>();
+	private final List<String> contextSerivceBasePackages = new ArrayList<String>();
 	
 	/**
 	 * Returns a list of all the base packages containing {@link RequestContextService}s.
 	 * 
 	 * @return
 	 */
-	public List<String> requestContextServiceBasePackages() {
-		return requestContextSerivceBasePackages;
+	public List<String> contextServiceBasePackages() {
+		return contextSerivceBasePackages;
 	}
 }

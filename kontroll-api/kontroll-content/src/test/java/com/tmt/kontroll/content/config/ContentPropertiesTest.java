@@ -18,7 +18,7 @@ public class ContentPropertiesTest {
 	
 	@Test
 	public void testThatContentPropertiesAreInitializedCorrectly() {
-		assertNotNull(this.toTest.getContentItemBasePackages());
-		assertTrue(this.toTest.getContentItemBasePackages().isEmpty());
+		assertNotNull(this.toTest.contentItemBasePackages());
+		assertTrue(this.toTest.contentItemBasePackages().isEmpty());
 	}
 }

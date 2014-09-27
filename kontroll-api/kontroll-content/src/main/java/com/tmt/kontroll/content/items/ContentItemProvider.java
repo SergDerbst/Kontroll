@@ -30,7 +30,7 @@ public class ContentItemProvider {
 	@PostConstruct
 	public void generateContentItemMap() {
 		try {
-			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Content.class, ContentItem.class, this.contentProperties.getContentItemBasePackages())) {
+			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(Content.class, ContentItem.class, this.contentProperties.contentItemBasePackages())) {
 				@SuppressWarnings("unchecked")
 				Class<? extends ContentItem<?>> contentItemClass = (Class<? extends ContentItem<?>>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 				Field tagField = contentItemClass.getField("tag");

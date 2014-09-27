@@ -69,7 +69,7 @@ public class ContentItemProviderTest {
 		when(this.candidateScanner.scan(eq(Content.class), eq(ContentItem.class), any(List.class))).thenReturn(new HashSet<BeanDefinition>(){{
 			add(beanDefinition);
 		}});
-		when(this.contentProperties.getContentItemBasePackages()).thenReturn(new ArrayList<String>());
+		when(this.contentProperties.contentItemBasePackages()).thenReturn(new ArrayList<String>());
 		this.toTest = new ContentItemProvider();
 		this.toTest.candidateScanner = this.candidateScanner;
 		this.toTest.contentItemMap = this.contentItemMap;

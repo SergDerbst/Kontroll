@@ -22,7 +22,7 @@ public class ContentProperties {
 	 * Returns a list of all the base packages containing {@link ContentItem}s.
 	 * @return
 	 */
-	public List<String> getContentItemBasePackages() {
+	public List<String> contentItemBasePackages() {
 		return contentItemBasePackages;
 	}
 }

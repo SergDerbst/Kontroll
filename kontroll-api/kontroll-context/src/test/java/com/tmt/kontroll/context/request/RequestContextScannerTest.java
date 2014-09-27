@@ -42,7 +42,7 @@ public class RequestContextScannerTest {
 	public void setUp() throws Exception {
 		initMocks(this);
 		when(this.beanDefinition.getBeanClassName()).thenReturn(TestRequestContextService.class.getName());
-		when(this.contextProperties.requestContextServiceBasePackages()).thenReturn(new ArrayList<String>());
+		when(this.contextProperties.contextServiceBasePackages()).thenReturn(new ArrayList<String>());
 		when(this.candidateScanner.scan(eq(RequestContext.class), eq(RequestContextService.class), any(List.class))).thenReturn(new HashSet<BeanDefinition>() {{
 			add(beanDefinition);
 		}});

@@ -19,7 +19,7 @@ public class ContentTestConfig {
 	@Bean
 	public ContentProperties contentProperties() {
 		final ContentProperties contentProperties = new ContentProperties();
-		contentProperties.getContentItemBasePackages().add("com.tmt.kontroll.content");
+		contentProperties.contentItemBasePackages().add("com.tmt.kontroll.content");
 		return contentProperties;
 	}
 }
