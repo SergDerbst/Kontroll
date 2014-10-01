@@ -16,7 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.tmt.kontroll.content.ContentDto;
 import com.tmt.kontroll.content.persistence.conversion.ValueStringConversionChain;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
-import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
+import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
 import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeBooleanValueVerifier;
 import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeByteValueVerifier;
 import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeCharacterValueVerifier;
@@ -71,7 +71,7 @@ public class ConditionAttributeValueVerificationChainTest {
 	public void setUp() throws Exception {
 		when(this.attribute.getExpectedValueType()).thenReturn(this.getClass().getName());
 		when(this.attribute.getExpectedValue()).thenReturn("bla");
-		when(this.attribute.getOperator()).thenReturn(ReferenceOperator.IsEqual);
+		when(this.attribute.getOperator()).thenReturn(BooleanOperator.IsEqual);
 		when(this.contentDto.getRequestContext()).thenReturn(this.requestContext);
 		when(this.valueConversionChain.convertToValue(any(String.class), any(Class.class))).thenReturn(this.expectedValue);
 		when(this.pathProcessor.process(any(String.class), any(Set.class))).thenReturn(this.actualValue);
@@ -100,7 +100,7 @@ public class ConditionAttributeValueVerificationChainTest {
 		this.toTest.verify(this.attribute, this.contentDto);
 
 		//then
-		verify(this.stringConditionAttributeVerifier).verify(this.expectedValue, this.actualValue, this.getClass(), ReferenceOperator.IsEqual);
+		verify(this.stringConditionAttributeVerifier).verify(this.expectedValue, this.actualValue, this.getClass(), BooleanOperator.IsEqual);
 	}
 
 	@Test(expected = RuntimeException.class)

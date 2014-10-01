@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
+import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
 import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
@@ -31,7 +31,7 @@ public class ScopedContentConditionAttribute extends BaseEntity {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ReferenceOperator	operator;
+	private BooleanOperator	operator;
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_Large)
 	private String						expectedValue;
@@ -79,11 +79,11 @@ public class ScopedContentConditionAttribute extends BaseEntity {
 		this.valuePath = valuePath;
 	}
 
-	public ReferenceOperator getOperator() {
+	public BooleanOperator getOperator() {
 		return this.operator;
 	}
 
-	public void setOperator(final ReferenceOperator operator) {
+	public void setOperator(final BooleanOperator operator) {
 		this.operator = operator;
 	}
 

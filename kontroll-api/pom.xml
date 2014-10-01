@@ -31,7 +31,9 @@
 		<jstl.version>1.2</jstl.version>
 		<junit.version>4.10</junit.version>
 		<log4j.version>1.2.17</log4j.version>
+		<maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
 		<maven.resource.plugin.version>2.4.3</maven.resource.plugin.version>
+		<maven.source.plugin.version>2.2.1</maven.source.plugin.version>
 		<mockito.version>1.9.5</mockito.version>
 		<postgres.jdbc.version>9.3-1100-jdbc41</postgres.jdbc.version>
 		<powermock.version>1.5.5</powermock.version>
@@ -436,6 +438,32 @@
 						<argLine>-XX:-UseSplitVerifier</argLine>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven.source.plugin.version}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven.javadoc.plugin.version}</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin-->
 			</plugins>
 		</pluginManagement>
 	</build>

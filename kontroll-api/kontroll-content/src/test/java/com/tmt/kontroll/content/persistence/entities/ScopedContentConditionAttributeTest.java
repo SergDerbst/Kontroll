@@ -2,7 +2,7 @@ package com.tmt.kontroll.content.persistence.entities;
 
 import org.junit.Before;
 
-import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
+import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
 import com.tmt.kontroll.test.ObjectDataTest;
 
 public class ScopedContentConditionAttributeTest extends ObjectDataTest<ScopedContentConditionAttribute> {
@@ -13,7 +13,7 @@ public class ScopedContentConditionAttributeTest extends ObjectDataTest<ScopedCo
 
 	@Before
 	public void setUp() throws Exception {
-		this.getFieldByTypeReferenceMap().put(ReferenceOperator.class, ReferenceOperator.IsEqual);
+		this.getFieldByTypeReferenceMap().put(BooleanOperator.class, BooleanOperator.IsEqual);
 		this.getFieldByTypeReferenceMap().put(ScopedContentCondition.class, new ScopedContentCondition());
 	}
 }

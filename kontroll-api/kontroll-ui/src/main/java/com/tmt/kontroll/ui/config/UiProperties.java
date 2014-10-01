@@ -8,8 +8,8 @@ public class UiProperties {
 	private final List<String> layoutComponentBasePackages = new ArrayList<String>();
 	
 	/**
-	 * Returns a list of all the base backages containing {@link PageLayoutHeader}s, 
-	 * {@link PageLayoutBody}s, and {@link PageLayoutFooter}s.
+	 * Returns a list of all the base backages containing {@link PageHeader}s, 
+	 * {@link PageBody}s, and {@link PageFooter}s.
 	 * @return
 	 */
 	public List<String> layoutBasePackages() {

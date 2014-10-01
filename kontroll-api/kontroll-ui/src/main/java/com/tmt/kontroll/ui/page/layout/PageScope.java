@@ -1,6 +1,6 @@
 package com.tmt.kontroll.ui.page.layout;
 
-public interface PageLayoutScope {
+public interface PageScope {
 
 	String getScopeName();
 }

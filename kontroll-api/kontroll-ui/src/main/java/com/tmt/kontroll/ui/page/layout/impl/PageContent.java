@@ -1,9 +1,10 @@
-package com.tmt.kontroll.ui.page.layout;
+package com.tmt.kontroll.ui.page.layout.impl;
 
 import java.util.List;
 
 import com.tmt.kontroll.content.ContentService;
 import com.tmt.kontroll.content.items.ContentItem;
+import com.tmt.kontroll.ui.page.layout.PageSegment;
 
 /**
  * A page layout container is a layout segment that contains nothing but
@@ -12,7 +13,7 @@ import com.tmt.kontroll.content.items.ContentItem;
  * @author Sergio Weigel
  *
  */
-public abstract class PageLayoutContent extends PageLayoutSegment {
+public abstract class PageContent extends PageSegment {
 
 	public List<ContentItem<? extends Enum<?>>> content;
 

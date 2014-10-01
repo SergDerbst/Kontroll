@@ -2,7 +2,7 @@ package com.tmt.kontroll.content.verification.conditions.attributes.values;
 
 import java.util.Comparator;
 
-import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
+import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
 
 public abstract class ConditionAttributeValueVerifier<V> {
 
@@ -21,7 +21,7 @@ public abstract class ConditionAttributeValueVerifier<V> {
 		return false;
 	}
 
-	protected boolean doVerify(final V expectedValue, final V actualValue, final ReferenceOperator operator) {
+	protected boolean doVerify(final V expectedValue, final V actualValue, final BooleanOperator operator) {
 		switch (operator) {
 			case IsEqual:
 				return this.isEqual(expectedValue, actualValue);
@@ -48,7 +48,7 @@ public abstract class ConditionAttributeValueVerifier<V> {
 	public boolean verify(final Object expectedValue,
 	                      final Object actualValue,
 	                      final Class<?> valueType,
-	                      final ReferenceOperator operator) {
+	                      final BooleanOperator operator) {
 		if (this.isResponsible(valueType)) {
 			return this.doVerify((V) expectedValue, (V) actualValue, operator);
 		}

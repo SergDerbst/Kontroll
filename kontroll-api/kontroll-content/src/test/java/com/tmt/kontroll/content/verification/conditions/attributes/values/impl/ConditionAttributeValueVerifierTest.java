@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.tmt.kontroll.content.persistence.selections.ReferenceOperator;
+import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
 import com.tmt.kontroll.content.verification.conditions.attributes.values.ConditionAttributeValueVerifier;
 
 public abstract class ConditionAttributeValueVerifierTest<R, N> {
@@ -43,9 +43,9 @@ public abstract class ConditionAttributeValueVerifierTest<R, N> {
 
 	@Test
 	public void testThatNullEqualityIsHandledProperly() {
-		assertTrue(this.toTest.verify(null, null, this.responsibleType, ReferenceOperator.IsEqual));
-		assertFalse(this.toTest.verify(this.responsibleValue, null, this.responsibleType, ReferenceOperator.IsEqual));
-		assertFalse(this.toTest.verify(null, this.responsibleValue, this.responsibleType, ReferenceOperator.IsEqual));
+		assertTrue(this.toTest.verify(null, null, this.responsibleType, BooleanOperator.IsEqual));
+		assertFalse(this.toTest.verify(this.responsibleValue, null, this.responsibleType, BooleanOperator.IsEqual));
+		assertFalse(this.toTest.verify(null, this.responsibleValue, this.responsibleType, BooleanOperator.IsEqual));
 	}
 
 	@Test
@@ -53,9 +53,9 @@ public abstract class ConditionAttributeValueVerifierTest<R, N> {
 		//given
 		this.toTest.setNextVerifier(this.nextVerifier);
 		//when
-		this.toTest.verify(this.notResponsibleValue, this.notResponsibleValue, this.notResponsibleType, ReferenceOperator.IsEqual);
+		this.toTest.verify(this.notResponsibleValue, this.notResponsibleValue, this.notResponsibleType, BooleanOperator.IsEqual);
 		//then
-		verify(this.nextVerifier).verify(this.notResponsibleValue, this.notResponsibleValue, this.notResponsibleType, ReferenceOperator.IsEqual);
+		verify(this.nextVerifier).verify(this.notResponsibleValue, this.notResponsibleValue, this.notResponsibleType, BooleanOperator.IsEqual);
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -63,30 +63,30 @@ public abstract class ConditionAttributeValueVerifierTest<R, N> {
 		//given
 		this.toTest.setNextVerifier(null);
 		//when
-		this.toTest.verify(this.notResponsibleValue, this.notResponsibleValue, this.notResponsibleType, ReferenceOperator.IsEqual);
+		this.toTest.verify(this.notResponsibleValue, this.notResponsibleValue, this.notResponsibleType, BooleanOperator.IsEqual);
 	}
 
 	protected void testIsEqual(final Object expectedValue, final Object actualValue, final boolean reference) {
-		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, ReferenceOperator.IsEqual));
+		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, BooleanOperator.IsEqual));
 	}
 
 	protected void testIsNotEqual(final Object expectedValue, final Object actualValue, final boolean reference) {
-		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, ReferenceOperator.IsNotEqual));
+		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, BooleanOperator.IsNotEqual));
 	}
 
 	protected void testIsLargerAs(final Object expectedValue, final Object actualValue, final boolean reference) {
-		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, ReferenceOperator.IsLargerAs));
+		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, BooleanOperator.IsLargerAs));
 	}
 
 	protected void testIsLargerOrEqualAs(final Object expectedValue, final Object actualValue, final boolean reference) {
-		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, ReferenceOperator.IsLargerOrEqualAs));
+		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, BooleanOperator.IsLargerOrEqualAs));
 	}
 
 	protected void testIsSmallerAs(final Object expectedValue, final Object actualValue, final boolean reference) {
-		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, ReferenceOperator.IsSmallerAs));
+		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, BooleanOperator.IsSmallerAs));
 	}
 
 	protected void testIsSmallerOrEqualAs(final Object expectedValue, final Object actualValue, final boolean reference) {
-		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, ReferenceOperator.IsSmallerOrEqualAs));
+		assertEquals(reference, this.toTest.verify(expectedValue, actualValue, this.responsibleType, BooleanOperator.IsSmallerOrEqualAs));
 	}
 }

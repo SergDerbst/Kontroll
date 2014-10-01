@@ -6,7 +6,7 @@ package com.tmt.kontroll.content.persistence.selections;
  * @author Sergio Weigel
  *
  */
-public enum ReferenceOperator {
+public enum BooleanOperator {
 	IsEqual,
 	IsNotEqual,
 	IsSmallerAs,
