@@ -50,7 +50,7 @@ public class PagePreparator {
 		String parentScopeName = "";
 		for (int i = 0; i < scopePath.length - 1; i++) {
 			parentScopeName = parentScopeName + scopePath[i];
-			if (i != scopePath.length - 1) {
+			if (i != scopePath.length - 2) {
 				parentScopeName = parentScopeName + ".";
 			}
 		}
