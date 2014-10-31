@@ -1,6 +1,6 @@
 package com.tmt.kontroll.content.exceptions;
 
-import com.tmt.kontroll.content.ContentDto;
+import com.tmt.kontroll.content.business.content.ContentDto;
 
 public class NoContentFoundException extends ContentException {
 

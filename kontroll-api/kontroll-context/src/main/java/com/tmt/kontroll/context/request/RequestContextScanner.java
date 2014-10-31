@@ -13,12 +13,12 @@ import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.context.global.GlobalContextDto;
 
 /**
- * The request context scanner scans the base packages defined in the {@link ContentProperties} bean for 
+ * The request context scanner scans the base packages defined in the {@link ContentProperties} bean for
  * classes of type {@link RequestContextService} that are annotated with {@link RequestContext}. It then
- * iterates over all URL patterns declared in the annotation, so that for each pattern a request context 
+ * iterates over all URL patterns declared in the annotation, so that for each pattern a request context
  * is created, when it does not exist yet, consisting of services and all according DTO paths available
  * for each service.
- * 
+ *
  * @author Sergio Weigel
  *
  */
@@ -26,16 +26,16 @@ import com.tmt.kontroll.context.global.GlobalContextDto;
 public class RequestContextScanner {
 
 	@Autowired
-	ContextProperties contextProperties;
+	ContextProperties														contextProperties;
 
 	@Autowired
-	GlobalContext globalContext;
+	GlobalContext																globalContext;
 
 	@Autowired
-	RequestContextDtoPathScanner dtoPathScanner;
+	RequestContextDtoPathScanner								dtoPathScanner;
 
 	@Autowired
-	AnnotationAndAssignableTypeCandidateScanner candidateScanner;
+	AnnotationAndAssignableTypeCandidateScanner	candidateScanner;
 
 	public void scan() {
 		try {
@@ -43,13 +43,13 @@ public class RequestContextScanner {
 				@SuppressWarnings("unchecked")
 				final Class<? extends RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto>> serviceClass = (Class<? extends RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto>>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 				final RequestContextService<? extends RequestContextDto, ? extends GlobalContextDto> service = serviceClass.newInstance();
-				for (String pattern : serviceClass.getAnnotation(RequestContext.class).patterns()) {
-					this.globalContext.addRequestContextItem(pattern, new RequestContextItem(service, this.dtoPathScanner.scan(service)));
+				for (final String pattern : serviceClass.getAnnotation(RequestContext.class).patterns()) {
+					this.globalContext.requestContextHolder().addRequestContextItem(pattern, new RequestContextItem(service, this.dtoPathScanner.scan(service)));
 				}
 			}
-		} catch (ScanFailedException e) {
+		} catch (final ScanFailedException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new ScanFailedException(e);
 		}
 	}

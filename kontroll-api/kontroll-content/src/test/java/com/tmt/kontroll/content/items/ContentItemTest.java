@@ -3,8 +3,8 @@ package com.tmt.kontroll.content.items;
 
 import org.junit.Before;
 
+import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
-import com.tmt.kontroll.content.persistence.selections.HtmlTag;
 import com.tmt.kontroll.test.ObjectDataTest;
 
 public class ContentItemTest extends ObjectDataTest<ContentItem<HtmlTag>>{

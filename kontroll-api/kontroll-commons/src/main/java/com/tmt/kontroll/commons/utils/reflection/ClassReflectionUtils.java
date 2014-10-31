@@ -29,15 +29,12 @@ public class ClassReflectionUtils {
 		return false;
 	}
 
-	public static <E, V> void updateField(final E entity,
-	                                      final V value,
-	                                      final Field field) throws Exception {
+	public static <E, V> void updateField(final E entity, final V value, final Field field) throws Exception {
 		field.setAccessible(true);
 		field.set(entity, value);
 	}
 
-	public static <E> void nullifyField(final E entity,
-	                                    final Field field) throws Exception {
+	public static <E> void nullifyField(final E entity, final Field field) throws Exception {
 		if (field.getType().isEnum() || field.getType().isPrimitive()) {
 			return;
 		}
@@ -88,12 +85,31 @@ public class ClassReflectionUtils {
 		return fields;
 	}
 
+	public static Field retrieveField(final String fieldName, final Object object) {
+		for (final Field field : retrieveAllFields(object.getClass())) {
+			if (field.getName().equals(fieldName)) {
+				return field;
+			}
+		}
+		return null;
+	}
+
+	public static Object retrieveFieldValue(final Field field, final Object object) {
+		try {
+			field.setAccessible(true);
+			return field.get(object);
+		} catch (final RuntimeException e) {
+			throw e;
+		} catch (final Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static Object retrieveFieldValue(final String fieldName, final Object object) {
 		try {
 			for (final Field field : retrieveAllFields(object.getClass())) {
 				if (field.getName().equals(fieldName)) {
-					field.setAccessible(true);
-					return field.get(object);
+					return retrieveFieldValue(field, object);
 				}
 			}
 			throw new RuntimeException("No field value found for field name '" + fieldName + "' in object: " + object.toString());

@@ -3,8 +3,8 @@ package com.tmt.kontroll.content.verification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.ContentContext;
-import com.tmt.kontroll.content.ContentDto;
+import com.tmt.kontroll.content.business.content.ContentContext;
+import com.tmt.kontroll.content.business.content.ContentDto;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.verification.conditions.ConditionInconsistentException;
 import com.tmt.kontroll.content.verification.conditions.ConditionVerificationChain;

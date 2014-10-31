@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.tmt.kontroll.content.ContentDto;
+import com.tmt.kontroll.content.business.content.ContentDto;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 import com.tmt.kontroll.content.verification.conditions.attributes.ConditionAttributeVerifier;

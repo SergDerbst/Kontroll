@@ -25,6 +25,11 @@
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-context</artifactId>
 		</dependency>
+		<!-- module business -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-business</artifactId>
+		</dependency>
 		<!-- module persistence -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
@@ -34,6 +39,11 @@
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-test</artifactId>
+		</dependency>
+		<!-- jackson annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
 		</dependency>
 	</dependencies>
 

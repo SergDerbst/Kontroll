@@ -23,10 +23,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 import com.tmt.kontroll.annotations.Content;
+import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScanner;
 import com.tmt.kontroll.content.config.ContentProperties;
 import com.tmt.kontroll.content.exceptions.NoContentItemFoundException;
-import com.tmt.kontroll.content.persistence.selections.HtmlTag;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentItemProviderTest {

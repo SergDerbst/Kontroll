@@ -4,6 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
+import com.tmt.kontroll.ui.page.events.Event;
 import com.tmt.kontroll.ui.page.layout.PageSegment;
 
 /**
@@ -62,4 +63,13 @@ public @interface PageContext {
 	 * @return
 	 */
 	ConditionalOperator operator() default ConditionalOperator.And;
+
+	/**
+	 * Specifies all events and their handlers to be bound to the annotated page segment under the given context.
+	 * The events specified here will be handled only in the given page context. Should some events be handled in
+	 * general, they should be declared in the {@link PageConfig} annotation.
+	 *
+	 * @return
+	 */
+	Event[] events() default {};
 }

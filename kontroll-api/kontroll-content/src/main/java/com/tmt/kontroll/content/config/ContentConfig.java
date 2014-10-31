@@ -6,11 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import com.tmt.kontroll.business.config.BusinessConfig;
 import com.tmt.kontroll.context.config.ContextConfig;
 import com.tmt.kontroll.persistence.config.PersistenceConfig;
 
 @Configuration
-@Import({ContextConfig.class, PersistenceConfig.class})
+@Import({	BusinessConfig.class,
+					ContextConfig.class,
+					PersistenceConfig.class})
 @ComponentScan(value = {"com.tmt.kontroll.content"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @EnableJpaRepositories(basePackages = {"com.tmt.kontroll.content.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
 public class ContentConfig {

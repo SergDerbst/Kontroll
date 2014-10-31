@@ -23,7 +23,7 @@ public class PageTest {
 
 	@Test
 	public void testThatScopeNameIsReturned() {
-		assertEquals("page", this.toTest.getScopeName());
+		assertEquals("page", this.toTest.getScope());
 	}
 
 	@Test
@@ -35,9 +35,9 @@ public class PageTest {
 	@Test
 	public void testThatHasChildrenWorksAfterAdditionOfChild() {
 		//when
-		this.toTest.getChildren().put(new PageSegmentOrdinalKey(0, new Condition[0], ConditionalOperator.And), new PageSegment() {
+		this.toTest.getChildren().put(new PageSegmentOrdinalKey(0, "page", new Condition[0], ConditionalOperator.And), new PageSegment() {
 			@Override
-			public String getScopeName() {
+			public String getScope() {
 				return "scope";
 			}
 		});

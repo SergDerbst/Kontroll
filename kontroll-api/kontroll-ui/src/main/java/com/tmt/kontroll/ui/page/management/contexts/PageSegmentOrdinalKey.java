@@ -21,13 +21,16 @@ import com.tmt.kontroll.ui.page.management.annotations.Condition;
 public class PageSegmentOrdinalKey implements Comparable<PageSegmentOrdinalKey> {
 
 	private final int									ordinal;
+	private final String							scope;
 	private final String							conditionsString;
 	private final ConditionalOperator	operator;
 
 	public PageSegmentOrdinalKey(	final int ordinal,
+	                             	final String scope,
 																final Condition[] conditions,
 																final ConditionalOperator operator) {
 		this.ordinal = ordinal;
+		this.scope = scope;
 		this.operator = operator;
 		this.conditionsString = this.createConditionsString(conditions);
 	}
@@ -44,6 +47,10 @@ public class PageSegmentOrdinalKey implements Comparable<PageSegmentOrdinalKey> 
 		return this.ordinal;
 	}
 
+	public String getScope() {
+		return this.scope;
+	}
+
 	public String getConditionsString() {
 		return this.conditionsString;
 	}
@@ -58,10 +65,19 @@ public class PageSegmentOrdinalKey implements Comparable<PageSegmentOrdinalKey> 
 		if (ordinalComparison != 0) {
 			return ordinalComparison;
 		}
+		final int scopeComparison = this.scope.compareTo(other.getScope());
+		if (scopeComparison != 0) {
+			return scopeComparison;
+		}
 		final int operatorComparison = this.operator.ordinal() - other.getOperator().ordinal();
 		if (operatorComparison != 0) {
 			return operatorComparison;
 		}
 		return this.conditionsString.compareTo(other.getConditionsString());
+	}
+
+	@Override
+	public String toString() {
+		return this.getScope();
 	}
 }

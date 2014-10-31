@@ -6,14 +6,16 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.ContentDto;
-import com.tmt.kontroll.content.ContentService;
 import com.tmt.kontroll.content.exceptions.ContentException;
-import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.ui.exceptions.PageManagementException;
 import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
+import com.tmt.kontroll.ui.page.PageHolder;
 import com.tmt.kontroll.ui.page.layout.PageSegment;
-import com.tmt.kontroll.ui.page.layout.impl.PageContent;
+import com.tmt.kontroll.ui.page.layout.PageSegmentHolder;
+import com.tmt.kontroll.ui.page.layout.caption.PageCaption;
+import com.tmt.kontroll.ui.page.layout.caption.PageCaptionLoader;
+import com.tmt.kontroll.ui.page.layout.content.PageContent;
+import com.tmt.kontroll.ui.page.layout.content.PageContentLoader;
 import com.tmt.kontroll.ui.page.management.annotations.PageConfig;
 import com.tmt.kontroll.ui.page.management.annotations.PageContext;
 
@@ -36,10 +38,10 @@ public class PageManager {
 	PageSegmentHolder	pageSegmentHolder;
 
 	@Autowired
-	GlobalContext			globalContext;
+	PageContentLoader	pageContentLoader;
 
 	@Autowired
-	ContentService		contentService;
+	PageCaptionLoader	pageCaptionLoader;
 
 	public PageSegment manage(final String requestPath, final String scopeName) throws PageManagementException {
 		try {
@@ -65,13 +67,29 @@ public class PageManager {
 	}
 
 	private PageSegment loadScope(final PageSegment segment, final String requestPath, final String scopeName) throws ContentException {
-		if (segment instanceof PageContent) {
-			((PageContent) segment).setContent(this.contentService.loadContent(this.createContentDto(requestPath, scopeName)));
-		}
-		for (final PageSegment childSegment : segment.getChildren().values()) {
-			this.loadScope(childSegment, requestPath, scopeName + "." + childSegment.getScopeName());
-		}
+		this.handleCaption(segment, scopeName);
+		this.handleContent(segment, requestPath, scopeName);
+		this.handleChildren(segment, requestPath);
 		return segment;
+	}
+
+	private void handleCaption(final PageSegment segment, final String scopeName) {
+		final PageCaption pageCaption = segment.getClass().getAnnotation(PageCaption.class);
+		if (pageCaption != null) {
+			segment.setCaption(this.pageCaptionLoader.load(scopeName, pageCaption.value()));
+		}
+	}
+
+	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName) {
+		if (segment.getClass().isAnnotationPresent(PageContent.class)) {
+			this.pageContentLoader.load(segment, requestPath, scopeName);
+		}
+	}
+
+	private void handleChildren(final PageSegment segment, final String requestPath) throws ContentException {
+		for (final PageSegment childSegment : segment.getChildren().values()) {
+			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope());
+		}
 	}
 
 	private boolean matchPageContext(final PageContext pageContext, final String requestPath) {
@@ -81,10 +99,6 @@ public class PageManager {
 	private boolean matchConditions(final PageContext pageContext) {
 		//TODO implement
 		return true;
-	}
-
-	private ContentDto createContentDto(final String requestPath, final String scopeName) {
-		return new ContentDto(this.globalContext.fetchRequestContext(requestPath), this.globalContext.getGlobalContextDto(), requestPath, scopeName);
 	}
 
 	private boolean isPageLoad(final String scopeName) {

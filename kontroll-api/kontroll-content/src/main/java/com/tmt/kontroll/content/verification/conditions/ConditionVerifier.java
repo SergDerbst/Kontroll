@@ -1,6 +1,6 @@
 package com.tmt.kontroll.content.verification.conditions;
 
-import com.tmt.kontroll.content.ContentDto;
+import com.tmt.kontroll.content.business.content.ContentDto;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 
 public abstract class ConditionVerifier {

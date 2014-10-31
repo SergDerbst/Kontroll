@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.exceptions.NoContentParserFoundException;
 import com.tmt.kontroll.content.parsers.impl.AudioContentItemParser;
 import com.tmt.kontroll.content.parsers.impl.ImageContentItemParser;
@@ -20,7 +21,6 @@ import com.tmt.kontroll.content.parsers.impl.TextContentItemParser;
 import com.tmt.kontroll.content.parsers.impl.VideoContentItemParser;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 import com.tmt.kontroll.content.persistence.selections.ContentType;
-import com.tmt.kontroll.content.persistence.selections.HtmlTag;
 
 public class ContentParserProviderTest {
 	
