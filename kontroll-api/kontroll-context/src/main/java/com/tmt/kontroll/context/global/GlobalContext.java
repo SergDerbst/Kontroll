@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.tmt.kontroll.context.request.RequestContextDto;
 import com.tmt.kontroll.context.request.RequestContextHolder;
 import com.tmt.kontroll.context.request.RequestContextService;
+import com.tmt.kontroll.context.session.SessionContextHolder;
 
 /**
  * This class represents the global context of the application, which means it gives access to
@@ -24,18 +25,24 @@ public class GlobalContext {
 	GlobalContextDto			globalData;
 
 	@Autowired
+	SessionContextHolder	sessionContextHolder;
+
+	@Autowired
 	RequestContextHolder	requestContextHolder;
 
-	public RequestContextHolder requestContextHolder() {
-		return this.requestContextHolder;
+	public void globalContext(final GlobalContextDto globalData) {
+		this.globalData = globalData;
 	}
 
 	public GlobalContextDto globalContext() {
 		return this.globalData;
 	}
 
-	public void globalContext(final GlobalContextDto globalData) {
-		this.globalData = globalData;
+	public SessionContextHolder sessionContextHolder() {
+		return this.sessionContextHolder;
 	}
 
+	public RequestContextHolder requestContextHolder() {
+		return this.requestContextHolder;
+	}
 }

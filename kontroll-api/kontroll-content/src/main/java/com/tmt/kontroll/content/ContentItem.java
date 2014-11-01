@@ -1,10 +1,14 @@
-package com.tmt.kontroll.content.items;
+package com.tmt.kontroll.content;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.tmt.kontroll.commons.ui.DomElement;
+import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
 
 /**
@@ -14,15 +18,38 @@ import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
  *          Type of Enum that represents the tag of this content item.
  */
 @JsonInclude(Include.NON_EMPTY)
-public abstract class ContentItem<T extends Enum<?>> {
+public class ContentItem implements DomElement {
 
-	private String																			id;
-	private String																			cssClass;
-	private String																			content;
-	private ContentChildrenOrder												contentChildrenOrder;
-	private final List<ContentItem<? extends Enum<?>>>	children	= new ArrayList<ContentItem<? extends Enum<?>>>();
+	private String										id;
+	private String										cssClass;
+	private String										content;
+	private ContentChildrenOrder			contentChildrenOrder;
+	private final List<ContentItem>		children		= new ArrayList<ContentItem>();
+	private final Map<String, String>	attributes	= new HashMap<>();
+	private final HtmlTag							tag;
 
-	public abstract T getTag();
+	public ContentItem() {
+		this.tag = HtmlTag.Div;
+	}
+
+	public ContentItem(final HtmlTag tag) {
+		this.tag = tag;
+	}
+
+	@Override
+	public String getDomId() {
+		return this.id;
+	}
+
+	@Override
+	public Map<String, String> getAttributes() {
+		return this.attributes;
+	}
+
+	@Override
+	public HtmlTag getTag() {
+		return this.tag;
+	}
 
 	public String getId() {
 		return this.id;
@@ -56,7 +83,7 @@ public abstract class ContentItem<T extends Enum<?>> {
 		this.contentChildrenOrder = contentChildrenOrder;
 	}
 
-	public List<ContentItem<? extends Enum<?>>> getChildren() {
+	public List<ContentItem> getChildren() {
 		return this.children;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
 
-import com.tmt.kontroll.content.items.ContentItem;
+import com.tmt.kontroll.content.ContentItem;
 
 /**
  * A DTO holding property values for configuring the application content. Its values 

@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.content.exceptions.ContentException;
 import com.tmt.kontroll.content.exceptions.NoContentFoundException;
 import com.tmt.kontroll.content.exceptions.NoContentParserFoundException;
 import com.tmt.kontroll.content.exceptions.NoScopeFoundException;
 import com.tmt.kontroll.content.exceptions.TooMuchContentFoundException;
-import com.tmt.kontroll.content.items.ContentItem;
 import com.tmt.kontroll.content.parsers.ContentParser;
 import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
@@ -54,7 +54,7 @@ public class ContentService {
 	@Autowired
 	ContentParser							scopedContentParser;
 
-	public List<ContentItem<? extends Enum<?>>> loadContent(final ContentDto contentDto) throws ContentException {
+	public List<ContentItem> loadContent(final ContentDto contentDto) throws ContentException {
 		final String scopeName = contentDto.getScopeName();
 		final String requestContextPath = contentDto.getRequestContextPath();
 		final Scope scope = this.scopeDaoService.findByNameAndRequestContextPath(scopeName, requestContextPath);
@@ -65,7 +65,7 @@ public class ContentService {
 		return this.verifyAndParseContent(scopedContents, contentDto);
 	}
 
-	private List<ContentItem<? extends Enum<?>>> verifyAndParseContent(final List<ScopedContent> scopedContents, final ContentDto contentDto) throws ContentException {
+	private List<ContentItem> verifyAndParseContent(final List<ScopedContent> scopedContents, final ContentDto contentDto) throws ContentException {
 		final List<ScopedContent> foundContent = this.findValidContent(scopedContents, contentDto);
 		if (foundContent.isEmpty()) {
 			throw NoContentFoundException.prepare(contentDto);
@@ -93,7 +93,7 @@ public class ContentService {
 		return foundContent;
 	}
 
-	private List<ContentItem<? extends Enum<?>>> verifyAndParseContentItems(final ScopedContent scopedContent, final ContentDto contentDto) throws NoContentParserFoundException {
+	private List<ContentItem> verifyAndParseContentItems(final ScopedContent scopedContent, final ContentDto contentDto) throws NoContentParserFoundException {
 		final List<ScopedContentItem> contentItems = new ArrayList<ScopedContentItem>();
 		for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
 			for (final ScopedContentCondition contentItemcondition : contentItem.getConditions()) {

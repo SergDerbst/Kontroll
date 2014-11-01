@@ -10,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.tmt.kontroll.commons.ui.DomElement;
 import com.tmt.kontroll.commons.ui.HtmlTag;
-import com.tmt.kontroll.content.items.ContentItem;
-import com.tmt.kontroll.content.items.TextContentItem;
+import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.ui.page.events.PageEvent;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 
@@ -24,8 +23,8 @@ public abstract class PageSegment implements DomElement {
 	private final TreeMap<PageSegmentOrdinalKey, PageSegment>	children					= new TreeMap<>();
 	private final List<PageEvent>															generalEvents			= new ArrayList<>();
 	private final List<PageEvent>															additionalEvents	= new ArrayList<>();
-	private List<ContentItem<? extends Enum<?>>>							content;
-	private TextContentItem																		caption;
+	private List<ContentItem>																	content;
+	private ContentItem																				caption;
 	private final Map<String, String>													attributes				= new HashMap<>();
 
 	public PageSegment() {
@@ -48,7 +47,7 @@ public abstract class PageSegment implements DomElement {
 
 	@Override
 	public String getDomId() {
-		return this.parentScope + "." + this.scope;
+		return this.parentScope == null ? this.scope : this.parentScope + "." + this.scope;
 	}
 
 	public String getScope() {
@@ -83,19 +82,19 @@ public abstract class PageSegment implements DomElement {
 		return this.additionalEvents;
 	}
 
-	public List<ContentItem<? extends Enum<?>>> getContent() {
+	public List<ContentItem> getContent() {
 		return this.content;
 	}
 
-	public void setContent(final List<ContentItem<? extends Enum<?>>> content) {
+	public void setContent(final List<ContentItem> content) {
 		this.content = content;
 	}
 
-	public TextContentItem getCaption() {
+	public ContentItem getCaption() {
 		return this.caption;
 	}
 
-	public void setCaption(final TextContentItem caption) {
+	public void setCaption(final ContentItem caption) {
 		this.caption = caption;
 	}
 }

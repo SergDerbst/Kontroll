@@ -22,7 +22,7 @@ import com.tmt.kontroll.ui.page.management.annotations.PageContext;
 /**
  * <p>
  * The page manager is responsible for managing the application's pages during runtime. It loads contents
- * of the page based on the {@link PageContext}, i.e. request path and page scope, given by an incoming request.
+ * of the page based on the {@link PageContext}, i.e. session id, request path, page scope.
  * </p>
  *
  * @author SergDerbst
@@ -43,52 +43,55 @@ public class PageManager {
 	@Autowired
 	PageCaptionLoader	pageCaptionLoader;
 
-	public PageSegment manage(final String requestPath, final String scopeName) throws PageManagementException {
+	@Autowired
+	PagePostProcessor	pagePostProcessor;
+
+	public PageSegment manage(final String requestPath, final String scopeName, final String sessionId) throws PageManagementException {
 		try {
 			if (this.isPageLoad(scopeName)) {
-				return this.loadScope(this.pageHolder.fetchPageByPath(requestPath), requestPath, scopeName);
+				return this.pagePostProcessor.process(this.loadScope(this.pageHolder.fetchPageByPath(requestPath), requestPath, scopeName, sessionId));
 			} else {
-				return this.loadScope(this.pageSegmentHolder.fetchPageSegments(scopeName), requestPath, scopeName);
+				return this.pagePostProcessor.process(this.loadScope(this.pageSegmentHolder.fetchPageSegments(scopeName), requestPath, scopeName, sessionId));
 			}
 		} catch (final Exception e) {
 			throw new PageManagementException(e);
 		}
 	}
 
-	private PageSegment loadScope(final List<PageSegment> pageSegments, final String requestPath, final String scopeName) throws ContentException, ScopeNotFoundException {
+	private PageSegment loadScope(final List<PageSegment> pageSegments, final String requestPath, final String scopeName, final String sessionId) throws ContentException, ScopeNotFoundException {
 		for (final PageSegment segment : pageSegments) {
 			for (final PageContext pageContext : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
 				if (this.matchPageContext(pageContext, requestPath)) {
-					return this.loadScope(segment, requestPath, scopeName);
+					return this.loadScope(segment, requestPath, scopeName, sessionId);
 				}
 			}
 		}
 		throw ScopeNotFoundException.prepare(null, scopeName);
 	}
 
-	private PageSegment loadScope(final PageSegment segment, final String requestPath, final String scopeName) throws ContentException {
-		this.handleCaption(segment, scopeName);
-		this.handleContent(segment, requestPath, scopeName);
-		this.handleChildren(segment, requestPath);
+	private PageSegment loadScope(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) throws ContentException {
+		this.handleCaption(segment, scopeName, sessionId);
+		this.handleContent(segment, requestPath, scopeName, sessionId);
+		this.handleChildren(segment, requestPath, sessionId);
 		return segment;
 	}
 
-	private void handleCaption(final PageSegment segment, final String scopeName) {
+	private void handleCaption(final PageSegment segment, final String scopeName, final String sessionId) {
 		final PageCaption pageCaption = segment.getClass().getAnnotation(PageCaption.class);
 		if (pageCaption != null) {
-			segment.setCaption(this.pageCaptionLoader.load(scopeName, pageCaption.value()));
+			segment.setCaption(this.pageCaptionLoader.load(scopeName, pageCaption.value(), sessionId));
 		}
 	}
 
-	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName) {
+	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) {
 		if (segment.getClass().isAnnotationPresent(PageContent.class)) {
-			this.pageContentLoader.load(segment, requestPath, scopeName);
+			this.pageContentLoader.load(segment, requestPath, scopeName, sessionId);
 		}
 	}
 
-	private void handleChildren(final PageSegment segment, final String requestPath) throws ContentException {
+	private void handleChildren(final PageSegment segment, final String requestPath, final String sessionId) throws ContentException {
 		for (final PageSegment childSegment : segment.getChildren().values()) {
-			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope());
+			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
 		}
 	}
 

@@ -22,7 +22,7 @@ public class Caption implements DomElement {
 
 	@Override
 	public String getDomId() {
-		return this.identifier;
+		return this.identifier + ".caption";
 	}
 
 	@Override

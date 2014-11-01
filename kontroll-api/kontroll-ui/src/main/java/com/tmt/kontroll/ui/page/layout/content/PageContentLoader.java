@@ -8,10 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.content.business.content.ContentDto;
 import com.tmt.kontroll.content.business.content.ContentService;
-import com.tmt.kontroll.content.items.ContentItem;
-import com.tmt.kontroll.content.items.impl.DivContentItem;
 import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.ui.page.layout.PageSegment;
 import com.tmt.kontroll.ui.page.layout.caption.PageCaption;
@@ -27,9 +26,9 @@ public class PageContentLoader {
 	@Autowired
 	GlobalContext								globalContext;
 
-	public void load(final PageSegment pageSegment, final String requestPath, final String scopeName) {
+	public void load(final PageSegment pageSegment, final String requestPath, final String scopeName, final String sessionId) {
 		if (this.isReadyForContent(pageSegment)) {
-			List<ContentItem<? extends Enum<?>>> content = null;
+			List<ContentItem> content = null;
 			final ContentDto contentDto = this.createContentDto(requestPath, scopeName);
 			try {
 				content = this.contentService.loadContent(contentDto);
@@ -46,11 +45,12 @@ public class PageContentLoader {
 	}
 
 	@SuppressWarnings("serial")
-	private List<ContentItem<? extends Enum<?>>> deliverDefaultContent(final ContentDto scopeDto) {
-		return new ArrayList<ContentItem<? extends Enum<?>>>() {
+	private List<ContentItem> deliverDefaultContent(final ContentDto scopeDto) {
+		return new ArrayList<ContentItem>() {
 			{
-				final DivContentItem contentItem = new DivContentItem();
+				final ContentItem contentItem = new ContentItem();
 				contentItem.setContent(scopeDto.getScopeName());
+				contentItem.setId(scopeDto.getScopeName());
 				this.add(contentItem);
 			}
 		};

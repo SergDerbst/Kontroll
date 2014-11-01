@@ -1,4 +1,4 @@
-package com.tmt.kontroll.ui.page.layout.caption;
+package com.tmt.kontroll.ui.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,8 +9,9 @@ import java.lang.annotation.Target;
 import com.tmt.kontroll.ui.page.layout.PageSegment;
 
 /**
- * Indicates that the annotated {@link PageSegment} contains a caption as content. The caption identifier
- * must be provided as {@link #value}.
+ * A {@link PageSegment} annotated with this annotation will have the css
+ * classes given in {@link #value} additional to the standard ones determined by
+ * the segment's scope name.
  *
  * @author SergDerbst
  *
@@ -18,7 +19,7 @@ import com.tmt.kontroll.ui.page.layout.PageSegment;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface PageCaption {
+public @interface CssClass {
 
 	String value();
 }

@@ -9,25 +9,32 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Entity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.business.annotations.BusinessEntity;
 import com.tmt.kontroll.business.exceptions.BusinessEntityMappingNotFoundException;
+import com.tmt.kontroll.business.exceptions.EntityAnnotationMissing;
 import com.tmt.kontroll.business.exceptions.EntityMappingFailedException;
 import com.tmt.kontroll.business.preparation.BusinessEntityScanner;
 
 /**
  * <p>
- * The persistence business entity mapper maps persistence entity classes to business entity classes.
+ * The persistence business entity mapper maps persistence entity classes to business entity classes
+ * and vice versa.
  * </p>
  * <p>
  * A business entity must be annotated with {@link BusinessEntity} with its value containing the related
- * persistence entity class. The {@link BusinessEntityScanner} will then scan for all business entities
- * and add them to the mapper. The basic requirement of a business entity is that it has the exact same set
- * of fields as properties as the persistence entity. It will then be instantiated with the proper values
- * during {@link #fetchBusinessEntity}.
+ * persistence entity class. On preparation time, the {@link BusinessEntityScanner} will then scan for all
+ * business entity classes and add them and their persistence counterparts to the mapper. The basic
+ * requirement of a business entity is that it has the at least the same set of property fields as the
+ * persistence entity. It will then be instantiated with the proper values.
  * </p>
- *
+ * <p>
+ * <i>Note: </i>The wrapper works both ways and will always return the opposite entity.
+ * </p>
  *
  * @author SergDerbst
  *
@@ -35,43 +42,45 @@ import com.tmt.kontroll.business.preparation.BusinessEntityScanner;
 @Component
 public class BusinessPersistenceEntityMapper {
 
-	private final Map<Class<?>, Class<?>>	businessEntityMap			= new HashMap<>();
-	private final Map<Class<?>, Class<?>>	persistenceEntityMap	= new HashMap<>();
+	@Autowired
+	BusinessPersistenceEntityValueConverter	entityConverter;
+
+	private final Map<Class<?>, Class<?>>		businessEntityMap			= new HashMap<>();
+	private final Map<Class<?>, Class<?>>		persistenceEntityMap	= new HashMap<>();
 
 	public void addMapping(final Class<?> persistenceType, final Class<?> businessType) {
 		this.businessEntityMap.put(persistenceType, businessType);
 		this.persistenceEntityMap.put(businessType, persistenceType);
 	}
 
-	public <PERSISTENCE_ENTITY, BUSINESS_ENTITY> BUSINESS_ENTITY fetchBusinessEntity(final PERSISTENCE_ENTITY persistenceEntity) {
-		final Class<?> businessEntityClass = this.businessEntityMap.get(persistenceEntity.getClass());
-		if (businessEntityClass == null) {
-			throw BusinessEntityMappingNotFoundException.prepare(persistenceEntity.getClass());
+	public <SOURCE_ENTITY, TARGET_ENTITY> TARGET_ENTITY fetchConvertedEntity(final SOURCE_ENTITY sourceEntity) {
+		final Class<?> targetEntityClass = this.fetchTargetEntityClass(sourceEntity);
+		if (targetEntityClass == null) {
+			throw BusinessEntityMappingNotFoundException.prepare(sourceEntity.getClass());
 		}
-		/*
-		 * TODO: make creation recursively to assure that entity values for fields are converted as well
-		 */
-		return this.createEntity(businessEntityClass, persistenceEntity);
-	}
-
-	public <PERSISTENCE_ENTITY, BUSINESS_ENTITY> BUSINESS_ENTITY fetchPersistenceEntity(final BUSINESS_ENTITY businessEntity) {
-		final Class<?> persistenceEntityClass = this.businessEntityMap.get(businessEntity.getClass());
-		if (persistenceEntityClass == null) {
-			throw BusinessEntityMappingNotFoundException.prepare(businessEntity.getClass());
-		}
-		return this.createEntity(persistenceEntityClass, businessEntity);
+		return this.createTargetEntity(targetEntityClass, sourceEntity);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <REFERENCE_ENTITY, CREATED_ENTITY> CREATED_ENTITY createEntity(final Class<?> createEntityClass, final REFERENCE_ENTITY referenceEntity) {
+	private <SOURCE_ENTITY, TARGET_ENTITY> TARGET_ENTITY createTargetEntity(final Class<?> targetEntityClass, final SOURCE_ENTITY sourceEntity) {
 		try {
-			final CREATED_ENTITY businessEntity = (CREATED_ENTITY) createEntityClass.newInstance();
-			for (final Field field : retrievePropertyFields(referenceEntity.getClass())) {
-				updateField(businessEntity, retrieveFieldValue(field, referenceEntity), retrieveField(field.getName(), businessEntity));
+			final TARGET_ENTITY businessEntity = (TARGET_ENTITY) targetEntityClass.newInstance();
+			for (final Field field : retrievePropertyFields(sourceEntity.getClass())) {
+				updateField(businessEntity, this.entityConverter.convert(retrieveFieldValue(field, sourceEntity)), retrieveField(field.getName(), businessEntity));
 			}
 			return businessEntity;
 		} catch (final Exception e) {
 			throw EntityMappingFailedException.prepare(e);
 		}
+	}
+
+	private Class<?> fetchTargetEntityClass(final Object sourceEntity) {
+		if (sourceEntity.getClass().isAnnotationPresent(Entity.class)) {
+			return this.businessEntityMap.get(sourceEntity.getClass());
+		}
+		if (sourceEntity.getClass().isAnnotationPresent(BusinessEntity.class)) {
+			return this.persistenceEntityMap.get(sourceEntity.getClass());
+		}
+		throw EntityAnnotationMissing.prepare(sourceEntity);
 	}
 }

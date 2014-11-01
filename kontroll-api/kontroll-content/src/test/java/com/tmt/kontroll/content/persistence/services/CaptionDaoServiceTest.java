@@ -1,6 +1,5 @@
 package com.tmt.kontroll.content.persistence.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -14,7 +13,7 @@ import com.tmt.kontroll.test.persistence.PersistenceBaseEntityDaoServiceTest;
 public class CaptionDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<Caption, CaptionRepository, CaptionDaoServiceImpl> {
 
 	@Autowired
-	CaptionDaoServiceImpl service;
+	CaptionDaoServiceImpl	service;
 
 	@Override
 	protected CaptionDaoServiceImpl daoService() {

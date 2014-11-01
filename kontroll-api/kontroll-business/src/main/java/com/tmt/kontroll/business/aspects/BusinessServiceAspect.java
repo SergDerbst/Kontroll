@@ -33,7 +33,7 @@ public class BusinessServiceAspect {
 	@Autowired
 	BusinessPersistenceEntityValueConverter	entityConverter;
 
-	@Pointcut("within(@com.tmt.kontroll.business.annotations.BusinessService *BusinessService)")
+	@Pointcut("within(@com.tmt.kontroll.business.annotations.BusinessService *)")
 	public void businessService() {}
 
 	@Pointcut("execution(public * *(..))")
@@ -42,7 +42,11 @@ public class BusinessServiceAspect {
 	@Around("businessService() && allPublicMethods()")
 	public Object adviceBusinessServiceMethods(final ProceedingJoinPoint joinPoint) {
 		try {
-			return this.entityConverter.convert(joinPoint.proceed());
+			System.out.println("####### Before proceed: " + joinPoint.getTarget().getClass().getName());
+			final Object result = joinPoint.proceed();
+			System.out.println("####### After proceed: " + result.toString());
+			return this.entityConverter.convert(result);
+
 		} catch (final Throwable e) {
 			throw new BusinessServiceInvocationFailedException(e);
 		}

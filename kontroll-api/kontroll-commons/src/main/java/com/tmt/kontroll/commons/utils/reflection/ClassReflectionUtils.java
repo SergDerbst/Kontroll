@@ -86,10 +86,27 @@ public class ClassReflectionUtils {
 	}
 
 	public static Field retrieveField(final String fieldName, final Object object) {
-		for (final Field field : retrieveAllFields(object.getClass())) {
-			if (field.getName().equals(fieldName)) {
-				return field;
+		Class<?> currentClass = object.getClass();
+		while (!Object.class.equals(currentClass)) {
+			for (final Field field : retrieveAllFields(object.getClass())) {
+				if (field.getName().equals(fieldName)) {
+					return field;
+				}
 			}
+			currentClass = currentClass.getSuperclass();
+		}
+		return null;
+	}
+
+	public static Field retrieveFieldFromClass(final String fieldName, final Class<?> clazz) {
+		Class<?> currentClass = clazz;
+		while (!Object.class.equals(currentClass)) {
+			for (final Field field : retrieveAllFields(clazz)) {
+				if (field.getName().equals(fieldName)) {
+					return field;
+				}
+			}
+			currentClass = currentClass.getSuperclass();
 		}
 		return null;
 	}

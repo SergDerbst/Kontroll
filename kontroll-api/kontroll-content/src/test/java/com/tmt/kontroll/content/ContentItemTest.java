@@ -1,16 +1,17 @@
-package com.tmt.kontroll.content.items;
+package com.tmt.kontroll.content;
 
 
 import org.junit.Before;
 
 import com.tmt.kontroll.commons.ui.HtmlTag;
+import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
 import com.tmt.kontroll.test.ObjectDataTest;
 
-public class ContentItemTest extends ObjectDataTest<ContentItem<HtmlTag>>{
+public class ContentItemTest extends ObjectDataTest<ContentItem>{
 
 	public ContentItemTest() {
-		super(new ContentItem<HtmlTag>() {
+		super(new ContentItem() {
 			@Override
 			public HtmlTag getTag() {
 				return HtmlTag.Anchor;

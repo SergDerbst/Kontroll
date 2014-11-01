@@ -33,11 +33,11 @@ public class ContentParserProviderTest {
 	@Mock
 	private VideoContentItemParser videoContentParser;
 	@Mock
-	private Map<ContentType, ContentItemParser<?>> contentParserMap;
+	private Map<ContentType, ContentItemParser> contentParserMap;
 	@Mock
 	private ScopedContentItem scopedContentItem;
 	@Mock
-	private ContentItemParser<HtmlTag> contentParser;
+	private ContentItemParser contentParser;
 	
 	private ContentParserProvider toTest;
 
@@ -66,7 +66,7 @@ public class ContentParserProviderTest {
 	@SuppressWarnings("serial")
 	public void testThatProvisionWorksForExistingContentItemParser() throws Exception {
 		//given
-		this.toTest.contentParserMap = new HashMap<ContentType, ContentItemParser<?>>(){{
+		this.toTest.contentParserMap = new HashMap<ContentType, ContentItemParser>(){{
 			put(ContentType.Audio, contentParser);
 		}};
 		
@@ -80,7 +80,7 @@ public class ContentParserProviderTest {
 	@Test(expected = NoContentParserFoundException.class)
 	public void testThatNoContentParserFoundExceptionWillBeThrownForNonExistingContentItemParser() throws Exception {
 		//given
-		this.toTest.contentParserMap = new HashMap<ContentType, ContentItemParser<?>>();
+		this.toTest.contentParserMap = new HashMap<ContentType, ContentItemParser>();
 		
 		//when
 		this.toTest.provide(this.scopedContentItem);

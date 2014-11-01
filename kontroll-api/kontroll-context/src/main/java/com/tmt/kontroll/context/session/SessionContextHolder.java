@@ -16,4 +16,8 @@ public class SessionContextHolder {
 			this.sessionContextMap.put(sessionId, sessionContext);
 		}
 	}
+
+	public SessionContext sessionContext(final String sessionId) {
+		return this.sessionContextMap.get(sessionId);
+	}
 }
