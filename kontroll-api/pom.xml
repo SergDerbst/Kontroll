@@ -61,6 +61,7 @@
 		<module>kontroll-ui</module>
 		<module>kontroll-test</module>
 		<module>kontroll-web</module>
+		<module>kontroll-security</module>
 	</modules>
 
 	<dependencyManagement>

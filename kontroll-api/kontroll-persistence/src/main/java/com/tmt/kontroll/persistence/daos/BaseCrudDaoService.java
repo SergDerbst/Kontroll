@@ -4,7 +4,7 @@ import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.updateEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.exceptions.EntityNotFoundInDatabaseException;
 
 public abstract class BaseCrudDaoService<Repo extends JpaRepository<Entity, Integer>, Entity extends BaseEntity> extends CrudDaoService<Repo, Entity, Integer> {

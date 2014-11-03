@@ -1,4 +1,4 @@
-package com.tmt.kontroll.persistence.entities;
+package com.tmt.kontroll.persistence;
 
 import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.retrievePropertyFields;
 import static com.tmt.kontroll.persistence.utils.JpaEntityUtils.isRelationshipField;

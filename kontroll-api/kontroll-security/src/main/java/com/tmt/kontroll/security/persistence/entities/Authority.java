@@ -1,4 +1,4 @@
-package com.tmt.kontroll.persistence.entities.security;
+package com.tmt.kontroll.security.persistence.entities;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 /**

@@ -1,4 +1,4 @@
-package com.tmt.kontroll.persistence.entities.security;
+package com.tmt.kontroll.security.persistence.entities;
 
 import java.util.List;
 import java.util.Locale;
@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 
 /**
  * Entity representing a user who can login and use the application.
