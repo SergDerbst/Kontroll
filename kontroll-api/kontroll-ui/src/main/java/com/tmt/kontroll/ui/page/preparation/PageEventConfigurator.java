@@ -1,11 +1,10 @@
 package com.tmt.kontroll.ui.page.preparation;
 
-import java.util.Arrays;
-
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.page.events.Event;
 import com.tmt.kontroll.ui.page.events.EventType;
+import com.tmt.kontroll.ui.page.events.HandlerArgument;
 import com.tmt.kontroll.ui.page.events.PageEvent;
 import com.tmt.kontroll.ui.page.layout.PageSegment;
 import com.tmt.kontroll.ui.page.layout.navigator.PageNavigator;
@@ -51,13 +50,16 @@ public class PageEventConfigurator {
 
 	private PageEvent createNavigationPageEvent(final PageNavigator pageNavigator) {
 		final PageEvent event = new PageEvent(EventType.Click, "navigate");
-		event.getArguments().add(pageNavigator.value());
+		event.getArguments().put("url", pageNavigator.value());
 		return event;
 	}
 
 	private PageEvent createPageEvent(final Event event) {
 		final PageEvent pageEvent = new PageEvent(event.type(), event.handler());
-		pageEvent.getArguments().addAll(Arrays.asList(event.targetScopes()));
+		pageEvent.getArguments().put("targetScopes", event.targetScopes());
+		for (final HandlerArgument argument : event.arguments()) {
+			pageEvent.getArguments().put(argument.key(), argument.value());
+		}
 		return pageEvent;
 	}
 }

@@ -16,22 +16,22 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 public class ScopedContentItem extends BaseEntity {
 
 	@Column(columnDefinition = "varChar(12) default 'div'")
-	private String tagName;
+	private String												tagName;
 
 	@Column(length = DatabaseDefinitions.String_MediumSmall)
-	private String cssClass;
+	private String												cssClass;
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_XLarge)
-	private String					content;
+	private String												content;
 
 	@Enumerated(EnumType.STRING)
-	private ContentType			type;
+	private ContentType										type;
 
 	@ManyToMany(mappedBy = "scopedContentItems")
 	private List<ScopedContentCondition>	conditions;
 
 	@ManyToMany(mappedBy = "scopedContentItems")
-	private List<ScopedContent>	scopedContents;
+	private List<ScopedContent>						scopedContents;
 
 	public String getTagName() {
 		return this.tagName;

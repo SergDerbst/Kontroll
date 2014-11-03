@@ -1,5 +1,6 @@
 package com.tmt.kontroll.ui.page.events;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,6 +23,7 @@ import com.tmt.kontroll.ui.page.management.annotations.PageContext;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Event {
 
 	/**
@@ -47,4 +49,11 @@ public @interface Event {
 	 * @return
 	 */
 	String[] targetScopes() default "";
+
+	/**
+	 * Specifies arguments passed to the even handler.
+	 *
+	 * @return
+	 */
+	HandlerArgument[] arguments() default {};
 }

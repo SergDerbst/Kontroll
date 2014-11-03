@@ -1,29 +1,29 @@
 package com.tmt.kontroll.ui.page.events;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PageEvent {
 
-	private final EventType			type;
-	private final String				eventHandlerName;
-	private final List<Object>	arguments	= new ArrayList<>();
+	private final EventType						type;
+	private final String							handlerName;
+	private final Map<String, Object>	arguments	= new HashMap<>();
 
 	public PageEvent(	final EventType type,
-										final String eventHandlerName) {
+										final String handlerName) {
 		this.type = type;
-		this.eventHandlerName = eventHandlerName;
+		this.handlerName = handlerName;
 	}
 
 	public EventType getType() {
 		return this.type;
 	}
 
-	public String getEventHandlerName() {
-		return this.eventHandlerName;
+	public String getHandlerName() {
+		return this.handlerName;
 	}
 
-	public List<Object> getArguments() {
+	public Map<String, Object> getArguments() {
 		return this.arguments;
 	}
 }
