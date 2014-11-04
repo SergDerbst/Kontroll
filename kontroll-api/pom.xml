@@ -38,7 +38,7 @@
 		<mockito.version>1.9.5</mockito.version>
 		<postgres.jdbc.version>9.3-1100-jdbc41</postgres.jdbc.version>
 		<powermock.version>1.5.5</powermock.version>
-		<querydsl.version>3.3.0</querydsl.version>
+		<querydsl.version>3.5.0</querydsl.version>
 		<slf4j.version>1.6.6</slf4j.version>
 		<spring.version>4.1.0.RELEASE</spring.version>
 		<spring.data.version>1.7.0.RELEASE</spring.data.version>
@@ -100,6 +100,12 @@
 			<dependency>
 				<groupId>com.tmt.kontroll</groupId>
 				<artifactId>kontroll-persistence</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<!-- module: security -->
+			<dependency>
+				<groupId>com.tmt.kontroll</groupId>
+				<artifactId>kontroll-security</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- module: ui -->
@@ -296,7 +302,7 @@
 				<artifactId>querydsl-core</artifactId>
 				<version>${querydsl.version}</version>
 			</dependency>
-			<!-- querydsl jpa -->
+			<!-- query dsl jpa -->
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-jpa</artifactId>

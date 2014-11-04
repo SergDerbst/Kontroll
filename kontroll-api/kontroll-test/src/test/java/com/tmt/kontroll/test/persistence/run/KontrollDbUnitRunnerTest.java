@@ -24,8 +24,8 @@ import org.mockito.Mock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.daos.BaseCrudDaoService;
-import com.tmt.kontroll.persistence.entities.BaseEntity;
 import com.tmt.kontroll.test.persistence.PersistenceBaseEntityDaoServiceTest;
 import com.tmt.kontroll.test.persistence.run.KontrollDbUnitTestExecutionListener.KontrollDbUnitTestContext;
 import com.tmt.kontroll.test.persistence.run.data.TestDataHolder;

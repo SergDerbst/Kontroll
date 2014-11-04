@@ -30,17 +30,11 @@ public class PageContentLoader {
 		if (this.isReadyForContent(pageSegment)) {
 			List<ContentItem> content = null;
 			final ContentDto contentDto = this.createContentDto(requestPath, scopeName);
-			try {
-				content = this.contentService.loadContent(contentDto);
-			} catch (final Exception e) {
-				Log.info("Exception thrown while loading content: {0}", e.getMessage());
-				Log.info("Loading content failed. Loading default content instead.");
-			} finally {
-				if (content == null) {
-					content = this.deliverDefaultContent(contentDto);
-				}
-				pageSegment.setContent(content);
+			content = this.contentService.loadContent(contentDto);
+			if (content == null) {
+				content = this.deliverDefaultContent(contentDto);
 			}
+			pageSegment.setContent(content);
 		}
 	}
 

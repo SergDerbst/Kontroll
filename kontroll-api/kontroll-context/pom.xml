@@ -20,6 +20,11 @@
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-commons</artifactId>
 		</dependency>
+		<!-- module security -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-security</artifactId>
+		</dependency>
 		<!-- module test -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>

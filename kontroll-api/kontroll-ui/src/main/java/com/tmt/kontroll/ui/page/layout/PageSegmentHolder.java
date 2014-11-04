@@ -16,6 +16,7 @@ import com.tmt.kontroll.ui.page.management.annotations.PageConfig;
 import com.tmt.kontroll.ui.page.management.annotations.PageContext;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentScopeContext;
 import com.tmt.kontroll.ui.page.preparation.PageEventConfigurator;
+import com.tmt.kontroll.ui.page.preparation.PageFormElementConfigurator;
 
 /**
  * <p>
@@ -49,12 +50,16 @@ public class PageSegmentHolder {
 	@Autowired
 	PageEventConfigurator																		pageEventConfigurator;
 
+	@Autowired
+	PageFormElementConfigurator															pageFormElementConfigurator;
+
 	public void addPageSegment(final PageSegment segment) {
 		segment.getClass().getAnnotations();
 		final PageConfig pageConfig = segment.getClass().getAnnotation(PageConfig.class);
 		for (final PageContext pageContext : pageConfig.contexts()) {
 			this.handlePage(pageContext);
 			this.handleSegmentContext(segment, pageContext);
+			this.pageFormElementConfigurator.configure(segment);
 			this.pageEventConfigurator.configure(segment, pageConfig, pageContext);
 		}
 	}

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "unique_locale", columnNames = { "identifier", "locale" }) })

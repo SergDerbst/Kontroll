@@ -33,18 +33,18 @@ public class PageEventConfigurator {
 		if (segment.getGeneralEvents().isEmpty()) {
 			this.handleNavigationConfiguration(segment);
 			for (final Event event : pageConfig.events()) {
-				segment.getGeneralEvents().add(this.createPageEvent(event));
+				segment.getGeneralEvents().put(event.type(), this.createPageEvent(event));
 			}
 		}
 		for (final Event event : pageContext.events()) {
-			segment.getAdditionalEvents().add(this.createPageEvent(event));
+			segment.getAdditionalEvents().put(event.type(), this.createPageEvent(event));
 		}
 	}
 
 	private void handleNavigationConfiguration(final PageSegment segment) {
 		final PageNavigator pageNavigator = segment.getClass().getAnnotation(PageNavigator.class);
 		if (pageNavigator != null) {
-			segment.getGeneralEvents().add(this.createNavigationPageEvent(pageNavigator));
+			segment.getGeneralEvents().put(EventType.Click, this.createNavigationPageEvent(pageNavigator));
 		}
 	}
 

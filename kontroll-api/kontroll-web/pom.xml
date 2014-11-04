@@ -9,7 +9,12 @@
 	</parent>
 	<artifactId>kontroll-web</artifactId>
 
-	<dependencies>
+	<dependencies>	
+		<!-- module security -->
+		<dependency>
+			<groupId>com.tmt.kontroll</groupId>
+			<artifactId>kontroll-security</artifactId>
+		</dependency>
 		<!-- module ui -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>

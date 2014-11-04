@@ -5,34 +5,28 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_name", columnNames = {"name"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_request_pattern_name", columnNames = {"name, requestcontextpath"})})
 public class Scope extends BaseEntity {
 
-	@Column(nullable = false, length = DatabaseDefinitions.String_Small)
-	private String	name;
+	@Column(nullable = false)
+	private String							name;
 
 	@Column(length = DatabaseDefinitions.String_Large)
-	private String	description;
+	private String							description;
 
 	@OneToMany(cascade = CascadeType.DETACH, mappedBy = "scope")
-	private List<ScopedContent> scopedContents;
+	private List<ScopedContent>	scopedContents;
 
-	@ManyToMany
-	@JoinTable(name = "Scope_RequestContext",
-	joinColumns = @JoinColumn(name = "scope_id", referencedColumnName = "id"),
-	inverseJoinColumns = @JoinColumn(name = "request_context_id", referencedColumnName = "id"))
-	private List<RequestContext> requestContexts;
+	@Column(nullable = false)
+	private String							requestContextPath;
 
 	public String getName() {
 		return this.name;
@@ -58,11 +52,11 @@ public class Scope extends BaseEntity {
 		this.scopedContents = scopedContents;
 	}
 
-	public List<RequestContext> getRequestContexts() {
-		return this.requestContexts;
+	public String getRequestContextPath() {
+		return this.requestContextPath;
 	}
 
-	public void setRequestContexts(final List<RequestContext> requestContexts) {
-		this.requestContexts = requestContexts;
+	public void setRequestContextPath(final String requestContextPath) {
+		this.requestContextPath = requestContextPath;
 	}
 }

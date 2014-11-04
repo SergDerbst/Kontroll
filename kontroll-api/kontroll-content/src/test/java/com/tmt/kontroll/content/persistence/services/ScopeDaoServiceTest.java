@@ -13,7 +13,7 @@ import com.tmt.kontroll.test.persistence.PersistenceBaseEntityDaoServiceTest;
 public class ScopeDaoServiceTest extends PersistenceBaseEntityDaoServiceTest<Scope, ScopeRepository, ScopeDaoServiceImpl> {
 
 	@Autowired
-	ScopeDaoServiceImpl service;
+	ScopeDaoServiceImpl	service;
 
 	@Override
 	protected ScopeDaoServiceImpl daoService() {

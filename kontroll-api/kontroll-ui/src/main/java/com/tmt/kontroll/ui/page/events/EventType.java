@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  *
  */
 public enum EventType {
-	Click("click");
+	Click("click"),
+	Submit("submit");
 
 	private String	name;
 

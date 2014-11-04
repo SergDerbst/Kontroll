@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.UniqueConstraint;
 
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity

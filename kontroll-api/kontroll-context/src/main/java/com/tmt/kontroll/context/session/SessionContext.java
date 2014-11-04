@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.persistence.entities.security.User;
+import com.tmt.kontroll.security.persistence.entities.User;
 
 /**
  * Contains all data relevant to the current session.

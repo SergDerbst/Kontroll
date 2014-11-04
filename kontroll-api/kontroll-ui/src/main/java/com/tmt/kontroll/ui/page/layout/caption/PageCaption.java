@@ -2,6 +2,7 @@ package com.tmt.kontroll.ui.page.layout.caption;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -18,6 +19,7 @@ import com.tmt.kontroll.ui.page.layout.PageSegment;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Inherited
 public @interface PageCaption {
 
 	String value();

@@ -1,6 +1,6 @@
 package com.tmt.kontroll.ui.page.layout;
 
-import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.tmt.kontroll.commons.ui.DomElement;
 import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.ContentItem;
+import com.tmt.kontroll.ui.page.events.EventType;
 import com.tmt.kontroll.ui.page.events.PageEvent;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 
@@ -21,8 +22,8 @@ public abstract class PageSegment implements DomElement {
 	private String																						parentScope;
 	private final HtmlTag																			tag;
 	private final TreeMap<PageSegmentOrdinalKey, PageSegment>	children					= new TreeMap<>();
-	private final List<PageEvent>															generalEvents			= new ArrayList<>();
-	private final List<PageEvent>															additionalEvents	= new ArrayList<>();
+	private final Map<EventType, PageEvent>										generalEvents			= new EnumMap<>(EventType.class);
+	private final Map<EventType, PageEvent>										additionalEvents	= new EnumMap<>(EventType.class);
 	private List<ContentItem>																	content;
 	private ContentItem																				caption;
 	private final Map<String, String>													attributes				= new HashMap<>();
@@ -74,11 +75,11 @@ public abstract class PageSegment implements DomElement {
 		return this.children.size() > 0;
 	}
 
-	public List<PageEvent> getGeneralEvents() {
+	public Map<EventType, PageEvent> getGeneralEvents() {
 		return this.generalEvents;
 	}
 
-	public List<PageEvent> getAdditionalEvents() {
+	public Map<EventType, PageEvent> getAdditionalEvents() {
 		return this.additionalEvents;
 	}
 

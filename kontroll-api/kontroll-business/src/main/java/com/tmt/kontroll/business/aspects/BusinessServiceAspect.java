@@ -42,9 +42,11 @@ public class BusinessServiceAspect {
 	@Around("businessService() && allPublicMethods()")
 	public Object adviceBusinessServiceMethods(final ProceedingJoinPoint joinPoint) {
 		try {
-			System.out.println("####### Before proceed: " + joinPoint.getTarget().getClass().getName());
-			final Object result = joinPoint.proceed();
-			System.out.println("####### After proceed: " + result.toString());
+			final Object[] args = new Object[joinPoint.getArgs().length];
+			for (int i = 0; i < joinPoint.getArgs().length; i++) {
+				args[i] = this.entityConverter.convert(joinPoint.getArgs()[i]);
+			}
+			final Object result = joinPoint.proceed(args);
 			return this.entityConverter.convert(result);
 
 		} catch (final Throwable e) {

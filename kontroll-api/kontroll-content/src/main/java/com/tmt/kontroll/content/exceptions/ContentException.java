@@ -1,10 +1,10 @@
 package com.tmt.kontroll.content.exceptions;
 
-import org.apache.commons.lang3.exception.ContextedException;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
-public abstract class ContentException extends ContextedException {
+public abstract class ContentException extends ContextedRuntimeException {
 
-	private static final long serialVersionUID = 153424600469013955L;
+	private static final long	serialVersionUID	= 153424600469013955L;
 
 	public ContentException() {
 		super();
@@ -15,8 +15,8 @@ public abstract class ContentException extends ContextedException {
 	}
 
 	public ContentException(final String message,
-	                        final String scopeName,
-	                        final String requestPath) {
+													final String scopeName,
+													final String requestPath) {
 		super(message);
 		super.addContextValue("scope name", scopeName);
 		super.addContextValue("request path", requestPath);

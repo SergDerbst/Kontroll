@@ -8,12 +8,12 @@ import com.tmt.kontroll.business.annotations.BusinessEntity;
 @BusinessEntity(com.tmt.kontroll.content.persistence.entities.Scope.class)
 public class Scope {
 
-	private Integer								id;
-	private Timestamp							timestamp;
-	private String								name;
-	private String								description;
-	private List<ScopedContent>		scopedContents;
-	private List<RequestContext>	requestContexts;
+	private Integer							id;
+	private Timestamp						timestamp;
+	private String							name;
+	private String							description;
+	private String							requestContextPattern;
+	private List<ScopedContent>	scopedContents;
 
 	public String getName() {
 		return this.name;
@@ -39,14 +39,6 @@ public class Scope {
 		this.scopedContents = scopedContents;
 	}
 
-	public List<RequestContext> getRequestContexts() {
-		return this.requestContexts;
-	}
-
-	public void setRequestContexts(final List<RequestContext> requestContexts) {
-		this.requestContexts = requestContexts;
-	}
-
 	public Integer getId() {
 		return this.id;
 	}
@@ -61,5 +53,13 @@ public class Scope {
 
 	public void setTimestamp(final Timestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getRequestContextPattern() {
+		return requestContextPattern;
+	}
+
+	public void setRequestContextPattern(String requestContextPattern) {
+		this.requestContextPattern = requestContextPattern;
 	}
 }

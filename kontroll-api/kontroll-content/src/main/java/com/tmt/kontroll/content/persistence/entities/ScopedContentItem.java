@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 
 import com.tmt.kontroll.content.persistence.selections.ContentType;
-import com.tmt.kontroll.persistence.entities.BaseEntity;
+import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
