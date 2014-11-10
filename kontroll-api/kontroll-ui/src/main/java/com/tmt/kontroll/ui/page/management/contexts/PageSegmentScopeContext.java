@@ -1,14 +1,14 @@
 package com.tmt.kontroll.ui.page.management.contexts;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.tmt.kontroll.ui.page.layout.PageSegment;
+import com.tmt.kontroll.ui.page.PageSegment;
 
 public class PageSegmentScopeContext {
 
 	private final String						scopeName;
-	private final List<PageSegment>	segments	= new ArrayList<>();
+	private final Set<PageSegment>	segments	= new HashSet<>();
 
 	//TODO: conditions
 
@@ -20,7 +20,7 @@ public class PageSegmentScopeContext {
 		return this.scopeName;
 	}
 
-	public List<PageSegment> getSegments() {
+	public Set<PageSegment> getSegments() {
 		return this.segments;
 	}
 }

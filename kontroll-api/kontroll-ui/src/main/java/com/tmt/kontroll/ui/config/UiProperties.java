@@ -12,7 +12,7 @@ public class UiProperties {
 	 * {@link PageBody}s, and {@link PageFooter}s.
 	 * @return
 	 */
-	public List<String> layoutBasePackages() {
+	public List<String> basePackages() {
 		return layoutComponentBasePackages;
 	}
 }

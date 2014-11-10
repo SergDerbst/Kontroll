@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.commons.utils.RegexPatternComparator;
-import com.tmt.kontroll.commons.utils.RegexPatternConverter;
+import com.tmt.kontroll.commons.utils.regex.RegexPatternComparator;
+import com.tmt.kontroll.commons.utils.regex.RegexPatternConverter;
 
 /**
  * <p>

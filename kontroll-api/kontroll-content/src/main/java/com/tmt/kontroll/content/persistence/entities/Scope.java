@@ -13,7 +13,8 @@ import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_request_pattern_name", columnNames = {"name, requestcontextpath"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_request_pattern_name", columnNames = {	"name",
+																																																		"requestContextPath"})})
 public class Scope extends BaseEntity {
 
 	@Column(nullable = false)

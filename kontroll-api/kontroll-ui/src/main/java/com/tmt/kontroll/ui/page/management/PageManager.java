@@ -1,6 +1,6 @@
 package com.tmt.kontroll.ui.page.management;
 
-import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,14 @@ import com.tmt.kontroll.content.exceptions.ContentException;
 import com.tmt.kontroll.ui.exceptions.PageManagementException;
 import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
 import com.tmt.kontroll.ui.page.PageHolder;
-import com.tmt.kontroll.ui.page.layout.PageSegment;
-import com.tmt.kontroll.ui.page.layout.PageSegmentHolder;
-import com.tmt.kontroll.ui.page.layout.caption.PageCaption;
-import com.tmt.kontroll.ui.page.layout.caption.PageCaptionLoader;
-import com.tmt.kontroll.ui.page.layout.content.PageContent;
-import com.tmt.kontroll.ui.page.layout.content.PageContentLoader;
-import com.tmt.kontroll.ui.page.management.annotations.PageConfig;
-import com.tmt.kontroll.ui.page.management.annotations.PageContext;
+import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.PageSegmentHolder;
+import com.tmt.kontroll.ui.page.configuration.annotations.content.Caption;
+import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
+import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
+import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
+import com.tmt.kontroll.ui.page.loading.CaptionLoader;
+import com.tmt.kontroll.ui.page.loading.ContentLoader;
 
 /**
  * <p>
@@ -32,19 +32,19 @@ import com.tmt.kontroll.ui.page.management.annotations.PageContext;
 public class PageManager {
 
 	@Autowired
-	PageHolder				pageHolder;
+	PageHolder									pageHolder;
 
 	@Autowired
-	PageSegmentHolder	pageSegmentHolder;
+	PageSegmentHolder						pageSegmentHolder;
 
 	@Autowired
-	PageContentLoader	pageContentLoader;
+	ContentLoader								pageContentLoader;
 
 	@Autowired
-	PageCaptionLoader	pageCaptionLoader;
+	CaptionLoader								pageCaptionLoader;
 
 	@Autowired
-	PagePostProcessor	pagePostProcessor;
+	PageManagementPostProcessor	pagePostProcessor;
 
 	public PageSegment manage(final String requestPath, final String scopeName, final String sessionId) throws PageManagementException {
 		try {
@@ -58,7 +58,7 @@ public class PageManager {
 		}
 	}
 
-	private PageSegment loadScope(final List<PageSegment> pageSegments, final String requestPath, final String scopeName, final String sessionId) throws ContentException, ScopeNotFoundException {
+	private PageSegment loadScope(final Set<PageSegment> pageSegments, final String requestPath, final String scopeName, final String sessionId) throws ContentException, ScopeNotFoundException {
 		for (final PageSegment segment : pageSegments) {
 			for (final PageContext pageContext : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
 				if (this.matchPageContext(pageContext, requestPath)) {
@@ -77,14 +77,14 @@ public class PageManager {
 	}
 
 	private void handleCaption(final PageSegment segment, final String scopeName, final String sessionId) {
-		final PageCaption pageCaption = segment.getClass().getAnnotation(PageCaption.class);
+		final Caption pageCaption = segment.getClass().getAnnotation(Caption.class);
 		if (pageCaption != null) {
 			segment.setCaption(this.pageCaptionLoader.load(scopeName, pageCaption.value(), sessionId));
 		}
 	}
 
 	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) {
-		if (segment.getClass().isAnnotationPresent(PageContent.class)) {
+		if (segment.getClass().isAnnotationPresent(Content.class)) {
 			this.pageContentLoader.load(segment, requestPath, scopeName, sessionId);
 		}
 	}

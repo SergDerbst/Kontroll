@@ -28,18 +28,17 @@ import com.tmt.kontroll.test.persistence.run.utils.exceptions.NoTestPreparerFoun
  * </p>
  * For more information on prepared test data, see {@link TestDataHolder}.
  * </p>
- * 
+ *
  * @author Sergio Weigel
  *
  */
 public abstract class TestDataPreparer {
 
-	private TestDataPreparer nextPreparer;
+	private TestDataPreparer	nextPreparer;
 
 	protected abstract boolean isResponsible(final PersistenceTestConfig config);
 
-	public void prepare(final PersistenceTestConfig config,
-	                    final String entityClassName) throws Exception {
+	public void prepare(final PersistenceTestConfig config, final String entityClassName) throws Exception {
 		if (this.isResponsible(config)) {
 			this.prepareReferenceEntities(config, entityClassName);
 			return;
@@ -58,13 +57,12 @@ public abstract class TestDataPreparer {
 	 * Furthermore, it saves the primary entity type and {@link PersistenceTestConfig#numberOfEntities} to the
 	 * {@link TestDataHolder} for further reference;
 	 * </p>
-	 * 
+	 *
 	 * @param config
 	 * @param entityClassName
 	 * @throws Exception
 	 */
-	private void prepareReferenceEntities(final PersistenceTestConfig config,
-	                                      final String entityClassName) throws Exception {
+	private void prepareReferenceEntities(final PersistenceTestConfig config, final String entityClassName) throws Exception {
 		final Class<?> entityClass = Class.forName(entityClassName);
 		this.testDataHolder().setPrimaryEntityType(entityClass);
 		this.testDataHolder().setNumberOfPrimaryEntities(config.numberOfEntities());
@@ -85,15 +83,13 @@ public abstract class TestDataPreparer {
 	 * </p>
 	 * If a different behavior is wanted, for example tweaking entity values, it may be overridden
 	 * in an implementing class.
-	 * 
+	 *
 	 * @param config
 	 * @param references
 	 * @param entityClass
 	 * @throws Exception
 	 */
-	protected void prepareReferenceEntitiesForSetup(final PersistenceTestConfig config,
-	                                                final Set<EntityReference> references,
-	                                                final Class<?> primaryEntityClass) throws Exception {
+	protected void prepareReferenceEntitiesForSetup(final PersistenceTestConfig config, final Set<EntityReference> references, final Class<?> primaryEntityClass) throws Exception {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.Setup, references, primaryEntityClass);
 	}
 
@@ -104,15 +100,13 @@ public abstract class TestDataPreparer {
 	 * If a different behavior is wanted, for example tweaking entity values, it may be overridden in
 	 * an implementing class.
 	 * </p>
-	 * 
+	 *
 	 * @param config
 	 * @param references
 	 * @param entityClass
 	 * @throws Exception
 	 */
-	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config,
-	                                                  final Set<EntityReference> references,
-	                                                  final Class<?> primaryEntityClass) throws Exception {
+	protected void prepareReferenceEntitiesForRunning(final PersistenceTestConfig config, final Set<EntityReference> references, final Class<?> primaryEntityClass) throws Exception {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.Running, references, primaryEntityClass);
 	}
 
@@ -123,14 +117,12 @@ public abstract class TestDataPreparer {
 	 * If a different behavior is wanted, for example tweaking entity values, it may be overridden in an
 	 * implementing class.
 	 * </p>
-	 * 
+	 *
 	 * @param config
 	 * @param references
 	 * @param entityClass
 	 */
-	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config,
-	                                                       final Set<EntityReference> references,
-	                                                       final Class<?> primaryEntityClass) {
+	protected void prepareReferenceEntitiesForVerification(final PersistenceTestConfig config, final Set<EntityReference> references, final Class<?> primaryEntityClass) {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.Verification, references, primaryEntityClass);
 	}
 
@@ -142,20 +134,16 @@ public abstract class TestDataPreparer {
 	 * If a different behavior is wanted, for example having certain data present after
 	 * the test, it may be overridden in an implementing class.
 	 * </p>
-	 * 
+	 *
 	 * @param config
 	 * @param references
 	 * @param primaryEntityClass
 	 */
-	protected void prepareReferenceEntitiesForTearDown(final PersistenceTestConfig config,
-	                                                   final Set<EntityReference> references,
-	                                                   final Class<?> primaryEntityClass) {
+	protected void prepareReferenceEntitiesForTearDown(final PersistenceTestConfig config, final Set<EntityReference> references, final Class<?> primaryEntityClass) {
 		this.prepareReferenceEntitiesForTestPhase(TestPhase.TearDown, new TreeSet<EntityReference>(new EntityReferenceComparator()), primaryEntityClass);
 	}
 
-	protected void prepareReferenceEntitiesForTestPhase(final TestPhase testPhase,
-	                                                    final Set<EntityReference> references,
-	                                                    final Class<?> primaryEntityClass) {
+	protected void prepareReferenceEntitiesForTestPhase(final TestPhase testPhase, final Set<EntityReference> references, final Class<?> primaryEntityClass) {
 		this.testDataHolder().addReferences(testPhase, references);
 	}
 
@@ -166,12 +154,11 @@ public abstract class TestDataPreparer {
 	 * This might be overridden by an implementing class in order to achieve a different
 	 * test behavior.
 	 * </p>
-	 * 
+	 *
 	 * @param entities
 	 * @throws Exception
 	 */
-	protected void configureReferenceAssertion(final PersistenceTestConfig config,
-	                                           final Class<?> entityClass) {
+	protected void configureReferenceAssertion(final PersistenceTestConfig config, final Class<?> entityClass) {
 		final EntityReferenceAsserter asserter = this.referenceAsserter();
 		asserter.configureForIgnoredFields(config);
 	}

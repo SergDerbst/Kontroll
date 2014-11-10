@@ -8,8 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
-import com.tmt.kontroll.ui.page.layout.PageSegment;
-import com.tmt.kontroll.ui.page.management.annotations.Condition;
+import com.tmt.kontroll.ui.page.configuration.annotations.context.Condition;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 
 public class PageTest {

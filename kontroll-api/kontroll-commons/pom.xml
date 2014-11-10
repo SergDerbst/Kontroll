@@ -10,6 +10,11 @@
 	<artifactId>kontroll-commons</artifactId>
 
 	<dependencies>
+		<!-- apache commons lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 		<!-- jackson annotations -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

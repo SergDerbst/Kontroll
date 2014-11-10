@@ -17,7 +17,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 
 import com.tmt.kontroll.annotations.RequestContext;
 import com.tmt.kontroll.commons.exceptions.ScanFailedException;
-import com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScanner;
+import com.tmt.kontroll.commons.utils.scanning.AnnotationAndAssignableTypeCandidateScanner;
 import com.tmt.kontroll.context.config.ContextProperties;
 import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.context.request.RequestContextTestHelper.TestRequestContextService;
@@ -39,7 +39,7 @@ public class RequestContextScannerTest {
 
 	@Before
 	@SuppressWarnings({	"unchecked",
-			"serial"})
+	"serial"})
 	public void setUp() throws Exception {
 		initMocks(this);
 		when(this.beanDefinition.getBeanClassName()).thenReturn(TestRequestContextService.class.getName());

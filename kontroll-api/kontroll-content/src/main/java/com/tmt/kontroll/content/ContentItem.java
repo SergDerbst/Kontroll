@@ -12,10 +12,10 @@ import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
 
 /**
- * @author Sergio Weigel
+ * Business object.
  *
- * @param <T>
- *          Type of Enum that represents the tag of this content item.
+ * @author SergDerbst
+ *
  */
 @JsonInclude(Include.NON_EMPTY)
 public class ContentItem implements DomElement {

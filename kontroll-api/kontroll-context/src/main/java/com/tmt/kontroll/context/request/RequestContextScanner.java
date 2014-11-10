@@ -7,7 +7,7 @@ import org.springframework.util.ClassUtils;
 
 import com.tmt.kontroll.annotations.RequestContext;
 import com.tmt.kontroll.commons.exceptions.ScanFailedException;
-import com.tmt.kontroll.commons.utils.AnnotationAndAssignableTypeCandidateScanner;
+import com.tmt.kontroll.commons.utils.scanning.AnnotationAndAssignableTypeCandidateScanner;
 import com.tmt.kontroll.context.config.ContextProperties;
 import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.context.global.GlobalContextDto;

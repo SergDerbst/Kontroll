@@ -9,7 +9,7 @@ import com.tmt.kontroll.business.BusinessPersistenceEntityMapper;
 import com.tmt.kontroll.business.annotations.BusinessEntity;
 import com.tmt.kontroll.business.config.BusinessProperties;
 import com.tmt.kontroll.commons.exceptions.ScanFailedException;
-import com.tmt.kontroll.commons.utils.AnnotationCandidateScanner;
+import com.tmt.kontroll.commons.utils.scanning.AnnotationCandidateScanner;
 
 /**
  * The business entity scanner scans all given base packages for classes annotated with

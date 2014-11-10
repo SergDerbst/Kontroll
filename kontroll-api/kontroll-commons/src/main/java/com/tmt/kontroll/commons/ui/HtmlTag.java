@@ -25,8 +25,11 @@ public enum HtmlTag {
 	Image("img"),
 	Input("input"),
 	Italic("i"),
+	Label("label"),
+	Option("option"),
 	Paragraph("p"),
 	Span("span"),
+	Select("select"),
 	Video("video");
 
 	private String	tagName;

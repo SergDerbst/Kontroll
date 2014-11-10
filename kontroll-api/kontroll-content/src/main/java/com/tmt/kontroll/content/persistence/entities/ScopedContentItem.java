@@ -6,7 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.IndexColumn;
 
 import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.persistence.BaseEntity;
@@ -27,10 +30,12 @@ public class ScopedContentItem extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ContentType										type;
 
-	@ManyToMany(mappedBy = "scopedContentItems")
+	@ManyToMany(mappedBy = "scopedContentItems", fetch = FetchType.EAGER)
+	@IndexColumn(name = "id")
 	private List<ScopedContentCondition>	conditions;
 
-	@ManyToMany(mappedBy = "scopedContentItems")
+	@ManyToMany(mappedBy = "scopedContentItems", fetch = FetchType.EAGER)
+	@IndexColumn(name = "id")
 	private List<ScopedContent>						scopedContents;
 
 	public String getTagName() {

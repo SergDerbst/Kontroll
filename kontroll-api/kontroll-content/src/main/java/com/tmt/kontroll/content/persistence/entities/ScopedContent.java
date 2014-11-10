@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.IndexColumn;
 
 import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
@@ -16,22 +19,22 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 public class ScopedContent extends BaseEntity {
 
 	@Column(nullable = false)
-	private String name;
+	private String												name;
 
 	@Column(length = DatabaseDefinitions.String_Large)
-	private String description;
+	private String												description;
 
 	@ManyToOne
 	@JoinColumn(name = "scope", nullable = false)
-	private Scope	scope;
+	private Scope													scope;
 
-	@ManyToMany
-	@JoinTable(name = "ScopedContent_ScopedContentItem",
-	joinColumns = @JoinColumn(name = "scoped_content_item_id", referencedColumnName = "id"),
-	inverseJoinColumns = @JoinColumn(name = "scoped_content_id", referencedColumnName = "id"))
-	private List<ScopedContentItem>	scopedContentItems;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@IndexColumn(name = "id")
+	@JoinTable(name = "ScopedContent_ScopedContentItem", joinColumns = @JoinColumn(name = "scoped_content_item_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "scoped_content_id", referencedColumnName = "id"))
+	private List<ScopedContentItem>				scopedContentItems;
 
-	@ManyToMany(mappedBy = "scopedContents")
+	@ManyToMany(mappedBy = "scopedContents", fetch = FetchType.EAGER)
+	@IndexColumn(name = "id")
 	private List<ScopedContentCondition>	conditions;
 
 	public String getName() {

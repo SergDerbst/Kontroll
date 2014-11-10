@@ -1,16 +1,16 @@
 package com.tmt.kontroll.ui.page.preparation;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
 import com.tmt.kontroll.ui.page.PageHolder;
-import com.tmt.kontroll.ui.page.layout.PageSegment;
-import com.tmt.kontroll.ui.page.layout.PageSegmentHolder;
-import com.tmt.kontroll.ui.page.management.annotations.PageConfig;
-import com.tmt.kontroll.ui.page.management.annotations.PageContext;
+import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.PageSegmentHolder;
+import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
+import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentScopeContext;
 
@@ -30,7 +30,7 @@ public class PagePreparator {
 	}
 
 	private void handleScope(final PageSegmentScopeContext scopeContext) throws ScopeNotFoundException {
-		final List<PageSegment> segments = scopeContext.getSegments();
+		final Set<PageSegment> segments = scopeContext.getSegments();
 		for (final PageSegment segment : segments) {
 			for (final PageContext pageContext : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
 				this.addSegmentToParentScope(scopeContext, pageContext, segment);
@@ -66,6 +66,7 @@ public class PagePreparator {
 	}
 
 	private boolean isRootScope(final PageSegmentScopeContext scopeContext) {
-		return scopeContext.getScopeName().endsWith("header") || scopeContext.getScopeName().endsWith("body") || scopeContext.getScopeName().endsWith("footer");
+		final String scopeName = scopeContext.getScopeName();
+		return scopeName.split("\\.").length == 2 && scopeName.startsWith("page.");
 	}
 }

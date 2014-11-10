@@ -6,6 +6,10 @@ public class PageConfigurationFailedException extends ContextedRuntimeException 
 
 	private static final long	serialVersionUID	= 7784858117815426581L;
 
+	protected PageConfigurationFailedException() {
+		super();
+	}
+
 	public PageConfigurationFailedException(final Throwable cause) {
 		super(cause);
 	}

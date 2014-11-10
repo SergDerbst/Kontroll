@@ -1,7 +1,7 @@
 package com.tmt.kontroll.web.data;
 
 import com.tmt.kontroll.context.global.GlobalContextDto;
-import com.tmt.kontroll.ui.page.layout.PageSegment;
+import com.tmt.kontroll.ui.page.PageSegment;
 
 /**
  * The global response dto.
