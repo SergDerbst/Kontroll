@@ -9,12 +9,13 @@ public class SessionContextHolder {
 
 	TreeMap<String, SessionContext>	sessionContextMap	= new TreeMap<>();
 
-	public void addSessionContext(final String sessionId) {
+	public SessionContext addSessionContext(final String sessionId) {
 		SessionContext sessionContext = this.sessionContextMap.get(sessionId);
 		if (sessionContext == null) {
 			sessionContext = new SessionContext();
 			this.sessionContextMap.put(sessionId, sessionContext);
 		}
+		return sessionContext;
 	}
 
 	public SessionContext sessionContext(final String sessionId) {

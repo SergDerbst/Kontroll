@@ -6,39 +6,43 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Type;
+
 import com.tmt.kontroll.persistence.BaseEntity;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(name = "unique_locale", columnNames = { "identifier", "locale" }) })
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_locale", columnNames = {	"identifier",
+																																											"locale"})})
 public class Caption extends BaseEntity {
 
-	private String identifier;
-	
-	private Locale locale;
-	
-	private String text;
+	private String	identifier;
+
+	@Type(type = "org.hibernate.type.LocaleType")
+	private Locale	locale;
+
+	private String	text;
 
 	public Locale getLocale() {
-		return locale;
+		return this.locale;
 	}
 
-	public void setLocale(Locale locale) {
+	public void setLocale(final Locale locale) {
 		this.locale = locale;
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	public String getIdentifier() {
-		return identifier;
+		return this.identifier;
 	}
 
-	public void setIdentifier(String identifier) {
+	public void setIdentifier(final String identifier) {
 		this.identifier = identifier;
 	}
 }

@@ -1,25 +1,20 @@
 package com.tmt.kontroll.ui.components.utils.content;
 
-import com.tmt.kontroll.commons.ui.HtmlTag;
-import com.tmt.kontroll.content.ContentItem;
+import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
 
 /**
  * The content editor is a special {@link PageSegment} that triggers editing of page
- * segment's content by opening an edit form, when clicked.
+ * segment's content by opening the {@link ContentEditorForm}, when clicked.
  *
  * @author SergDerbst
  *
  */
+@Content(type = ContentType.Image, content = "/images/general/content/editor.png")
 public class ContentEditor extends PageSegment {
 
 	public ContentEditor() {
 		super();
-		this.setEditImageContent();
-	}
-
-	private void setEditImageContent() {
-		final ContentItem content = new ContentItem(HtmlTag.Image);
-		content.getAttributes().put("src", "/images/general/content.editor.png");
 	}
 }

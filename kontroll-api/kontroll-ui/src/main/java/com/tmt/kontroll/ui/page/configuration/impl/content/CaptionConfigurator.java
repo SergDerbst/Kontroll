@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.content.persistence.entities.Caption;
 import com.tmt.kontroll.content.persistence.services.CaptionDaoService;
 import com.tmt.kontroll.ui.page.PageSegment;
@@ -37,21 +36,13 @@ public class CaptionConfigurator extends PageSegmentConfigurator {
 	@Override
 	protected void doConfiguration(final PageSegment segment) {
 		final String captionIdentifier = segment.getClass().getAnnotation(com.tmt.kontroll.ui.page.configuration.annotations.content.Caption.class).value();
-		Caption caption = this.captionDaoService.findByIdentifierAndLocale(captionIdentifier, Locale.ENGLISH);
+		Caption caption = this.captionDaoService.findByIdentifierAndLocale(captionIdentifier, Locale.US);
 		if (caption == null) {
 			caption = new Caption();
 			caption.setIdentifier(captionIdentifier);
-			caption.setLocale(Locale.ENGLISH);
+			caption.setLocale(Locale.US);
 			caption.setText(segment.getScope());
 			this.captionDaoService.create(caption);
 		}
-		segment.setCaption(this.makeCaptionContent(caption));
-	}
-
-	private ContentItem makeCaptionContent(final Caption caption) {
-		final ContentItem content = new ContentItem();
-		content.setContent(caption.getText());
-		content.setId(caption.getIdentifier() + ".caption");
-		return content;
 	}
 }

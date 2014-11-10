@@ -7,10 +7,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.ui.page.PageSegment;
 
 /**
- * Indicates that the annotated {@link PageSegment} has content.
+ * <p>
+ * Indicates that the annotated {@link PageSegment} has content. An initial content can be specified
+ * by its {@link ContentType} and {@link #content}..
  *
  * @author SergDerbst
  *
@@ -21,4 +24,7 @@ import com.tmt.kontroll.ui.page.PageSegment;
 @Inherited
 public @interface Content {
 
+	ContentType type() default ContentType.Text;
+
+	String content() default "";
 }

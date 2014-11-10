@@ -23,31 +23,14 @@ public class CaptionLoader {
 
 	public ContentItem load(final String scopeName, final String identifier, final String sessionId) {
 		Caption caption = null;
-		try {
-			caption = this.captionService.findByIdentifierAndLocale(identifier, this.globalContext.sessionContextHolder().sessionContext(sessionId).getLocale());
-		} catch (final Exception e) {
-			Log.info("Exception thrown while loading caption: {0}", e.getMessage());
-			Log.info("Loading caption failed. Loading default caption instead.");
-		} finally {
-			if (caption == null) {
-				return this.deliverDefaultCaption(scopeName, identifier);
-			}
-		}
+		caption = this.captionService.findByIdentifierAndLocale(identifier, this.globalContext.sessionContextHolder().sessionContext(sessionId).getLocale());
 		return this.makeCaptionContent(caption);
 	}
 
 	private ContentItem makeCaptionContent(final Caption caption) {
 		final ContentItem contentItem = new ContentItem();
 		contentItem.setContent(caption.getText());
-		contentItem.setId(caption.getIdentifier());
+		contentItem.setId(caption.getIdentifier() + ".caption");
 		return contentItem;
-	}
-
-	private ContentItem deliverDefaultCaption(final String scopeName, final String identifier) {
-		final String[] scopePath = scopeName.split("\\.");
-		final ContentItem caption = new ContentItem();
-		caption.setId(identifier + ".caption");
-		caption.setContent(scopePath[scopePath.length - 1]);
-		return caption;
 	}
 }
