@@ -12,9 +12,7 @@ import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
 import com.tmt.kontroll.ui.page.PageHolder;
 import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.PageSegmentHolder;
-import com.tmt.kontroll.ui.page.configuration.annotations.content.Caption;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
-import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.loading.CaptionLoader;
 import com.tmt.kontroll.ui.page.loading.ContentLoader;
@@ -38,20 +36,20 @@ public class PageManager {
 	PageSegmentHolder						pageSegmentHolder;
 
 	@Autowired
-	ContentLoader								pageContentLoader;
+	ContentLoader								contentLoader;
 
 	@Autowired
 	CaptionLoader								captionLoader;
 
 	@Autowired
-	PageManagementPostProcessor	pagePostProcessor;
+	PageManagementPostProcessor	postProcessor;
 
 	public PageSegment manage(final String requestPath, final String scopeName, final String sessionId) throws PageManagementException {
 		try {
 			if (this.isPageLoad(scopeName)) {
-				return this.pagePostProcessor.process(this.loadScope(this.pageHolder.fetchPageByPath(requestPath), requestPath, scopeName, sessionId));
+				return this.postProcessor.process(this.loadScope(this.pageHolder.fetchPageByPath(requestPath), requestPath, scopeName, sessionId));
 			} else {
-				return this.pagePostProcessor.process(this.loadScope(this.pageSegmentHolder.fetchPageSegments(scopeName), requestPath, scopeName, sessionId));
+				return this.postProcessor.process(this.loadScope(this.pageSegmentHolder.fetchPageSegments(scopeName), requestPath, scopeName, sessionId));
 			}
 		} catch (final Exception e) {
 			throw new PageManagementException(e);
@@ -60,8 +58,8 @@ public class PageManager {
 
 	private PageSegment loadScope(final Set<PageSegment> pageSegments, final String requestPath, final String scopeName, final String sessionId) throws ContentException, ScopeNotFoundException {
 		for (final PageSegment segment : pageSegments) {
-			for (final PageContext pageContext : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
-				if (this.matchPageContext(pageContext, requestPath)) {
+			for (final String pattern : segment.getRequestPatterns()) {
+				if (this.matchPageContext(pattern, requestPath)) {
 					return this.loadScope(segment, requestPath, scopeName, sessionId);
 				}
 			}
@@ -77,15 +75,14 @@ public class PageManager {
 	}
 
 	private void handleCaption(final PageSegment segment, final String sessionId) {
-		final Caption caption = segment.getClass().getAnnotation(Caption.class);
-		if (caption != null) {
-			segment.setCaption(this.captionLoader.load(caption.value(), sessionId));
+		if (segment.getCaptionIdentifier() != null && !segment.getCaptionIdentifier().isEmpty()) {
+			segment.setCaption(this.captionLoader.load(segment.getCaptionIdentifier(), sessionId));
 		}
 	}
 
 	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) {
 		if (segment.getClass().isAnnotationPresent(Content.class)) {
-			this.pageContentLoader.load(segment, requestPath, scopeName, sessionId);
+			this.contentLoader.load(segment, requestPath, scopeName, sessionId);
 		}
 	}
 
@@ -95,8 +92,8 @@ public class PageManager {
 		}
 	}
 
-	private boolean matchPageContext(final PageContext pageContext, final String requestPath) {
-		return Pattern.compile(pageContext.pattern()).matcher(requestPath).find() && this.matchConditions(pageContext);
+	private boolean matchPageContext(final String pattern, final String requestPath) {
+		return Pattern.compile(pattern).matcher(requestPath).find(); // && this.matchConditions(pageContext);
 	}
 
 	private boolean matchConditions(final PageContext pageContext) {

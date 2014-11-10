@@ -57,6 +57,8 @@ public class PageConfigConfigurator extends PageSegmentConfigurator {
 		final String[] scopePath = pageContext.scope().split("\\.");
 		segment.setParentScope(this.generateParentScopeName(scopePath));
 		segment.setScope(scopePath[scopePath.length - 1]);
+		segment.setOrdinal(pageContext.ordinal());
+		segment.getRequestPatterns().add(pageContext.pattern());
 		this.pageSegmentHolder.addPageSegment(pageContext.scope(), segment);
 	}
 

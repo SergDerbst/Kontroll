@@ -6,9 +6,9 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 
-@PageConfig(contexts = {@PageContext(scope = "page.contentEditorForm.content")})
+@PageConfig(contexts = {@PageContext(scope = "page.contentEditorForm.content", ordinal = 7)})
 @TextControl(name = "content")
-@Label("page.contentEditorForm.content.label.caption")
+@Label
 public class ContentEditorFormContentControl extends PageSegment {
 
 }

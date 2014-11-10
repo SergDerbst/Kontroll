@@ -23,5 +23,5 @@ import com.tmt.kontroll.ui.page.PageSegment;
 @Inherited
 public @interface Label {
 
-	String value();
+	String value() default "";
 }

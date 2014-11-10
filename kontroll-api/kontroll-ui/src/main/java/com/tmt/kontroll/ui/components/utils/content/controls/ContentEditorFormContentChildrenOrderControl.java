@@ -6,9 +6,9 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 
-@PageConfig(contexts = {@PageContext(scope = "page.contentEditorForm.contentChildrenOrder")})
+@PageConfig(contexts = {@PageContext(scope = "page.contentEditorForm.contentChildrenOrder", ordinal = 5)})
 @SelectControl(name = "contentChildrenOrder")
-@Label("page.contentEditorForm.contentChildrenOrder.label.caption")
+@Label
 public class ContentEditorFormContentChildrenOrderControl extends PageSegment {
 
 }

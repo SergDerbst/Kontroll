@@ -32,13 +32,16 @@ public class CssClassConfigurator extends PageSegmentConfigurator {
 	protected void doConfiguration(final PageSegment segment) {
 		final String[] cssScopeClasses = segment.getDomId().split("\\.");
 		final String additionalCssClass = segment.getClass().isAnnotationPresent(CssClass.class) ? segment.getClass().getAnnotation(CssClass.class).value() : "";
-		String cssClassValue = "";
-		for (int i = cssScopeClasses.length - 1; i >= 0; i--) {
-			cssClassValue = cssClassValue + " " + cssScopeClasses[i];
+		final StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < cssScopeClasses.length; i++) {
+			builder.append(cssScopeClasses[i]);
+			if (i < cssScopeClasses.length - 1) {
+				builder.append(" ");
+			}
 		}
 		if (!additionalCssClass.isEmpty()) {
-			cssClassValue = cssClassValue + " " + additionalCssClass;
+			builder.append(" " + additionalCssClass);
 		}
-		segment.getAttributes().put("class", cssClassValue);
+		segment.getAttributes().put("class", builder.toString());
 	}
 }

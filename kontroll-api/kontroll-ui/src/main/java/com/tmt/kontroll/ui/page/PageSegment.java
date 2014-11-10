@@ -1,5 +1,6 @@
 package com.tmt.kontroll.ui.page;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +26,15 @@ public abstract class PageSegment implements DomElement {
 
 	@JsonIgnore
 	private boolean																						configured;
+	@JsonIgnore
+	private final List<String>																requestPatterns		= new ArrayList<>();
+	@JsonIgnore
+	private String																						captionIdentifier;
+
 	private String																						scope;
 	private String																						parentScope;
 	private HtmlTag																						tag;
+	private int																								ordinal;
 	private final TreeMap<PageSegmentOrdinalKey, PageSegment>	children					= new TreeMap<>();
 	private final Map<EventType, PageEvent>										generalEvents			= new EnumMap<>(EventType.class);
 	private final Map<EventType, PageEvent>										additionalEvents	= new EnumMap<>(EventType.class);
@@ -126,6 +133,26 @@ public abstract class PageSegment implements DomElement {
 
 	public void setConfigured(final boolean configured) {
 		this.configured = configured;
+	}
+
+	public int getOrdinal() {
+		return this.ordinal;
+	}
+
+	public void setOrdinal(final int ordinal) {
+		this.ordinal = ordinal;
+	}
+
+	public List<String> getRequestPatterns() {
+		return this.requestPatterns;
+	}
+
+	public String getCaptionIdentifier() {
+		return this.captionIdentifier;
+	}
+
+	public void setCaptionIdentifier(final String captionIdentifier) {
+		this.captionIdentifier = captionIdentifier;
 	}
 
 	@Override

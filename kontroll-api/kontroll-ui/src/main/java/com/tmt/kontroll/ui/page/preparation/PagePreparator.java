@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
+import com.tmt.kontroll.ui.page.Page;
 import com.tmt.kontroll.ui.page.PageHolder;
 import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.PageSegmentHolder;
-import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
-import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentScopeContext;
 
@@ -32,41 +31,24 @@ public class PagePreparator {
 	private void handleScope(final PageSegmentScopeContext scopeContext) throws ScopeNotFoundException {
 		final Set<PageSegment> segments = scopeContext.getSegments();
 		for (final PageSegment segment : segments) {
-			for (final PageContext pageContext : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
-				this.addSegmentToParentScope(scopeContext, pageContext, segment);
-			}
+			this.addSegmentToParentScope(segment);
 		}
 	}
 
-	private void addSegmentToParentScope(final PageSegmentScopeContext scopeContext, final PageContext pageContext, final PageSegment segment) throws ScopeNotFoundException {
-		final String segmentScope = this.fetchSegmentScope(pageContext.scope());
-		if (this.isRootScope(scopeContext)) {
-			this.pageHolder.fetchPageByPattern(pageContext.pattern()).getChildren().put(new PageSegmentOrdinalKey(pageContext.ordinal(), segmentScope, pageContext.conditions(), pageContext.operator()), segment);
+	private void addSegmentToParentScope(final PageSegment segment) throws ScopeNotFoundException {
+		if (this.isRootScope(segment)) {
+			for (final String pattern : segment.getRequestPatterns()) {
+				final Page page = this.pageHolder.fetchPageByPattern(pattern);
+				page.getChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
+			}
 		} else {
-			for (final PageSegment parentSegment : this.pageSegmentHolder.fetchPageSegments(this.determineParentScopeName(scopeContext.getScopeName().split("\\.")))) {
-				parentSegment.getChildren().put(new PageSegmentOrdinalKey(pageContext.ordinal(), segmentScope, pageContext.conditions(), pageContext.operator()), segment);
+			for (final PageSegment parentSegment : this.pageSegmentHolder.fetchPageSegments(segment.getParentScope())) {
+				parentSegment.getChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
 			}
 		}
 	}
 
-	private String fetchSegmentScope(final String scope) {
-		final String[] scopePath = scope.split("\\.");
-		return scopePath[scopePath.length - 1];
-	}
-
-	private String determineParentScopeName(final String[] scopePath) {
-		String parentScopeName = "";
-		for (int i = 0; i < scopePath.length - 1; i++) {
-			parentScopeName = parentScopeName + scopePath[i];
-			if (i != scopePath.length - 2) {
-				parentScopeName = parentScopeName + ".";
-			}
-		}
-		return parentScopeName;
-	}
-
-	private boolean isRootScope(final PageSegmentScopeContext scopeContext) {
-		final String scopeName = scopeContext.getScopeName();
-		return scopeName.split("\\.").length == 2 && scopeName.startsWith("page.");
+	private boolean isRootScope(final PageSegment segment) {
+		return segment.getDomId().split("\\.").length == 2 && "page".equals(segment.getParentScope());
 	}
 }

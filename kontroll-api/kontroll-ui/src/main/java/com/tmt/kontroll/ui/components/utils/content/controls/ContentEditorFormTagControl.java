@@ -6,9 +6,9 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 
-@PageConfig(contexts = {@PageContext(scope = "page.contentEditorForm.htmlTag")})
+@PageConfig(contexts = {@PageContext(scope = "page.contentEditorForm.htmlTag", ordinal = 1)})
 @SelectControl(name = "htmlTag")
-@Label("page.contentEditorForm.htmlTag.label.caption")
+@Label
 public class ContentEditorFormTagControl extends PageSegment {
 
 }

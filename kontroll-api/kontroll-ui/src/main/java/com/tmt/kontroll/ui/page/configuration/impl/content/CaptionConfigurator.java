@@ -36,6 +36,7 @@ public class CaptionConfigurator extends PageSegmentConfigurator {
 	@Override
 	protected void doConfiguration(final PageSegment segment) {
 		final String captionIdentifier = segment.getClass().getAnnotation(com.tmt.kontroll.ui.page.configuration.annotations.content.Caption.class).value();
+		segment.setCaptionIdentifier(captionIdentifier);
 		Caption caption = this.captionDaoService.findByIdentifierAndLocale(captionIdentifier, Locale.US);
 		if (caption == null) {
 			caption = new Caption();

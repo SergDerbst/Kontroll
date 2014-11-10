@@ -2,6 +2,8 @@ package com.tmt.kontroll.ui.page.configuration.impl.components.form;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,14 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
 @Component
 public class FormControlConfigurator extends PageSegmentConfigurator {
 
+	@SuppressWarnings("serial")
+	private final List<String>	notInputControls	= new ArrayList<String>() {
+																									{
+																										this.add("label");
+																										this.add("select");
+																									}
+																								};
+
 	@Override
 	protected boolean isResponsible(final PageSegment segment) {
 		for (final Annotation annotation : segment.getClass().getDeclaredAnnotations()) {
@@ -50,11 +60,19 @@ public class FormControlConfigurator extends PageSegmentConfigurator {
 						} else {
 							segment.getAttributes().put(method.getName(), (String) method.invoke(annotation));
 						}
+						this.handleTypeAttribute(segment, annotation);
 					}
 				}
 			}
 		} catch (final Exception e) {
 			throw new PageConfigurationFailedException(e);
+		}
+	}
+
+	private void handleTypeAttribute(final PageSegment segment, final Annotation annotation) {
+		final String typeName = annotation.annotationType().getSimpleName().replace("Control", "").toLowerCase();
+		if (!this.notInputControls.contains(typeName)) {
+			segment.getAttributes().put("type", typeName);
 		}
 	}
 }
