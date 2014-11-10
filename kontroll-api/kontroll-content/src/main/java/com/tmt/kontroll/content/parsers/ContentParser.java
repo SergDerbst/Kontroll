@@ -14,12 +14,15 @@ import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 public class ContentParser {
 
 	@Autowired
-	ContentParserProvider provider;
+	ContentParserProvider	provider;
 
-	public List<ContentItem> parse(final List<ScopedContentItem> items) throws NoContentParserFoundException {
+	public List<ContentItem> parse(final List<ScopedContentItem> items, final String parentId) throws NoContentParserFoundException {
 		final List<ContentItem> parsed = new ArrayList<ContentItem>();
-		for (final ScopedContentItem item : items) {
-			parsed.add(this.provider.provide(item));
+		for (int i = 0; i < items.size(); i++) {
+			final ScopedContentItem item = items.get(i);
+			final ContentItem contentItem = this.provider.provide(item);
+			contentItem.setId(parentId + "." + i);
+			parsed.add(contentItem);
 		}
 		return parsed;
 	}

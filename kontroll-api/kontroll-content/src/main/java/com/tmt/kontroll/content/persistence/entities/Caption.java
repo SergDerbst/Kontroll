@@ -6,18 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.Type;
-
 import com.tmt.kontroll.persistence.BaseEntity;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "unique_locale", columnNames = {	"identifier",
-																																											"locale"})})
+"locale"})})
 public class Caption extends BaseEntity {
 
 	private String	identifier;
 
-	@Type(type = "org.hibernate.type.LocaleType")
 	private Locale	locale;
 
 	private String	text;

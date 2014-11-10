@@ -2,6 +2,7 @@ package com.tmt.kontroll.content.business.content;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -107,7 +108,7 @@ public class ContentServiceTest {
 		this.toTest.loadContent(this.contentDto);
 
 		//then
-		verify(this.scopedContentParser).parse(this.contentItems);
+		verify(this.scopedContentParser).parse(eq(this.contentItems), any(String.class));
 	}
 
 	@Test
@@ -123,7 +124,7 @@ public class ContentServiceTest {
 		this.toTest.loadContent(this.contentDto);
 
 		//then
-		verify(this.scopedContentParser).parse(argThat(new EmptyListMatcher<ScopedContentItem>()));
+		verify(this.scopedContentParser).parse(argThat(new EmptyListMatcher<ScopedContentItem>()), any(String.class));
 	}
 
 	@Test
@@ -137,7 +138,7 @@ public class ContentServiceTest {
 		this.toTest.loadContent(this.contentDto);
 
 		//then
-		verify(this.scopedContentParser).parse(argThat(new EmptyListMatcher<ScopedContentItem>()));
+		verify(this.scopedContentParser).parse(argThat(new EmptyListMatcher<ScopedContentItem>()), any(String.class));
 	}
 
 	@Test
@@ -152,7 +153,7 @@ public class ContentServiceTest {
 		this.toTest.loadContent(this.contentDto);
 
 		//then
-		verify(this.scopedContentParser).parse(argThat(new EmptyListMatcher<ScopedContentItem>()));
+		verify(this.scopedContentParser).parse(argThat(new EmptyListMatcher<ScopedContentItem>()), any(String.class));
 	}
 
 	@Test(expected = NoContentFoundException.class)

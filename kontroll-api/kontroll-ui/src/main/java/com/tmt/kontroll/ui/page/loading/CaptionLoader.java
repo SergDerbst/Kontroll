@@ -1,7 +1,7 @@
 package com.tmt.kontroll.ui.page.loading;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,20 +10,28 @@ import com.tmt.kontroll.content.persistence.entities.Caption;
 import com.tmt.kontroll.content.persistence.services.CaptionDaoService;
 import com.tmt.kontroll.context.global.GlobalContext;
 
+/**
+ * Loads a caption for the given identifier and the {@link Locale} stored in the session identified
+ * by the given session id. If no caption can be found for this locale, the default caption will
+ * be loaded ({@link Locale#US}).
+ *
+ * @author SergDerbst
+ *
+ */
 @Component
 public class CaptionLoader {
 
-	private static final Logger	Log	= LoggerFactory.getLogger(ContentLoader.class);
+	@Autowired
+	CaptionDaoService	captionService;
 
 	@Autowired
-	CaptionDaoService						captionService;
+	GlobalContext			globalContext;
 
-	@Autowired
-	GlobalContext								globalContext;
-
-	public ContentItem load(final String scopeName, final String identifier, final String sessionId) {
-		Caption caption = null;
-		caption = this.captionService.findByIdentifierAndLocale(identifier, this.globalContext.sessionContextHolder().sessionContext(sessionId).getLocale());
+	public ContentItem load(final String identifier, final String sessionId) {
+		Caption caption = this.captionService.findByIdentifierAndLocale(identifier, this.globalContext.sessionContextHolder().sessionContext(sessionId).getLocale());
+		if (caption == null) {
+			caption = this.captionService.findByIdentifierAndLocale(identifier, Locale.US);
+		}
 		return this.makeCaptionContent(caption);
 	}
 

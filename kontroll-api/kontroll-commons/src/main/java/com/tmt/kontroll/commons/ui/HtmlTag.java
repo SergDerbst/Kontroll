@@ -42,4 +42,20 @@ public enum HtmlTag {
 	public String getTagName() {
 		return this.tagName;
 	}
+
+	/**
+	 * Returns the proper tag for the given tag name or <code>null</code>, if no tag
+	 * with this name exists.
+	 *
+	 * @param tagName
+	 * @return
+	 */
+	public static HtmlTag forTagName(final String tagName) {
+		for (final HtmlTag tag : values()) {
+			if (tag.getTagName().equals(tagName)) {
+				return tag;
+			}
+		}
+		return null;
+	}
 }

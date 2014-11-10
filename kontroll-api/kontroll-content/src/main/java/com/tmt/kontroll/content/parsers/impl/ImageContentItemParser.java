@@ -2,6 +2,7 @@ package com.tmt.kontroll.content.parsers.impl;
 
 import org.springframework.stereotype.Component;
 
+import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.content.parsers.ContentItemParser;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
@@ -11,6 +12,9 @@ public class ImageContentItemParser implements ContentItemParser {
 
 	@Override
 	public ContentItem parse(final ScopedContentItem scopedContentItem) {
-		return null;
+		final ContentItem contentItem = new ContentItem(HtmlTag.Image);
+		contentItem.setContent(scopedContentItem.getContent());
+		contentItem.setCssClass(scopedContentItem.getCssClass());
+		return contentItem;
 	}
 }

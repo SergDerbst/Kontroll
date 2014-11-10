@@ -41,7 +41,7 @@ public class PageManager {
 	ContentLoader								pageContentLoader;
 
 	@Autowired
-	CaptionLoader								pageCaptionLoader;
+	CaptionLoader								captionLoader;
 
 	@Autowired
 	PageManagementPostProcessor	pagePostProcessor;
@@ -70,16 +70,16 @@ public class PageManager {
 	}
 
 	private PageSegment loadScope(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) throws ContentException {
-		this.handleCaption(segment, scopeName, sessionId);
+		this.handleCaption(segment, sessionId);
 		this.handleContent(segment, requestPath, scopeName, sessionId);
 		this.handleChildren(segment, requestPath, sessionId);
 		return segment;
 	}
 
-	private void handleCaption(final PageSegment segment, final String scopeName, final String sessionId) {
-		final Caption pageCaption = segment.getClass().getAnnotation(Caption.class);
-		if (pageCaption != null) {
-			segment.setCaption(this.pageCaptionLoader.load(scopeName, pageCaption.value(), sessionId));
+	private void handleCaption(final PageSegment segment, final String sessionId) {
+		final Caption caption = segment.getClass().getAnnotation(Caption.class);
+		if (caption != null) {
+			segment.setCaption(this.captionLoader.load(caption.value(), sessionId));
 		}
 	}
 

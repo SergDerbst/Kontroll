@@ -22,6 +22,7 @@ import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
 import com.tmt.kontroll.content.verification.ContentConditionVerifier;
 
 /**
+ * <p>
  * A service to load content according to a set of conditions. The application
  * requests for content with a DTO containing a set of attributes reflecting its
  * current state. The scope of the current state of the application determines where
@@ -30,12 +31,15 @@ import com.tmt.kontroll.content.verification.ContentConditionVerifier;
  * match against the actual values of the application state in order to return the
  * proper content.
  * </p>
+ * <p>
  * Any content consists of several content items, which are matched against their own sets
  * of conditions, so that such an item will only appear within the content shown, if
  * its conditions are all true. If no content items match the actual conditions, the
  * content will be empty.
  * </p>
+ * <p>
  * Only one content can be present within one scope and at any given set of conditions.
+ * </p>
  *
  * @author Sergio Weigel
  *
@@ -96,12 +100,17 @@ public class ContentService {
 	private List<ContentItem> verifyAndParseContentItems(final ScopedContent scopedContent, final ContentDto contentDto) throws NoContentParserFoundException {
 		final List<ScopedContentItem> contentItems = new ArrayList<ScopedContentItem>();
 		for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
-			for (final ScopedContentCondition contentItemcondition : contentItem.getConditions()) {
-				if (this.verifier.verify(contentItemcondition, contentDto)) {
-					contentItems.add(contentItem);
+			final List<ScopedContentCondition> conditions = contentItem.getConditions();
+			if (conditions.isEmpty()) {
+				contentItems.add(contentItem);
+			} else {
+				for (final ScopedContentCondition condition : conditions) {
+					if (this.verifier.verify(condition, contentDto)) {
+						contentItems.add(contentItem);
+					}
 				}
 			}
 		}
-		return this.scopedContentParser.parse(contentItems);
+		return this.scopedContentParser.parse(contentItems, contentDto.getScopeName());
 	}
 }
