@@ -2,7 +2,7 @@ package com.tmt.kontroll.content.verification.conditions.attributes;
 
 import java.util.List;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 
@@ -12,11 +12,11 @@ private ConditionAttributeVerifier nextVerifier;
 	
 	protected abstract boolean isResponsible(ConditionalOperator operator);
 	
-	protected abstract boolean doVerify(final List<ScopedContentConditionAttribute> attributes, final ContentDto contentDto);
+	protected abstract boolean doVerify(final List<ScopedContentConditionAttribute> attributes, final ContentLoadingContext contentDto);
 
 	public boolean verify(final List<ScopedContentConditionAttribute> attributes, 
 	                      final ConditionalOperator operator,
-	                      final ContentDto contentDto) {
+	                      final ContentLoadingContext contentDto) {
 		if (isResponsible(operator)) {
 			return this.doVerify(attributes, contentDto);
 		}

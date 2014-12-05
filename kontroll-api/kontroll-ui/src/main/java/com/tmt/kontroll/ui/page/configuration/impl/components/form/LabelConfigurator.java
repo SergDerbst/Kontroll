@@ -1,74 +1,66 @@
 package com.tmt.kontroll.ui.page.configuration.impl.components.form;
 
-import java.util.Locale;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.commons.ui.HtmlTag;
-import com.tmt.kontroll.content.persistence.entities.Caption;
-import com.tmt.kontroll.content.persistence.services.CaptionDaoService;
-import com.tmt.kontroll.ui.page.PageSegment;
-import com.tmt.kontroll.ui.page.PageSegmentHolder;
-import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
+import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.FormControl;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.label.Label;
+import com.tmt.kontroll.ui.page.configuration.enums.components.ChildPosition;
+import com.tmt.kontroll.ui.page.configuration.helpers.creators.LabelCreator;
+import com.tmt.kontroll.ui.page.configuration.impl.components.layout.ChildElementConfigurator;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
- * <p>
- * Configures {@link PageSegment}s annotated with {@link Label}.
- * </p>
- * <p>
- * Assuming that the annotated segment is a form control, it will create another page segment
- * within the same scope with tag {@link HtmlTag#Label}. The label's <code>for</code> attribute
- * will be set to the value of the segment's <code>name</code> attribute, thus creating a label
- * for the form control.
- * </p>
+ * Configurator for {@link Label} annotation. It either adds a label child element to
+ * the given segment or it adds a label child element to the given segment's parent,
+ * depending if the annotated segment is a {@link FormControl} or not.
  *
  * @author SergDerbst
  *
  */
 @Component
-public class LabelConfigurator extends PageSegmentConfigurator {
+public class LabelConfigurator extends ChildElementConfigurator {
 
 	@Autowired
-	CaptionDaoService	captionDaoService;
+	LabelCreator	labelCreator;
 
-	@Autowired
-	PageSegmentHolder	pageSegmentHolder;
-
-	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return segment.getClass().isAnnotationPresent(Label.class);
+	public LabelConfigurator() {
+		super(Label.class);
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
-		this.handleLabelCaption(segment, this.createLabelSegment(segment));
-	}
-
-	private void handleLabelCaption(final PageSegment segment, final PageSegment label) {
-		String captionIdentifier = segment.getClass().getAnnotation(Label.class).value();
-		if (captionIdentifier.isEmpty()) {
-			captionIdentifier = label.getDomId();
-		}
-		label.setCaptionIdentifier(captionIdentifier);
-		Caption caption = this.captionDaoService.findByIdentifierAndLocale(captionIdentifier, Locale.US);
-		if (caption == null) {
-			caption = new Caption();
-			caption.setIdentifier(captionIdentifier);
-			caption.setLocale(Locale.US);
-			caption.setText(label.getAttributes().get("for"));
-			this.captionDaoService.create(caption);
+	public void configure(final PageSegment segment) {
+		final PageSegment label = this.labelCreator.create(segment);
+		if (!this.isFormControl(segment)) {
+			super.addChild(this.retrieveChildPosition(label, segment), segment, label);
 		}
 	}
 
-	private PageSegment createLabelSegment(final PageSegment segment) {
-		final PageSegment label = new PageSegment(HtmlTag.Label) {};
-		label.setParentScope(segment.getParentScope());
-		label.setScope(segment.getScope() + "Label");
-		label.getAttributes().put("for", segment.getAttributes().get("name"));
-		label.setOrdinal(segment.getOrdinal() - 1);
-		this.pageSegmentHolder.addPageSegment(label.getDomId(), label);
-		return label;
+	private ChildPosition retrieveChildPosition(final PageSegment label, final PageSegment segment) {
+		for (final Annotation annotation : segment.getClass().getAnnotations()) {
+			try {
+				final Method nameMethod = annotation.annotationType().getMethod("name");
+				final String name = (String) nameMethod.invoke(annotation);
+				if (label.getAttributes().get("for").equals(name)) {
+					final Method positionMethod = annotation.annotationType().getMethod("position");
+					return (ChildPosition) positionMethod.invoke(annotation);
+				}
+			} catch (final Exception e) {
+				continue;
+			}
+		}
+		return null;
+	}
+
+	private boolean isFormControl(final PageSegment segment) {
+		for (final Annotation annotation : segment.getClass().getAnnotations()) {
+			if (annotation.annotationType().isAnnotationPresent(FormControl.class)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

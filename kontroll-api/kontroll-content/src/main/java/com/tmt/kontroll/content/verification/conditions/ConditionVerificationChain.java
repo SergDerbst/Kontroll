@@ -5,7 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.verification.conditions.impl.AndConditionVerifier;
 import com.tmt.kontroll.content.verification.conditions.impl.AttributesConditionVerifier;
@@ -44,7 +44,7 @@ public class ConditionVerificationChain {
 		this.notXorVerifier.setNextVerifier(null);
 	}
 	
-	public boolean verify(final ScopedContentCondition condition, final ContentDto contentDto) {
+	public boolean verify(final ScopedContentCondition condition, final ContentLoadingContext contentDto) {
 		return this.attributeVerifier.verify(condition, contentDto);
 	}
 }

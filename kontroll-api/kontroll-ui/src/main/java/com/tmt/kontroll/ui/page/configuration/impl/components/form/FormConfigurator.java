@@ -1,13 +1,15 @@
 package com.tmt.kontroll.ui.page.configuration.impl.components.form;
 
+import java.lang.annotation.Annotation;
+
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.commons.ui.HtmlTag;
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.context.ui.HtmlTag;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.Form;
 import com.tmt.kontroll.ui.page.events.EventType;
 import com.tmt.kontroll.ui.page.events.PageEvent;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
@@ -32,16 +34,16 @@ import com.tmt.kontroll.ui.page.events.PageEvent;
 public class FormConfigurator extends PageSegmentConfigurator {
 
 	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return segment.getClass().isAnnotationPresent(Form.class);
+	protected Class<? extends Annotation> getAnnotationType() {
+		return Form.class;
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
+	public void configure(final PageSegment segment) {
 		final Form form = segment.getClass().getAnnotation(Form.class);
 		segment.setTag(HtmlTag.Form);
 		segment.getAttributes().put("name", form.name());
-		final PageEvent event = new PageEvent(EventType.Submit, "submit");
+		final PageEvent event = new PageEvent(EventType.Submit, form.submitHandlers());
 		event.getArguments().put("targetUrl", form.targetUrl());
 		event.getArguments().put("targetScope", form.targetScope());
 		event.getArguments().put("dtoClass", form.dtoClass());

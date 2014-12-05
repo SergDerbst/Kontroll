@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>kontroll-web</artifactId>
 
-	<dependencies>	
+	<dependencies>
 		<!-- module security -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
@@ -19,6 +19,16 @@
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-ui</artifactId>
+		</dependency>
+		<!-- jackson core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<!-- jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<!-- spring core -->
 		<dependency>

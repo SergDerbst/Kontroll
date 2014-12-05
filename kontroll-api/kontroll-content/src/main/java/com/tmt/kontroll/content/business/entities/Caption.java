@@ -6,8 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.tmt.kontroll.business.annotations.BusinessEntity;
-import com.tmt.kontroll.commons.ui.DomElement;
-import com.tmt.kontroll.commons.ui.HtmlTag;
+import com.tmt.kontroll.context.ui.DomElement;
+import com.tmt.kontroll.context.ui.HtmlTag;
 
 @BusinessEntity(com.tmt.kontroll.content.persistence.entities.Caption.class)
 public class Caption implements DomElement {
@@ -19,6 +19,11 @@ public class Caption implements DomElement {
 	private String							text;
 
 	private Map<String, String>	attributes	= new HashMap<>();
+
+	@Override
+	public String getDtoClass() {
+		return this.getClass().getName();
+	}
 
 	@Override
 	public String getDomId() {

@@ -1,5 +1,6 @@
 package com.tmt.kontroll.ui.page.configuration.impl.content;
 
+import java.lang.annotation.Annotation;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.content.persistence.entities.Caption;
 import com.tmt.kontroll.content.persistence.services.CaptionDaoService;
-import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
@@ -29,12 +30,12 @@ public class CaptionConfigurator extends PageSegmentConfigurator {
 	CaptionDaoService	captionDaoService;
 
 	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return segment.getClass().isAnnotationPresent(com.tmt.kontroll.ui.page.configuration.annotations.content.Caption.class);
+	protected Class<? extends Annotation> getAnnotationType() {
+		return com.tmt.kontroll.ui.page.configuration.annotations.content.Caption.class;
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
+	public void configure(final PageSegment segment) {
 		final String captionIdentifier = segment.getClass().getAnnotation(com.tmt.kontroll.ui.page.configuration.annotations.content.Caption.class).value();
 		segment.setCaptionIdentifier(captionIdentifier);
 		Caption caption = this.captionDaoService.findByIdentifierAndLocale(captionIdentifier, Locale.US);

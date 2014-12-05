@@ -6,21 +6,21 @@ import java.util.Map;
 public class PageEvent {
 
 	private final EventType						type;
-	private final String							handlerName;
+	private final String[]						handlerNames;
 	private final Map<String, Object>	arguments	= new HashMap<>();
 
 	public PageEvent(	final EventType type,
-										final String handlerName) {
+	                 	final String[] handlerNames) {
 		this.type = type;
-		this.handlerName = handlerName;
+		this.handlerNames = handlerNames;
 	}
 
 	public EventType getType() {
 		return this.type;
 	}
 
-	public String getHandlerName() {
-		return this.handlerName;
+	public String[] getHandlerNames() {
+		return this.handlerNames;
 	}
 
 	public Map<String, Object> getArguments() {

@@ -6,27 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.content.ContentItem;
-import com.tmt.kontroll.content.business.content.ContentDto;
-import com.tmt.kontroll.content.business.content.ContentService;
+import com.tmt.kontroll.content.business.content.ContentLoadingService;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.context.global.GlobalContext;
-import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Caption;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 @Component
 public class ContentLoader {
 
 	@Autowired
-	ContentService	contentService;
+	ContentLoadingService	contentLoadingService;
 
 	@Autowired
-	GlobalContext		globalContext;
+	GlobalContext					globalContext;
 
 	public void load(final PageSegment pageSegment, final String requestPath, final String scopeName, final String sessionId) {
 		if (this.isReadyForContent(pageSegment)) {
 			List<ContentItem> content = null;
-			final ContentDto contentDto = this.createContentDto(requestPath, scopeName);
-			content = this.contentService.loadContent(contentDto);
+			final ContentLoadingContext ContentLoadingContext = this.createContentLoadingContext(requestPath, scopeName);
+			content = this.contentLoadingService.loadContent(ContentLoadingContext);
 			pageSegment.setContent(content);
 		}
 	}
@@ -36,7 +36,7 @@ public class ContentLoader {
 		return !segmentClass.isAnnotationPresent(Caption.class) && segmentClass.isAnnotationPresent(Content.class);
 	}
 
-	private ContentDto createContentDto(final String requestPath, final String scopeName) {
-		return new ContentDto(this.globalContext.requestContextHolder().fetchRequestContext(requestPath), this.globalContext.globalContext(), requestPath, scopeName);
+	private ContentLoadingContext createContentLoadingContext(final String requestPath, final String scopeName) {
+		return new ContentLoadingContext(this.globalContext.requestContextHolder().fetchRequestContext(requestPath), this.globalContext.globalContext(), requestPath, scopeName);
 	}
 }

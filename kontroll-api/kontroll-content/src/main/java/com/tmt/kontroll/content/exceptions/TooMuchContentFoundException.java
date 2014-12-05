@@ -1,12 +1,12 @@
 package com.tmt.kontroll.content.exceptions;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 
 public class TooMuchContentFoundException extends ContentException {
 
 	private static final long serialVersionUID = 2317681894869769839L;
 
-	public static TooMuchContentFoundException prepare(final ContentDto dto) {
+	public static TooMuchContentFoundException prepare(final ContentLoadingContext dto) {
 		return (TooMuchContentFoundException) new TooMuchContentFoundException().addContextValue("contentDto", dto);
 	}
 }

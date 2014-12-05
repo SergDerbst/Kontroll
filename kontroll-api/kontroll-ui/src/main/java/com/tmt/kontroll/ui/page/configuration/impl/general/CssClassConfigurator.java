@@ -1,21 +1,18 @@
 package com.tmt.kontroll.ui.page.configuration.impl.general;
 
+import java.lang.annotation.Annotation;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.general.CssClass;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
- * <p>
- * Configures the <code>class</code> attribute of {@link PageSegment}s.
- * </p>
- * <p>
- * The value of the <code>class</code> attribute is generated out of the scope name, whereas each
- * element of the name is added as an individual class. If the {@link PageSegment} is annotated
- * with {@link CssClass}, the annotation's value will be added to the <code>class</code> attribute
- * value.
- * </p>
+ * Configurator for the {@link CssClass} annotation. It calls the {@link CssHandler} to
+ * add the value of the annotation to the class attribute of the given {@link PageSegment}.
  *
  * @author SergDerbst
  *
@@ -23,25 +20,16 @@ import com.tmt.kontroll.ui.page.configuration.annotations.general.CssClass;
 @Component
 public class CssClassConfigurator extends PageSegmentConfigurator {
 
+	@Autowired
+	CssHandler	cssHandler;
+
 	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return true;
+	protected Class<? extends Annotation> getAnnotationType() {
+		return CssClass.class;
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
-		final String[] cssScopeClasses = segment.getDomId().split("\\.");
-		final String additionalCssClass = segment.getClass().isAnnotationPresent(CssClass.class) ? segment.getClass().getAnnotation(CssClass.class).value() : "";
-		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < cssScopeClasses.length; i++) {
-			builder.append(cssScopeClasses[i]);
-			if (i < cssScopeClasses.length - 1) {
-				builder.append(" ");
-			}
-		}
-		if (!additionalCssClass.isEmpty()) {
-			builder.append(" " + additionalCssClass);
-		}
-		segment.getAttributes().put("class", builder.toString());
+	public void configure(final PageSegment segment) {
+		this.cssHandler.handle(segment, segment.getClass().isAnnotationPresent(CssClass.class) ? segment.getClass().getAnnotation(CssClass.class).value() : "");
 	}
 }

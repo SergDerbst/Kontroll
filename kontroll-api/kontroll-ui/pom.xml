@@ -10,11 +10,6 @@
 	<artifactId>kontroll-ui</artifactId>
 
 	<dependencies>
-		<!-- module annotations -->
-		<dependency>
-			<groupId>com.tmt.kontroll</groupId>
-			<artifactId>kontroll-annotations</artifactId>
-		</dependency>
 		<!-- module content -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>

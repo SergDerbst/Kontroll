@@ -3,7 +3,7 @@ package com.tmt.kontroll.ui.page.management.contexts;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 public class PageSegmentScopeContext {
 

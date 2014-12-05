@@ -15,11 +15,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- module annotations -->
-		<dependency>
-			<groupId>com.tmt.kontroll</groupId>
-			<artifactId>kontroll-annotations</artifactId>
-		</dependency>
 		<!-- module context -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>

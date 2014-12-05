@@ -3,8 +3,8 @@ package com.tmt.kontroll.content.verification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.business.content.ContentContext;
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentConditionContext;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.verification.conditions.ConditionInconsistentException;
 import com.tmt.kontroll.content.verification.conditions.ConditionVerificationChain;
@@ -22,7 +22,7 @@ public class ContentConditionVerifier {
 	@Autowired
 	ConditionVerificationChain verificationChain;
 
-	public <V, C extends ContentContext> boolean verify(final ScopedContentCondition condition, final ContentDto contentDto) {
+	public <V, C extends ContentConditionContext> boolean verify(final ScopedContentCondition condition, final ContentLoadingContext contentDto) {
 		this.assertConsistent(condition);
 		return this.verificationChain.verify(condition, contentDto);
 	}

@@ -2,8 +2,7 @@ package com.tmt.kontroll.context.session;
 
 import java.util.Locale;
 
-import org.springframework.stereotype.Component;
-
+import com.tmt.kontroll.context.request.data.json.DataTransferElement;
 import com.tmt.kontroll.security.persistence.entities.User;
 
 /**
@@ -12,11 +11,15 @@ import com.tmt.kontroll.security.persistence.entities.User;
  * @author SergDerbst
  *
  */
-@Component
-public class SessionContext {
+public class SessionContext implements DataTransferElement {
 
 	private Locale	locale;
 	private User		user;
+
+	@Override
+	public String getDtoClass() {
+		return this.getClass().getName();
+	}
 
 	public Locale getLocale() {
 		return this.user == null ? this.locale : this.user.getLocale();

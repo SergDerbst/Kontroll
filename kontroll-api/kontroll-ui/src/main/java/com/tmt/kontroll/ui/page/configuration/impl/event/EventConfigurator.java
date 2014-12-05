@@ -1,14 +1,16 @@
 package com.tmt.kontroll.ui.page.configuration.impl.event;
 
+import java.lang.annotation.Annotation;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
-import com.tmt.kontroll.ui.page.configuration.annotations.event.HandlerArgument;
-import com.tmt.kontroll.ui.page.events.PageEvent;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventHandler;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
@@ -22,30 +24,24 @@ import com.tmt.kontroll.ui.page.events.PageEvent;
 @Component
 public class EventConfigurator extends PageSegmentConfigurator {
 
+	@Autowired
+	EventHandler	eventHandler;
+
 	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return segment.getClass().isAnnotationPresent(PageConfig.class);
+	protected Class<? extends Annotation> getAnnotationType() {
+		return Event.class;
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
+	public void configure(final PageSegment segment) {
 		final PageConfig config = segment.getClass().getAnnotation(PageConfig.class);
 		for (final Event event : config.events()) {
-			segment.getGeneralEvents().put(event.type(), this.createPageEvent(event));
+			this.eventHandler.handle(event, segment);
 		}
 		for (final PageContext context : config.contexts()) {
 			for (final Event event : context.events()) {
-				segment.getAdditionalEvents().put(event.type(), this.createPageEvent(event));
+				this.eventHandler.handle(event, segment);
 			}
 		}
-	}
-
-	private PageEvent createPageEvent(final Event event) {
-		final PageEvent pageEvent = new PageEvent(event.type(), event.handler());
-		pageEvent.getArguments().put("targetScopes", event.targetScopes());
-		for (final HandlerArgument argument : event.arguments()) {
-			pageEvent.getArguments().put(argument.key(), argument.value());
-		}
-		return pageEvent;
 	}
 }

@@ -50,11 +50,12 @@ public class RequestContextHolder {
 	}
 
 	public Set<RequestContextItem> fetchRequestContext(final String requestContextPath) {
-		for (final Entry<Pattern, Set<RequestContextItem>> entry : this.requestContextMap.descendingMap().entrySet()) {
+		final Set<RequestContextItem> items = new HashSet<>();
+		for (final Entry<Pattern, Set<RequestContextItem>> entry : this.requestContextMap.entrySet()) {
 			if (entry.getKey().matcher(requestContextPath).find()) {
-				return entry.getValue();
+				items.addAll(entry.getValue());
 			}
 		}
-		return null;
+		return items;
 	}
 }

@@ -1,11 +1,13 @@
 package com.tmt.kontroll.ui.page.configuration.annotations.context;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 
 /**
  * <p>
@@ -17,6 +19,8 @@ import com.tmt.kontroll.content.persistence.selections.BooleanOperator;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
+@ConfigurationAnnotation
 public @interface Condition {
 
 	String path();

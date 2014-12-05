@@ -1,34 +1,20 @@
 package com.tmt.kontroll.ui.page.configuration;
 
-import org.springframework.stereotype.Component;
+import java.lang.annotation.Annotation;
 
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
- * Responsibility chain element for configuring {@link PageSegment}s.
+ * Abstract base class for all {@link PageSegment} configurators. It contains two methods,
+ * one returning the annotation type the configurator is for and the other for performing
+ * the configuration.
  *
  * @author SergDerbst
  *
  */
-@Component
 public abstract class PageSegmentConfigurator {
 
-	private PageSegmentConfigurator	nextConfigurator;
+	protected abstract Class<? extends Annotation> getAnnotationType();
 
-	protected abstract boolean isResponsible(final PageSegment segment);
-
-	protected abstract void doConfiguration(final PageSegment segment);
-
-	public void configure(final PageSegment segment) {
-		if (this.isResponsible(segment)) {
-			this.doConfiguration(segment);
-		}
-		if (this.nextConfigurator != null) {
-			this.nextConfigurator.configure(segment);
-		}
-	}
-
-	public void setNextConfigurator(final PageSegmentConfigurator nextConfigurator) {
-		this.nextConfigurator = nextConfigurator;
-	}
+	public abstract void configure(final PageSegment segment);
 }

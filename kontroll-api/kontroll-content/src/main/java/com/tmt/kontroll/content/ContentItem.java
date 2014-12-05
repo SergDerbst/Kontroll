@@ -7,9 +7,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.tmt.kontroll.commons.ui.DomElement;
-import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
+import com.tmt.kontroll.context.ui.DomElement;
+import com.tmt.kontroll.context.ui.HtmlTag;
 
 /**
  * Business object.
@@ -34,6 +34,11 @@ public class ContentItem implements DomElement {
 
 	public ContentItem(final HtmlTag tag) {
 		this.tag = tag;
+	}
+
+	@Override
+	public String getDtoClass() {
+		return this.getClass().getName();
 	}
 
 	@Override

@@ -5,14 +5,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
+
 /**
- * Meta-annotation to indicated that the annotated annotation is an input element.
+ * Meta-annotation to indicate that the annotated annotation is an input element.
  *
  * @author SergDerbst
  *
  */
 @Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@ConfigurationAnnotation
 public @interface FormControl {
 
 }

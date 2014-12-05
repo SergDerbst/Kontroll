@@ -1,6 +1,6 @@
 package com.tmt.kontroll.ui.exceptions;
 
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 public class GeneralConfigurationFailedException extends PageConfigurationFailedException {
 

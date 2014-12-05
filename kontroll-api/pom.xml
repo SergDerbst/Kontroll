@@ -52,7 +52,6 @@
 	</properties>
 
 	<modules>
-		<module>kontroll-annotations</module>
 		<module>kontroll-business</module>
 		<module>kontroll-commons</module>
 		<module>kontroll-content</module>
@@ -66,12 +65,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- module: annotations -->
-			<dependency>
-				<groupId>com.tmt.kontroll</groupId>
-				<artifactId>kontroll-annotations</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 			<!-- module: business -->
 			<dependency>
 				<groupId>com.tmt.kontroll</groupId>
@@ -224,6 +217,12 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<!-- jackson core -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
 			<!-- jackson-databind -->

@@ -1,15 +1,17 @@
 package com.tmt.kontroll.ui.page.configuration.impl.context;
 
+import java.lang.annotation.Annotation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.ui.page.Page;
 import com.tmt.kontroll.ui.page.PageHolder;
-import com.tmt.kontroll.ui.page.PageSegment;
-import com.tmt.kontroll.ui.page.PageSegmentHolder;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
 /**
  * <p>
@@ -28,29 +30,25 @@ import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 public class PageConfigConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
+	CssHandler				cssHandler;
+
+	@Autowired
 	PageHolder				pageHolder;
 
 	@Autowired
 	PageSegmentHolder	pageSegmentHolder;
 
 	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return segment.getClass().isAnnotationPresent(PageConfig.class);
+	protected Class<? extends Annotation> getAnnotationType() {
+		return PageConfig.class;
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
+	public void configure(final PageSegment segment) {
 		final PageConfig pageConfig = segment.getClass().getAnnotation(PageConfig.class);
 		for (final PageContext pageContext : pageConfig.contexts()) {
-			this.handlePage(pageContext);
 			this.handleSegmentContext(segment, pageContext);
 		}
-	}
-
-	private void handlePage(final PageContext pageContext) {
-		final Page page = new Page();
-		page.setScope("page");
-		this.pageHolder.addPage(pageContext.pattern(), page);
 	}
 
 	private void handleSegmentContext(final PageSegment segment, final PageContext pageContext) {
@@ -59,6 +57,7 @@ public class PageConfigConfigurator extends PageSegmentConfigurator {
 		segment.setScope(scopePath[scopePath.length - 1]);
 		segment.setOrdinal(pageContext.ordinal());
 		segment.getRequestPatterns().add(pageContext.pattern());
+		this.cssHandler.handle(segment);
 		this.pageSegmentHolder.addPageSegment(pageContext.scope(), segment);
 	}
 

@@ -1,6 +1,6 @@
 package com.tmt.kontroll.content.verification.conditions;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 
 public abstract class ConditionVerifier {
@@ -9,9 +9,9 @@ public abstract class ConditionVerifier {
 	
 	protected abstract boolean isResponsible(final ScopedContentCondition condition);
 	
-	protected abstract boolean doVerify(final ScopedContentCondition condition, final ContentDto contentDto);
+	protected abstract boolean doVerify(final ScopedContentCondition condition, final ContentLoadingContext contentDto);
 
-	public boolean verify(final ScopedContentCondition condition, final ContentDto contentDto) {
+	public boolean verify(final ScopedContentCondition condition, final ContentLoadingContext contentDto) {
 		if (isResponsible(condition)) {
 			return this.doVerify(condition, contentDto);
 		}

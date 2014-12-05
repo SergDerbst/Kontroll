@@ -2,26 +2,24 @@ package com.tmt.kontroll.ui.page.configuration.annotations.components.form.contr
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
+import com.tmt.kontroll.ui.page.configuration.annotations.config.ValueSource;
 
 /**
- * Indicates that the annotated {@link PageSegment}, which must be a form control,
- * has a label associated with it. The value depicts the caption identifier of this
- * label.
+ * Configuration annotation for labels.
  *
  * @author SergDerbst
  *
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@ConfigurationAnnotation
 @Documented
-@Inherited
 public @interface Label {
 
-	String value() default "";
+	ValueSource valueSource() default @ValueSource;
 }

@@ -1,5 +1,6 @@
 package com.tmt.kontroll.ui.page.configuration.impl.content;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,22 +14,21 @@ import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.content.persistence.services.ScopeDaoService;
 import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
 import com.tmt.kontroll.content.persistence.services.ScopedContentItemDaoService;
-import com.tmt.kontroll.ui.components.utils.content.ContentEditor;
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.components.utils.content.ContentEditorToggle;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.events.EventType;
 import com.tmt.kontroll.ui.page.events.PageEvent;
-import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
  * Configures {@link PageSegment}s annotated with {@link Content}.
  * </p>
  * <p>
- * The page segment will have a {@link ContentEditor} appended as first child. Furthermore, the configurator
+ * The page segment will have a {@link ContentEditorToggle} appended as first child. Furthermore, the configurator
  * checks, if a {@link Scope}, {@link ScopedContent} and a list of {@link ScopedContentItem}s already exist
  * in the data base. If not, these entities are initially created. The initial content item will be created
  * either according to the config given in the {@link Content} annotation or as a simple {@link ContentType#Text}
@@ -41,8 +41,6 @@ import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 @Component
 public class ContentConfigurator extends PageSegmentConfigurator {
 
-	private static final int		ContentEditorOrdinal	= -1;
-
 	@Autowired
 	ScopeDaoService							scopeDaoService;
 
@@ -53,21 +51,20 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 	ScopedContentItemDaoService	scopedContentDItemDaoService;
 
 	@Override
-	protected boolean isResponsible(final PageSegment segment) {
-		return segment.getClass().isAnnotationPresent(Content.class);
+	protected Class<? extends Annotation> getAnnotationType() {
+		return Content.class;
 	}
 
 	@Override
-	protected void doConfiguration(final PageSegment segment) {
-		final PageSegment contentEditor = this.makeContentEditor(segment);
-		segment.getChildren().put(new PageSegmentOrdinalKey(ContentEditorOrdinal, contentEditor.getDomId()), contentEditor);
+	public void configure(final PageSegment segment) {
+		segment.getBottomChildren().add(this.makeContentEditor(segment));
 		for (final PageContext context : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
 			this.createScopeWithInitialContent(context.scope(), context.pattern(), segment.getClass().getAnnotation(Content.class));
 		}
 	}
 
 	private PageSegment makeContentEditor(final PageSegment segment) {
-		final ContentEditor editor = new ContentEditor();
+		final ContentEditorToggle editor = new ContentEditorToggle();
 		editor.setParentScope(segment.getDomId());
 		editor.setScope("contentEditor");
 		editor.getGeneralEvents().put(EventType.Click, this.configureEvent(segment));
@@ -76,8 +73,8 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 	}
 
 	private PageEvent configureEvent(final PageSegment segment) {
-		final PageEvent event = new PageEvent(EventType.Click, "toggleVisibility");
-		event.getArguments().put("targetScope", "page.contentEditForm");
+		final PageEvent event = new PageEvent(EventType.Click, new String[] {"prepareContentEditor"});
+		event.getArguments().put("targetScope", "page.contentEditorForm");
 		event.getArguments().put("editScope", segment.getDomId());
 		return event;
 	}

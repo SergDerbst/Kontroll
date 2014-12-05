@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 import com.tmt.kontroll.content.verification.conditions.ConditionVerificationChain;
@@ -36,7 +36,7 @@ public class NotAndConditionVerifierTest {
 	@Mock
 	private ScopedContentCondition childConditionFalse;
 	@Mock
-	private ContentDto contentDto;
+	private ContentLoadingContext contentDto;
 	
 	private NotAndConditionVerifier toTest;
 	private List<ScopedContentCondition> childConditions;

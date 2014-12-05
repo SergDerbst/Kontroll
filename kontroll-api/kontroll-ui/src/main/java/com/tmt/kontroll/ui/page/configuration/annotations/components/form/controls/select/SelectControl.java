@@ -6,9 +6,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.commons.ui.HtmlTag;
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.context.ui.HtmlTag;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.FormControl;
+import com.tmt.kontroll.ui.page.configuration.annotations.config.ItemsSource;
+import com.tmt.kontroll.ui.page.configuration.annotations.config.ValueSource;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * Indicates that the annotated {@link PageSegment} is a form control of type select.
@@ -18,8 +21,9 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 @FormControl
+@ConfigurationAnnotation
+@Documented
 public @interface SelectControl {
 
 	/**
@@ -35,4 +39,18 @@ public @interface SelectControl {
 	 * @return
 	 */
 	HtmlTag tag() default HtmlTag.Select;
+
+	/**
+	 * The source of the options array.
+	 *
+	 * @return
+	 */
+	ValueSource valueSource() default @ValueSource;
+
+	/**
+	 * The source of the value of the select element (for pre-selection).
+	 *
+	 * @return
+	 */
+	ItemsSource optionsSource() default @ItemsSource;
 }

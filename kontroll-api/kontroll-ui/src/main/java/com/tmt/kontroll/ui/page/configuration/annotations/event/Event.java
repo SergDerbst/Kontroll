@@ -2,15 +2,15 @@ package com.tmt.kontroll.ui.page.configuration.annotations.event;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.events.EventType;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ import com.tmt.kontroll.ui.page.events.EventType;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Inherited
+@ConfigurationAnnotation
 public @interface Event {
 
 	/**
@@ -42,7 +42,7 @@ public @interface Event {
 	 *
 	 * @return
 	 */
-	String handler();
+	String[] handlers();
 
 	/**
 	 * Specifies the target scopes of the event. This has to be given only if the event handler

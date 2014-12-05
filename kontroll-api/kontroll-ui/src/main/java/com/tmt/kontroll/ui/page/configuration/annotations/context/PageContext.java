@@ -4,8 +4,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
@@ -23,6 +24,7 @@ import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
+@ConfigurationAnnotation
 public @interface PageContext {
 
 	/**

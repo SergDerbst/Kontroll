@@ -10,11 +10,6 @@
 	<artifactId>kontroll-context</artifactId>
 
 	<dependencies>
-		<!-- module annotations -->
-		<dependency>
-			<groupId>com.tmt.kontroll</groupId>
-			<artifactId>kontroll-annotations</artifactId>
-		</dependency>
 		<!-- module commons -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
@@ -35,10 +30,30 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+		<!-- jackson annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<!-- jackson core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<!-- jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
 		<!-- javax servlet api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<!-- spring web mvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 	</dependencies>
 </project>

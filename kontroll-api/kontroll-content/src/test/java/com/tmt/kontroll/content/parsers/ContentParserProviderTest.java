@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.tmt.kontroll.commons.ui.HtmlTag;
 import com.tmt.kontroll.content.exceptions.NoContentParserFoundException;
 import com.tmt.kontroll.content.parsers.impl.AudioContentItemParser;
 import com.tmt.kontroll.content.parsers.impl.ImageContentItemParser;

@@ -1,9 +1,8 @@
 package com.tmt.kontroll.ui.page.management.contexts;
 
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
-import com.tmt.kontroll.ui.page.Page;
-import com.tmt.kontroll.ui.page.PageSegment;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.Condition;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * <p>
@@ -26,7 +25,7 @@ public class PageSegmentOrdinalKey implements Comparable<PageSegmentOrdinalKey> 
 	private final ConditionalOperator	operator;
 
 	public PageSegmentOrdinalKey(	final int ordinal,
-	                             	final String scope) {
+																final String scope) {
 		this.ordinal = ordinal;
 		this.scope = scope;
 		this.operator = ConditionalOperator.And;
@@ -34,9 +33,9 @@ public class PageSegmentOrdinalKey implements Comparable<PageSegmentOrdinalKey> 
 	}
 
 	public PageSegmentOrdinalKey(	final int ordinal,
-	                             	final String scope,
-																final Condition[] conditions,
-																final ConditionalOperator operator) {
+																final String scope,
+	                             	final Condition[] conditions,
+	                             	final ConditionalOperator operator) {
 		this.ordinal = ordinal;
 		this.scope = scope;
 		this.operator = operator;

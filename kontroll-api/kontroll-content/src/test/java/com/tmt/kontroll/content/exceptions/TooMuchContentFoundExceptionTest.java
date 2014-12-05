@@ -9,13 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.test.ExceptionTest;
 
 public class TooMuchContentFoundExceptionTest extends ExceptionTest {
 
 	@Mock
-	private ContentDto contentDto;
+	private ContentLoadingContext contentDto;
 
 	@SuppressWarnings("serial")
 	public TooMuchContentFoundExceptionTest() {

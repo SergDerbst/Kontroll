@@ -1,12 +1,13 @@
 package com.tmt.kontroll.ui.page.configuration;
 
-import javax.annotation.PostConstruct;
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.ui.page.PageSegment;
-import com.tmt.kontroll.ui.page.configuration.impl.context.PageConfigConfigurator;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * Responsibility chain handler for configuring {@link PageSegment}s during preparation phase.
@@ -18,23 +19,19 @@ import com.tmt.kontroll.ui.page.configuration.impl.context.PageConfigConfigurato
 public class PageSegmentConfigurationHandler {
 
 	@Autowired
-	PageConfigConfigurator					firstConfigurator;
-	private PageSegmentConfigurator	lastConfigurator;
+	PageSegmentConfigurationHandlingPreparer																configurationPreparer;
 
-	@PostConstruct
-	public void initialize() {
-		this.lastConfigurator = this.firstConfigurator;
-	}
+	private final Map<Class<? extends Annotation>, PageSegmentConfigurator>	configurators	= new HashMap<>();
 
 	public void configure(final PageSegment segment) {
-		this.firstConfigurator.configure(segment);
+		for (final Annotation annotation : this.configurationPreparer.prepare(segment)) {
+			final PageSegmentConfigurator configurator = this.configurators.get(annotation.annotationType());
+			configurator.configure(segment);
+		}
 		segment.setConfigured(true);
 	}
 
 	public void addConfigurator(final PageSegmentConfigurator configurator) {
-		if (configurator != this.firstConfigurator) {
-			this.lastConfigurator.setNextConfigurator(configurator);
-			this.lastConfigurator = configurator;
-		}
+		this.configurators.put(configurator.getAnnotationType(), configurator);
 	}
 }

@@ -1,21 +1,17 @@
 package com.tmt.kontroll.ui.page.management;
 
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.content.exceptions.ContentException;
 import com.tmt.kontroll.ui.exceptions.PageManagementException;
-import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
 import com.tmt.kontroll.ui.page.PageHolder;
-import com.tmt.kontroll.ui.page.PageSegment;
-import com.tmt.kontroll.ui.page.PageSegmentHolder;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.loading.CaptionLoader;
 import com.tmt.kontroll.ui.page.loading.ContentLoader;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
 /**
  * <p>
@@ -49,22 +45,11 @@ public class PageManager {
 			if (this.isPageLoad(scopeName)) {
 				return this.postProcessor.process(this.loadScope(this.pageHolder.fetchPageByPath(requestPath), requestPath, scopeName, sessionId));
 			} else {
-				return this.postProcessor.process(this.loadScope(this.pageSegmentHolder.fetchPageSegments(scopeName), requestPath, scopeName, sessionId));
+				return this.postProcessor.process(this.loadScope(this.pageSegmentHolder.fetchMatchingPageSegment(scopeName, requestPath), requestPath, scopeName, sessionId));
 			}
 		} catch (final Exception e) {
 			throw new PageManagementException(e);
 		}
-	}
-
-	private PageSegment loadScope(final Set<PageSegment> pageSegments, final String requestPath, final String scopeName, final String sessionId) throws ContentException, ScopeNotFoundException {
-		for (final PageSegment segment : pageSegments) {
-			for (final String pattern : segment.getRequestPatterns()) {
-				if (this.matchPageContext(pattern, requestPath)) {
-					return this.loadScope(segment, requestPath, scopeName, sessionId);
-				}
-			}
-		}
-		throw ScopeNotFoundException.prepare(null, scopeName);
 	}
 
 	private PageSegment loadScope(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) throws ContentException {
@@ -87,18 +72,15 @@ public class PageManager {
 	}
 
 	private void handleChildren(final PageSegment segment, final String requestPath, final String sessionId) throws ContentException {
-		for (final PageSegment childSegment : segment.getChildren().values()) {
+		for (final PageSegment childSegment : segment.getTopChildren()) {
 			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
 		}
-	}
-
-	private boolean matchPageContext(final String pattern, final String requestPath) {
-		return Pattern.compile(pattern).matcher(requestPath).find(); // && this.matchConditions(pageContext);
-	}
-
-	private boolean matchConditions(final PageContext pageContext) {
-		//TODO implement
-		return true;
+		for (final PageSegment childSegment : segment.getMainChildren().values()) {
+			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
+		}
+		for (final PageSegment childSegment : segment.getBottomChildren()) {
+			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
+		}
 	}
 
 	private boolean isPageLoad(final String scopeName) {

@@ -1,8 +1,8 @@
 package com.tmt.kontroll.ui.exceptions;
 
-import org.apache.commons.lang3.exception.ContextedException;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
-public class ScopeNotFoundException extends ContextedException {
+public class ScopeNotFoundException extends ContextedRuntimeException {
 
 	private static final long	serialVersionUID	= -6575885134614181006L;
 

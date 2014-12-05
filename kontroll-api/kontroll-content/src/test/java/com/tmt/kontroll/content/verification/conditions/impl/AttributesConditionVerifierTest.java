@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.tmt.kontroll.content.business.content.ContentDto;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
@@ -29,7 +29,7 @@ public class AttributesConditionVerifierTest {
 	@Mock
 	private ScopedContentCondition condition;
 	@Mock 
-	private ContentDto contentDto;
+	private ContentLoadingContext contentDto;
 	
 	private AttributesConditionVerifier toTest;
 	private List<ScopedContentCondition> childConditions;

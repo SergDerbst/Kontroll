@@ -3,9 +3,9 @@ package com.tmt.kontroll.context.global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.context.request.RequestContextDto;
 import com.tmt.kontroll.context.request.RequestContextHolder;
-import com.tmt.kontroll.context.request.RequestContextService;
+import com.tmt.kontroll.context.request.data.RequestContextDto;
+import com.tmt.kontroll.context.request.handling.services.RequestHandlingService;
 import com.tmt.kontroll.context.session.SessionContextHolder;
 
 /**
@@ -20,7 +20,7 @@ public class GlobalContext {
 
 	/**
 	 * The global data object. It holds all data that has to be available globally in order
-	 * to retrieve {@link RequestContextDto}s using the proper {@link RequestContextService}s.
+	 * to retrieve {@link RequestContextDto}s using the proper {@link RequestHandlingService}s.
 	 */
 	GlobalContextDto			globalData;
 

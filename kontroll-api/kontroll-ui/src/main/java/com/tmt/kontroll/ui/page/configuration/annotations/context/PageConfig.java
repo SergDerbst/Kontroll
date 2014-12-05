@@ -1,12 +1,14 @@
 package com.tmt.kontroll.ui.page.configuration.annotations.context;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * Determines the page configuration for the annotated {@link PageSegment}.
@@ -16,6 +18,8 @@ import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
+@ConfigurationAnnotation
 public @interface PageConfig {
 
 	/**

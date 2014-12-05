@@ -6,9 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.tmt.kontroll.commons.ui.HtmlTag;
-import com.tmt.kontroll.ui.page.PageSegment;
+import com.tmt.kontroll.context.ui.HtmlTag;
+import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.FormControl;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
  * Indicates that the annotated {@link PageSegment} is an input element of type tel.
@@ -18,8 +19,9 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 @FormControl
+@ConfigurationAnnotation
+@Documented
 public @interface TelControl {
 
 	/**

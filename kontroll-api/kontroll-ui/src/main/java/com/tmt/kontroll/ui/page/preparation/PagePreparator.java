@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
-import com.tmt.kontroll.ui.page.Page;
 import com.tmt.kontroll.ui.page.PageHolder;
-import com.tmt.kontroll.ui.page.PageSegment;
-import com.tmt.kontroll.ui.page.PageSegmentHolder;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentScopeContext;
+import com.tmt.kontroll.ui.page.segments.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
 @Component
 public class PagePreparator {
@@ -38,12 +37,16 @@ public class PagePreparator {
 	private void addSegmentToParentScope(final PageSegment segment) throws ScopeNotFoundException {
 		if (this.isRootScope(segment)) {
 			for (final String pattern : segment.getRequestPatterns()) {
-				final Page page = this.pageHolder.fetchPageByPattern(pattern);
-				page.getChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
+				final PageSegment page = this.pageHolder.fetchPageByPattern(pattern);
+				if (!page.containsChild(segment)) {
+					page.getMainChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
+				}
 			}
 		} else {
 			for (final PageSegment parentSegment : this.pageSegmentHolder.fetchPageSegments(segment.getParentScope())) {
-				parentSegment.getChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
+				if (!parentSegment.containsChild(segment)) {
+					parentSegment.getMainChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
+				}
 			}
 		}
 	}
