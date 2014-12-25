@@ -1,28 +1,7 @@
 package com.tmt.kontroll.content.config;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.tmt.kontroll.commons.config.KontrollModuleProperties;
 
-import org.springframework.context.annotation.Configuration;
+public class ContentProperties extends KontrollModuleProperties {
 
-import com.tmt.kontroll.content.ContentItem;
-
-/**
- * A DTO holding property values for configuring the application content. Its values 
- * shall be filled by the application's {@link Configuration} classes. 
- * 
- * @author Sergio Weigel
- *
- */
-public class ContentProperties {
-
-	private final List<String> contentItemBasePackages = new ArrayList<String>();
-
-	/**
-	 * Returns a list of all the base packages containing {@link ContentItem}s.
-	 * @return
-	 */
-	public List<String> contentItemBasePackages() {
-		return contentItemBasePackages;
-	}
 }

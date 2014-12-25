@@ -15,8 +15,8 @@ import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.FormControl;
 import com.tmt.kontroll.ui.page.configuration.annotations.config.ItemsSource;
 import com.tmt.kontroll.ui.page.configuration.annotations.config.ValueSource;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ItemsSourceHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ItemsSourceConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceConfigurationHandler;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
@@ -38,10 +38,10 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public abstract class FormControlConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	ItemsSourceHandler														optionsHandler;
+	ItemsSourceConfigurationHandler														optionsHandler;
 
 	@Autowired
-	ValueSourceHandler												valueSourceHandler;
+	ValueSourceConfigurationHandler												valueSourceHandler;
 
 	private static final String								Data							= "data";
 	@SuppressWarnings("serial")

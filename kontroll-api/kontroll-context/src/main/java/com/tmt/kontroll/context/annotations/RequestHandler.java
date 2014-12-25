@@ -1,6 +1,7 @@
 package com.tmt.kontroll.context.annotations;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -20,6 +21,7 @@ import com.tmt.kontroll.context.request.handling.services.RequestHandlingService
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
+@Repeatable(RequestHandlers.class)
 public @interface RequestHandler {
 
 	/**

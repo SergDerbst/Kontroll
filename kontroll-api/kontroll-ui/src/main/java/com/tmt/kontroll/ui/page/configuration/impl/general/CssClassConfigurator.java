@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.general.CssClass;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssConfigurationHandler;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
- * Configurator for the {@link CssClass} annotation. It calls the {@link CssHandler} to
+ * Configurator for the {@link CssClass} annotation. It calls the {@link CssConfigurationHandler} to
  * add the value of the annotation to the class attribute of the given {@link PageSegment}.
  *
  * @author SergDerbst
@@ -21,7 +21,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class CssClassConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	CssHandler	cssHandler;
+	CssConfigurationHandler	cssHandler;
 
 	@Override
 	protected Class<? extends Annotation> getAnnotationType() {

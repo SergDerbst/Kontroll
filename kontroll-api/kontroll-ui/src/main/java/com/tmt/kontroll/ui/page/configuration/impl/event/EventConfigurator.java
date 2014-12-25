@@ -9,7 +9,7 @@ import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
 import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventConfigurationHandler;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
@@ -25,7 +25,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class EventConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	EventHandler	eventHandler;
+	EventConfigurationHandler	eventHandler;
 
 	@Override
 	protected Class<? extends Annotation> getAnnotationType() {

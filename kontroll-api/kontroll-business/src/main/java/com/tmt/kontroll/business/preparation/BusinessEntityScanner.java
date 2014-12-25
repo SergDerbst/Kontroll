@@ -33,7 +33,7 @@ public class BusinessEntityScanner {
 
 	public void scan() {
 		try {
-			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(BusinessEntity.class, this.businessProperties.businessEntityBasePackages())) {
+			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(BusinessEntity.class, this.businessProperties.basePackages())) {
 				final Class<?> businessEntityClass = ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 				this.persistenceBusinessEntityMapper.addMapping(businessEntityClass.getAnnotation(BusinessEntity.class).value(), businessEntityClass);
 			}

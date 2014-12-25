@@ -4,10 +4,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.tmt.kontroll.ui.config.UiConfig;
+import com.tmt.kontroll.tools.config.ToolsConfig;
 
 @Configuration
-@Import({UiConfig.class})
+@Import({ToolsConfig.class})
 @ComponentScan(value = {"com.tmt.kontroll.web"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 public class WebConfig {
 

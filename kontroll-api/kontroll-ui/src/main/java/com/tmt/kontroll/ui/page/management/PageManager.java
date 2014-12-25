@@ -8,9 +8,10 @@ import com.tmt.kontroll.ui.exceptions.PageManagementException;
 import com.tmt.kontroll.ui.page.PageHolder;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
-import com.tmt.kontroll.ui.page.loading.CaptionLoader;
-import com.tmt.kontroll.ui.page.loading.ContentLoader;
+import com.tmt.kontroll.ui.page.content.CaptionLoader;
+import com.tmt.kontroll.ui.page.content.ContentLoader;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegmentChildrenAndContentAccessor;
 import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
 /**
@@ -26,19 +27,22 @@ import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 public class PageManager {
 
 	@Autowired
-	PageHolder									pageHolder;
+	PageHolder														pageHolder;
 
 	@Autowired
-	PageSegmentHolder						pageSegmentHolder;
+	PageSegmentHolder											pageSegmentHolder;
 
 	@Autowired
-	ContentLoader								contentLoader;
+	ContentLoader													contentLoader;
 
 	@Autowired
-	CaptionLoader								captionLoader;
+	CaptionLoader													captionLoader;
 
 	@Autowired
-	PageManagementPostProcessor	postProcessor;
+	PageManagementPostProcessor						postProcessor;
+
+	@Autowired
+	PageSegmentChildrenAndContentAccessor	childrenAndContentAccessor;
 
 	public PageSegment manage(final String requestPath, final String scopeName, final String sessionId) throws PageManagementException {
 		try {
@@ -67,18 +71,14 @@ public class PageManager {
 
 	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) {
 		if (segment.getClass().isAnnotationPresent(Content.class)) {
+			System.out.println("####### - CONTENT of " + segment.getDomId());
 			this.contentLoader.load(segment, requestPath, scopeName, sessionId);
 		}
 	}
 
 	private void handleChildren(final PageSegment segment, final String requestPath, final String sessionId) throws ContentException {
-		for (final PageSegment childSegment : segment.getTopChildren()) {
-			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
-		}
-		for (final PageSegment childSegment : segment.getMainChildren().values()) {
-			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
-		}
-		for (final PageSegment childSegment : segment.getBottomChildren()) {
+		System.out.println("####### - CHILDREN of " + segment.getDomId());
+		for (final PageSegment childSegment : this.childrenAndContentAccessor.fetchAllChildren(segment)) {
 			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
 		}
 	}

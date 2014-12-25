@@ -6,6 +6,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import com.tmt.kontroll.commons.config.KontrollModuleProperties;
 import com.tmt.kontroll.persistence.config.PersistenceConfig;
 
 @Configuration
@@ -13,6 +14,6 @@ import com.tmt.kontroll.persistence.config.PersistenceConfig;
 @ComponentScan(value = {"com.tmt.kontroll.security"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @EnableJpaRepositories(basePackages = {"com.tmt.kontroll.security.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
 @EnableAspectJAutoProxy
-public class SecurityConfig {
+public class SecurityConfig extends KontrollModuleProperties {
 
 }

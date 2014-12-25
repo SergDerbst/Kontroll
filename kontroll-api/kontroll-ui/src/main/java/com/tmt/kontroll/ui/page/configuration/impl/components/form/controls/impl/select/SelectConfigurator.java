@@ -7,8 +7,8 @@ import com.tmt.kontroll.context.ui.HtmlTag;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.select.Select;
 import com.tmt.kontroll.ui.page.configuration.enums.components.ValueSourceType;
 import com.tmt.kontroll.ui.page.configuration.helpers.creators.LabelCreator;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ItemsSourceHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ItemsSourceConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceConfigurationHandler;
 import com.tmt.kontroll.ui.page.configuration.impl.components.layout.ChildElementConfigurator;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
@@ -26,10 +26,10 @@ public class SelectConfigurator extends ChildElementConfigurator {
 	LabelCreator				labelCreator;
 
 	@Autowired
-	ItemsSourceHandler	optionsHandler;
+	ItemsSourceConfigurationHandler	optionsHandler;
 
 	@Autowired
-	ValueSourceHandler	valueSourceHandler;
+	ValueSourceConfigurationHandler	valueSourceHandler;
 
 	public SelectConfigurator() {
 		super(Select.class);
@@ -56,9 +56,13 @@ public class SelectConfigurator extends ChildElementConfigurator {
 	}
 
 	private void handleValueSource(final Select config, final PageSegment select) {
-		if (ValueSourceType.Caption != config.valueSource().type()) {
+		if (this.isValueSourceToBeHandled(config)) {
 			this.valueSourceHandler.handle(config.valueSource(), select);
 		}
+	}
+
+	private boolean isValueSourceToBeHandled(final Select config) {
+		return ValueSourceType.None != config.valueSource().type() || ValueSourceType.Custom != config.valueSource().type() || ValueSourceType.Caption != config.valueSource().type();
 	}
 
 	private void handleAttributes(final Select config, final PageSegment select) {

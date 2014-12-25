@@ -21,11 +21,6 @@ public enum ItemSourceType {
 	 */
 	Property,
 	/**
-	 * Indicates that the items array is an argument passed to the frontend module responsible for
-	 * rendering the segment. The source value then denotes the property name.
-	 */
-	Arg,
-	/**
 	 * Indicates that the items array is a property of a different segment than the annotated one. If
 	 * so, the source value consists of the full scope name of that segment plus the propety path to
 	 * the array within that segment, both separated by a <code>#</code>.
@@ -36,5 +31,9 @@ public enum ItemSourceType {
 	 * which be either a request path starting with a slash (then the request goes to the application's
 	 * server) or a full url to any given 3rd party server.
 	 */
-	Url;
+	Url,
+	/**
+	 * Indicates that items array is not handled by the Kontroll framework, but by the app itself.
+	 */
+	Custom;
 }

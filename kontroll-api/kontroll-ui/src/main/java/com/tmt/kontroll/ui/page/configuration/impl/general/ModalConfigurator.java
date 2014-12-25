@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.general.Modal;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssConfigurationHandler;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
@@ -26,7 +26,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class ModalConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	CssHandler	cssHandler;
+	CssConfigurationHandler	cssHandler;
 
 	@Override
 	protected Class<? extends Annotation> getAnnotationType() {
@@ -36,5 +36,6 @@ public class ModalConfigurator extends PageSegmentConfigurator {
 	@Override
 	public void configure(final PageSegment segment) {
 		this.cssHandler.handle(segment, segment.getClass().getAnnotation(Modal.class).cssClass());
+		segment.getAttributes().put("hidden", "");
 	}
 }

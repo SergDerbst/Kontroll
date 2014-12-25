@@ -31,6 +31,7 @@ public enum HtmlTag {
 	Paragraph("p"),
 	Span("span"),
 	Select("select"),
+	Textarea("textarea"),
 	Video("video");
 
 	private String	tagName;

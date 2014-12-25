@@ -8,9 +8,9 @@ import com.tmt.kontroll.context.ui.HtmlTag;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.devices.button.Button;
 import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
 import com.tmt.kontroll.ui.page.configuration.enums.components.ButtonType;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CaptionHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CaptionConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventConfigurationHandler;
 import com.tmt.kontroll.ui.page.configuration.impl.components.layout.ChildElementConfigurator;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
@@ -25,13 +25,13 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class ButtonConfigurator extends ChildElementConfigurator {
 
 	@Autowired
-	CaptionHandler	captionHandler;
+	CaptionConfigurationHandler	captionHandler;
 
 	@Autowired
-	CssHandler			cssHandler;
+	CssConfigurationHandler			cssHandler;
 
 	@Autowired
-	EventHandler		eventHandler;
+	EventConfigurationHandler		eventHandler;
 
 	public ButtonConfigurator() {
 		super(Button.class);

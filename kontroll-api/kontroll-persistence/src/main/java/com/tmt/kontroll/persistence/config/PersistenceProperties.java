@@ -1,13 +1,7 @@
 package com.tmt.kontroll.persistence.config;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.tmt.kontroll.commons.config.KontrollModuleProperties;
 
-public class PersistenceProperties {
+public class PersistenceProperties extends KontrollModuleProperties {
 
-	private static final List<String>	daoServiceBasePackages	= new ArrayList<String>();
-
-	public List<String> daoServiceBasePackages() {
-		return daoServiceBasePackages;
-	}
 }

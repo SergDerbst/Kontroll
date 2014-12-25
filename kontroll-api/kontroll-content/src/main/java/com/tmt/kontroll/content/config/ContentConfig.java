@@ -12,9 +12,7 @@ import com.tmt.kontroll.context.config.ContextConfig;
 import com.tmt.kontroll.persistence.config.PersistenceConfig;
 
 @Configuration
-@Import({	BusinessConfig.class,
-	ContextConfig.class,
-	PersistenceConfig.class})
+@Import({BusinessConfig.class, ContextConfig.class, PersistenceConfig.class})
 @ComponentScan(value = {"com.tmt.kontroll.content"}, excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 @EnableJpaRepositories(basePackages = {"com.tmt.kontroll.content.persistence.repositories"}, entityManagerFactoryRef = "entityManagerFactoryBean", transactionManagerRef = "transactionManager")
 @EnableAspectJAutoProxy
@@ -22,8 +20,6 @@ public class ContentConfig {
 
 	@Bean
 	public ContentProperties contentProperties() {
-		final ContentProperties contentProperties = new ContentProperties();
-		contentProperties.contentItemBasePackages().add("com.tmt.kontroll.content");
-		return contentProperties;
+		return new ContentProperties();
 	}
 }

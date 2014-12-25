@@ -1,13 +1,7 @@
 package com.tmt.kontroll.business.config;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.tmt.kontroll.commons.config.KontrollModuleProperties;
 
-public class BusinessProperties {
+public class BusinessProperties extends KontrollModuleProperties {
 
-	private static final List<String>	businessEntityBasePackages	= new ArrayList<String>();
-
-	public List<String> businessEntityBasePackages() {
-		return businessEntityBasePackages;
-	}
 }

@@ -15,10 +15,10 @@
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-security</artifactId>
 		</dependency>
-		<!-- module ui -->
+		<!-- module tools -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
-			<artifactId>kontroll-ui</artifactId>
+			<artifactId>kontroll-tools</artifactId>
 		</dependency>
 		<!-- jackson core -->
 		<dependency>

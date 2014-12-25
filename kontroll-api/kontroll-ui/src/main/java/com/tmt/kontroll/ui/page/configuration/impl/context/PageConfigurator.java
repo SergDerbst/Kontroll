@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.tmt.kontroll.ui.page.PageHolder;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.Page;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssConfigurationHandler;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
@@ -21,7 +21,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class PageConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	CssHandler	cssHandler;
+	CssConfigurationHandler	cssHandler;
 
 	@Autowired
 	PageHolder	pageHolder;

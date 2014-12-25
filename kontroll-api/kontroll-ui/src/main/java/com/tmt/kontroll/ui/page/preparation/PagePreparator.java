@@ -7,19 +7,29 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.exceptions.ScopeNotFoundException;
 import com.tmt.kontroll.ui.page.PageHolder;
-import com.tmt.kontroll.ui.page.management.contexts.PageSegmentOrdinalKey;
 import com.tmt.kontroll.ui.page.management.contexts.PageSegmentScopeContext;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
+import com.tmt.kontroll.ui.page.segments.PageSegmentChildrenAndContentAccessor;
 import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
+/**
+ * Prepares the page after all {@link PageSegment}s have been configured by linking together
+ * parent child relationships between page segments.
+ *
+ * @author SergDerbst
+ *
+ */
 @Component
 public class PagePreparator {
 
 	@Autowired
-	PageHolder				pageHolder;
+	PageHolder														pageHolder;
 
 	@Autowired
-	PageSegmentHolder	pageSegmentHolder;
+	PageSegmentHolder											pageSegmentHolder;
+
+	@Autowired
+	PageSegmentChildrenAndContentAccessor	childAndContentHandler;
 
 	public void prepare() throws ScopeNotFoundException {
 		for (final PageSegmentScopeContext scopeContext : this.pageSegmentHolder.fetchAllContexts()) {
@@ -38,15 +48,11 @@ public class PagePreparator {
 		if (this.isRootScope(segment)) {
 			for (final String pattern : segment.getRequestPatterns()) {
 				final PageSegment page = this.pageHolder.fetchPageByPattern(pattern);
-				if (!page.containsChild(segment)) {
-					page.getMainChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
-				}
+				this.childAndContentHandler.addChild(page, segment);
 			}
 		} else {
 			for (final PageSegment parentSegment : this.pageSegmentHolder.fetchPageSegments(segment.getParentScope())) {
-				if (!parentSegment.containsChild(segment)) {
-					parentSegment.getMainChildren().put(new PageSegmentOrdinalKey(segment.getOrdinal(), segment.getDomId()), segment);
-				}
+				this.childAndContentHandler.addChild(parentSegment, segment);
 			}
 		}
 	}

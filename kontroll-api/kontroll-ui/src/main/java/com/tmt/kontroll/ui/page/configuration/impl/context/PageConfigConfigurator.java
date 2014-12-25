@@ -9,7 +9,7 @@ import com.tmt.kontroll.ui.page.PageHolder;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssConfigurationHandler;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
@@ -30,7 +30,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 public class PageConfigConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	CssHandler				cssHandler;
+	CssConfigurationHandler				cssHandler;
 
 	@Autowired
 	PageHolder				pageHolder;

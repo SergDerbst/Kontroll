@@ -45,7 +45,7 @@ public class RequestHandlingServiceScanner {
 
 	public void scan() {
 		try {
-			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(RequestHandler.class, RequestHandlingService.class, this.contextProperties.contextServiceBasePackages())) {
+			for (final BeanDefinition beanDefinition : this.candidateScanner.scan(RequestHandler.class, RequestHandlingService.class, this.contextProperties.basePackages())) {
 				@SuppressWarnings("unchecked")
 				final Class<? extends RequestHandlingService> serviceClass = (Class<? extends RequestHandlingService>) ClassUtils.forName(beanDefinition.getBeanClassName(), ClassUtils.getDefaultClassLoader());
 				for (final String pattern : serviceClass.getAnnotation(RequestHandler.class).patterns()) {

@@ -21,5 +21,5 @@ import com.tmt.kontroll.ui.page.configuration.annotations.config.ValueSource;
 @Documented
 public @interface Label {
 
-	ValueSource valueSource() default @ValueSource;
+	ValueSource value() default @ValueSource;
 }

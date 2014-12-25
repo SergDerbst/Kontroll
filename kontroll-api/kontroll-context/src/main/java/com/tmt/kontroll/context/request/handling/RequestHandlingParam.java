@@ -1,5 +1,7 @@
 package com.tmt.kontroll.context.request.handling;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,14 +22,15 @@ import com.tmt.kontroll.context.session.SessionContext;
  */
 public class RequestHandlingParam {
 
-	private RequestParamDto			requestParamDto;
-	private RequestContextDto		requestContextDto;
-	private SessionContext			sessionContext;
-	private HttpServletRequest	request;
-	private HttpSession					session;
-	private String							requestPath;
-	private Set<String>					dtoPaths;
-	private RequestDto					payload;
+	private RequestParamDto						requestParamDto;
+	private RequestContextDto					requestContextDto;
+	private SessionContext						sessionContext;
+	private HttpServletRequest				request;
+	private HttpSession								session;
+	private String										requestPath;
+	private Set<String>								dtoPaths;
+	private RequestDto								payload;
+	private final Map<String, Object>	dataResponse	= new HashMap<>();
 
 	public RequestContextDto getRequestContextDto() {
 		return this.requestContextDto;
@@ -91,5 +94,9 @@ public class RequestHandlingParam {
 
 	public void setPayload(final RequestDto payload) {
 		this.payload = payload;
+	}
+
+	public Map<String, Object> getDataResponse() {
+		return this.dataResponse;
 	}
 }

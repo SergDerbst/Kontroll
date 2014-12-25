@@ -7,7 +7,7 @@ import com.tmt.kontroll.context.ui.HtmlTag;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.input.Input;
 import com.tmt.kontroll.ui.page.configuration.enums.components.ValueSourceType;
 import com.tmt.kontroll.ui.page.configuration.helpers.creators.LabelCreator;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceConfigurationHandler;
 import com.tmt.kontroll.ui.page.configuration.impl.components.layout.ChildElementConfigurator;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
@@ -25,7 +25,7 @@ public class InputConfigurator extends ChildElementConfigurator {
 	LabelCreator				labelCreator;
 
 	@Autowired
-	ValueSourceHandler	valueSourceHandler;
+	ValueSourceConfigurationHandler	valueSourceHandler;
 
 	public InputConfigurator() {
 		super(Input.class);
@@ -47,7 +47,10 @@ public class InputConfigurator extends ChildElementConfigurator {
 	}
 
 	private void handleLabel(final Input config, final PageSegment input, final PageSegment segment) {
-		super.addChild(config.position(), segment, this.labelCreator.create(config.label(), input));
+		final PageSegment label = this.labelCreator.create(config.label(), input);
+		if (label != null) {
+			super.addChild(config.position(), segment, label);
+		}
 	}
 
 	private void handleValueSource(final Input config, final PageSegment input) {

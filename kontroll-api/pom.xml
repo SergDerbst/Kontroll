@@ -59,8 +59,9 @@
 		<module>kontroll-persistence</module>
 		<module>kontroll-ui</module>
 		<module>kontroll-test</module>
-		<module>kontroll-web</module>
 		<module>kontroll-security</module>
+		<module>kontroll-tools</module>
+		<module>kontroll-web</module>
 	</modules>
 
 	<dependencyManagement>
@@ -117,6 +118,12 @@
 			<dependency>
 				<groupId>com.tmt.kontroll</groupId>
 				<artifactId>kontroll-test</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<!-- module: tools -->
+			<dependency>
+				<groupId>com.tmt.kontroll</groupId>
+				<artifactId>kontroll-tools</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- aspectj -->

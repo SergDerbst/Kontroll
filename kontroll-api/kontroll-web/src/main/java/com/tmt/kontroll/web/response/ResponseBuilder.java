@@ -38,8 +38,12 @@ public class ResponseBuilder {
 	private ResponseDto constructResponseObject(final RequestHandlingParam param) throws Exception {
 		final GlobalContextDto global = this.globalContext.globalContext();
 		final SessionContext session = this.globalContext.sessionContextHolder().sessionContext(param.getSession().getId());
-		final PageSegment segment = this.pageManager.manage(param.getRequestPath(), param.getPayload().getTargetScope(), param.getSession().getId());
-		return new ResponseDto(global, session, segment);
+		if (param.getDataResponse().isEmpty()) {
+			final PageSegment segment = this.pageManager.manage(param.getRequestPath(), param.getPayload().getTargetScope(), param.getSession().getId());
+			return new ResponseDto(global, session, segment);
+		} else {
+			return new ResponseDto(global, session, param.getDataResponse());
+		}
 	}
 
 	private RequestHandlingParam constructParameterObject(final String requestPath, final HttpSession session, final HttpServletRequest request) {

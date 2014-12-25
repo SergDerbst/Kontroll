@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tmt.kontroll.commons.utils.annotation.EqualsHashCodeByAnnotationsBuilder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.context.ui.DomElement;
 import com.tmt.kontroll.context.ui.HtmlTag;
@@ -38,13 +38,17 @@ public abstract class PageSegment implements DomElement {
 	private String																						parentScope;
 	private HtmlTag																						tag;
 	private int																								ordinal;
+	@JsonProperty
 	private final List<PageSegment>														topChildren				= new ArrayList<>();
+	@JsonProperty
 	private final List<PageSegment>														bottomChildren		= new ArrayList<>();
+	@JsonProperty
 	private final TreeMap<PageSegmentOrdinalKey, PageSegment>	mainChildren			= new TreeMap<>();
-	private final Map<EventType, PageEvent>										generalEvents			= new EnumMap<>(EventType.class);
-	private final Map<EventType, PageEvent>										additionalEvents	= new EnumMap<>(EventType.class);
+	@JsonProperty
 	private List<ContentItem>																	content;
 	private ContentItem																				caption;
+	private final Map<EventType, PageEvent>										generalEvents			= new EnumMap<>(EventType.class);
+	private final Map<EventType, PageEvent>										additionalEvents	= new EnumMap<>(EventType.class);
 	private final Map<String, String>													attributes				= new HashMap<>();
 	private final Map<String, String>													configOptions			= new HashMap<>();
 
@@ -55,10 +59,6 @@ public abstract class PageSegment implements DomElement {
 	public PageSegment(final HtmlTag tag) {
 		this.tag = tag;
 		this.setConfigured(false);
-	}
-
-	public boolean containsChild(final PageSegment child) {
-		return this.mainChildren.containsValue(child) || this.topChildren.contains(child) || this.bottomChildren.contains(child);
 	}
 
 	@Override
@@ -101,22 +101,6 @@ public abstract class PageSegment implements DomElement {
 		this.parentScope = parentScope;
 	}
 
-	public TreeMap<PageSegmentOrdinalKey, PageSegment> getMainChildren() {
-		return this.mainChildren;
-	}
-
-	public List<PageSegment> getTopChildren() {
-		return this.topChildren;
-	}
-
-	public List<PageSegment> getBottomChildren() {
-		return this.bottomChildren;
-	}
-
-	public boolean hasChildren() {
-		return !(this.mainChildren.isEmpty() && this.topChildren.isEmpty() && this.bottomChildren.isEmpty());
-	}
-
 	public Map<EventType, PageEvent> getGeneralEvents() {
 		return this.generalEvents;
 	}
@@ -125,11 +109,31 @@ public abstract class PageSegment implements DomElement {
 		return this.additionalEvents;
 	}
 
-	public List<ContentItem> getContent() {
+	protected boolean containsChild(final PageSegment child) {
+		return this.mainChildren.containsValue(child) || this.topChildren.contains(child) || this.bottomChildren.contains(child);
+	}
+
+	protected Map<PageSegmentOrdinalKey, PageSegment> getMainChildren() {
+		return this.mainChildren;
+	}
+
+	protected List<PageSegment> getTopChildren() {
+		return this.topChildren;
+	}
+
+	protected List<PageSegment> getBottomChildren() {
+		return this.bottomChildren;
+	}
+
+	protected boolean hasChildren() {
+		return !(this.mainChildren.isEmpty() && this.topChildren.isEmpty() && this.bottomChildren.isEmpty());
+	}
+
+	protected List<ContentItem> getContent() {
 		return this.content;
 	}
 
-	public void setContent(final List<ContentItem> content) {
+	protected void setContent(final List<ContentItem> content) {
 		this.content = content;
 	}
 
@@ -181,43 +185,49 @@ public abstract class PageSegment implements DomElement {
 			return false;
 		}
 		final PageSegment other = (PageSegment) o;
-		if (this.isConfigured() && other.isConfigured()) {
-			final EqualsBuilder equalsBuilder = new EqualsBuilder();
-			equalsBuilder.append(this.additionalEvents, other.additionalEvents);
-			equalsBuilder.append(this.attributes, other.attributes);
-			equalsBuilder.append(this.caption, other.caption);
-			equalsBuilder.append(this.mainChildren, other.mainChildren);
-			equalsBuilder.append(this.topChildren, other.topChildren);
-			equalsBuilder.append(this.bottomChildren, other.bottomChildren);
-			equalsBuilder.append(this.content, other.content);
-			equalsBuilder.append(this.generalEvents, other.generalEvents);
-			equalsBuilder.append(this.parentScope, other.parentScope);
-			equalsBuilder.append(this.scope, other.scope);
-			equalsBuilder.append(this.tag, other.tag);
-			return equalsBuilder.isEquals();
-		}
-		return EqualsHashCodeByAnnotationsBuilder.equals(this, other);
+		final EqualsBuilder equalsBuilder = new EqualsBuilder();
+		equalsBuilder.append(this.parentScope, other.parentScope);
+		equalsBuilder.append(this.scope, other.scope);
+		equalsBuilder.append(this.requestPatterns, other.requestPatterns);
+		equalsBuilder.append(this.additionalEvents, other.additionalEvents);
+		equalsBuilder.append(this.attributes, other.attributes);
+		equalsBuilder.append(this.bottomChildren, other.bottomChildren);
+		equalsBuilder.append(this.caption, other.caption);
+		equalsBuilder.append(this.captionIdentifier, other.captionIdentifier);
+		equalsBuilder.append(this.configOptions, other.configOptions);
+		equalsBuilder.append(this.configured, other.configured);
+		equalsBuilder.append(this.content, other.content);
+		equalsBuilder.append(this.generalEvents, other.generalEvents);
+		equalsBuilder.append(this.mainChildren, other.mainChildren);
+		equalsBuilder.append(this.ordinal, other.ordinal);
+		equalsBuilder.append(this.tag, other.tag);
+		equalsBuilder.append(this.topChildren, other.topChildren);
+		return equalsBuilder.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		if (this.isConfigured()) {
-			final HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17, 37);
-			hashCodeBuilder.append(this.additionalEvents);
-			hashCodeBuilder.append(this.attributes);
-			hashCodeBuilder.append(this.caption);
-			hashCodeBuilder.append(this.mainChildren);
-			hashCodeBuilder.append(this.content);
-			hashCodeBuilder.append(this.generalEvents);
-			hashCodeBuilder.append(this.parentScope);
-			hashCodeBuilder.append(this.scope);
-			hashCodeBuilder.append(this.tag);
-			return hashCodeBuilder.toHashCode();
-		}
-		return EqualsHashCodeByAnnotationsBuilder.hashCode(this);
+		final HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17, 37);
+		hashCodeBuilder.append(this.parentScope);
+		hashCodeBuilder.append(this.scope);
+		hashCodeBuilder.append(this.requestPatterns);
+		hashCodeBuilder.append(this.additionalEvents);
+		hashCodeBuilder.append(this.attributes);
+		hashCodeBuilder.append(this.bottomChildren);
+		hashCodeBuilder.append(this.caption);
+		hashCodeBuilder.append(this.captionIdentifier);
+		hashCodeBuilder.append(this.configOptions);
+		hashCodeBuilder.append(this.configured);
+		hashCodeBuilder.append(this.content);
+		hashCodeBuilder.append(this.generalEvents);
+		hashCodeBuilder.append(this.mainChildren);
+		hashCodeBuilder.append(this.ordinal);
+		hashCodeBuilder.append(this.tag);
+		hashCodeBuilder.append(this.topChildren);
+		return hashCodeBuilder.toHashCode();
 	}
 
 	public Map<String, String> getConfigOptions() {
-		return configOptions;
+		return this.configOptions;
 	}
 }

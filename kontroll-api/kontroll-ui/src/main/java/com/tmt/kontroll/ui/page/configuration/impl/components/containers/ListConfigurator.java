@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.ui.page.configuration.annotations.components.containers.collections.List;
 import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ItemsSourceHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.EventConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ItemsSourceConfigurationHandler;
 import com.tmt.kontroll.ui.page.configuration.impl.components.layout.ChildElementConfigurator;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
@@ -21,10 +21,10 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class ListConfigurator extends ChildElementConfigurator {
 
 	@Autowired
-	ItemsSourceHandler	itemSourceHandler;
+	ItemsSourceConfigurationHandler	itemSourceHandler;
 
 	@Autowired
-	EventHandler				eventHandler;
+	EventConfigurationHandler				eventHandler;
 
 	public ListConfigurator() {
 		super(List.class);

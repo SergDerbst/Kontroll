@@ -7,4 +7,6 @@ import com.tmt.kontroll.security.persistence.entities.Authority;
 
 public interface AuthorityRepository extends JpaRepository<Authority, Integer>, JpaSpecificationExecutor<Authority> {
 
+	Authority findByName(String name);
+
 }

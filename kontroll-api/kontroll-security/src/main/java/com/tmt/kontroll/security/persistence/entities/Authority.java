@@ -29,7 +29,7 @@ public class Authority extends BaseEntity {
 	private String			comment;
 
 	@ManyToMany(mappedBy = "authorities")
-	private List<User>	users;
+	private List<UserAccount>	users;
 
 	public String getName() {
 		return name;
@@ -47,11 +47,11 @@ public class Authority extends BaseEntity {
 		this.comment = comment;
 	}
 
-	public List<User> getUsers() {
+	public List<UserAccount> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<UserAccount> users) {
 		this.users = users;
 	}
 }

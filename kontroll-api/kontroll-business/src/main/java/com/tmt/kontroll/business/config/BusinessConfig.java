@@ -16,8 +16,6 @@ public class BusinessConfig {
 
 	@Bean
 	public BusinessProperties businessProperties() {
-		final BusinessProperties businessProperties = new BusinessProperties();
-		businessProperties.businessEntityBasePackages().add("com.tmt.kontroll.business");
-		return businessProperties;
+		return new BusinessProperties();
 	}
 }

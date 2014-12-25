@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import com.tmt.kontroll.context.ui.HtmlTag;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.devices.anchor.Anchor;
 import com.tmt.kontroll.ui.page.configuration.enums.components.ValueSourceType;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CaptionHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssHandler;
-import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CaptionConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.CssConfigurationHandler;
+import com.tmt.kontroll.ui.page.configuration.helpers.handlers.ValueSourceConfigurationHandler;
 import com.tmt.kontroll.ui.page.configuration.impl.components.layout.ChildElementConfigurator;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
@@ -23,13 +23,13 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class AnchorConfigurator extends ChildElementConfigurator {
 
 	@Autowired
-	CaptionHandler			captionHandler;
+	CaptionConfigurationHandler			captionHandler;
 
 	@Autowired
-	CssHandler					cssHandler;
+	CssConfigurationHandler					cssHandler;
 
 	@Autowired
-	ValueSourceHandler	valueSourceHandler;
+	ValueSourceConfigurationHandler	valueSourceHandler;
 
 	public AnchorConfigurator() {
 		super(Anchor.class);

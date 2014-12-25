@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,19 +34,22 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class JpaConfig {
 
 	@Value("$hibernate.connection.username")
-	protected String	dbUser;
+	protected String			dbUser;
 
 	@Value("$hibernate.connection.password")
-	protected String	dbPassword;
+	protected String			dbPassword;
 
 	@Value("${hibernate.hbm2ddl.auto}")
-	protected String	hbm2ddlAuto;
+	protected String			hbm2ddlAuto;
 
 	@Value("${hibernate.dialect}")
-	protected String	hibernateDialect;
+	protected String			hibernateDialect;
 
 	@Value("${hibernate.connection.datasource}")
-	protected String	dataSourceJndiName;
+	protected String			dataSourceJndiName;
+
+	@Autowired
+	PersistenceProperties	persistenceProperties;
 
 	@Bean
 	public DataSource dataSource() throws IllegalArgumentException, NamingException {
@@ -59,7 +63,7 @@ public class JpaConfig {
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() throws IllegalArgumentException, NamingException {
 		final LocalContainerEntityManagerFactoryBean localSessionFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		localSessionFactoryBean.setPackagesToScan("com.tmt.kontroll.persistence.entities", "com.tmt.kontroll.content.persistence.entities");
+		localSessionFactoryBean.setPackagesToScan("com.tmt.kontroll.security.persistence.entities", "com.tmt.kontroll.content.persistence.entities");
 		localSessionFactoryBean.setDataSource(this.dataSource());
 		localSessionFactoryBean.setJpaVendorAdapter(this.hibernateVendor());
 

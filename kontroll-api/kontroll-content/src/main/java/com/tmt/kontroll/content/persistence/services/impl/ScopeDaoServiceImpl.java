@@ -1,5 +1,7 @@
 package com.tmt.kontroll.content.persistence.services.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -23,8 +25,8 @@ public class ScopeDaoServiceImpl extends BaseCrudDaoService<ScopeRepository, Sco
 	ScopeRepository	repository;
 
 	@Override
-	public Scope findByName(final String name) {
-		return this.repository.findByName(name);
+	public List<Scope> findAllByName(final String name) {
+		return this.repository.findAllByName(name);
 	}
 
 	@Override

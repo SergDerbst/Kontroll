@@ -33,5 +33,14 @@ public enum ValueSourceType {
 	 * The source value is taken from a url. This can be both a request path, then it is
 	 * requested for from the application's server, or a full url to a 3rd party server.
 	 */
-	Url;
+	Url,
+	/**
+	 * Indicates that there is no value at all (the element will be omitted).
+	 */
+	None,
+	/**
+	 * Indicates that the value is generated in a different way, e.g. by the client at
+	 * a later time than the initial rendering of the component.
+	 */
+	Custom;
 }

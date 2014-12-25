@@ -10,19 +10,18 @@ import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotatio
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 /**
- * Indicates that the annotated {@link PageSegment} is a scrollable container. When rendered,
- * it will consist of two divs. The scrollability has to be defined in the proper style classes.
- * The first div can be styled in the css class generated from the full scope name. The second
- * class as well, but it will also have an additional default class <code>scroller</code> attached
- * to assure the scrolling functionality.
+ * Indicates that the annotated {@link PageSegment} is a scrollable container. The configurator
+ * will handle this as two divs, whereas the outter div serves as container and the inner div
+ * as scroller. The scrollability is handled via css via classes <code>scrollContainer</code>
+ * and <code>scroller</code>, respectively.
  *
  * @author SergDerbst
  *
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@ConfigurationAnnotation
 @Documented
+@ConfigurationAnnotation
 public @interface Scrollable {
 
 }

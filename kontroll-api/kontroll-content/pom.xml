@@ -25,10 +25,10 @@
 			<groupId>com.tmt.kontroll</groupId>
 			<artifactId>kontroll-business</artifactId>
 		</dependency>
-		<!-- module persistence -->
+		<!-- module security -->
 		<dependency>
 			<groupId>com.tmt.kontroll</groupId>
-			<artifactId>kontroll-persistence</artifactId>
+			<artifactId>kontroll-security</artifactId>
 		</dependency>
 		<!-- module test -->
 		<dependency>

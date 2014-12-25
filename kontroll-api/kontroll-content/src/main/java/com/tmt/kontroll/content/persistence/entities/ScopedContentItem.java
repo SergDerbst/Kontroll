@@ -8,12 +8,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.IndexColumn;
 
 import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
+import com.tmt.kontroll.security.persistence.entities.UserAccount;
 
 @Entity
 public class ScopedContentItem extends BaseEntity {
@@ -29,6 +31,15 @@ public class ScopedContentItem extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	private ContentType										type;
+
+	@Column(nullable = false)
+	private boolean												preliminary;
+
+	@ManyToOne
+	private UserAccount										lastEdited;
+
+	@Column(nullable = false, length = DatabaseDefinitions.String_Small)
+	private String												itemNumber;
 
 	@ManyToMany(mappedBy = "scopedContentItems", fetch = FetchType.EAGER)
 	@IndexColumn(name = "id")
@@ -68,6 +79,30 @@ public class ScopedContentItem extends BaseEntity {
 
 	public void setType(final ContentType type) {
 		this.type = type;
+	}
+
+	public boolean isPreliminary() {
+		return this.preliminary;
+	}
+
+	public void setPreliminary(final boolean preliminary) {
+		this.preliminary = preliminary;
+	}
+
+	public UserAccount getLastEdited() {
+		return this.lastEdited;
+	}
+
+	public void setLastEdited(final UserAccount lastEdited) {
+		this.lastEdited = lastEdited;
+	}
+
+	public String getItemNumber() {
+		return this.itemNumber;
+	}
+
+	public void setItemNumber(final String itemNumber) {
+		this.itemNumber = itemNumber;
 	}
 
 	public List<ScopedContentCondition> getConditions() {

@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.tmt.kontroll.context.request.data.json.DataTransferElement;
 import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotation;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
@@ -59,4 +60,19 @@ public @interface Event {
 	 * @return
 	 */
 	HandlerArgument[] arguments() default {};
+
+	/**
+	 * <p>
+	 * If the event handler sends data to the server, the dto determines which implementation of
+	 * {@link DataTransferElement} is used. The class name of that class is then added to the
+	 * event args as <code>dtoClass</code>.
+	 * </p>
+	 * <p>
+	 * The default value is the class object of the interface
+	 * itself, in which case it is assumed that no data is being transferred handling the event.
+	 * </p>
+	 *
+	 * @return
+	 */
+	Class<? extends DataTransferElement> dto() default DataTransferElement.class;
 }
