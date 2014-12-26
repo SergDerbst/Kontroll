@@ -23,7 +23,7 @@ public class ContentEditorFormSubmitDtoHandler implements RequestHandlingService
 	public void handle(final RequestHandlingParam param) {
 		try {
 			final ContentEditorDto requestData = (ContentEditorDto) param.getPayload().getRequestData();
-			Scope scope = this.scopeDaoService.findByNameAndRequestContextPath(requestData.getTargetScope(), requestData.getRequestPatterns());
+			Scope scope = this.scopeDaoService.findByNameAndRequestPattern(requestData.getTargetScope(), requestData.getRequestPatterns());
 			if (scope == null) {
 				scope = new Scope();
 			}

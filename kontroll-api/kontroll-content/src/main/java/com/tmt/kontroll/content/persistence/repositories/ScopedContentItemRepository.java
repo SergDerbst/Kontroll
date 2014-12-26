@@ -7,4 +7,6 @@ import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 
 public interface ScopedContentItemRepository extends JpaRepository<ScopedContentItem, Integer>, QueryDslPredicateExecutor<ScopedContentItem> {
 
+	ScopedContentItem findByContentAndItemNumber(String content, String itemNumber);
+
 }

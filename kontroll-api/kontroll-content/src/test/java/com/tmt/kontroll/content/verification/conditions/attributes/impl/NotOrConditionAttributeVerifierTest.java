@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 import com.tmt.kontroll.content.verification.conditions.attributes.ConditionAttributeVerifier;
@@ -34,7 +34,7 @@ public class NotOrConditionAttributeVerifierTest {
 	@Mock
 	private ScopedContentConditionAttribute attributeTrue;
 	@Mock
-	private ContentLoadingContext contentDto;
+	private ContentOperatingContext contentDto;
 
 	private List<ScopedContentConditionAttribute> attributes;
 	private NotOrConditionAttributeVerifier toTest;

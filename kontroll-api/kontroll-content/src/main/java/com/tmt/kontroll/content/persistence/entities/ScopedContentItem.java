@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.IndexColumn;
 
@@ -18,6 +20,7 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 import com.tmt.kontroll.security.persistence.entities.UserAccount;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_item", columnNames = {"content", "itemnumber"})})
 public class ScopedContentItem extends BaseEntity {
 
 	@Column(columnDefinition = "varChar(12) default 'div'")

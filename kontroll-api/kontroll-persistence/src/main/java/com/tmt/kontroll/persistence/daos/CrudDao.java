@@ -2,8 +2,6 @@ package com.tmt.kontroll.persistence.daos;
 
 import java.util.List;
 
-import com.tmt.kontroll.persistence.exceptions.EntityNotFoundInDatabaseException;
-
 /**
  * Interface defining common dao services with the standard methods to create, read, update, and delete entities.
  *
@@ -27,5 +25,5 @@ public interface CrudDao<Entity, ID> {
 
 	Entity readById(ID id);
 
-	Entity update(final Entity entity) throws EntityNotFoundInDatabaseException;
+	Entity update(final Entity entity);
 }

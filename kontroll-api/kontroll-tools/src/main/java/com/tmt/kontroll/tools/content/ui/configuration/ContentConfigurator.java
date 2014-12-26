@@ -1,20 +1,17 @@
 package com.tmt.kontroll.tools.content.ui.configuration;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tmt.kontroll.content.business.content.ScopeService;
+import com.tmt.kontroll.content.business.content.ScopedContentItemService;
+import com.tmt.kontroll.content.business.content.ScopedContentService;
 import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 import com.tmt.kontroll.content.persistence.selections.ContentType;
-import com.tmt.kontroll.content.persistence.services.ScopeDaoService;
-import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
-import com.tmt.kontroll.content.persistence.services.ScopedContentItemDaoService;
-import com.tmt.kontroll.security.persistence.services.UserAccountDaoService;
 import com.tmt.kontroll.tools.content.data.ContentEditorDataLoadingDto;
 import com.tmt.kontroll.tools.content.ui.elements.ContentEditorToggle;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
@@ -45,16 +42,13 @@ import com.tmt.kontroll.ui.page.segments.PageSegmentChildrenAndContentAccessor;
 public class ContentConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	ScopeDaoService												scopeDaoService;
+	ScopeService													scopeService;
 
 	@Autowired
-	ScopedContentDaoService								scopedContentDaoService;
+	ScopedContentService									scopedContentService;
 
 	@Autowired
-	ScopedContentItemDaoService						scopedContentDItemDaoService;
-
-	@Autowired
-	UserAccountDaoService												userService;
+	ScopedContentItemService							scopedContentItemService;
 
 	@Autowired
 	PageSegmentChildrenAndContentAccessor	childrenAndContentAccessor;
@@ -81,47 +75,15 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 		return editor;
 	}
 
+	private void createScopeWithInitialContent(final String scopeName, final String pattern, final Content content) {
+		this.scopedContentItemService.init(this.scopedContentService.init(this.scopeService.init(scopeName, pattern)), content.content(), content.type());
+	}
+
 	private PageEvent configureEvent(final PageSegment segment) {
 		final PageEvent event = new PageEvent(EventType.Click, new String[] {"prepareContentEditor", "toggleVisibility"});
 		event.getArguments().put("targetScope", "page.contentEditor");
 		event.getArguments().put("editScope", segment.getDomId());
 		event.getArguments().put("dtoClass", ContentEditorDataLoadingDto.class.getName());
 		return event;
-	}
-
-	private void createScopeWithInitialContent(final String scopeName, final String pattern, final Content content) {
-		Scope scope = this.scopeDaoService.findByNameAndRequestContextPath(scopeName, pattern);
-		if (scope == null) {
-			scope = new Scope();
-			scope.setName(scopeName);
-			scope.setRequestContextPath(pattern);
-			this.scopeDaoService.create(scope);
-			this.createInitialContent(scope, scopeName, content);
-		}
-	}
-
-	private void createInitialContent(final Scope scope, final String scopeName, final Content content) {
-		final ScopedContent scopedContent = new ScopedContent();
-		final ArrayList<ScopedContent> contentList = new ArrayList<ScopedContent>();
-		contentList.add(scopedContent);
-		scopedContent.setScope(scope);
-		scopedContent.setName(scopeName);
-		scopedContent.setScopedContentItems(this.createInitialScopedContentItemList(contentList, scopeName, content));
-		this.scopedContentDaoService.create(scopedContent);
-	}
-
-	private List<ScopedContentItem> createInitialScopedContentItemList(final List<ScopedContent> contents, final String scopeName, final Content content) {
-		final ScopedContentItem item = new ScopedContentItem();
-		final ArrayList<ScopedContentItem> itemList = new ArrayList<>();
-		itemList.add(item);
-		final String contentValue = content.content().isEmpty() ? scopeName : content.content();
-		item.setContent(contentValue);
-		item.setType(content.type());
-		item.setScopedContents(contents);
-		item.setItemNumber("0");
-		item.setPreliminary(true);
-		item.setLastEdited(this.userService.findByName("Kontroll"));
-		this.scopedContentDItemDaoService.create(item);
-		return itemList;
 	}
 }

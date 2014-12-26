@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.verification.conditions.ConditionInconsistentException;
@@ -25,7 +25,7 @@ public class ContentConditionVerifierTest {
 	@Mock
 	private ScopedContentCondition condition;
 	@Mock
-	private ContentLoadingContext contentDto;
+	private ContentOperatingContext contentDto;
 	@Mock
 	private List<ScopedContentCondition> conditionList;
 	@Mock

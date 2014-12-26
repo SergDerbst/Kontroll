@@ -75,8 +75,8 @@ public abstract class ApplicationContextStartedHandler implements ApplicationLis
 	public void onApplicationEvent(final ContextRefreshedEvent e) {
 		if (this.applicationContext.getId().equals(e.getApplicationContext().getId())) {
 			this.prepareAppPackageProperties();
-			this.prepareKontrollContext();
 			this.prepareDataBase();
+			this.prepareKontrollContext();
 			this.pagePreparator.prepare();
 		}
 	}

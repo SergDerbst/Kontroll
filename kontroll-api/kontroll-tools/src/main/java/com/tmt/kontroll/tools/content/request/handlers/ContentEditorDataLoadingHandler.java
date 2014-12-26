@@ -19,7 +19,7 @@ import com.tmt.kontroll.context.request.handling.RequestHandling;
 import com.tmt.kontroll.context.request.handling.RequestHandlingParam;
 import com.tmt.kontroll.context.request.handling.services.RequestHandlingService;
 import com.tmt.kontroll.tools.content.data.ContentEditorDataLoadingDto;
-import com.tmt.kontroll.ui.page.content.ContentLoader;
+import com.tmt.kontroll.ui.page.management.content.ContentLoader;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 import com.tmt.kontroll.ui.page.segments.PageSegmentChildrenAndContentAccessor;
 import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
@@ -61,10 +61,10 @@ public class ContentEditorDataLoadingHandler implements RequestHandlingService {
 	}
 
 	private void handleContent(final Scope scope, final RequestHandlingParam param, final Map<String, List<ContentItem>> contentMap, final Map<String, Set<String>> contentItemNumbersMap) {
-		final PageSegment segment = this.segmentHolder.fetchMatchingPageSegment(scope.getName(), scope.getRequestContextPath());
-		this.contentLoader.load(segment, scope.getRequestContextPath(), scope.getName(), param.getSession().getId());
+		final PageSegment segment = this.segmentHolder.fetchMatchingPageSegment(scope.getName(), scope.getRequestPattern());
+		this.contentLoader.load(segment, scope.getRequestPattern(), scope.getName(), param.getSession().getId());
 		final List<ContentItem> content = this.childrenAndContentAccessor.fetchContent(segment);
-		contentMap.put(scope.getRequestContextPath(), content);
+		contentMap.put(scope.getRequestPattern(), content);
 		this.handleContentItemNumbers(scope, content, contentItemNumbersMap);
 	}
 
@@ -73,13 +73,13 @@ public class ContentEditorDataLoadingHandler implements RequestHandlingService {
 		for (final ContentItem item : content) {
 			contentItemNumbers.add(item.getDomId().replace(scope.getName() + ".", ""));
 		}
-		contentItemNumbersMap.put(scope.getRequestContextPath(), contentItemNumbers);
+		contentItemNumbersMap.put(scope.getRequestPattern(), contentItemNumbers);
 	}
 
 	private void loadRequestPatterns(final RequestHandlingParam param, final List<Scope> scopes) {
 		final List<String> requestPatterns = new ArrayList<>();
 		for (final Scope scope : scopes) {
-			requestPatterns.add(scope.getRequestContextPath());
+			requestPatterns.add(scope.getRequestPattern());
 		}
 		param.getDataResponse().put(requestPatternsKey, requestPatterns);
 		param.getDataResponse().put(currentPatternKey, this.retrieveMatchingPattern(param));

@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 import com.tmt.kontroll.content.verification.conditions.attributes.ConditionAttributeVerifier;
@@ -32,7 +32,7 @@ public class XorConditionAttributeVerifierTest {
 	@Mock
 	private ScopedContentConditionAttribute attributeTrue;
 	@Mock
-	private ContentLoadingContext contentDto;
+	private ContentOperatingContext contentDto;
 
 	private List<ScopedContentConditionAttribute> attributes;
 

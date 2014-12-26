@@ -6,16 +6,16 @@ import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 
 public class ContentConditionContext {
 
-	private final ContentLoadingContext	contentDTO;
+	private final ContentOperatingContext	contentDTO;
 	private final List<ScopedContentCondition> conditions;
 
-	public ContentConditionContext(final ContentLoadingContext contentDTO, 
+	public ContentConditionContext(final ContentOperatingContext contentDTO, 
 	                      final List<ScopedContentCondition> conditions) {
 		this.contentDTO = contentDTO;
 		this.conditions = conditions;
 	}
 
-	public ContentLoadingContext getContentDTO() {
+	public ContentOperatingContext getContentDTO() {
 		return contentDTO;
 	}
 

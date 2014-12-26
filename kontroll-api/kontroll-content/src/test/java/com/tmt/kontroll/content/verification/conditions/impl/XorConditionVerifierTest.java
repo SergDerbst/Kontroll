@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 import com.tmt.kontroll.content.verification.conditions.ConditionVerificationChain;
@@ -36,7 +36,7 @@ public class XorConditionVerifierTest {
 	@Mock
 	private ScopedContentCondition childConditionFalse;
 	@Mock
-	private ContentLoadingContext contentDto;
+	private ContentOperatingContext contentDto;
 	
 	private XorConditionVerifier toTest;
 	private List<ScopedContentCondition> childConditions;

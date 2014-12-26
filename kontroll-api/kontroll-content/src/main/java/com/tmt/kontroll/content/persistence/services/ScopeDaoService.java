@@ -9,5 +9,5 @@ public interface ScopeDaoService extends CrudDao<Scope, Integer> {
 
 	List<Scope> findAllByName(final String name);
 
-	Scope findByNameAndRequestContextPath(final String name, final String requestContextPath);
+	Scope findByNameAndRequestPattern(final String name, final String requestContextPath);
 }

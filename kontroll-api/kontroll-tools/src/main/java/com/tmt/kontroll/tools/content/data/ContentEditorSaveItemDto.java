@@ -5,10 +5,28 @@ import com.tmt.kontroll.context.ui.HtmlTag;
 
 public class ContentEditorSaveItemDto extends ContentEditorDataLoadingDto {
 
+	private String			content;
 	private ContentType	contentType;
 	private HtmlTag			contentTag;
 	private String			css;
-	private String			content;
+	private String			editScopePattern;
+	private String			itemNumber;
+
+	public String getEditScopePattern() {
+		return this.editScopePattern;
+	}
+
+	public void setEditScopePattern(final String editScopePattern) {
+		this.editScopePattern = editScopePattern;
+	}
+
+	public String getItemNumber() {
+		return this.itemNumber;
+	}
+
+	public void setItemNumber(final String itemNumber) {
+		this.itemNumber = itemNumber;
+	}
 
 	public ContentType getContentType() {
 		return this.contentType;

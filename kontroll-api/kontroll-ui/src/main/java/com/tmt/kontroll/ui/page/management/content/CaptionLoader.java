@@ -1,4 +1,4 @@
-package com.tmt.kontroll.ui.page.content;
+package com.tmt.kontroll.ui.page.management.content;
 
 import java.util.Locale;
 

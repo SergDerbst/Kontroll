@@ -2,6 +2,7 @@ package com.tmt.kontroll.content.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,12 +17,11 @@ public class ContentParser {
 	@Autowired
 	ContentParserProvider	provider;
 
-	public List<ContentItem> parse(final List<ScopedContentItem> items, final String parentId) throws NoContentParserFoundException {
+	public List<ContentItem> parse(final Set<ScopedContentItem> items, final String parentId) throws NoContentParserFoundException {
 		final List<ContentItem> parsed = new ArrayList<ContentItem>();
-		for (int i = 0; i < items.size(); i++) {
-			final ScopedContentItem item = items.get(i);
+		for (final ScopedContentItem item : items) {
 			final ContentItem contentItem = this.provider.provide(item);
-			contentItem.setId(parentId + "." + i);
+			contentItem.setId(parentId + "." + item.getItemNumber());
 			parsed.add(contentItem);
 		}
 		return parsed;

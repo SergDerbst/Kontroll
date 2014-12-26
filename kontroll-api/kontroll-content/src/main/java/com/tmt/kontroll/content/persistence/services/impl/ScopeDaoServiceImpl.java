@@ -30,10 +30,10 @@ public class ScopeDaoServiceImpl extends BaseCrudDaoService<ScopeRepository, Sco
 	}
 
 	@Override
-	public Scope findByNameAndRequestContextPath(final String name, final String requestContextPath) {
+	public Scope findByNameAndRequestPattern(final String name, final String requestContextPath) {
 		final JPAQuery query = new JPAQuery(this.entityManager);
 		final QScope scope = QScope.scope;
-		return query.from(scope).where(scope.name.eq(name).and(scope.requestContextPath.like(requestContextPath))).uniqueResult(scope);
+		return query.from(scope).where(scope.name.eq(name).and(scope.requestPattern.like(requestContextPath))).uniqueResult(scope);
 	}
 
 	@Override

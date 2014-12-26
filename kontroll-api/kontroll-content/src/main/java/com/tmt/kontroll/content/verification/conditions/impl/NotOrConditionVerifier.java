@@ -3,7 +3,7 @@ package com.tmt.kontroll.content.verification.conditions.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.selections.ConditionalOperator;
 import com.tmt.kontroll.content.verification.conditions.ConditionVerificationChain;
@@ -21,7 +21,7 @@ public class NotOrConditionVerifier extends ConditionVerifier {
 	}
 
 	@Override
-	protected boolean doVerify(ScopedContentCondition condition, ContentLoadingContext contentDto) {
+	protected boolean doVerify(ScopedContentCondition condition, ContentOperatingContext contentDto) {
 		boolean check = false;
 		for (final ScopedContentCondition childCondition : condition.getChildConditions()) {
 			if (this.verificationChain.verify(childCondition, contentDto)) {
