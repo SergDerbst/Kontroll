@@ -1,13 +1,12 @@
 package com.tmt.kontroll.tools.caption.ui.configuration;
 
 import java.lang.annotation.Annotation;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tmt.kontroll.content.business.caption.CaptionService;
 import com.tmt.kontroll.content.persistence.entities.Caption;
-import com.tmt.kontroll.content.persistence.services.CaptionDaoService;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
@@ -27,7 +26,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class CaptionConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
-	CaptionDaoService	captionDaoService;
+	CaptionService	contentService;
 
 	@Override
 	protected Class<? extends Annotation> getAnnotationType() {
@@ -38,13 +37,6 @@ public class CaptionConfigurator extends PageSegmentConfigurator {
 	public void configure(final PageSegment segment) {
 		final String captionIdentifier = segment.getClass().getAnnotation(com.tmt.kontroll.ui.page.configuration.annotations.content.Caption.class).value();
 		segment.setCaptionIdentifier(captionIdentifier);
-		Caption caption = this.captionDaoService.findByIdentifierAndLocale(captionIdentifier, Locale.US);
-		if (caption == null) {
-			caption = new Caption();
-			caption.setIdentifier(captionIdentifier);
-			caption.setLocale(Locale.US);
-			caption.setText(segment.getScope());
-			this.captionDaoService.create(caption);
-		}
+		this.contentService.init(captionIdentifier, segment.getScope());
 	}
 }

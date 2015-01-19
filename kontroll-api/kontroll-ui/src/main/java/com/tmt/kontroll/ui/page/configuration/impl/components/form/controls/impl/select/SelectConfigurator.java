@@ -26,7 +26,7 @@ public class SelectConfigurator extends ChildElementConfigurator {
 	LabelCreator				labelCreator;
 
 	@Autowired
-	ItemsSourceConfigurationHandler	optionsHandler;
+	ItemsSourceConfigurationHandler	itemSourceHandler;
 
 	@Autowired
 	ValueSourceConfigurationHandler	valueSourceHandler;
@@ -45,7 +45,7 @@ public class SelectConfigurator extends ChildElementConfigurator {
 				this.handleAttributes(config, select);
 				this.handleValueSource(config, select);
 				this.handleLabel(config, select, segment);
-				this.optionsHandler.handle(config.optionsSource(), select);
+				this.itemSourceHandler.handle(config.optionsSource(), select);
 				super.addChild(config.position(), segment, select);
 			}
 		}

@@ -10,7 +10,7 @@ import com.tmt.kontroll.ui.page.configuration.annotations.ConfigurationAnnotatio
 import com.tmt.kontroll.ui.page.configuration.annotations.ContainerAnnotation;
 
 /**
- * Container annotation for {@link List} to make it repeatable.
+ * Container annotation to make {@link Dropdown} repeatable.
  *
  * @author SergDerbst
  *
@@ -20,7 +20,7 @@ import com.tmt.kontroll.ui.page.configuration.annotations.ContainerAnnotation;
 @Documented
 @ConfigurationAnnotation
 @ContainerAnnotation
-public @interface Lists {
+public @interface Dropdowns {
 
-	List[] value();
+	Dropdown[] value();
 }

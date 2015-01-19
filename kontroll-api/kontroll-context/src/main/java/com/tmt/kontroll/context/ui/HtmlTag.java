@@ -27,11 +27,14 @@ public enum HtmlTag {
 	Input("input"),
 	Italic("i"),
 	Label("label"),
+	ListItem("li"),
 	Option("option"),
+	OrderedList("ol"),
 	Paragraph("p"),
 	Span("span"),
 	Select("select"),
 	Textarea("textarea"),
+	UnorderedList("ul"),
 	Video("video");
 
 	private String	tagName;
