@@ -27,7 +27,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 @Input(ordinal = 1, position = ChildPosition.Top, name = "cssClass", type = "text", label = @Label(value = @ValueSource(type = ValueSourceType.Caption)))
 @Textarea(ordinal = 2, position = ChildPosition.Top, name = "content", valueSource = @ValueSource(type = ValueSourceType.Custom))
 @Button(ordinal = 3, position = ChildPosition.Bottom, name = "manageConditions", events = {@Event(type = EventType.Click, handlers = {"toggleVisibility"}, targetScopes = {"page.contentEditor.form.contentItemEditor"})})
-@Button(ordinal = 4, position = ChildPosition.Bottom, name = "saveContentItem", events = {@Event(type = EventType.Click, handlers = {"saveContentItem"}, dto = ContentEditorSaveItemDto.class)})
+@Button(ordinal = 4, position = ChildPosition.Bottom, name = "addContentItem", events = {@Event(type = EventType.Click, handlers = {"addContentItem"}, dto = ContentEditorSaveItemDto.class)})
 public class ContentItemEditor extends PageSegment {
 
 	private final Map<String, String[]>	optionsMap	= new HashMap<>();

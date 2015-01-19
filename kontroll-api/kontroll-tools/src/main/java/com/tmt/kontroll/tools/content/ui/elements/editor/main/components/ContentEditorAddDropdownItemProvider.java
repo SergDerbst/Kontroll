@@ -34,9 +34,16 @@ public class ContentEditorAddDropdownItemProvider implements ItemProvider {
 		item.setScope(scopeName);
 		item.setCaptionIdentifier(item.getDomId());
 		this.captionService.init(item.getCaptionIdentifier(), StringUtils.capitalize(scopeName));
-		final PageEvent event = new PageEvent(EventType.Click, new String[] {"addContentItem"});
-		event.getArguments().put("location", scopeName);
-		item.getGeneralEvents().put(event.getType(), event);
+		this.makeEvent(scopeName, item);
 		return item;
+	}
+
+	private void makeEvent(final String scopeName, final PageSegment item) {
+		final PageEvent event = new PageEvent(EventType.Click, new String[] {"prepareContentEditor", "toggleVisibility"});
+		event.getArguments().put("targetScope", "page.contentEditor.form.contentItemEditor");
+		event.getArguments().put("location", scopeName);
+		event.getArguments().put("purpose", "add");
+		event.getArguments().put("visible", "true");
+		item.getGeneralEvents().put(event.getType(), event);
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
+import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.context.ui.DomElement;
 import com.tmt.kontroll.context.ui.HtmlTag;
 
@@ -22,6 +23,8 @@ public class ContentItem implements DomElement {
 
 	private String										id;
 	private String										cssClass;
+	private String										itemNumber;
+	private ContentType								contentType;
 	private String										content;
 	private ContentChildrenOrder			contentChildrenOrder;
 	private final List<ContentItem>		children		= new ArrayList<ContentItem>();
@@ -90,5 +93,21 @@ public class ContentItem implements DomElement {
 
 	public List<ContentItem> getChildren() {
 		return this.children;
+	}
+
+	public String getItemNumber() {
+		return this.itemNumber;
+	}
+
+	public void setItemNumber(final String itemNumber) {
+		this.itemNumber = itemNumber;
+	}
+
+	public ContentType getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(ContentType contentType) {
+		this.contentType = contentType;
 	}
 }

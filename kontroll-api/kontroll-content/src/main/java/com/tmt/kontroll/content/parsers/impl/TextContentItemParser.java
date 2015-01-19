@@ -15,6 +15,8 @@ public class TextContentItemParser implements ContentItemParser {
 		final ContentItem item = new ContentItem(this.determineTag(scopedContentItem));
 		item.setContent(scopedContentItem.getContent());
 		item.setCssClass(scopedContentItem.getCssClass());
+		item.setItemNumber(scopedContentItem.getItemNumber());
+		item.setContentType(scopedContentItem.getType());
 		return item;
 	}
 

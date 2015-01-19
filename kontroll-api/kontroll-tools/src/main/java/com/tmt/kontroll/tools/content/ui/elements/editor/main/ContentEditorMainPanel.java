@@ -14,7 +14,7 @@ import com.tmt.kontroll.ui.page.events.EventType;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 @PageConfig(contexts = {@PageContext(scope = "page.contentEditor.form.main")})
-@Button(ordinal = 2, position = ChildPosition.Bottom, name = "edit", events = {@Event(type = EventType.Click, handlers = {"prepareContentEditor", "toggleVisibility"}, arguments = {@HandlerArgument(key = "purpose", value = "edit"), @HandlerArgument(key = "targetScope", value = "page.contentEditor.form.contentItemEditor")})})
+@Button(ordinal = 2, position = ChildPosition.Bottom, name = "edit", events = {@Event(type = EventType.Click, handlers = {"prepareContentEditor", "toggleVisibility"}, arguments = {@HandlerArgument(key = "purpose", value = "edit"), @HandlerArgument(key = "visible", value = ""), @HandlerArgument(key = "targetScope", value = "page.contentEditor.form.contentItemEditor")})})
 @Button(ordinal = 3, position = ChildPosition.Bottom, name = "add", type = ButtonType.Dropdown, events = {@Event(type = EventType.Click, handlers = {"dropdown"}, targetScopes = {"adddropdown"})})
 @Dropdown(ordinal = 4, position = ChildPosition.Bottom, name = "adddropdown", itemProvider = ContentEditorAddDropdownItemProvider.class, triggers = {@Trigger("page.contentEditor.form.main.add")})
 @Button(ordinal = 5, position = ChildPosition.Bottom, name = "in", events = {@Event(type = EventType.Click, handlers = {"contentItemNav"})})
