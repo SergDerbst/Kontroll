@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
 import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.context.ui.DomElement;
@@ -21,15 +22,18 @@ import com.tmt.kontroll.context.ui.HtmlTag;
 @JsonInclude(Include.NON_EMPTY)
 public class ContentItem implements DomElement {
 
-	private String										id;
-	private String										cssClass;
-	private String										itemNumber;
-	private ContentType								contentType;
-	private String										content;
-	private ContentChildrenOrder			contentChildrenOrder;
-	private final List<ContentItem>		children		= new ArrayList<ContentItem>();
-	private final Map<String, String>	attributes	= new HashMap<>();
-	private final HtmlTag							tag;
+	private Integer												dbId;
+	private String												domId;
+	private String												css;
+	private String												content;
+	private ContentType										type;
+	private boolean												preliminary;
+	private List<ScopedContentCondition>	conditions;
+	private String												itemNumber;
+	private ContentChildrenOrder					contentChildrenOrder;
+	private final List<ContentItem>				children		= new ArrayList<ContentItem>();
+	private final Map<String, String>			attributes	= new HashMap<>();
+	private final HtmlTag									tag;
 
 	public ContentItem() {
 		this.tag = HtmlTag.Div;
@@ -44,9 +48,21 @@ public class ContentItem implements DomElement {
 		return this.getClass().getName();
 	}
 
+	public Integer getDbId() {
+		return this.dbId;
+	}
+
+	public void setDbId(final Integer dbId) {
+		this.dbId = dbId;
+	}
+
 	@Override
 	public String getDomId() {
-		return this.id;
+		return this.domId;
+	}
+
+	public void setDomId(final String domId) {
+		this.domId = domId;
 	}
 
 	@Override
@@ -59,20 +75,12 @@ public class ContentItem implements DomElement {
 		return this.tag;
 	}
 
-	public String getId() {
-		return this.id;
+	public String getCss() {
+		return this.css;
 	}
 
-	public void setId(final String id) {
-		this.id = id;
-	}
-
-	public String getCssClass() {
-		return this.cssClass;
-	}
-
-	public void setCssClass(final String cssClass) {
-		this.cssClass = cssClass;
+	public void setCss(final String css) {
+		this.css = css;
 	}
 
 	public String getContent() {
@@ -103,11 +111,27 @@ public class ContentItem implements DomElement {
 		this.itemNumber = itemNumber;
 	}
 
-	public ContentType getContentType() {
-		return contentType;
+	public ContentType getType() {
+		return this.type;
 	}
 
-	public void setContentType(ContentType contentType) {
-		this.contentType = contentType;
+	public void setType(final ContentType type) {
+		this.type = type;
+	}
+
+	public boolean isPreliminary() {
+		return this.preliminary;
+	}
+
+	public void setPreliminary(final boolean preliminary) {
+		this.preliminary = preliminary;
+	}
+
+	public List<ScopedContentCondition> getConditions() {
+		return this.conditions;
+	}
+
+	public void setConditions(final List<ScopedContentCondition> conditions) {
+		this.conditions = conditions;
 	}
 }

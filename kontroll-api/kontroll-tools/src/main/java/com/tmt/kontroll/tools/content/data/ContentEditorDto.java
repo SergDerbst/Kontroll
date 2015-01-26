@@ -1,8 +1,9 @@
 package com.tmt.kontroll.tools.content.data;
 
-import com.tmt.kontroll.content.persistence.selections.ContentChildrenOrder;
+import java.util.List;
+
+import com.tmt.kontroll.content.ContentItem;
 import com.tmt.kontroll.context.request.data.json.DataTransferElement;
-import com.tmt.kontroll.context.ui.HtmlTag;
 import com.tmt.kontroll.tools.content.ui.elements.editor.ContentEditorForm;
 
 /**
@@ -13,59 +14,32 @@ import com.tmt.kontroll.tools.content.ui.elements.editor.ContentEditorForm;
  */
 public class ContentEditorDto implements DataTransferElement {
 
-	private String								requestPatterns;
-	private HtmlTag								htmlTag;
-	private String								cssClass;
-	private ContentChildrenOrder	contentChildrenOrder;
-	private String								content;
-	private String								targetScope;
+	private List<ContentItem>	content;
+	private String						editScope;
+	private String						editScopePattern;
 
-	public String getRequestPatterns() {
-		return requestPatterns;
-	}
-
-	public void setRequestPatterns(String requestPatterns) {
-		this.requestPatterns = requestPatterns;
-	}
-
-	public HtmlTag getHtmlTag() {
-		return this.htmlTag;
-	}
-
-	public void setHtmlTag(final HtmlTag htmlTag) {
-		this.htmlTag = htmlTag;
-	}
-
-	public String getCssClass() {
-		return this.cssClass;
-	}
-
-	public void setCssClass(final String cssClass) {
-		this.cssClass = cssClass;
-	}
-
-	public ContentChildrenOrder getContentChildrenOrder() {
-		return this.contentChildrenOrder;
-	}
-
-	public void setContentChildrenOrder(final ContentChildrenOrder contentChildrenOrder) {
-		this.contentChildrenOrder = contentChildrenOrder;
-	}
-
-	public String getContent() {
+	public List<ContentItem> getContent() {
 		return this.content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(final List<ContentItem> content) {
 		this.content = content;
 	}
 
-	public String getTargetScope() {
-		return this.targetScope;
+	public String getEditScope() {
+		return this.editScope;
 	}
 
-	public void setTargetScope(final String targetScope) {
-		this.targetScope = targetScope;
+	public void setEditScope(final String editScope) {
+		this.editScope = editScope;
+	}
+
+	public String getEditScopePattern() {
+		return this.editScopePattern;
+	}
+
+	public void setEditScopePattern(final String editScopePattern) {
+		this.editScopePattern = editScopePattern;
 	}
 
 	@Override

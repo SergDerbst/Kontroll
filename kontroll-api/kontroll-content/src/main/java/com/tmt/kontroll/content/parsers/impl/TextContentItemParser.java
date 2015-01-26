@@ -14,14 +14,14 @@ public class TextContentItemParser implements ContentItemParser {
 	public ContentItem parse(final ScopedContentItem scopedContentItem) {
 		final ContentItem item = new ContentItem(this.determineTag(scopedContentItem));
 		item.setContent(scopedContentItem.getContent());
-		item.setCssClass(scopedContentItem.getCssClass());
+		item.setCss(scopedContentItem.getCss());
 		item.setItemNumber(scopedContentItem.getItemNumber());
-		item.setContentType(scopedContentItem.getType());
+		item.setType(scopedContentItem.getType());
 		return item;
 	}
 
 	private HtmlTag determineTag(final ScopedContentItem scopedContentItem) {
-		final HtmlTag tag = HtmlTag.forTagName(scopedContentItem.getTagName());
+		final HtmlTag tag = scopedContentItem.getTag();
 		return tag == null ? HtmlTag.Div : tag;
 	}
 }

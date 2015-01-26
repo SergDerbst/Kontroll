@@ -38,7 +38,7 @@ public class CaptionLoader {
 	private ContentItem makeCaptionContent(final Caption caption) {
 		final ContentItem contentItem = new ContentItem();
 		contentItem.setContent(caption.getText());
-		contentItem.setId(caption.getIdentifier() + ".caption");
+		contentItem.setDomId(caption.getIdentifier() + ".caption");
 		return contentItem;
 	}
 }

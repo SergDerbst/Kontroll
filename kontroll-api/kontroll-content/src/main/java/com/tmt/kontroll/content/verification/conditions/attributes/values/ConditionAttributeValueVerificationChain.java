@@ -5,7 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.conversion.ValueStringConversionChain;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentConditionAttribute;
 import com.tmt.kontroll.content.verification.conditions.attributes.values.impl.ConditionAttributeBooleanValueVerifier;
@@ -60,7 +60,7 @@ public class ConditionAttributeValueVerificationChain {
 	}
 	
 	public boolean verify(final ScopedContentConditionAttribute attribute,
-	                      final ContentOperatingContext contentDto) {
+	                      final ContentLoadingContext contentDto) {
 		try {
 			final Class<?> valueType = Class.forName(attribute.getExpectedValueType());
 			final Object expectedValue = this.valueConversionChain.convertToValue(attribute.getExpectedValue(), valueType);

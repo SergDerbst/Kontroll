@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import com.tmt.kontroll.context.global.GlobalContextDto;
 import com.tmt.kontroll.context.request.RequestContextItem;
 
-public class ContentOperatingContext {
+public class ContentLoadingContext {
 
 	private final String									scopeName;
 	private final String									requestPath;
@@ -14,7 +14,7 @@ public class ContentOperatingContext {
 	private final GlobalContextDto				globalContextDto;
 	private final Set<RequestContextItem>	requestContext;
 
-	public ContentOperatingContext(	final Set<RequestContextItem> requestContext,
+	public ContentLoadingContext(	final Set<RequestContextItem> requestContext,
 	                             	final GlobalContextDto globalContextDto,
 	                             	final String requestPath,
 	                             	final Pattern requestPattern,

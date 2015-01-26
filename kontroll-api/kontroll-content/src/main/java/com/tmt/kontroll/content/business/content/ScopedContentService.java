@@ -1,17 +1,13 @@
 package com.tmt.kontroll.content.business.content;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
-import com.tmt.kontroll.content.exceptions.NoContentFoundException;
-import com.tmt.kontroll.content.exceptions.TooMuchContentFoundException;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
-import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.persistence.services.ScopedContentDaoService;
 import com.tmt.kontroll.content.verification.ContentConditionVerifier;
 
@@ -35,28 +31,9 @@ public class ScopedContentService {
 	}
 
 	//TODO caching
-	public ScopedContent loadValidContent(final Scope scope, final ContentOperatingContext context) {
+	public ScopedContent loadValidContent(final Scope scope, final ContentLoadingContext context) {
 		final List<ScopedContent> content = this.load(scope);
-		final List<ScopedContent> validContent = new ArrayList<ScopedContent>();
-		for (final ScopedContent scopedContent : content) {
-			final List<ScopedContentCondition> contentConditions = scopedContent.getConditions();
-			if (contentConditions.isEmpty()) {
-				validContent.add(scopedContent);
-			} else {
-				for (final ScopedContentCondition contentCondition : contentConditions) {
-					if (this.verifier.verify(contentCondition, context)) {
-						validContent.add(scopedContent);
-					}
-				}
-			}
-		}
-		if (validContent.isEmpty()) {
-			throw NoContentFoundException.prepare(context);
-		}
-		if (validContent.size() > 1) {
-			throw TooMuchContentFoundException.prepare(context);
-		}
-		return validContent.get(0);
+		return content.get(0);
 	}
 
 	//TODO caching

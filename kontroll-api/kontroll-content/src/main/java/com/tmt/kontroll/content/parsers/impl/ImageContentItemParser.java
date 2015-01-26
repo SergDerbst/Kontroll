@@ -14,7 +14,7 @@ public class ImageContentItemParser implements ContentItemParser {
 	public ContentItem parse(final ScopedContentItem scopedContentItem) {
 		final ContentItem contentItem = new ContentItem(HtmlTag.Image);
 		contentItem.setContent(scopedContentItem.getContent());
-		contentItem.setCssClass(scopedContentItem.getCssClass());
+		contentItem.setCss(scopedContentItem.getCss());
 		return contentItem;
 	}
 }

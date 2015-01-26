@@ -8,7 +8,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.content.business.content.utils.ScopedContentItemComparator;
 import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
@@ -31,7 +31,7 @@ public class ScopedContentItemService {
 	@Autowired
 	ScopedContentService				scopedContentService;
 
-	public Set<ScopedContentItem> fetchValidItems(final ScopedContent scopedContent, final ContentOperatingContext context) {
+	public Set<ScopedContentItem> fetchValidItems(final ScopedContent scopedContent, final ContentLoadingContext context) {
 		final Set<ScopedContentItem> contentItems = new TreeSet<>(new ScopedContentItemComparator());
 		for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
 			final List<ScopedContentCondition> conditions = contentItem.getConditions();
@@ -71,6 +71,10 @@ public class ScopedContentItemService {
 		scopedContent.setScopedContentItems(scopedContentItems);
 		this.scopedContentService.write(scopedContent);
 		return item;
+	}
+
+	public void delete(final ScopedContentItem item) {
+		this.scopedContentItemDaoService.delete(item.getId());
 	}
 
 	public ScopedContentItem add(final ScopedContentItem item) {

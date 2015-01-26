@@ -10,6 +10,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.IndexColumn;
 
 import com.tmt.kontroll.persistence.BaseEntity;
@@ -19,23 +21,19 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 public class ScopedContent extends BaseEntity {
 
 	@Column(nullable = false)
-	private String												name;
+	private String									name;
 
 	@Column(length = DatabaseDefinitions.String_Large)
-	private String												description;
+	private String									description;
 
 	@ManyToOne
 	@JoinColumn(name = "scope", nullable = false)
-	private Scope													scope;
+	private Scope										scope;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@IndexColumn(name = "id")
 	@JoinTable(name = "ScopedContent_ScopedContentItem", joinColumns = @JoinColumn(name = "scoped_content_item_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "scoped_content_id", referencedColumnName = "id"))
-	private List<ScopedContentItem>				scopedContentItems;
-
-	@ManyToMany(mappedBy = "scopedContents", fetch = FetchType.EAGER)
-	@IndexColumn(name = "id")
-	private List<ScopedContentCondition>	conditions;
+	private List<ScopedContentItem>	scopedContentItems;
 
 	public String getName() {
 		return this.name;
@@ -69,11 +67,33 @@ public class ScopedContent extends BaseEntity {
 		this.scopedContentItems = scopedContentItems;
 	}
 
-	public List<ScopedContentCondition> getConditions() {
-		return this.conditions;
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (this == o) {
+			return true;
+		}
+		if (!this.getClass().equals(o.getClass())) {
+			return false;
+		}
+		final ScopedContent other = (ScopedContent) o;
+		final EqualsBuilder equals = new EqualsBuilder();
+		equals.append(this.description, other.description);
+		equals.append(this.name, other.name);
+		equals.append(this.scope, other.scope);
+		equals.append(this.scopedContentItems, other.scopedContentItems);
+		return equals.build();
 	}
 
-	public void setConditions(final List<ScopedContentCondition> conditions) {
-		this.conditions = conditions;
+	@Override
+	public int hashCode() {
+		final HashCodeBuilder hashCode = new HashCodeBuilder(17, 37);
+		hashCode.append(this.description);
+		hashCode.append(this.name);
+		hashCode.append(this.scope);
+		hashCode.append(this.scopedContentItems);
+		return hashCode.build();
 	}
 }

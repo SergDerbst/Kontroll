@@ -9,6 +9,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.tmt.kontroll.persistence.BaseEntity;
 import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 
@@ -58,5 +61,35 @@ public class Scope extends BaseEntity {
 
 	public void setRequestPattern(final String requestPattern) {
 		this.requestPattern = requestPattern;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (this == o) {
+			return true;
+		}
+		if (!this.getClass().equals(o.getClass())) {
+			return false;
+		}
+		final Scope other = (Scope) o;
+		final EqualsBuilder equals = new EqualsBuilder();
+		equals.append(this.description, other.description);
+		equals.append(this.name, other.name);
+		equals.append(this.requestPattern, other.requestPattern);
+		equals.append(this.scopedContents, other.scopedContents);
+		return equals.build();
+	}
+
+	@Override
+	public int hashCode() {
+		final HashCodeBuilder hashCode = new HashCodeBuilder(17, 37);
+		hashCode.append(this.description);
+		hashCode.append(this.name);
+		hashCode.append(this.requestPattern);
+		hashCode.append(this.scopedContents);
+		return hashCode.build();
 	}
 }

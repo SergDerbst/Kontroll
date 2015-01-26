@@ -39,8 +39,8 @@ public class PageManagementPostProcessor {
 		if (content != null) {
 			int counter = 0;
 			for (final ContentItem item : content) {
-				item.setId(parentId + "." + counter);
-				this.processContent(item.getChildren(), item.getId());
+				item.setDomId(parentId + "." + counter);
+				this.processContent(item.getChildren(), item.getDomId());
 				counter++;
 			}
 		}

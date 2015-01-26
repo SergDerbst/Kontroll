@@ -24,7 +24,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 import com.tmt.kontroll.ui.page.segments.PageSegmentChildrenAndContentAccessor;
 import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
-@RequestHandler(patterns = {"/content/editor"}, handling = RequestHandling.Always)
+@RequestHandler(patterns = {"/content/editor/prepare"}, handling = RequestHandling.Always)
 @RequestData(ContentEditorDataLoadingDto.class)
 public class ContentEditorDataLoadingHandler implements RequestHandlingService {
 

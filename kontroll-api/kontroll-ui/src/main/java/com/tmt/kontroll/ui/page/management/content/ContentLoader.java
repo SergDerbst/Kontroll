@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.content.business.content.ContentService;
-import com.tmt.kontroll.content.business.content.data.ContentOperatingContext;
+import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
 import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Caption;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
@@ -34,7 +34,7 @@ public class ContentLoader {
 		return segmentClass.isAnnotationPresent(Content.class) && !segmentClass.isAnnotationPresent(Caption.class);
 	}
 
-	private ContentOperatingContext createContentLoadingContext(final String scopeName, final String requestPath) {
-		return new ContentOperatingContext(this.globalContext.requestContextHolder().fetchRequestContext(requestPath), this.globalContext.globalContext(), requestPath, null, scopeName);
+	private ContentLoadingContext createContentLoadingContext(final String scopeName, final String requestPath) {
+		return new ContentLoadingContext(this.globalContext.requestContextHolder().fetchRequestContext(requestPath), this.globalContext.globalContext(), requestPath, null, scopeName);
 	}
 }
