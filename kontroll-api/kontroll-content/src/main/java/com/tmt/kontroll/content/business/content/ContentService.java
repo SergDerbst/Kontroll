@@ -34,7 +34,7 @@ public class ContentService {
 	@Autowired
 	ContentParser							contentParser;
 
-	public List<ContentItem> loadContent(final ContentLoadingContext contentDto) throws ContentException {
+	public Set<ContentItem> loadContent(final ContentLoadingContext contentDto) throws ContentException {
 		final Scope scope = contentDto.getRequestPattern() != null ? this.scopeService.load(contentDto.getScopeName(), contentDto.getRequestPattern().pattern()) : this.scopeService.load(contentDto.getScopeName(), contentDto.getRequestPath());
 		if (scope == null) {
 			throw NoScopeFoundException.prepare(contentDto.getScopeName(), contentDto.getRequestPath(), contentDto.getRequestPattern());
@@ -42,7 +42,7 @@ public class ContentService {
 		return this.contentParser.parse(this.scopedContentItemService.fetchValidItems(this.scopedContentService.loadValidContent(scope, contentDto), contentDto), contentDto.getScopeName());
 	}
 
-	public List<ContentItem> saveContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
+	public Set<ContentItem> saveContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
 		final ScopedContent scopedContent = this.fetchContent(savingContext, loadingContext);
 		final Map<Integer, ScopedContentItem> existingItems = this.fetchExistingItems(scopedContent);
 		final Set<ScopedContentItem> newItems = this.generateAndSaveNewItems(savingContext, existingItems);

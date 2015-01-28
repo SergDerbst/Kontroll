@@ -25,6 +25,7 @@ public class ContentEditorAddDropdownItemProvider implements ItemProvider {
 		items.add(this.makeItem(parentSegment, "after"));
 		items.add(this.makeItem(parentSegment, "before"));
 		items.add(this.makeItem(parentSegment, "child"));
+		items.add(this.makeItem(parentSegment, "same"));
 		return items;
 	}
 

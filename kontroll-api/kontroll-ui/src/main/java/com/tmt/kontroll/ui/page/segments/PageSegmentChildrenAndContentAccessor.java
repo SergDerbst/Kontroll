@@ -3,6 +3,7 @@ package com.tmt.kontroll.ui.page.segments;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -100,7 +101,7 @@ public class PageSegmentChildrenAndContentAccessor {
 	 * @param segment
 	 * @param content
 	 */
-	public void addContent(final PageSegment segment, final List<ContentItem> content) {
+	public void addContent(final PageSegment segment, final Set<ContentItem> content) {
 		if (segment.getClass().isAnnotationPresent(Scrollable.class)) {
 			final PageSegment realParent = segment.getMainChildren().get(new PageSegmentOrdinalKey(0, segment.getDomId() + ".scroller"));
 			realParent.setContent(content);
@@ -116,7 +117,7 @@ public class PageSegmentChildrenAndContentAccessor {
 	 * @param content
 	 * @return
 	 */
-	public List<ContentItem> fetchContent(final PageSegment segment) {
+	public Set<ContentItem> fetchContent(final PageSegment segment) {
 		if (segment.getClass().isAnnotationPresent(Scrollable.class)) {
 			final PageSegment realParent = segment.getMainChildren().get(new PageSegmentOrdinalKey(0, segment.getDomId() + ".scroller"));
 			return realParent.getContent();

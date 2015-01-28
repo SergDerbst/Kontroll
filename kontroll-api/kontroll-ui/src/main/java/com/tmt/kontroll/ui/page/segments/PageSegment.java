@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -45,7 +46,7 @@ public abstract class PageSegment implements DomElement {
 	@JsonProperty
 	private final TreeMap<PageSegmentOrdinalKey, PageSegment>	mainChildren			= new TreeMap<>();
 	@JsonProperty
-	private List<ContentItem>																	content;
+	private Set<ContentItem>																	content;
 	private ContentItem																				caption;
 	private final Map<EventType, PageEvent>										generalEvents			= new EnumMap<>(EventType.class);
 	private final Map<EventType, PageEvent>										additionalEvents	= new EnumMap<>(EventType.class);
@@ -129,11 +130,11 @@ public abstract class PageSegment implements DomElement {
 		return !(this.mainChildren.isEmpty() && this.topChildren.isEmpty() && this.bottomChildren.isEmpty());
 	}
 
-	protected List<ContentItem> getContent() {
+	protected Set<ContentItem> getContent() {
 		return this.content;
 	}
 
-	protected void setContent(final List<ContentItem> content) {
+	protected void setContent(final Set<ContentItem> content) {
 		this.content = content;
 	}
 

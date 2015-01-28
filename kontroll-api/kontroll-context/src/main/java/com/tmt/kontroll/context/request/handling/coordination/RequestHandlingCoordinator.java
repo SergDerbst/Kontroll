@@ -83,7 +83,7 @@ public class RequestHandlingCoordinator {
 
 	@SuppressWarnings("unchecked")
 	private void runDefault(final RequestHandlingCoordinationDto coordinationDto, final RequestHandlingParam param) {
-		for (final Entry<Class<? extends RequestHandlingService>, RequestHandlingService> entry : coordinationDto.getAlways().entrySet()) {
+		for (final Entry<Class<? extends RequestHandlingService>, RequestHandlingService> entry : coordinationDto.getOther().entrySet()) {
 			this.runBeforeServiceAndAfter(coordinationDto, param, entry.getValue(), coordinationDto.getAlways(), coordinationDto.getOther());
 		}
 	}

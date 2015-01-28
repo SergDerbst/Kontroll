@@ -51,7 +51,7 @@ public class ContentEditorDataLoadingHandler implements RequestHandlingService {
 	}
 
 	private void loadContents(final RequestHandlingParam param, final List<Scope> scopes) {
-		final Map<String, List<ContentItem>> content = new HashMap<>();
+		final Map<String, Set<ContentItem>> content = new HashMap<>();
 		final Map<String, Set<String>> contentItemNumbersMap = new HashMap<>();
 		for (final Scope scope : scopes) {
 			this.handleContent(scope, param, content, contentItemNumbersMap);
@@ -60,15 +60,15 @@ public class ContentEditorDataLoadingHandler implements RequestHandlingService {
 		param.getDataResponse().put("currentContentItemNumbers", contentItemNumbersMap);
 	}
 
-	private void handleContent(final Scope scope, final RequestHandlingParam param, final Map<String, List<ContentItem>> contentMap, final Map<String, Set<String>> contentItemNumbersMap) {
+	private void handleContent(final Scope scope, final RequestHandlingParam param, final Map<String, Set<ContentItem>> contentMap, final Map<String, Set<String>> contentItemNumbersMap) {
 		final PageSegment segment = this.segmentHolder.fetchMatchingPageSegment(scope.getName(), scope.getRequestPattern());
 		this.contentLoader.load(segment, scope.getRequestPattern(), scope.getName(), param.getSession().getId());
-		final List<ContentItem> content = this.childrenAndContentAccessor.fetchContent(segment);
+		final Set<ContentItem> content = this.childrenAndContentAccessor.fetchContent(segment);
 		contentMap.put(scope.getRequestPattern(), content);
 		this.handleContentItemNumbers(scope, content, contentItemNumbersMap);
 	}
 
-	private void handleContentItemNumbers(final Scope scope, final List<ContentItem> content, final Map<String, Set<String>> contentItemNumbersMap) {
+	private void handleContentItemNumbers(final Scope scope, final Set<ContentItem> content, final Map<String, Set<String>> contentItemNumbersMap) {
 		final Set<String> contentItemNumbers = new TreeSet<>();
 		for (final ContentItem item : content) {
 			contentItemNumbers.add(item.getDomId().replace(scope.getName() + ".", ""));

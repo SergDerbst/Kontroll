@@ -1,6 +1,6 @@
 package com.tmt.kontroll.ui.page.management;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class PageManagementPostProcessor {
 		return segment;
 	}
 
-	private void processContent(final List<ContentItem> content, final String parentId) {
+	private void processContent(final Set<ContentItem> content, final String parentId) {
 		if (content != null) {
 			int counter = 0;
 			for (final ContentItem item : content) {

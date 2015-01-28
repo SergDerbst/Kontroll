@@ -1,9 +1,13 @@
 package com.tmt.kontroll.content;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -20,7 +24,7 @@ import com.tmt.kontroll.context.ui.HtmlTag;
  *
  */
 @JsonInclude(Include.NON_EMPTY)
-public class ContentItem implements DomElement {
+public class ContentItem implements DomElement, Comparable<ContentItem> {
 
 	private Integer												dbId;
 	private String												domId;
@@ -31,7 +35,7 @@ public class ContentItem implements DomElement {
 	private List<ScopedContentCondition>	conditions;
 	private String												itemNumber;
 	private ContentChildrenOrder					contentChildrenOrder;
-	private final List<ContentItem>				children		= new ArrayList<ContentItem>();
+	private final Set<ContentItem>				children		= new TreeSet<>();
 	private final Map<String, String>			attributes	= new HashMap<>();
 	private final HtmlTag									tag;
 
@@ -99,7 +103,7 @@ public class ContentItem implements DomElement {
 		this.contentChildrenOrder = contentChildrenOrder;
 	}
 
-	public List<ContentItem> getChildren() {
+	public Set<ContentItem> getChildren() {
 		return this.children;
 	}
 
@@ -133,5 +137,57 @@ public class ContentItem implements DomElement {
 
 	public void setConditions(final List<ScopedContentCondition> conditions) {
 		this.conditions = conditions;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (this == o) {
+			return true;
+		}
+		if (!this.getClass().equals(o.getClass())) {
+			return false;
+		}
+		final ContentItem other = (ContentItem) o;
+		final EqualsBuilder equals = new EqualsBuilder();
+		equals.append(this.conditions, other.conditions);
+		equals.append(this.content, other.content);
+		equals.append(this.css, other.css);
+		equals.append(this.itemNumber, other.itemNumber);
+		equals.append(this.preliminary, other.preliminary);
+		equals.append(this.tag, other.tag);
+		equals.append(this.type, other.type);
+		return equals.build();
+	}
+
+	@Override
+	public int hashCode() {
+		final HashCodeBuilder hashCode = new HashCodeBuilder(17, 37);
+		hashCode.append(this.conditions);
+		hashCode.append(this.content);
+		hashCode.append(this.css);
+		hashCode.append(this.itemNumber);
+		hashCode.append(this.preliminary);
+		hashCode.append(this.tag);
+		hashCode.append(this.type);
+		return hashCode.build();
+	}
+
+	@Override
+	public int compareTo(final ContentItem other) {
+		if (this.equals(other)) {
+			return 0;
+		}
+		final int itemNumberComparison = this.itemNumber.compareTo(other.itemNumber);
+		if (itemNumberComparison != 0) {
+			return itemNumberComparison;
+		}
+		final int numberOfConditionsComparison = this.conditions.size() - other.conditions.size();
+		if (numberOfConditionsComparison != 0) {
+			return numberOfConditionsComparison;
+		}
+		return this.hashCode() - other.hashCode();
 	}
 }

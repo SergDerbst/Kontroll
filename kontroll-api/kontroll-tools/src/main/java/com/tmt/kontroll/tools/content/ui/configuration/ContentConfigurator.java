@@ -75,15 +75,15 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 		return editor;
 	}
 
-	private void createScopeWithInitialContent(final String scopeName, final String pattern, final Content content) {
-		this.scopedContentItemService.init(this.scopedContentService.init(this.scopeService.init(scopeName, pattern)), content.content(), content.type());
-	}
-
 	private PageEvent configureEvent(final PageSegment segment) {
 		final PageEvent event = new PageEvent(EventType.Click, new String[] {"prepareContentEditor", "toggleVisibility"});
 		event.getArguments().put("targetScope", "page.contentEditor");
 		event.getArguments().put("editScope", segment.getDomId());
 		event.getArguments().put("dtoClass", ContentEditorDataLoadingDto.class.getName());
 		return event;
+	}
+
+	private void createScopeWithInitialContent(final String scopeName, final String pattern, final Content content) {
+		this.scopedContentItemService.init(this.scopedContentService.init(this.scopeService.init(scopeName, pattern)), content.content(), content.type());
 	}
 }
