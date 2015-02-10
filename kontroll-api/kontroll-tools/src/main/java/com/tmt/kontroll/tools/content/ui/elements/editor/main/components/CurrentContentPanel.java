@@ -19,7 +19,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
  *
  */
 @PageConfig(contexts = {@PageContext(scope = "page.contentEditor.form.main.currentContentPanel")})
-@Select(ordinal = 0, position = ChildPosition.Top, name = "contentItemNumber", optionsSource = @ItemsSource(type = ItemSourceType.Custom))
+@Select(ordinal = 0, position = ChildPosition.Top, name = "itemNumber", optionsSource = @ItemsSource(type = ItemSourceType.Custom))
 @Scrollable
 public class CurrentContentPanel extends PageSegment {
 

@@ -43,6 +43,7 @@ public class FormConfigurator extends PageSegmentConfigurator {
 		final Form form = segment.getClass().getAnnotation(Form.class);
 		segment.setTag(HtmlTag.Form);
 		segment.getAttributes().put("name", form.name());
+		segment.getAttributes().put("dtoClass", form.dtoClass().getName());
 		final PageEvent event = new PageEvent(EventType.Submit, form.submitHandlers());
 		event.getArguments().put("targetUrl", form.targetUrl());
 		event.getArguments().put("targetScope", form.targetScope());

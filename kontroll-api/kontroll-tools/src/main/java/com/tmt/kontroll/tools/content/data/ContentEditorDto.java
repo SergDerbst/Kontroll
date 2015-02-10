@@ -15,8 +15,8 @@ import com.tmt.kontroll.tools.content.ui.elements.editor.ContentEditorForm;
 public class ContentEditorDto implements DataTransferElement {
 
 	private List<ContentItem>	content;
-	private String						editScope;
-	private String						editScopePattern;
+	private String						scope;
+	private String						requestPattern;
 
 	public List<ContentItem> getContent() {
 		return this.content;
@@ -26,20 +26,20 @@ public class ContentEditorDto implements DataTransferElement {
 		this.content = content;
 	}
 
-	public String getEditScope() {
-		return this.editScope;
+	public String getScope() {
+		return this.scope;
 	}
 
-	public void setEditScope(final String editScope) {
-		this.editScope = editScope;
+	public void setScope(final String scope) {
+		this.scope = scope;
 	}
 
-	public String getEditScopePattern() {
-		return this.editScopePattern;
+	public String getRequestPattern() {
+		return this.requestPattern;
 	}
 
-	public void setEditScopePattern(final String editScopePattern) {
-		this.editScopePattern = editScopePattern;
+	public void setRequestPattern(final String requestPattern) {
+		this.requestPattern = requestPattern;
 	}
 
 	@Override

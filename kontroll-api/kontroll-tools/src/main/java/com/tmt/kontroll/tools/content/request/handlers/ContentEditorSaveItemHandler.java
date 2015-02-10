@@ -34,17 +34,17 @@ public class ContentEditorSaveItemHandler implements RequestHandlingService {
 	@Override
 	public void handle(final RequestHandlingParam param) {
 		final ContentEditorDto requestData = (ContentEditorDto) param.getPayload().getRequestData();
-		final PageSegment segment = this.segmentHolder.fetchMatchingPageSegment(requestData.getEditScope(), requestData.getEditScopePattern());
+		final PageSegment segment = this.segmentHolder.fetchMatchingPageSegment(requestData.getScope(), requestData.getRequestPattern());
 		this.childrenAndContentAccessor.addContent(segment, this.contentService.saveContent(this.createContentSavingContext(requestData), this.createContentLoadingContext(requestData)));
 		param.getDataResponse().put("segment", segment);
 	}
 
 	private ContentSavingContext createContentSavingContext(final ContentEditorDto requestData) {
-		return new ContentSavingContext(requestData.getContent(), requestData.getEditScope(), requestData.getEditScopePattern());
+		return new ContentSavingContext(requestData.getContent(), requestData.getScope(), requestData.getRequestPattern());
 	}
 
 	private ContentLoadingContext createContentLoadingContext(final ContentEditorDto requestData) {
-		final Pattern pattern = Pattern.compile(requestData.getEditScopePattern());
-		return new ContentLoadingContext(this.globalContext.requestContextHolder().fetchRequestContext(pattern), this.globalContext.globalContext(), null, pattern, requestData.getEditScope());
+		final Pattern pattern = Pattern.compile(requestData.getRequestPattern());
+		return new ContentLoadingContext(this.globalContext.requestContextHolder().fetchRequestContext(pattern), this.globalContext.globalContext(), null, pattern, requestData.getScope());
 	}
 }

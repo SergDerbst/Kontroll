@@ -45,7 +45,7 @@ public class ContentEditorDataLoadingHandler implements RequestHandlingService {
 
 	@Override
 	public void handle(final RequestHandlingParam param) {
-		final List<Scope> scopes = this.scopeDaoService.findAllByName(((ContentEditorDataLoadingDto) param.getPayload().getRequestData()).getEditScope());
+		final List<Scope> scopes = this.scopeDaoService.findAllByName(((ContentEditorDataLoadingDto) param.getPayload().getRequestData()).getScope());
 		this.loadRequestPatterns(param, scopes);
 		this.loadContents(param, scopes);
 	}

@@ -12,7 +12,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
  * @author SergDerbst
  *
  */
-@Content(type = ContentType.Image, content = "/images/general/content/editor.png")
+@Content(type = ContentType.Image, content = "/images/general/content/editor.jpg")
 public class ContentEditorToggle extends PageSegment {
 
 }

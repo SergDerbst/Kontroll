@@ -5,19 +5,19 @@ import com.tmt.kontroll.context.request.data.json.DataTransferElement;
 public class ContentEditorDataLoadingDto implements DataTransferElement {
 
 	private String	currentPath;
-	private String	editScope;
+	private String	scope;
 
 	@Override
 	public String getDtoClass() {
 		return this.getClass().getName();
 	}
 
-	public String getEditScope() {
-		return this.editScope;
+	public String getScope() {
+		return this.scope;
 	}
 
-	public void setEditScope(final String editScope) {
-		this.editScope = editScope;
+	public void setScope(final String scope) {
+		this.scope = scope;
 	}
 
 	public String getCurrentPath() {

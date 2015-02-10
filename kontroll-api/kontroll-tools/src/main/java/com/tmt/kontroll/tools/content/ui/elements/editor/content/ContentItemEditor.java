@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.context.ui.HtmlTag;
-import com.tmt.kontroll.tools.content.data.ContentEditorSaveItemDto;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.devices.button.Button;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.input.Input;
 import com.tmt.kontroll.ui.page.configuration.annotations.components.form.controls.label.Label;
@@ -14,11 +13,9 @@ import com.tmt.kontroll.ui.page.configuration.annotations.components.form.contro
 import com.tmt.kontroll.ui.page.configuration.annotations.config.ValueSource;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageConfig;
 import com.tmt.kontroll.ui.page.configuration.annotations.context.PageContext;
-import com.tmt.kontroll.ui.page.configuration.annotations.event.Event;
 import com.tmt.kontroll.ui.page.configuration.annotations.general.Hidden;
 import com.tmt.kontroll.ui.page.configuration.enums.components.ChildPosition;
 import com.tmt.kontroll.ui.page.configuration.enums.components.ValueSourceType;
-import com.tmt.kontroll.ui.page.events.EventType;
 import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 @Hidden
@@ -26,8 +23,8 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 @HierarchicalSelect(ordinal = 0, position = ChildPosition.Top, name = "type")
 @Input(ordinal = 1, position = ChildPosition.Top, name = "cssClass", type = "text", label = @Label(value = @ValueSource(type = ValueSourceType.Caption)))
 @Textarea(ordinal = 2, position = ChildPosition.Top, name = "content", valueSource = @ValueSource(type = ValueSourceType.Custom))
-@Button(ordinal = 3, position = ChildPosition.Bottom, name = "manageConditions", events = {@Event(type = EventType.Click, handlers = {"toggleVisibility"}, targetScopes = {"page.contentEditor.form.contentItemEditor"})})
-@Button(ordinal = 4, position = ChildPosition.Bottom, name = "addContentItem", events = {@Event(type = EventType.Click, handlers = {"addContentItem"}, dto = ContentEditorSaveItemDto.class)})
+@Button(ordinal = 3, position = ChildPosition.Bottom, name = "manageConditions")
+@Button(ordinal = 4, position = ChildPosition.Bottom, name = "addContentItem")
 public class ContentItemEditor extends PageSegment {
 
 	private final Map<String, String[]>	optionsMap	= new HashMap<>();

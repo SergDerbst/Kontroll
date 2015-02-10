@@ -60,13 +60,13 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 
 	@Override
 	public void configure(final PageSegment segment) {
-		this.childrenAndContentAccessor.fetchBottomChildren(segment).add(this.makeContentEditor(segment));
+		this.childrenAndContentAccessor.fetchBottomChildren(segment).add(this.makeContentEditorToggle(segment));
 		for (final PageContext context : segment.getClass().getAnnotation(PageConfig.class).contexts()) {
 			this.createScopeWithInitialContent(context.scope(), context.pattern(), segment.getClass().getAnnotation(Content.class));
 		}
 	}
 
-	private PageSegment makeContentEditor(final PageSegment segment) {
+	private PageSegment makeContentEditorToggle(final PageSegment segment) {
 		final ContentEditorToggle editor = new ContentEditorToggle();
 		editor.setParentScope(segment.getDomId());
 		editor.setScope("contentEditor");
@@ -78,7 +78,7 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 	private PageEvent configureEvent(final PageSegment segment) {
 		final PageEvent event = new PageEvent(EventType.Click, new String[] {"prepareContentEditor", "toggleVisibility"});
 		event.getArguments().put("targetScope", "page.contentEditor");
-		event.getArguments().put("editScope", segment.getDomId());
+		event.getArguments().put("scope", segment.getDomId());
 		event.getArguments().put("dtoClass", ContentEditorDataLoadingDto.class.getName());
 		return event;
 	}
