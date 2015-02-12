@@ -39,14 +39,16 @@ public class ContentService {
 		if (scope == null) {
 			throw NoScopeFoundException.prepare(contentDto.getScopeName(), contentDto.getRequestPath(), contentDto.getRequestPattern());
 		}
-		return this.contentParser.parse(this.scopedContentItemService.fetchValidItems(this.scopedContentService.loadValidContent(scope, contentDto), contentDto), contentDto.getScopeName());
+		final List<ScopedContent> validContent = this.scopedContentService.loadValidContent(scope, contentDto);
+		final Set<ScopedContentItem> validItems = this.scopedContentItemService.fetchValidItems(validContent, contentDto);
+		return this.contentParser.parse(validItems, contentDto.getScopeName());
 	}
 
 	public Set<ContentItem> saveContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
-		final ScopedContent scopedContent = this.fetchContent(savingContext, loadingContext);
-		final Map<Integer, ScopedContentItem> existingItems = this.fetchExistingItems(scopedContent);
+		final List<ScopedContent> scopedContents = this.fetchContent(savingContext, loadingContext);
+		final Map<Integer, ScopedContentItem> existingItems = this.fetchExistingItems(scopedContents);
 		final Set<ScopedContentItem> newItems = this.generateAndSaveNewItems(savingContext, existingItems);
-		this.addNewItemsAndSaveContent(scopedContent, newItems);
+		this.addNewItemsAndSaveContent(scopedContents, newItems);
 		this.cleanUpOldItems(existingItems);
 		return this.contentParser.parse(newItems, savingContext.getScopeName());
 	}
@@ -59,13 +61,15 @@ public class ContentService {
 		}
 	}
 
-	private void addNewItemsAndSaveContent(final ScopedContent scopedContent, final Set<ScopedContentItem> newItems) {
+	private void addNewItemsAndSaveContent(final List<ScopedContent> scopedContents, final Set<ScopedContentItem> newItems) {
 		final List<ScopedContentItem> newItemList = new ArrayList<>();
 		for (final ScopedContentItem newItem : newItems) {
 			newItemList.add(newItem);
 		}
-		scopedContent.setScopedContentItems(newItemList);
-		this.scopedContentService.write(scopedContent);
+		for (final ScopedContent scopedContent : scopedContents) {
+			scopedContent.setScopedContentItems(newItemList);
+			this.scopedContentService.write(scopedContent);
+		}
 	}
 
 	private void saveUpdateContentItem(final ScopedContentItem scopedContentItem) {
@@ -91,17 +95,18 @@ public class ContentService {
 		return newItems;
 	}
 
-	private Map<Integer, ScopedContentItem> fetchExistingItems(final ScopedContent scopedContent) {
+	private Map<Integer, ScopedContentItem> fetchExistingItems(final List<ScopedContent> scopedContents) {
 		final Map<Integer, ScopedContentItem> existingItemsById = new HashMap<>();
-		for (final ScopedContentItem scopedContentItem : scopedContent.getScopedContentItems()) {
-			existingItemsById.put(scopedContentItem.getId(), scopedContentItem);
+		for (final ScopedContent scopedContent : scopedContents) {
+			for (final ScopedContentItem scopedContentItem : scopedContent.getScopedContentItems()) {
+				existingItemsById.put(scopedContentItem.getId(), scopedContentItem);
+			}
 		}
 		return existingItemsById;
 	}
 
-	private ScopedContent fetchContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
+	private List<ScopedContent> fetchContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
 		final Scope scope = this.scopeService.load(savingContext.getScopeName(), savingContext.getRequestPattern());
-		final ScopedContent scopedContent = this.scopedContentService.loadValidContent(scope, loadingContext);
-		return scopedContent;
+		return this.scopedContentService.loadValidContent(scope, loadingContext);
 	}
 }

@@ -71,13 +71,11 @@ public class PageManager {
 
 	private void handleContent(final PageSegment segment, final String requestPath, final String scopeName, final String sessionId) {
 		if (segment.getClass().isAnnotationPresent(Content.class)) {
-			System.out.println("####### - CONTENT of " + segment.getDomId());
 			this.contentLoader.load(segment, requestPath, scopeName, sessionId);
 		}
 	}
 
 	private void handleChildren(final PageSegment segment, final String requestPath, final String sessionId) throws ContentException {
-		System.out.println("####### - CHILDREN of " + segment.getDomId());
 		for (final PageSegment childSegment : this.childrenAndContentAccessor.fetchAllChildren(segment)) {
 			this.loadScope(childSegment, requestPath, childSegment.getParentScope() + "." + childSegment.getScope(), sessionId);
 		}

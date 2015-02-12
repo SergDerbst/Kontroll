@@ -32,6 +32,7 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 	private String												content;
 	private ContentType										type;
 	private boolean												preliminary;
+	private boolean												deleted;
 	private List<ScopedContentCondition>	conditions;
 	private String												itemNumber;
 	private ContentChildrenOrder					contentChildrenOrder;
@@ -129,6 +130,14 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 
 	public void setPreliminary(final boolean preliminary) {
 		this.preliminary = preliminary;
+	}
+
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(final boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public List<ScopedContentCondition> getConditions() {

@@ -31,9 +31,8 @@ public class ScopedContentService {
 	}
 
 	//TODO caching
-	public ScopedContent loadValidContent(final Scope scope, final ContentLoadingContext context) {
-		final List<ScopedContent> content = this.load(scope);
-		return content.get(0);
+	public List<ScopedContent> loadValidContent(final Scope scope, final ContentLoadingContext context) {
+		return this.load(scope);
 	}
 
 	//TODO caching

@@ -65,6 +65,20 @@ public @interface HierarchicalSelect {
 	int ordinal();
 
 	/**
+	 * The value name of the master select input element.
+	 *
+	 * @return
+	 */
+	String master();
+
+	/**
+	 * The value name of the slave select input element.
+	 *
+	 * @return
+	 */
+	String slave();
+
+	/**
 	 * Whether or not the input element is readonly. Defaults to false.
 	 *
 	 * @return

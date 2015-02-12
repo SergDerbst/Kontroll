@@ -1,5 +1,6 @@
 package com.tmt.kontroll.content.persistence.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 import com.tmt.kontroll.security.persistence.entities.UserAccount;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_item", columnNames = {"content", "itemnumber"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_item_state", columnNames = {"content", "itemnumber", "preliminary", "deleted"})})
 public class ScopedContentItem extends BaseEntity implements Comparable<ScopedContentItem> {
 
 	@Column(columnDefinition = "varChar(12) default 'div'")
@@ -43,6 +44,9 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 
 	@Column(nullable = false)
 	private boolean												preliminary;
+
+	@Column(nullable = false)
+	private boolean												deleted;
 
 	@ManyToOne
 	private UserAccount										lastEdited;
@@ -103,6 +107,14 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 
 	public void setPreliminary(final boolean preliminary) {
 		this.preliminary = preliminary;
+	}
+
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(final boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public UserAccount getLastEdited() {
@@ -169,14 +181,13 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 		equals.append(this.conditions, other.conditions);
 		equals.append(this.content, other.content);
 		equals.append(this.css, other.css);
+		equals.append(this.deleted, other.deleted);
 		equals.append(this.itemNumber, other.itemNumber);
 		equals.append(this.lastEdited, other.lastEdited);
 		equals.append(this.preliminary, other.preliminary);
-		equals.append(this.scopedContents, other.scopedContents);
 		equals.append(this.tag, other.tag);
 		equals.append(this.type, other.type);
 		equals.append(this.childItems, other.childItems);
-		equals.append(this.parentItems, other.parentItems);
 		return equals.build();
 	}
 
@@ -186,14 +197,13 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 		hashCode.append(this.conditions);
 		hashCode.append(this.content);
 		hashCode.append(this.css);
+		hashCode.append(this.deleted);
 		hashCode.append(this.itemNumber);
 		hashCode.append(this.lastEdited);
 		hashCode.append(this.preliminary);
-		hashCode.append(this.scopedContents);
 		hashCode.append(this.tag);
 		hashCode.append(this.type);
 		hashCode.append(this.childItems);
-		hashCode.append(this.parentItems);
 		return hashCode.build();
 	}
 
@@ -206,6 +216,8 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 		if (itemNumberComparison != 0) {
 			return itemNumberComparison;
 		}
+		this.conditions = this.conditions != null ? this.conditions : new ArrayList<>();
+		other.conditions = other.conditions != null ? other.conditions : new ArrayList<>();
 		final int numberOfConditionsComparison = this.conditions.size() - other.conditions.size();
 		if (numberOfConditionsComparison != 0) {
 			return numberOfConditionsComparison;

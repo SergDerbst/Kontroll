@@ -27,10 +27,10 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 public class HierarchicalSelectConfigurator extends ChildElementConfigurator {
 
 	@Autowired
-	CssConfigurationHandler		cssHandler;
+	CssConfigurationHandler	cssHandler;
 
 	@Autowired
-	LabelCreator	labelCreator;
+	LabelCreator						labelCreator;
 
 	public HierarchicalSelectConfigurator() {
 		super(HierarchicalSelect.class);
@@ -62,11 +62,12 @@ public class HierarchicalSelectConfigurator extends ChildElementConfigurator {
 	private PageSegment createMaster(final HierarchicalSelect config, final PageSegment container, final PageSegment segment) {
 		final PageSegment master = new PageSegment(HtmlTag.Select) {};
 		master.setParentScope(container.getDomId());
-		master.setScope("master");
+		master.setScope(config.master());
+		master.getAttributes().put("name", config.master());
 		master.getConfigOptions().put("hierarchical", "master");
 		this.cssHandler.handle(master);
 		final PageEvent selectEvent = new PageEvent(EventType.Change, new String[] {"masterSelect"});
-		selectEvent.getArguments().put("targetScope", container.getDomId() + ".slave");
+		selectEvent.getArguments().put("targetScope", container.getDomId() + "." + config.slave());
 		selectEvent.getArguments().put("optionsMapScope", segment.getDomId());
 		master.getGeneralEvents().put(EventType.Change, selectEvent);
 		return master;
@@ -75,7 +76,8 @@ public class HierarchicalSelectConfigurator extends ChildElementConfigurator {
 	private PageSegment createSlave(final HierarchicalSelect config, final PageSegment container) {
 		final PageSegment slave = new PageSegment(HtmlTag.Select) {};
 		slave.setParentScope(container.getDomId());
-		slave.setScope("slave");
+		slave.setScope(config.slave());
+		slave.getAttributes().put("name", config.slave());
 		slave.getConfigOptions().put("hierarchical", "slave");
 		this.cssHandler.handle(slave);
 		return slave;

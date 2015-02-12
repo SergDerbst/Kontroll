@@ -31,16 +31,18 @@ public class ScopedContentItemService {
 	@Autowired
 	ScopedContentService				scopedContentService;
 
-	public Set<ScopedContentItem> fetchValidItems(final ScopedContent scopedContent, final ContentLoadingContext context) {
+	public Set<ScopedContentItem> fetchValidItems(final List<ScopedContent> scopedContents, final ContentLoadingContext context) {
 		final Set<ScopedContentItem> contentItems = new TreeSet<>(new ScopedContentItemComparator());
-		for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
-			final List<ScopedContentCondition> conditions = contentItem.getConditions();
-			if (conditions.isEmpty()) {
-				contentItems.add(contentItem);
-			} else {
-				for (final ScopedContentCondition condition : conditions) {
-					if (this.verifier.verify(condition, context)) {
-						contentItems.add(contentItem);
+		for (final ScopedContent scopedContent : scopedContents) {
+			for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
+				final List<ScopedContentCondition> conditions = contentItem.getConditions();
+				if (conditions.isEmpty()) {
+					contentItems.add(contentItem);
+				} else {
+					for (final ScopedContentCondition condition : conditions) {
+						if (this.verifier.verify(condition, context)) {
+							contentItems.add(contentItem);
+						}
 					}
 				}
 			}

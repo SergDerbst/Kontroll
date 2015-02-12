@@ -18,8 +18,20 @@ public class ScopedContentItemComparator implements Comparator<ScopedContentItem
 	public int compare(final ScopedContentItem i1, final ScopedContentItem i2) {
 		final int itemNumberCompared = i1.getItemNumber().compareTo(i2.getItemNumber());
 		if (itemNumberCompared != 0) {
-			return i1.getContent().compareTo(i2.getContent());
+			return itemNumberCompared;
 		}
-		return itemNumberCompared;
+		final int contentCompared = i1.getContent().compareTo(i2.getContent());
+		if (contentCompared != 0) {
+			return contentCompared;
+		}
+		final int preliminaryCompared = Boolean.compare(i1.isPreliminary(), i2.isPreliminary());
+		if (preliminaryCompared != 0) {
+			return preliminaryCompared;
+		}
+		final int deletedCompared = Boolean.compare(i1.isDeleted(), i2.isDeleted());
+		if (deletedCompared != 0) {
+			return deletedCompared;
+		}
+		return i1.hashCode() - i2.hashCode();
 	}
 }

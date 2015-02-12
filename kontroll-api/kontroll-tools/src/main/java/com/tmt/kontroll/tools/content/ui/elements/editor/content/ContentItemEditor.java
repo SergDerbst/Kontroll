@@ -20,7 +20,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 
 @Hidden
 @PageConfig(contexts = {@PageContext(scope = "page.contentEditor.form.contentItemEditor", ordinal = 1)})
-@HierarchicalSelect(ordinal = 0, position = ChildPosition.Top, name = "type")
+@HierarchicalSelect(ordinal = 0, position = ChildPosition.Top, name = "type", master = "type", slave = "tag")
 @Input(ordinal = 1, position = ChildPosition.Top, name = "cssClass", type = "text", label = @Label(value = @ValueSource(type = ValueSourceType.Caption)))
 @Textarea(ordinal = 2, position = ChildPosition.Top, name = "content", valueSource = @ValueSource(type = ValueSourceType.Custom))
 @Button(ordinal = 3, position = ChildPosition.Bottom, name = "manageConditions")

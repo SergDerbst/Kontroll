@@ -82,7 +82,6 @@ public class ScopedContent extends BaseEntity {
 		final EqualsBuilder equals = new EqualsBuilder();
 		equals.append(this.description, other.description);
 		equals.append(this.name, other.name);
-		equals.append(this.scope, other.scope);
 		equals.append(this.scopedContentItems, other.scopedContentItems);
 		return equals.build();
 	}
@@ -92,7 +91,6 @@ public class ScopedContent extends BaseEntity {
 		final HashCodeBuilder hashCode = new HashCodeBuilder(17, 37);
 		hashCode.append(this.description);
 		hashCode.append(this.name);
-		hashCode.append(this.scope);
 		hashCode.append(this.scopedContentItems);
 		return hashCode.build();
 	}

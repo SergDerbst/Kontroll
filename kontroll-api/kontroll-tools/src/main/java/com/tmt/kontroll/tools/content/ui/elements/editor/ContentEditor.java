@@ -12,6 +12,4 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 @Modal
 @Anchor(ordinal = 0, position = ChildPosition.Top, name = "close", href = "#close", title = "Close")
 @Header(ordinal = 1, position = ChildPosition.Top, name = "dialogHeader", level = 2)
-public class ContentEditor extends PageSegment {
-
-}
+public class ContentEditor extends PageSegment {}
