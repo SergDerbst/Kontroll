@@ -1,6 +1,6 @@
 package com.tmt.kontroll.content.exceptions;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentLoadingContext;
 
 public class TooMuchContentFoundException extends ContentException {
 

@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentLoadingContext;
 import com.tmt.kontroll.test.ExceptionTest;
 
 public class TooMuchContentFoundExceptionTest extends ExceptionTest {

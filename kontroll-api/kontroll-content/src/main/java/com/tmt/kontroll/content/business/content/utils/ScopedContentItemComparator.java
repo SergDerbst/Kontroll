@@ -20,9 +20,9 @@ public class ScopedContentItemComparator implements Comparator<ScopedContentItem
 		if (itemNumberCompared != 0) {
 			return itemNumberCompared;
 		}
-		final int contentCompared = i1.getContent().compareTo(i2.getContent());
-		if (contentCompared != 0) {
-			return contentCompared;
+		final int conditionCompared = this.compareConditions(i1, i2);
+		if (conditionCompared != 0) {
+			return conditionCompared;
 		}
 		final int preliminaryCompared = Boolean.compare(i1.isPreliminary(), i2.isPreliminary());
 		if (preliminaryCompared != 0) {
@@ -32,6 +32,22 @@ public class ScopedContentItemComparator implements Comparator<ScopedContentItem
 		if (deletedCompared != 0) {
 			return deletedCompared;
 		}
+		final int contentCompared = i1.getContent().compareTo(i2.getContent());
+		if (contentCompared != 0) {
+			return contentCompared;
+		}
 		return i1.hashCode() - i2.hashCode();
+	}
+
+	private int compareConditions(final ScopedContentItem i1, final ScopedContentItem i2) {
+		if (i1.getCondition() == null && i2.getCondition() == null) {
+			return 0;
+		} else if (i1.getCondition() == null) {
+			return 1;
+		} else if (i2.getCondition() == null) {
+			return -1;
+		} else {
+			return i1.getCondition().hashCode() - i2.getCondition().hashCode();
+		}
 	}
 }

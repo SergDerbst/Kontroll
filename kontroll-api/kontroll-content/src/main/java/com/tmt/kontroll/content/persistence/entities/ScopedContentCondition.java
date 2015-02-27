@@ -32,8 +32,7 @@ public class ScopedContentCondition extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ConditionalOperator										operator;
 
-	@ManyToMany
-	@JoinTable(name = "ScopedContentConditions_ScopedContentItem", joinColumns = @JoinColumn(name = "scoped_content_condition_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "scoped_content_item_id", referencedColumnName = "id"), uniqueConstraints = {@UniqueConstraint(name = "unique_scope_item", columnNames = {"scoped_content_condition_id", "scoped_content_item_id"})})
+	@OneToMany(mappedBy = "condition")
 	private List<ScopedContentItem>								scopedContentItems;
 
 	@OneToMany(mappedBy = "scopedContentCondition")

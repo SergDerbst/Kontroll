@@ -7,12 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.content.business.content.ScopeService;
 import com.tmt.kontroll.content.business.content.ScopedContentItemService;
-import com.tmt.kontroll.content.business.content.ScopedContentService;
 import com.tmt.kontroll.content.persistence.entities.Scope;
-import com.tmt.kontroll.content.persistence.entities.ScopedContent;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 import com.tmt.kontroll.content.persistence.selections.ContentType;
-import com.tmt.kontroll.tools.content.data.ContentEditorDataLoadingDto;
+import com.tmt.kontroll.tools.content.data.ContentEditorInitDto;
 import com.tmt.kontroll.tools.content.ui.elements.ContentEditorToggle;
 import com.tmt.kontroll.ui.page.configuration.PageSegmentConfigurator;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;
@@ -43,9 +41,6 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 
 	@Autowired
 	ScopeService													scopeService;
-
-	@Autowired
-	ScopedContentService									scopedContentService;
 
 	@Autowired
 	ScopedContentItemService							scopedContentItemService;
@@ -79,11 +74,13 @@ public class ContentConfigurator extends PageSegmentConfigurator {
 		final PageEvent event = new PageEvent(EventType.Click, new String[] {"prepareContentEditor", "toggleVisibility"});
 		event.getArguments().put("targetScope", "page.contentEditor");
 		event.getArguments().put("scope", segment.getDomId());
-		event.getArguments().put("dtoClass", ContentEditorDataLoadingDto.class.getName());
+		event.getArguments().put("dtoClass", ContentEditorInitDto.class.getName());
 		return event;
 	}
 
 	private void createScopeWithInitialContent(final String scopeName, final String pattern, final Content content) {
-		this.scopedContentItemService.init(this.scopedContentService.init(this.scopeService.init(scopeName, pattern)), content.content(), content.type());
+		final Scope scope = this.scopeService.init(scopeName, pattern);
+		scope.setScopedContentItems(this.scopedContentItemService.init(scope, content.content(), content.type()));
+		this.scopeService.write(scope);
 	}
 }

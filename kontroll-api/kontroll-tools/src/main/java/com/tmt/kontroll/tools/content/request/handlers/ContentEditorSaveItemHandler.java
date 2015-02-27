@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tmt.kontroll.content.business.content.ContentService;
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
-import com.tmt.kontroll.content.business.content.data.ContentSavingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentSavingContext;
 import com.tmt.kontroll.context.annotations.RequestData;
 import com.tmt.kontroll.context.annotations.RequestHandler;
 import com.tmt.kontroll.context.global.GlobalContext;
@@ -18,7 +18,7 @@ import com.tmt.kontroll.ui.page.segments.PageSegment;
 import com.tmt.kontroll.ui.page.segments.PageSegmentChildrenAndContentAccessor;
 import com.tmt.kontroll.ui.page.segments.PageSegmentHolder;
 
-@RequestHandler(patterns = {"/content/editor/save"}, handling = RequestHandling.Always, postHandling = {ContentEditorDataLoadingHandler.class})
+@RequestHandler(patterns = {"/content/editor/save"}, handling = RequestHandling.Always, postHandling = {ContentEditorInitHandler.class})
 @RequestData(ContentEditorDto.class)
 public class ContentEditorSaveItemHandler implements RequestHandlingService {
 

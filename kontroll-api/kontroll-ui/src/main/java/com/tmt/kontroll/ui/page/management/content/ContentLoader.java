@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.content.business.content.ContentService;
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentLoadingContext;
 import com.tmt.kontroll.context.global.GlobalContext;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Caption;
 import com.tmt.kontroll.ui.page.configuration.annotations.content.Content;

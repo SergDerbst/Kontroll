@@ -1,13 +1,11 @@
 package com.tmt.kontroll.content.persistence.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -17,7 +15,6 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.IndexColumn;
 
 import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.context.ui.HtmlTag;
@@ -26,48 +23,47 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 import com.tmt.kontroll.security.persistence.entities.UserAccount;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_item_state", columnNames = {"content", "itemnumber", "preliminary", "deleted"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_item_state", columnNames = {"content", "condition", "itemnumber", "preliminary", "deleted"})})
 public class ScopedContentItem extends BaseEntity implements Comparable<ScopedContentItem> {
+
+	@Column(nullable = false, length = DatabaseDefinitions.String_Small)
+	private String									itemNumber;
 
 	@Column(columnDefinition = "varChar(12) default 'div'")
 	@Enumerated(EnumType.STRING)
-	private HtmlTag												tag;
-
-	@Column(length = DatabaseDefinitions.String_MediumSmall)
-	private String												css;
+	private HtmlTag									tag;
 
 	@Column(nullable = false, length = DatabaseDefinitions.String_XLarge)
-	private String												content;
+	private String									content;
+
+	@Column(length = DatabaseDefinitions.String_MediumSmall)
+	private String									css;
 
 	@Enumerated(EnumType.STRING)
-	private ContentType										type;
+	private ContentType							type;
 
 	@Column(nullable = false)
-	private boolean												preliminary;
+	private boolean									preliminary;
 
 	@Column(nullable = false)
-	private boolean												deleted;
+	private boolean									deleted;
 
 	@ManyToOne
-	private UserAccount										lastEdited;
+	private UserAccount							lastEdited;
 
-	@Column(nullable = false, length = DatabaseDefinitions.String_Small)
-	private String												itemNumber;
+	@ManyToMany(mappedBy = "scopedContentItems")
+	private Set<Scope>							scopes;
 
-	@ManyToMany(mappedBy = "scopedContentItems", fetch = FetchType.EAGER)
-	@IndexColumn(name = "id")
-	private List<ScopedContentCondition>	conditions;
-
-	@ManyToMany(mappedBy = "scopedContentItems", fetch = FetchType.EAGER)
-	@IndexColumn(name = "id")
-	private List<ScopedContent>						scopedContents;
+	@ManyToOne
+	@JoinColumn(name = "condition")
+	private ScopedContentCondition	condition;
 
 	@ManyToMany
 	@JoinTable(name = "NestedScopedContentItems", joinColumns = @JoinColumn(name = "parent_item_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "child_item_id", referencedColumnName = "id"), uniqueConstraints = {@UniqueConstraint(name = "unique_item_nesting", columnNames = {"parent_item_id", "child_item_id"})})
-	private List<ScopedContentItem>				parentItems;
+	private Set<ScopedContentItem>	parentItems;
 
 	@ManyToMany(mappedBy = "parentItems")
-	private List<ScopedContentItem>				childItems;
+	private Set<ScopedContentItem>	childItems;
 
 	public HtmlTag getTag() {
 		return this.tag;
@@ -133,35 +129,35 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 		this.itemNumber = itemNumber;
 	}
 
-	public List<ScopedContentCondition> getConditions() {
-		return this.conditions;
+	public Set<Scope> getScopes() {
+		return this.scopes;
 	}
 
-	public void setConditions(final List<ScopedContentCondition> conditions) {
-		this.conditions = conditions;
+	public void setScopes(final Set<Scope> scopes) {
+		this.scopes = scopes;
 	}
 
-	public List<ScopedContent> getScopedContents() {
-		return this.scopedContents;
+	public ScopedContentCondition getCondition() {
+		return this.condition;
 	}
 
-	public void setScopedContents(final List<ScopedContent> scopedContents) {
-		this.scopedContents = scopedContents;
+	public void setCondition(final ScopedContentCondition condition) {
+		this.condition = condition;
 	}
 
-	public List<ScopedContentItem> getParentItems() {
+	public Set<ScopedContentItem> getParentItems() {
 		return this.parentItems;
 	}
 
-	public void setParentItems(final List<ScopedContentItem> parentItems) {
+	public void setParentItems(final Set<ScopedContentItem> parentItems) {
 		this.parentItems = parentItems;
 	}
 
-	public List<ScopedContentItem> getChildItems() {
+	public Set<ScopedContentItem> getChildItems() {
 		return this.childItems;
 	}
 
-	public void setChildItems(final List<ScopedContentItem> childItems) {
+	public void setChildItems(final Set<ScopedContentItem> childItems) {
 		this.childItems = childItems;
 	}
 
@@ -178,7 +174,7 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 		}
 		final ScopedContentItem other = (ScopedContentItem) o;
 		final EqualsBuilder equals = new EqualsBuilder();
-		equals.append(this.conditions, other.conditions);
+		equals.append(this.condition, other.condition);
 		equals.append(this.content, other.content);
 		equals.append(this.css, other.css);
 		equals.append(this.deleted, other.deleted);
@@ -194,7 +190,7 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 	@Override
 	public int hashCode() {
 		final HashCodeBuilder hashCode = new HashCodeBuilder(17, 37);
-		hashCode.append(this.conditions);
+		hashCode.append(this.condition);
 		hashCode.append(this.content);
 		hashCode.append(this.css);
 		hashCode.append(this.deleted);
@@ -216,11 +212,9 @@ public class ScopedContentItem extends BaseEntity implements Comparable<ScopedCo
 		if (itemNumberComparison != 0) {
 			return itemNumberComparison;
 		}
-		this.conditions = this.conditions != null ? this.conditions : new ArrayList<>();
-		other.conditions = other.conditions != null ? other.conditions : new ArrayList<>();
-		final int numberOfConditionsComparison = this.conditions.size() - other.conditions.size();
-		if (numberOfConditionsComparison != 0) {
-			return numberOfConditionsComparison;
+		final int conditionComparison = this.condition.hashCode() - other.condition.hashCode();
+		if (conditionComparison != 0) {
+			return conditionComparison;
 		}
 		return this.hashCode() - other.hashCode();
 	}

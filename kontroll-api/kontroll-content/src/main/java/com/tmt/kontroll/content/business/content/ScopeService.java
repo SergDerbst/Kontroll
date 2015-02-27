@@ -1,5 +1,6 @@
 package com.tmt.kontroll.content.business.content;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class ScopeService {
 	ScopeDaoService	scopeDaoService;
 
 	//TODO caching
-	public Scope load(final String scopeName, final Pattern pattern) {
-		return this.scopeDaoService.findByNameAndRequestPattern(scopeName, pattern.pattern());
+	public List<Scope> loadAll(final String scopeName) {
+		return this.scopeDaoService.findAllByName(scopeName);
 	}
 
 	//TODO caching

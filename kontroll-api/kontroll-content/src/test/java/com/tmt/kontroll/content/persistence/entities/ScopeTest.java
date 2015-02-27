@@ -1,8 +1,8 @@
 package com.tmt.kontroll.content.persistence.entities;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 
@@ -17,6 +17,6 @@ public class ScopeTest extends ObjectDataTest<Scope> {
 	@Before
 	public void setUp() throws Exception {
 		this.getFieldByTypeReferenceMap().put(Timestamp.class, new Timestamp(System.currentTimeMillis()));
-		this.getFieldByTypeReferenceMap().put(List.class, new ArrayList<ScopedContent>());
+		this.getFieldByTypeReferenceMap().put(Set.class, new HashSet<ScopedContentItem>());
 	}
 }

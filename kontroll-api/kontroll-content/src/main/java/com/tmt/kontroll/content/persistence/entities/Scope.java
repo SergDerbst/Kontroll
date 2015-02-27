@@ -1,11 +1,12 @@
 package com.tmt.kontroll.content.persistence.entities;
 
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -20,16 +21,17 @@ import com.tmt.kontroll.persistence.utils.DatabaseDefinitions;
 public class Scope extends BaseEntity {
 
 	@Column(nullable = false)
-	private String							name;
+	private String									name;
 
 	@Column(length = DatabaseDefinitions.String_Large)
-	private String							description;
+	private String									description;
 
-	@OneToMany(cascade = CascadeType.DETACH, mappedBy = "scope")
-	private List<ScopedContent>	scopedContents;
+	@ManyToMany
+	@JoinTable(name = "Scope_ScopeContentItems", joinColumns = @JoinColumn(name = "scope_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "scope_content_item_id", referencedColumnName = "id"))
+	private Set<ScopedContentItem>	scopedContentItems;
 
 	@Column(nullable = false)
-	private String							requestPattern;
+	private String									requestPattern;
 
 	public String getName() {
 		return this.name;
@@ -47,12 +49,12 @@ public class Scope extends BaseEntity {
 		this.description = description;
 	}
 
-	public List<ScopedContent> getScopedContents() {
-		return this.scopedContents;
+	public Set<ScopedContentItem> getScopedContentItems() {
+		return this.scopedContentItems;
 	}
 
-	public void setScopedContents(final List<ScopedContent> scopedContents) {
-		this.scopedContents = scopedContents;
+	public void setScopedContentItems(final Set<ScopedContentItem> scopedContentItems) {
+		this.scopedContentItems = scopedContentItems;
 	}
 
 	public String getRequestPattern() {
@@ -79,7 +81,7 @@ public class Scope extends BaseEntity {
 		equals.append(this.description, other.description);
 		equals.append(this.name, other.name);
 		equals.append(this.requestPattern, other.requestPattern);
-		equals.append(this.scopedContents, other.scopedContents);
+		equals.append(this.scopedContentItems, other.scopedContentItems);
 		return equals.build();
 	}
 
@@ -89,7 +91,7 @@ public class Scope extends BaseEntity {
 		hashCode.append(this.description);
 		hashCode.append(this.name);
 		hashCode.append(this.requestPattern);
-		hashCode.append(this.scopedContents);
+		hashCode.append(this.scopedContentItems);
 		return hashCode.build();
 	}
 }

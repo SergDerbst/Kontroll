@@ -1,17 +1,16 @@
 package com.tmt.kontroll.content.business.content;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentLoadingContext;
 import com.tmt.kontroll.content.business.content.utils.ScopedContentItemComparator;
-import com.tmt.kontroll.content.persistence.entities.ScopedContent;
-import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
+import com.tmt.kontroll.content.persistence.entities.Scope;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentItem;
 import com.tmt.kontroll.content.persistence.selections.ContentType;
 import com.tmt.kontroll.content.persistence.services.ScopedContentItemDaoService;
@@ -20,6 +19,7 @@ import com.tmt.kontroll.persistence.exceptions.EntityNotFoundInDatabaseException
 import com.tmt.kontroll.security.persistence.services.UserAccountDaoService;
 
 @Service
+@Transactional
 public class ScopedContentItemService {
 
 	@Autowired
@@ -28,51 +28,36 @@ public class ScopedContentItemService {
 	UserAccountDaoService				userService;
 	@Autowired
 	ScopedContentItemDaoService	scopedContentItemDaoService;
-	@Autowired
-	ScopedContentService				scopedContentService;
 
-	public Set<ScopedContentItem> fetchValidItems(final List<ScopedContent> scopedContents, final ContentLoadingContext context) {
+	public Set<ScopedContentItem> fetchValidItems(final Scope scope, final ContentLoadingContext context) {
 		final Set<ScopedContentItem> contentItems = new TreeSet<>(new ScopedContentItemComparator());
-		for (final ScopedContent scopedContent : scopedContents) {
-			for (final ScopedContentItem contentItem : scopedContent.getScopedContentItems()) {
-				final List<ScopedContentCondition> conditions = contentItem.getConditions();
-				if (conditions.isEmpty()) {
-					contentItems.add(contentItem);
-				} else {
-					for (final ScopedContentCondition condition : conditions) {
-						if (this.verifier.verify(condition, context)) {
-							contentItems.add(contentItem);
-						}
-					}
-				}
+		for (final ScopedContentItem contentItem : scope.getScopedContentItems()) {
+			if (contentItem.getCondition() == null || this.verifier.verify(contentItem.getCondition(), context)) {
+				contentItems.add(contentItem);
 			}
 		}
 		return contentItems;
 	}
 
-	public ScopedContentItem init(final ScopedContent scopedContent, final String content, final ContentType type) {
-		final String contentValue = content.isEmpty() ? scopedContent.getScope().getName() : content;
-		final List<ScopedContent> scopedContents = new ArrayList<>();
-		final List<ScopedContentItem> scopedContentItems = new ArrayList<>();
+	public Set<ScopedContentItem> init(final Scope scope, final String content, final ContentType type) {
+		final String contentValue = content.isEmpty() ? scope.getName() : content;
+		final Set<ScopedContentItem> scopedContentItems = new HashSet<>();
 		ScopedContentItem item = new ScopedContentItem();
-		scopedContents.add(scopedContent);
-		scopedContentItems.add(item);
 		item.setContent(contentValue);
 		item.setType(type);
-		item.setScopedContents(scopedContents);
+		item.setScopes(new HashSet<Scope>() {
+			private static final long	serialVersionUID	= 1L;
+			{
+				this.add(scope);
+			}
+		});
 		item.setItemNumber("0");
 		item.setPreliminary(false);
 		item.setLastEdited(this.userService.findByName("Kontroll"));
 		final ScopedContentItem contentItem = this.scopedContentItemDaoService.findByContentAndItemNumber(item.getContent(), item.getItemNumber());
-		if (contentItem == null) {
-			item = this.scopedContentItemDaoService.create(item);
-		} else {
-			item.setId(contentItem.getId());
-			item = this.scopedContentItemDaoService.update(contentItem);
-		}
-		scopedContent.setScopedContentItems(scopedContentItems);
-		this.scopedContentService.write(scopedContent);
-		return item;
+		item = contentItem == null ? this.scopedContentItemDaoService.create(item) : contentItem;
+		scopedContentItems.add(item);
+		return scopedContentItems;
 	}
 
 	public void delete(final ScopedContentItem item) {

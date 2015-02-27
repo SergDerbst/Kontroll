@@ -3,7 +3,7 @@ package com.tmt.kontroll.content.verification.conditions.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tmt.kontroll.content.business.content.data.ContentLoadingContext;
+import com.tmt.kontroll.content.business.content.data.in.ContentLoadingContext;
 import com.tmt.kontroll.content.persistence.entities.ScopedContentCondition;
 import com.tmt.kontroll.content.verification.conditions.ConditionVerifier;
 import com.tmt.kontroll.content.verification.conditions.attributes.ConditionAttributeVerificationChain;

@@ -6,7 +6,6 @@ import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.ret
 import static com.tmt.kontroll.commons.utils.reflection.ClassReflectionUtils.updateField;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,7 +27,7 @@ public class ContentParser {
 		final Set<ContentItem> parsed = new TreeSet<>();
 		for (final ScopedContentItem item : items) {
 			final ContentItem contentItem = this.provider.provide(item);
-			contentItem.setConditions(item.getConditions());
+			contentItem.setCondition(item.getCondition());
 			contentItem.setContent(item.getContent());
 			contentItem.setCss(item.getCss());
 			contentItem.setDbId(item.getId());
@@ -43,7 +42,7 @@ public class ContentParser {
 		return parsed;
 	}
 
-	private void parseChildren(final String parentId, final List<ScopedContentItem> list) {
+	private void parseChildren(final String parentId, final Set<ScopedContentItem> list) {
 		if (list != null) {
 			final Set<ScopedContentItem> items = new TreeSet<>();
 			items.addAll(list);

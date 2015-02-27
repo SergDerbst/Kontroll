@@ -1,7 +1,6 @@
 package com.tmt.kontroll.content;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,19 +25,19 @@ import com.tmt.kontroll.context.ui.HtmlTag;
 @JsonInclude(Include.NON_EMPTY)
 public class ContentItem implements DomElement, Comparable<ContentItem> {
 
-	private Integer												dbId;
-	private String												domId;
-	private String												css;
-	private String												content;
-	private ContentType										type;
-	private boolean												preliminary;
-	private boolean												deleted;
-	private List<ScopedContentCondition>	conditions;
-	private String												itemNumber;
-	private ContentChildrenOrder					contentChildrenOrder;
-	private final Set<ContentItem>				children		= new TreeSet<>();
-	private final Map<String, String>			attributes	= new HashMap<>();
-	private final HtmlTag									tag;
+	private Integer										dbId;
+	private String										domId;
+	private String										css;
+	private String										content;
+	private ContentType								type;
+	private boolean										preliminary;
+	private boolean										deleted;
+	private ScopedContentCondition		condition;
+	private String										itemNumber;
+	private ContentChildrenOrder			contentChildrenOrder;
+	private final Set<ContentItem>		children		= new TreeSet<>();
+	private final Map<String, String>	attributes	= new HashMap<>();
+	private final HtmlTag							tag;
 
 	public ContentItem() {
 		this.tag = HtmlTag.Div;
@@ -96,6 +95,14 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 		this.content = content;
 	}
 
+	public ScopedContentCondition getCondition() {
+		return this.condition;
+	}
+
+	public void setCondition(final ScopedContentCondition condition) {
+		this.condition = condition;
+	}
+
 	public ContentChildrenOrder getContentChildrenOrder() {
 		return this.contentChildrenOrder;
 	}
@@ -140,14 +147,6 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 		this.deleted = deleted;
 	}
 
-	public List<ScopedContentCondition> getConditions() {
-		return this.conditions;
-	}
-
-	public void setConditions(final List<ScopedContentCondition> conditions) {
-		this.conditions = conditions;
-	}
-
 	@Override
 	public boolean equals(final Object o) {
 		if (o == null) {
@@ -161,7 +160,7 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 		}
 		final ContentItem other = (ContentItem) o;
 		final EqualsBuilder equals = new EqualsBuilder();
-		equals.append(this.conditions, other.conditions);
+		equals.append(this.condition, other.condition);
 		equals.append(this.content, other.content);
 		equals.append(this.css, other.css);
 		equals.append(this.itemNumber, other.itemNumber);
@@ -174,7 +173,7 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 	@Override
 	public int hashCode() {
 		final HashCodeBuilder hashCode = new HashCodeBuilder(17, 37);
-		hashCode.append(this.conditions);
+		hashCode.append(this.condition);
 		hashCode.append(this.content);
 		hashCode.append(this.css);
 		hashCode.append(this.itemNumber);
@@ -193,9 +192,9 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 		if (itemNumberComparison != 0) {
 			return itemNumberComparison;
 		}
-		final int numberOfConditionsComparison = this.conditions.size() - other.conditions.size();
-		if (numberOfConditionsComparison != 0) {
-			return numberOfConditionsComparison;
+		final int conditionComparison = this.condition.hashCode() - other.condition.hashCode();
+		if (conditionComparison != 0) {
+			return conditionComparison;
 		}
 		return this.hashCode() - other.hashCode();
 	}

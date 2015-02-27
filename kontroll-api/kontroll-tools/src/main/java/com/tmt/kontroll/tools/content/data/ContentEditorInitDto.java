@@ -2,7 +2,7 @@ package com.tmt.kontroll.tools.content.data;
 
 import com.tmt.kontroll.context.request.data.json.DataTransferElement;
 
-public class ContentEditorDataLoadingDto implements DataTransferElement {
+public class ContentEditorInitDto implements DataTransferElement {
 
 	private String	currentPath;
 	private String	scope;

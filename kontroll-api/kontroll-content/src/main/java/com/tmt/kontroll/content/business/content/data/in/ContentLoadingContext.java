@@ -1,4 +1,4 @@
-package com.tmt.kontroll.content.business.content.data;
+package com.tmt.kontroll.content.business.content.data.in;
 
 import java.util.Set;
 import java.util.regex.Pattern;
