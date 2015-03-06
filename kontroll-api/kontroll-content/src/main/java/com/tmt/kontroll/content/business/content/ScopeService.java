@@ -38,6 +38,11 @@ public class ScopeService {
 	}
 
 	//TODO caching
+	public Scope findById(final int dbId) {
+		return this.scopeDaoService.readById(dbId);
+	}
+
+	//TODO caching
 	public Scope init(final String scopeName, final String pattern) {
 		Scope scope = this.scopeDaoService.findByNameAndRequestPattern(scopeName, pattern);
 		if (scope == null) {

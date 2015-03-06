@@ -39,6 +39,10 @@ public class ScopedContentItemService {
 		return contentItems;
 	}
 
+	public ScopedContentItem findById(final int dbId) {
+		return this.scopedContentItemDaoService.readById(dbId);
+	}
+
 	public Set<ScopedContentItem> init(final Scope scope, final String content, final ContentType type) {
 		final String contentValue = content.isEmpty() ? scope.getName() : content;
 		final Set<ScopedContentItem> scopedContentItems = new HashSet<>();

@@ -9,4 +9,8 @@ public class NoScopeFoundException extends ContentException {
 	public static NoScopeFoundException prepare(final String scopeName, final String requestPath, final Pattern pattern) {
 		return (NoScopeFoundException) new NoScopeFoundException().addContextValue("scopeName", scopeName).addContextValue("requestPath", requestPath).addContextValue("pattern", pattern.pattern());
 	}
+
+	public static NoScopeFoundException prepare(final String scopeName, final String pattern) {
+		return (NoScopeFoundException) new NoScopeFoundException().addContextValue("scopeName", scopeName).addContextValue("pattern", pattern);
+	}
 }

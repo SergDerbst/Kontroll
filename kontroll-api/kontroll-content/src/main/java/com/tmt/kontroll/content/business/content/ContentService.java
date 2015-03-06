@@ -48,6 +48,34 @@ public class ContentService {
 	}
 
 	public Set<ContentItem> saveContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
-		throw new RuntimeException("not implemented yet, Du Arsch!");
+		final Set<Scope> scopes = this.createScopesForSaving(savingContext);
+		final Set<ScopedContentItem> items = this.parseContentForSaving(savingContext, scopes);
+		return this.contentParser.parse(items, savingContext.getScopeName());
+	}
+
+	private Set<ScopedContentItem> parseContentForSaving(final ContentSavingContext savingContext, final Set<Scope> scopes) {
+		final Set<ScopedContentItem> scopedContentItems = new HashSet<>();
+		for (final ContentItem contentItem : savingContext.getContent()) {
+			ScopedContentItem item = contentItem.getDbId() == null ? new ScopedContentItem() : this.scopedContentItemService.findById(contentItem.getDbId());
+			item = this.contentParser.parse(contentItem, item);
+			if (contentItem.getDbId() == null) {
+				item.setScopes(scopes);
+				item = this.scopedContentItemService.add(item);
+			} else {
+				item = this.scopedContentItemService.write(item);
+			}
+			scopedContentItems.add(item);
+		}
+		return scopedContentItems;
+	}
+
+	private Set<Scope> createScopesForSaving(final ContentSavingContext savingContext) {
+		final Scope scope = this.scopeService.load(savingContext.getScopeName(), savingContext.getRequestPattern());
+		if (scope == null) {
+			throw NoScopeFoundException.prepare(savingContext.getScopeName(), savingContext.getRequestPattern());
+		}
+		final Set<Scope> scopes = new HashSet<>();
+		scopes.add(scope);
+		return scopes;
 	}
 }
