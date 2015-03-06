@@ -17,14 +17,14 @@ import com.tmt.kontroll.context.request.data.path.scanning.impl.TerminalProperty
 public class PropertyPathScanningChain {
 
 	@Autowired
-	ClassPropertyPathScanner classPropertyProcessor;
+	ClassPropertyPathScanner			classPropertyProcessor;
 	@Autowired
-	TerminalPropertyPathScanner terminalPropertyProcessor;
+	TerminalPropertyPathScanner		terminalPropertyProcessor;
 	@Autowired
-	CollectionPropertyPathScanner collectionPropertyProcessor;
+	CollectionPropertyPathScanner	collectionPropertyProcessor;
 	@Autowired
-	MapPropertyPathScanner mapPropertyProcessor;
-	
+	MapPropertyPathScanner				mapPropertyProcessor;
+
 	@PostConstruct
 	public void setUpProcessingChain() {
 		this.classPropertyProcessor.setNextProcessor(this.terminalPropertyProcessor);
@@ -32,8 +32,8 @@ public class PropertyPathScanningChain {
 		this.collectionPropertyProcessor.setNextProcessor(this.mapPropertyProcessor);
 		this.mapPropertyProcessor.setNextProcessor(null);
 	}
-	
-	public Set<String> process(final String path, final PropertyDescriptor propertyDescriptor, Class<?> beanClass) throws PropertyPathScanningFailedException {
+
+	public Set<String> process(final String path, final PropertyDescriptor propertyDescriptor, final Class<?> beanClass) throws PropertyPathScanningFailedException {
 		return this.classPropertyProcessor.process(path, propertyDescriptor, beanClass);
 	}
 }

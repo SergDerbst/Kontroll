@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tmt.kontroll.commons.exceptions.ScanFailedException;
+import com.tmt.kontroll.context.annotations.ExcludeFromRequestHandlerScanning;
 import com.tmt.kontroll.context.annotations.RequestData;
 import com.tmt.kontroll.context.request.data.json.DataTransferElement;
 import com.tmt.kontroll.context.request.data.path.scanning.BeanPathScanner;
+import com.tmt.kontroll.context.request.data.path.scanning.PropertyPathScanningHelper;
 import com.tmt.kontroll.context.request.handling.services.RequestHandlingService;
 
 /**
@@ -21,8 +23,8 @@ import com.tmt.kontroll.context.request.handling.services.RequestHandlingService
  * meaning that the property is not another DTO.
  * </br>
  * A property is considered terminal if its type is a member of
- * {@link RequestContextDtoPathScanner#assignablyTerminalTypes} (e.g. Collections or Maps) or
- * {@link RequestContextDtoPathScanner#directlyTerminalTypes} or if it is primitive, an enum,
+ * {@link PropertyPathScanningHelper#assignablyTerminalTypes} (e.g. Collections or Maps) or
+ * {@link PropertyPathScanningHelper#directlyTerminalTypes} or if it is primitive, an enum,
  * an array or an annotation.
  * </p>
  * The paths are returned as strings of property names separated by dots, so that they can
@@ -43,7 +45,9 @@ public class RequestContextDtoPathScanner {
 			final RequestData requestData = service.getClass().getAnnotation(RequestData.class);
 			if (requestData != null) {
 				final Class<? extends DataTransferElement> dtoClass = requestData.value();
-				set = this.beanPathScanner.process(set, StringUtils.uncapitalize(dtoClass.getSimpleName()), dtoClass);
+				if (!dtoClass.isAnnotationPresent(ExcludeFromRequestHandlerScanning.class)) {
+					set = this.beanPathScanner.process(set, StringUtils.uncapitalize(dtoClass.getSimpleName()), dtoClass);
+				}
 			}
 			return set;
 		} catch (final Exception e) {

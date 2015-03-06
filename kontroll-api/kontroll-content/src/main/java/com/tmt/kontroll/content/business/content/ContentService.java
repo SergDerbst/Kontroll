@@ -42,15 +42,15 @@ public class ContentService {
 		final Set<EditedScope> editedScopes = new HashSet<>();
 		final List<Scope> scopes = this.scopeService.loadAll(scopeName);
 		for (final Scope scope : scopes) {
-			editedScopes.add(new EditedScope(scope.getName(), scope.getRequestPattern(), this.contentParser.parse(scope.getScopedContentItems(), scope.getName())));
+			editedScopes.add(new EditedScope(scope.getName(), scope.getRequestPattern(), this.contentParser.parse(scope.getScopedContentItems(), scope.getName()), null));
 		}
 		return editedScopes;
 	}
 
-	public Set<ContentItem> saveContent(final ContentSavingContext savingContext, final ContentLoadingContext loadingContext) {
+	public EditedScope saveContent(final ContentSavingContext savingContext) {
 		final Set<Scope> scopes = this.createScopesForSaving(savingContext);
 		final Set<ScopedContentItem> items = this.parseContentForSaving(savingContext, scopes);
-		return this.contentParser.parse(items, savingContext.getScopeName());
+		return new EditedScope(savingContext.getScopeName(), savingContext.getRequestPattern(), this.contentParser.parse(items, savingContext.getScopeName()), savingContext.getCurrent());
 	}
 
 	private Set<ScopedContentItem> parseContentForSaving(final ContentSavingContext savingContext, final Set<Scope> scopes) {
