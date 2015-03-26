@@ -30,7 +30,7 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 	private String										css;
 	private String										content;
 	private String										scope;
-	private String										requestPattern;
+	private String										pattern;
 	private ContentType								type;
 	private boolean										preliminary;
 	private boolean										deleted;
@@ -105,12 +105,12 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 		this.scope = scope;
 	}
 
-	public String getRequestPattern() {
-		return this.requestPattern;
+	public String getPattern() {
+		return this.pattern;
 	}
 
-	public void setRequestPattern(final String requestPattern) {
-		this.requestPattern = requestPattern;
+	public void setPattern(final String pattern) {
+		this.pattern = pattern;
 	}
 
 	public ScopedContentCondition getCondition() {
