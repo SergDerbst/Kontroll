@@ -210,10 +210,23 @@ public class ContentItem implements DomElement, Comparable<ContentItem> {
 		if (itemNumberComparison != 0) {
 			return itemNumberComparison;
 		}
-		final int conditionComparison = this.condition.hashCode() - other.condition.hashCode();
+		final int conditionComparison = this.compareCondition(other);
 		if (conditionComparison != 0) {
 			return conditionComparison;
 		}
 		return this.hashCode() - other.hashCode();
+	}
+
+	private int compareCondition(final ContentItem other) {
+		if (this.condition == null && other.condition == null) {
+			return 0;
+		}
+		if (this.condition == null && other.condition != null) {
+			return 1;
+		}
+		if (this.condition != null && other.condition == null) {
+			return -1;
+		}
+		return this.condition.hashCode() - other.condition.hashCode();
 	}
 }

@@ -1,7 +1,9 @@
 package com.tmt.kontroll.content.business.content;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,34 +50,43 @@ public class ContentService {
 	}
 
 	public EditedScope saveContent(final ContentSavingContext savingContext) {
-		final Set<Scope> scopes = this.createScopesForSaving(savingContext);
-		final Set<ScopedContentItem> items = this.parseContentForSaving(savingContext, scopes);
-		return new EditedScope(savingContext.getScopeName(), savingContext.getRequestPattern(), this.contentParser.parse(items, savingContext.getScopeName()), savingContext.getCurrent());
-	}
-
-	private Set<ScopedContentItem> parseContentForSaving(final ContentSavingContext savingContext, final Set<Scope> scopes) {
-		final Set<ScopedContentItem> scopedContentItems = new HashSet<>();
+		Scope scope = this.fetchScopeForSaving(savingContext);
+		final Map<Integer, ScopedContentItem> items = this.prepareScopedContentItemMap(scope);
 		for (final ContentItem contentItem : savingContext.getContent()) {
-			ScopedContentItem item = contentItem.getDbId() == null ? new ScopedContentItem() : this.scopedContentItemService.findById(contentItem.getDbId());
-			item = this.contentParser.parse(contentItem, item);
-			if (contentItem.getDbId() == null) {
-				item.setScopes(scopes);
-				item = this.scopedContentItemService.add(item);
-			} else {
-				item = this.scopedContentItemService.write(item);
-			}
-			scopedContentItems.add(item);
+			final ScopedContentItem scopedContentItem = this.handleContentItem(contentItem, scope);
+			items.put(scopedContentItem.getId(), scopedContentItem);
 		}
-		return scopedContentItems;
+		scope.setScopedContentItems(new HashSet<>(items.values()));
+		scope = this.scopeService.write(scope);
+		return new EditedScope(scope.getName(), scope.getRequestPattern(), this.contentParser.parse(scope.getScopedContentItems(), scope.getName()), savingContext.getCurrent());
 	}
 
-	private Set<Scope> createScopesForSaving(final ContentSavingContext savingContext) {
+	private ScopedContentItem handleContentItem(final ContentItem contentItem, final Scope scope) {
+		ScopedContentItem scopedContentItem = contentItem.getDbId() == null ? new ScopedContentItem() : this.scopedContentItemService.findById(contentItem.getDbId());
+		scopedContentItem = this.contentParser.parse(contentItem, scopedContentItem);
+		if (contentItem.getDbId() == null) {
+			final Set<Scope> scopes = new HashSet<>();
+			scopes.add(scope);
+			scopedContentItem.setScopes(scopes);
+			return this.scopedContentItemService.add(scopedContentItem);
+		} else {
+			return this.scopedContentItemService.write(scopedContentItem);
+		}
+	}
+
+	private Map<Integer, ScopedContentItem> prepareScopedContentItemMap(final Scope scope) {
+		final Map<Integer, ScopedContentItem> map = new HashMap<>();
+		for (final ScopedContentItem item : scope.getScopedContentItems()) {
+			map.put(item.getId(), item);
+		}
+		return map;
+	}
+
+	private Scope fetchScopeForSaving(final ContentSavingContext savingContext) {
 		final Scope scope = this.scopeService.load(savingContext.getScopeName(), savingContext.getRequestPattern());
 		if (scope == null) {
 			throw NoScopeFoundException.prepare(savingContext.getScopeName(), savingContext.getRequestPattern());
 		}
-		final Set<Scope> scopes = new HashSet<>();
-		scopes.add(scope);
-		return scopes;
+		return scope;
 	}
 }
